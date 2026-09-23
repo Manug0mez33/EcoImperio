@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EcoImperio - Red de Reciclaje Barrial</title>
+
+  <!-- Google Fonts: Roboto & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+
+  <!-- TailwindCSS v3 CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            emerald: {
+              900: '#064e3b',
+              700: '#047857',
+              600: '#059669',
+              500: '#10b981',
+              100: '#d1fae5',
+              50: '#ecfdf5'
+            },
+            amber: {
+              500: '#f59e0b',
+              400: '#fbbf24'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Estilos Personalizados EcoImperio -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Contenedor Principal Viewport Móvil -->
+  <main class="mobile-viewport">
+
+    <!-- ==========================================================================
+         PANTALLA 1: SPLASH WELCOME
+         ========================================================================== -->
+    <section id="screen-splash" class="screen-view active justify-between p-6 bg-gradient-to-b from-slate-50 to-emerald-50">
+      <div class="pt-8 text-right">
+        <span class="text-xs font-semibold tracking-wider text-emerald-800 uppercase bg-emerald-100 px-3 py-1 rounded-full">v1.2 Mobile</span>
+      </div>
+
+      <div class="flex flex-col items-center text-center my-auto">
+        <!-- Logo Insignia -->
+        <div class="w-28 h-28 rounded-full bg-emerald-900 flex items-center justify-center shadow-xl mb-6 border-4 border-emerald-500">
+          <span class="text-5xl" role="img" aria-label="Hoja y Corona">👑🌱</span>
+        </div>
+        <h1 class="text-3xl font-black text-slate-900 tracking-tight mb-2">EcoImperio</h1>
+        <p class="text-emerald-800 font-semibold text-base mb-3 max-w-xs">
+          Reciclá, sumá puntos, transformá tu ciudad
+        </p>
+        <p class="text-xs text-slate-500 max-w-xs">
+          Unite a la comunidad verde de Río Cuarto
+        </p>
+      </div>
+
+      <div class="pb-6">
+        <button data-navigate="login" class="btn-primary w-full shadow-lg text-base">
+          <span>Comenzar</span>
+          <svg class="w-5 h-5 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+        </button>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         PANTALLA 2: LOGIN
+         ========================================================================== -->
+    <section id="screen-login" class="screen-view justify-between p-6 bg-white">
+      <header class="flex items-center justify-between pt-4 pb-2">
+        <button data-navigate="splash" class="p-2 rounded-full text-slate-600 hover:bg-slate-100" aria-label="Volver">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+        </button>
+        <div class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center text-sm">🌱</div>
+      </header>
+
+      <div class="my-auto">
+        <h1 class="text-2xl font-bold text-slate-900 mb-1">¡Hola de nuevo!</h1>
+        <p class="text-sm text-slate-500 mb-6">Ingresá para seguir sumando EcoPuntos</p>
+
+        <form onsubmit="event.preventDefault(); window.EcoImperio.navigateTo('mapa');" class="space-y-4">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1" for="email">Correo Electrónico</label>
+            <input type="email" id="email" value="vecino@rc.com" required class="w-full px-4 py-3 rounded-2xl border border-slate-200 focus:border-emerald-500 text-sm text-slate-800" placeholder="tu@correo.com">
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1" for="password">Contraseña</label>
+            <div class="relative">
+              <input type="password" id="password" value="********" required class="w-full px-4 py-3 rounded-2xl border border-slate-200 focus:border-emerald-500 text-sm text-slate-800" placeholder="••••••••">
+              <button type="button" class="absolute right-3 top-3 text-slate-400 hover:text-slate-600" aria-label="Mostrar contraseña">👁️</button>
+            </div>
+          </div>
+
+          <div class="text-right">
+            <a href="#" class="text-xs font-semibold text-emerald-700 hover:underline">¿Olvidaste tu contraseña?</a>
+          </div>
+
+          <div class="space-y-3 pt-2">
+            <button type="submit" class="btn-primary w-full">Iniciar Sesión</button>
+            <button type="button" data-navigate="mapa" class="btn-secondary w-full">Registrarse</button>
+          </div>
+        </form>
+
+        <div class="relative my-6 text-center">
+          <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-slate-200"></div></div>
+          <span class="relative bg-white px-3 text-xs text-slate-400 uppercase font-semibold">O ingresar con</span>
+        </div>
+
+        <div class="flex justify-center gap-4">
+          <button class="w-12 h-12 rounded-2xl border border-slate-200 flex items-center justify-center hover:bg-slate-50" aria-label="Ingresar con X">𝕏</button>
+          <button class="w-12 h-12 rounded-2xl border border-slate-200 flex items-center justify-center hover:bg-slate-50 text-blue-600 font-bold" aria-label="Ingresar con Facebook">f</button>
+          <button class="w-12 h-12 rounded-2xl border border-slate-200 flex items-center justify-center hover:bg-slate-50 text-slate-900 font-bold" aria-label="Ingresar con Apple"></button>
+        </div>
+      </div>
+
+      <footer class="text-center pb-2">
+        <p class="text-xs text-slate-400">Municipalidad de Río Cuarto</p>
+      </footer>
+    </section>
+
+    <!-- ==========================================================================
+         PANTALLA 3: HOME MAPA INTERACTIVO
+         ========================================================================== -->
+    <section id="screen-mapa" class="screen-view relative bg-slate-100">
+      <!-- Top Bar Barra Superior -->
+      <header class="absolute top-0 left-0 right-0 z-20 p-4 bg-gradient-to-b from-slate-900/60 to-transparent flex items-center justify-between">
+        <button id="btn-open-drawer" class="w-10 h-10 rounded-2xl bg-white/90 backdrop-blur shadow-md flex items-center justify-center text-slate-800 hover:bg-white" aria-label="Abrir Menú Hamburguesa">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+        </button>
+
+        <!-- Filtros Rápidos / Búsqueda -->
+        <div class="flex-1 mx-3 relative">
+          <input type="text" placeholder="Buscar puntos..." class="w-full pl-9 pr-3 py-2 text-xs rounded-full bg-white/90 backdrop-blur shadow-md border-0 focus:ring-2 focus:ring-emerald-500">
+          <span class="absolute left-3 top-2.5 text-xs text-slate-400">🔍</span>
+        </div>
+
+        <button data-navigate="puntos" class="w-10 h-10 rounded-full bg-emerald-700 text-white font-bold text-xs flex items-center justify-center border-2 border-white shadow-md" title="Perfil Oscar Rodríguez">
+          OR
+        </button>
+      </header>
+
+      <!-- Vista de Mapa Simulado con Canvas/SVG -->
+      <div class="w-full h-full relative bg-emerald-50 flex items-center justify-center overflow-hidden">
+        <!-- Calles de fondo del mapa -->
+        <svg class="absolute inset-0 w-full h-full opacity-40" viewBox="0 0 400 700">
+          <path d="M-50 150 Q 150 120 450 200" stroke="#cbd5e1" stroke-width="20" fill="none"/>
+          <path d="M100 -50 L 120 750" stroke="#cbd5e1" stroke-width="16" fill="none"/>
+          <path d="M300 -50 L 280 750" stroke="#cbd5e1" stroke-width="12" fill="none"/>
+          <path d="M-50 450 L 450 400" stroke="#cbd5e1" stroke-width="24" fill="none"/>
+        </svg>
+
+        <!-- Filtros Flotantes de Categoría -->
+        <div class="absolute top-16 left-4 right-4 z-10 flex gap-2">
+          <button class="px-3 py-1.5 rounded-full bg-emerald-800 text-white text-xs font-semibold shadow-md flex items-center gap-1.5 border border-emerald-600">
+            <span>♻️ Campanas Verdes</span>
+          </button>
+          <button class="px-3 py-1.5 rounded-full bg-white/90 text-slate-700 text-xs font-semibold shadow-md flex items-center gap-1.5 hover:bg-white">
+            <span>✨ Puntos Limpios</span>
+          </button>
+        </div>
+
+        <!-- Marcadores en el Mapa -->
+        <!-- Marcador 1: Campana Alberdi (Verde - Vacío) -->
+        <button data-navigate="escaner" class="absolute top-1/3 left-1/4 transform -translate-x-1/2 -translate-y-1/2 group z-10" aria-label="Campana Verde B° Alberdi">
+          <div class="w-12 h-12 rounded-full bg-emerald-600 text-white flex items-center justify-center shadow-lg border-2 border-white group-hover:scale-110 transition-transform">
+            <span class="text-xl">♻️</span>
+          </div>
+          <span class="bg-slate-900 text-white text-[10px] font-bold px-2 py-0.5 rounded-full mt-1 inline-block shadow">Alberdi (Vacío)</span>
+        </button>
+
+        <!-- Marcador 2: Banda Norte (Rojo - Lleno) -->
+        <div class="absolute top-1/2 right-1/4 transform translate-x-1/2 -translate-y-1/2 group z-10">
+          <div class="w-10 h-10 rounded-full bg-red-500 text-white flex items-center justify-center shadow-lg border-2 border-white">
+            <span class="text-base">🚫</span>
+          </div>
+          <span class="bg-slate-900 text-white text-[10px] font-bold px-2 py-0.5 rounded-full mt-1 inline-block shadow">B° Norte (Lleno)</span>
+        </div>
+
+        <!-- Card Inferior Flotante de Campana Cercana -->
+        <div class="absolute bottom-20 left-4 right-4 z-20 bg-white rounded-2xl p-4 shadow-xl border border-slate-100 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center text-lg">🔔</div>
+            <div>
+              <h3 class="font-bold text-slate-900 text-sm">Campana Verde - B° Alberdi</h3>
+              <p class="text-xs text-slate-500">A solo 350m de tu ubicación</p>
+            </div>
+          </div>
+          <button data-navigate="escaner" class="w-10 h-10 rounded-full bg-emerald-800 text-white flex items-center justify-center hover:bg-emerald-700 shadow-md" aria-label="Ir a la campana">
+            ➔
+          </button>
+        </div>
+      </div>
+
+      <!-- Barra de Navegación Inferior (Navbar) -->
+      <nav class="absolute bottom-0 left-0 right-0 bg-white border-t border-slate-200 px-4 py-2 flex justify-between items-center z-30">
+        <button data-navigate="splash" class="nav-item flex flex-col items-center text-slate-500 hover:text-emerald-700 text-xs" data-target="splash">
+          <span class="text-lg">🏠</span>
+          <span>Inicio</span>
+        </button>
+
+        <button data-navigate="mapa" class="nav-item flex flex-col items-center text-emerald-700 font-bold text-xs" data-target="mapa">
+          <span class="text-lg">🗺️</span>
+          <span>Mapa</span>
+        </button>
+
+        <!-- Botón Escáner Flotante Central -->
+        <button data-navigate="escaner" class="w-14 h-14 -mt-7 rounded-full bg-emerald-900 text-white flex items-center justify-center shadow-xl border-4 border-white hover:scale-105 active:scale-95 transition-transform" aria-label="Escáner QR">
+          <span class="text-2xl">📷</span>
+        </button>
+
+        <button data-navigate="puntos" class="nav-item flex flex-col items-center text-slate-500 hover:text-emerald-700 text-xs" data-target="puntos">
+          <span class="text-lg">🎁</span>
+          <span>Puntos</span>
+        </button>
+
+        <button id="btn-open-drawer-nav" data-navigate="puntos" class="nav-item flex flex-col items-center text-slate-500 hover:text-emerald-700 text-xs">
+          <span class="text-lg">👤</span>
+          <span>Perfil</span>
+        </button>
+      </nav>
+    </section>
+
+    <!-- ==========================================================================
+         PANTALLA 4: ESCÁNER QR DE MATERIALES
+         ========================================================================== -->
+    <section id="screen-escaner" class="screen-view bg-slate-950 text-white justify-between relative">
+      <!-- Header Escáner -->
+      <header class="p-4 flex items-center justify-between bg-slate-900/80 backdrop-blur border-b border-slate-800 z-10">
+        <button data-navigate="mapa" class="p-2 rounded-full hover:bg-slate-800" aria-label="Volver al mapa">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+        </button>
+        <h1 class="text-base font-bold">Escáner de Materiales</h1>
+        <button class="p-2 rounded-full hover:bg-slate-800" title="Flash Cámara" aria-label="Encender Flash">⚡</button>
+      </header>
+
+      <!-- Área de Visor de Cámara y Láser -->
+      <div class="relative flex-1 flex flex-col items-center justify-center p-6">
+        <div class="relative w-64 h-64 rounded-3xl border-2 border-emerald-400/50 overflow-hidden shadow-2xl bg-slate-900 flex items-center justify-center">
+          <!-- Imagen Simulada de Botellas en Cámara -->
+          <img src="https://images.unsplash.com/photo-1530587191325-3db32d826c18?auto=format&fit=crop&w=400&q=80" alt="Botellas plásticas a escanear" class="w-full h-full object-cover opacity-80">
+          
+          <!-- Marco con esquinas de visor -->
+          <div class="absolute inset-4 border-2 border-dashed border-emerald-400 rounded-2xl pointer-events-none"></div>
+
+          <!-- Línea Laser Animada -->
+          <div class="scanner-laser"></div>
+        </div>
+        <p class="text-xs text-slate-400 mt-4 text-center">Centrá el código QR o el material reciclable</p>
+      </div>
+
+      <!-- Tarjeta Inferior de Material Detectado -->
+      <div class="p-5 bg-white text-slate-900 rounded-t-3xl shadow-2xl z-10 space-y-3">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-bold px-3 py-1 bg-emerald-100 text-emerald-800 rounded-full">PET 1 • Reciclable ✓</span>
+          <span class="text-xs font-semibold text-emerald-700">+10 EcoPuntos</span>
+        </div>
+
+        <div>
+          <h2 class="text-lg font-bold">Botella de Plástico</h2>
+          <p class="text-xs text-slate-500 mt-0.5">
+            Depositá en la <strong>Campana Verde</strong> más cercana para sumar <strong>+10 EcoPuntos</strong>.
+          </p>
+        </div>
+
+        <button id="btn-register-deposit" class="btn-primary w-full text-center">
+          Registrar Depósito
+        </button>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         PANTALLA 5: MIS ECOPUNTOS Y RECOMPENSAS
+         ========================================================================== -->
+    <section id="screen-puntos" class="screen-view bg-slate-50 p-4 space-y-5 pb-20">
+      <!-- Header -->
+      <header class="flex items-center justify-between pt-2">
+        <h1 class="text-xl font-black text-slate-900">Mis EcoPuntos</h1>
+        <button data-navigate="mapa" class="text-xs font-semibold text-emerald-700 hover:underline">Ir al Mapa ➔</button>
+      </header>
+
+      <!-- Card Balance Actual -->
+      <article class="p-5 rounded-3xl bg-emerald-900 text-white shadow-xl relative overflow-hidden">
+        <div class="relative z-10">
+          <span class="text-[10px] font-bold tracking-widest text-emerald-300 uppercase">Balance Actual</span>
+          <div class="flex items-baseline gap-2 mt-1">
+            <span class="text-3xl font-black tracking-tight user-ecopuntos-val">1.250</span>
+            <span class="text-emerald-300 font-bold text-sm">EcoPuntos</span>
+          </div>
+
+          <!-- Barra de Progreso hacia el próximo beneficio -->
+          <div class="mt-4 pt-3 border-t border-emerald-800/80">
+            <div class="flex justify-between text-xs text-emerald-200 mb-1">
+              <span>Próximo beneficio: 1.500 pts</span>
+              <span class="font-bold text-amber-400">83%</span>
+            </div>
+            <div class="w-full bg-emerald-950 h-2.5 rounded-full overflow-hidden">
+              <div class="bg-gradient-to-r from-amber-400 to-amber-500 h-full w-[83%] rounded-full"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Medalla Dorada Decorativa -->
+        <div class="absolute right-3 top-3 w-14 h-14 rounded-full bg-amber-500/20 border border-amber-400/40 flex items-center justify-center text-2xl shadow-inner">
+          🏅
+        </div>
+      </article>
+
+      <!-- Sección Comercios Adheridos -->
+      <section class="space-y-3">
+        <div class="flex justify-between items-center">
+          <h2 class="font-bold text-slate-900 text-sm">Comercios Adheridos</h2>
+          <a href="#" class="text-xs font-semibold text-emerald-700 hover:underline">Ver todos</a>
+        </div>
+
+        <!-- Grid de Cards de Comercios (50% / 50%) -->
+        <div class="grid grid-cols-2 gap-3">
+          <!-- Card 1 -->
+          <article class="bg-white rounded-2xl overflow-hidden border border-slate-200/80 shadow-sm hover:shadow-md transition-shadow">
+            <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=300&q=80" alt="Panadería El Imperio" class="w-full h-24 object-cover">
+            <div class="p-3">
+              <h3 class="font-bold text-slate-800 text-xs">Panadería El Imperio</h3>
+              <p class="text-[10px] text-slate-500 mb-2">Panadería y Café</p>
+              <span class="text-[10px] font-bold bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full">15% Descuento</span>
+            </div>
+          </article>
+
+          <!-- Card 2 -->
+          <article class="bg-white rounded-2xl overflow-hidden border border-slate-200/80 shadow-sm hover:shadow-md transition-shadow">
+            <img src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=300&q=80" alt="Librería La Biblioteca" class="w-full h-24 object-cover">
+            <div class="p-3">
+              <h3 class="font-bold text-slate-800 text-xs">La Biblioteca</h3>
+              <p class="text-[10px] text-slate-500 mb-2">Librería y Otros</p>
+              <span class="text-[10px] font-bold bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full">10% Descuento</span>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- Sección Historial de Reciclaje -->
+      <section class="space-y-3">
+        <h2 class="font-bold text-slate-900 text-sm">Historial de Reciclaje</h2>
+
+        <!-- Lista de Cards 80% ancho -->
+        <div id="history-list" class="space-y-2">
+          <!-- Rellenado dinámicamente desde app.js -->
+        </div>
+      </section>
+
+      <!-- Bottom Nav repetido para consistencia -->
+      <nav class="fixed bottom-0 left-0 right-0 max-w-[412px] mx-auto bg-white border-t border-slate-200 px-4 py-2 flex justify-between items-center z-30">
+        <button data-navigate="splash" class="nav-item flex flex-col items-center text-slate-500 hover:text-emerald-700 text-xs">
+          <span class="text-lg">🏠</span>
+          <span>Inicio</span>
+        </button>
+        <button data-navigate="mapa" class="nav-item flex flex-col items-center text-slate-500 hover:text-emerald-700 text-xs">
+          <span class="text-lg">🗺️</span>
+          <span>Mapa</span>
+        </button>
+        <button data-navigate="escaner" class="w-12 h-12 -mt-6 rounded-full bg-emerald-900 text-white flex items-center justify-center shadow-lg border-2 border-white">
+          📷
+        </button>
+        <button data-navigate="puntos" class="nav-item flex flex-col items-center text-emerald-700 font-bold text-xs">
+          <span class="text-lg">🎁</span>
+          <span>Puntos</span>
+        </button>
+        <button id="btn-open-drawer-nav2" class="nav-item flex flex-col items-center text-slate-500 hover:text-emerald-700 text-xs">
+          <span class="text-lg">👤</span>
+          <span>Perfil</span>
+        </button>
+      </nav>
+    </section>
+
+    <!-- ==========================================================================
+         COMPONENTE 6: MENÚ LATERAL DRAWER SLIDE-OVER
+         ========================================================================== -->
+    <div id="drawer-overlay" class="drawer-overlay"></div>
+
+    <aside id="drawer-menu" class="drawer-menu">
+      <!-- Header Drawer: Perfil Usuario -->
+      <div class="p-6 bg-slate-50 border-b border-slate-200 flex items-center gap-3 relative">
+        <button id="btn-close-drawer" class="absolute right-4 top-4 text-slate-400 hover:text-slate-600 text-lg" aria-label="Cerrar Menú">✕</button>
+
+        <div class="w-12 h-12 rounded-full bg-emerald-800 text-white font-bold flex items-center justify-center text-base border-2 border-emerald-500">
+          OR
+        </div>
+        <div>
+          <span class="text-[10px] text-slate-400 block uppercase font-bold tracking-wider">Vecino de Río Cuarto</span>
+          <h2 class="font-bold text-slate-900 text-sm">Oscar Rodríguez</h2>
+          <span class="text-xs font-semibold text-amber-600">⭐ <span class="user-ecopuntos-val">1.250</span> EcoPuntos</span>
+        </div>
+      </div>
+
+      <!-- Lista de Opciones de Menú -->
+      <nav class="flex-1 p-4 space-y-1 overflow-y-auto">
+        <button data-navigate="splash" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-700 hover:bg-slate-100 font-medium text-xs">
+          <span>🏠</span>
+          <span>Inicio</span>
+        </button>
+
+        <button data-navigate="mapa" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl bg-emerald-50 text-emerald-800 font-bold text-xs border border-emerald-200">
+          <span>🗺️</span>
+          <span>Mapa de Puntos</span>
+        </button>
+
+        <button data-navigate="escaner" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-700 hover:bg-slate-100 font-medium text-xs">
+          <span>📷</span>
+          <span>Escáner QR</span>
+        </button>
+
+        <button data-navigate="puntos" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-700 hover:bg-slate-100 font-medium text-xs">
+          <span>🎁</span>
+          <span>Mis Puntos</span>
+        </button>
+
+        <div class="pt-3 pb-1 border-t border-slate-100 my-2"></div>
+
+        <!-- Toggle Modo Alto Contraste -->
+        <div class="flex items-center justify-between px-3 py-2.5 rounded-xl text-slate-700 text-xs">
+          <div class="flex items-center gap-3">
+            <span>🌓</span>
+            <span class="font-medium">Modo Alto Contraste</span>
+          </div>
+          <label class="relative inline-flex items-center cursor-pointer">
+            <input type="checkbox" id="contrast-toggle" class="sr-only peer">
+            <div class="w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-emerald-600"></div>
+          </label>
+        </div>
+
+        <button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-700 hover:bg-slate-100 font-medium text-xs">
+          <span>⚙️</span>
+          <span>Configuración</span>
+        </button>
+      </nav>
+
+      <!-- Footer Drawer -->
+      <div class="p-4 border-t border-slate-100">
+        <button data-navigate="login" class="w-full flex items-center gap-2 text-red-600 hover:text-red-700 font-bold text-xs p-2">
+          <span>🚪</span>
+          <span>Cerrar Sesión</span>
+        </button>
+        <p class="text-[10px] text-slate-400 mt-2 text-center">EcoImperio v1.2 • Gobierno de Río Cuarto</p>
+      </div>
+    </aside>
+
+  </main>
+
+  <!-- Lógica de Aplicación -->
+  <script src="app.js"></script>
+</body>
+</html>

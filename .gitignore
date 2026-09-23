@@ -1,0 +1,12 @@
+# Archivos del sistema y temporales
+.DS_Store
+Thumbs.db
+*.log
+
+# Scratch y temporales de Antigravity
+scratch/
+.system_generated/
+
+# Dependencias si las hubiera
+node_modules/
+dist/

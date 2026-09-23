@@ -1,0 +1,254 @@
+/* ==========================================================================
+   ESTILOS Y SISTEMA DE DISEÑO - ECOIMPERIO (Gentle-AI / Tailwind v3 Extended)
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto:wght@300;400;500;700;900&display=swap');
+
+:root {
+  --color-primary: #064e3b;      /* Emerald 900 */
+  --color-primary-light: #10b981;/* Emerald 500 */
+  --color-primary-hover: #059669;/* Emerald 600 */
+  --color-primary-active: #047857;/* Emerald 700 */
+  --color-gold: #f59e0b;         /* Amber 500 */
+  --color-gold-light: #fbbf24;   /* Amber 400 */
+  --color-bg-light: #f8fafc;     /* Slate 50 */
+  --color-bg-dark: #020617;      /* Slate 950 */
+  --color-card-light: #ffffff;
+  --color-card-dark: #0f172a;    /* Slate 900 */
+  --color-text-main: #0f172a;
+  --color-text-muted: #64748b;
+  --focus-ring: 0 0 0 4px rgba(16, 185, 129, 0.45);
+}
+
+/* ==========================================================================
+   RESET Y BASE ACCESIBLE
+   ========================================================================== */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: #0f172a;
+  color: var(--color-text-main);
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+button {
+  font-family: 'Inter', sans-serif;
+}
+
+/* Contenedor Mockup de Celular Mobile-First */
+.mobile-viewport {
+  width: 100%;
+  max-width: 412px;
+  height: 100vh;
+  max-height: 870px;
+  background-color: var(--color-bg-light);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+}
+
+@media (min-width: 640px) {
+  .mobile-viewport {
+    border-radius: 36px;
+    border: 10px solid #1e293b;
+    height: 840px;
+  }
+}
+
+/* ==========================================================================
+   LOS 5 ESTADOS DE COMPONENTES UI (Gentle-AI Standard)
+   ========================================================================== */
+
+/* 1. Default & 2. Hover */
+.btn-primary {
+  background-color: var(--color-primary);
+  color: #ffffff !important;
+  font-weight: 600;
+  border-radius: 9999px;
+  padding: 0.85rem 1.5rem;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 12px rgba(6, 78, 59, 0.25);
+  touch-action: manipulation;
+  min-height: 48px;
+}
+
+.btn-primary:hover {
+  background-color: #047857;
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 6px 18px rgba(6, 78, 59, 0.35);
+}
+
+/* 3. Active */
+.btn-primary:active {
+  transform: translateY(0) scale(0.97);
+  background-color: #064e3b;
+}
+
+/* 4. Focus (Accesibilidad Teclado) */
+.btn-primary:focus-visible,
+button:focus-visible,
+a:focus-visible,
+input:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+/* 5. Disabled */
+.btn-primary:disabled,
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* Botón secundario outline */
+.btn-secondary {
+  background-color: transparent;
+  color: var(--color-primary);
+  font-weight: 600;
+  border-radius: 9999px;
+  padding: 0.85rem 1.5rem;
+  border: 2px solid var(--color-primary);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s ease;
+  min-height: 48px;
+}
+
+.btn-secondary:hover {
+  background-color: rgba(6, 78, 59, 0.08);
+  transform: translateY(-1px);
+}
+
+.btn-secondary:active {
+  transform: scale(0.98);
+}
+
+/* ==========================================================================
+   Efecto Laser Scanner QR
+   ========================================================================== */
+.scanner-laser {
+  position: absolute;
+  top: 15%;
+  left: 10%;
+  right: 10%;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #ef4444, #f59e0b, #ef4444, transparent);
+  box-shadow: 0 0 15px #ef4444;
+  animation: scanSweep 2.2s infinite ease-in-out;
+}
+
+@keyframes scanSweep {
+  0% { top: 15%; opacity: 0.8; }
+  50% { top: 80%; opacity: 1; }
+  100% { top: 15%; opacity: 0.8; }
+}
+
+/* ==========================================================================
+   MODO ALTO CONTRASTE (WCAG AAA Compliance)
+   ========================================================================== */
+body.high-contrast .mobile-viewport {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border-color: #ffffff;
+}
+
+body.high-contrast .bg-white,
+body.high-contrast .bg-slate-50,
+body.high-contrast .bg-slate-100 {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border: 2px solid #ffffff !important;
+}
+
+body.high-contrast .text-slate-600,
+body.high-contrast .text-slate-500,
+body.high-contrast .text-slate-400 {
+  color: #ffff00 !important; /* Amarillo de alto contraste para textos secundarios */
+}
+
+body.high-contrast .btn-primary {
+  background-color: #ffff00 !important;
+  color: #000000 !important;
+  font-weight: 900;
+  border: 3px solid #ffffff !important;
+}
+
+body.high-contrast .btn-primary:focus-visible {
+  box-shadow: 0 0 0 5px #ffffff, 0 0 0 8px #000000 !important;
+}
+
+/* ==========================================================================
+   ANIMACIONES DE PANTALLA Y SLIDE OVER
+   ========================================================================== */
+.screen-view {
+  display: none;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+  overflow-y: auto;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.screen-view.active {
+  display: flex;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.98); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.drawer-overlay {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: 50;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.drawer-overlay.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.drawer-menu {
+  position: absolute;
+  top: 0;
+  left: -85%;
+  width: 85%;
+  height: 100%;
+  background-color: #ffffff;
+  z-index: 60;
+  box-shadow: 10px 0 30px rgba(0, 0, 0, 0.3);
+  transition: left 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+}
+
+.drawer-menu.open {
+  left: 0;
+}
