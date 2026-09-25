@@ -82,6 +82,10 @@ document.addEventListener('DOMContentLoaded', () => {
   if (closeDrawerBtn) closeDrawerBtn.addEventListener('click', closeDrawer);
   if (drawerOverlay) drawerOverlay.addEventListener('click', closeDrawer);
 
+  document.querySelectorAll('.btn-trigger-drawer').forEach(btn => {
+    btn.addEventListener('click', openDrawer);
+  });
+
   // Toggle Modo Alto Contraste
   const contrastToggle = document.getElementById('contrast-toggle');
   if (contrastToggle) {

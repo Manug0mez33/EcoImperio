@@ -282,7 +282,7 @@
     <!-- ==========================================================================
          PANTALLA 5: MIS ECOPUNTOS Y RECOMPENSAS
          ========================================================================== -->
-    <section id="screen-puntos" class="screen-view bg-slate-50 p-4 space-y-5 pb-20">
+    <section id="screen-puntos" class="screen-view bg-slate-50 p-4 space-y-5 pb-24 relative">
       <!-- Header -->
       <header class="flex items-center justify-between pt-2">
         <h1 class="text-xl font-black text-slate-900">Mis EcoPuntos</h1>
@@ -357,24 +357,24 @@
         </div>
       </section>
 
-      <!-- Bottom Nav repetido para consistencia -->
-      <nav class="fixed bottom-0 left-0 right-0 max-w-[412px] mx-auto bg-white border-t border-slate-200 px-4 py-2 flex justify-between items-center z-30">
-        <button data-navigate="splash" class="nav-item flex flex-col items-center text-slate-500 hover:text-emerald-700 text-xs">
+      <!-- Bottom Nav fijado internamente dentro de la pantalla Puntos -->
+      <nav class="absolute bottom-0 left-0 right-0 bg-white border-t border-slate-200 px-4 py-2 flex justify-between items-center z-30">
+        <button data-navigate="splash" class="nav-item flex flex-col items-center text-slate-500 hover:text-emerald-700 text-xs" data-target="splash">
           <span class="text-lg">🏠</span>
           <span>Inicio</span>
         </button>
-        <button data-navigate="mapa" class="nav-item flex flex-col items-center text-slate-500 hover:text-emerald-700 text-xs">
+        <button data-navigate="mapa" class="nav-item flex flex-col items-center text-slate-500 hover:text-emerald-700 text-xs" data-target="mapa">
           <span class="text-lg">🗺️</span>
           <span>Mapa</span>
         </button>
-        <button data-navigate="escaner" class="w-12 h-12 -mt-6 rounded-full bg-emerald-900 text-white flex items-center justify-center shadow-lg border-2 border-white">
-          📷
+        <button data-navigate="escaner" class="w-14 h-14 -mt-7 rounded-full bg-emerald-900 text-white flex items-center justify-center shadow-xl border-4 border-white hover:scale-105 active:scale-95 transition-transform" aria-label="Escáner QR">
+          <span class="text-2xl">📷</span>
         </button>
-        <button data-navigate="puntos" class="nav-item flex flex-col items-center text-emerald-700 font-bold text-xs">
+        <button data-navigate="puntos" class="nav-item flex flex-col items-center text-emerald-700 font-bold text-xs" data-target="puntos">
           <span class="text-lg">🎁</span>
           <span>Puntos</span>
         </button>
-        <button id="btn-open-drawer-nav2" class="nav-item flex flex-col items-center text-slate-500 hover:text-emerald-700 text-xs">
+        <button class="btn-trigger-drawer nav-item flex flex-col items-center text-slate-500 hover:text-emerald-700 text-xs">
           <span class="text-lg">👤</span>
           <span>Perfil</span>
         </button>
