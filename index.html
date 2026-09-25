@@ -55,9 +55,10 @@
       </div>
 
       <div class="flex flex-col items-center text-center my-auto">
-        <!-- Logo Insignia Myna UI Icon -->
-        <div class="w-28 h-28 rounded-full bg-emerald-900 flex items-center justify-center shadow-xl mb-6 border-4 border-emerald-500 text-emerald-400">
-          <iconify-icon icon="mynaui:recycle" class="text-6xl"></iconify-icon>
+        <!-- Logo Insignia Combinado: Planta (hugeicons:plant-01) + Corona (akar-icons:crown) -->
+        <div class="w-28 h-28 rounded-full bg-emerald-900 flex items-center justify-center shadow-xl mb-6 border-4 border-emerald-500 text-emerald-400 relative">
+          <iconify-icon icon="akar-icons:crown" class="absolute -top-3 text-amber-400 text-3xl drop-shadow-md"></iconify-icon>
+          <iconify-icon icon="hugeicons:plant-01" class="text-5xl"></iconify-icon>
         </div>
         <h1 class="text-3xl font-black text-slate-900 tracking-tight mb-2">EcoImperio</h1>
         <p class="text-emerald-800 font-semibold text-base mb-3 max-w-xs">
@@ -132,7 +133,7 @@
             <iconify-icon icon="mynaui:brand-facebook" class="text-2xl"></iconify-icon>
           </button>
           <button class="w-12 h-12 rounded-2xl border border-slate-200 flex items-center justify-center hover:bg-slate-50 text-slate-900" aria-label="Ingresar con Apple">
-            <iconify-icon icon="mynaui:brand-apple" class="text-2xl"></iconify-icon>
+            <iconify-icon icon="basil:apple-outline" class="text-2xl"></iconify-icon>
           </button>
         </div>
       </div>
@@ -176,7 +177,7 @@
         <!-- Filtros Flotantes de Categoría -->
         <div class="absolute top-16 left-4 right-4 z-10 flex gap-2">
           <button class="px-3 py-1.5 rounded-full bg-emerald-800 text-white text-xs font-semibold shadow-md flex items-center gap-1.5 border border-emerald-600">
-            <iconify-icon icon="mynaui:recycle" class="text-base"></iconify-icon>
+            <iconify-icon icon="keyline-icons:recycle-duotone" class="text-lg"></iconify-icon>
             <span>Campanas Verdes</span>
           </button>
           <button class="px-3 py-1.5 rounded-full bg-white/90 text-slate-700 text-xs font-semibold shadow-md flex items-center gap-1.5 hover:bg-white">
@@ -233,7 +234,7 @@
 
         <!-- Botón Escáner Flotante Central -->
         <button data-navigate="escaner" class="w-14 h-14 -mt-7 rounded-full bg-emerald-900 text-white flex items-center justify-center shadow-xl border-4 border-white hover:scale-105 active:scale-95 transition-transform" aria-label="Escáner QR">
-          <iconify-icon icon="mynaui:qr-code" class="text-3xl"></iconify-icon>
+          <iconify-icon icon="iconamoon:scanner-thin" class="text-3xl"></iconify-icon>
         </button>
 
         <button data-navigate="puntos" class="nav-item flex flex-col items-center text-slate-500 hover:text-emerald-700 text-xs" data-target="puntos">
@@ -336,9 +337,9 @@
           </div>
         </div>
 
-        <!-- Medalla Dorada Myna UI Icon -->
-        <div class="absolute right-3 top-3 w-14 h-14 rounded-full bg-amber-500/20 border border-amber-400/40 flex items-center justify-center text-amber-400 shadow-inner">
-          <iconify-icon icon="mynaui:award" class="text-3xl"></iconify-icon>
+        <!-- Medalla Dorada (fluent-emoji-flat:sports-medal) -->
+        <div class="absolute right-3 top-3 w-14 h-14 rounded-full bg-amber-500/20 border border-amber-400/40 flex items-center justify-center shadow-inner">
+          <iconify-icon icon="fluent-emoji-flat:sports-medal" class="text-4xl"></iconify-icon>
         </div>
       </article>
 
@@ -383,20 +384,18 @@
         </div>
       </section>
 
-      <!-- Bottom Nav Myna UI Icons en Puntos -->
+      <!-- Bottom Nav fijado internamente dentro de la pantalla Puntos -->
       <nav class="absolute bottom-0 left-0 right-0 bg-white border-t border-slate-200 px-4 py-2 flex justify-between items-center z-30">
         <button data-navigate="splash" class="nav-item flex flex-col items-center text-slate-500 hover:text-emerald-700 text-xs" data-target="splash">
           <iconify-icon icon="mynaui:home" class="text-2xl"></iconify-icon>
           <span>Inicio</span>
         </button>
-
         <button data-navigate="mapa" class="nav-item flex flex-col items-center text-slate-500 hover:text-emerald-700 text-xs" data-target="mapa">
           <iconify-icon icon="mynaui:location" class="text-2xl"></iconify-icon>
           <span>Mapa</span>
         </button>
-
         <button data-navigate="escaner" class="w-14 h-14 -mt-7 rounded-full bg-emerald-900 text-white flex items-center justify-center shadow-xl border-4 border-white hover:scale-105 active:scale-95 transition-transform" aria-label="Escáner QR">
-          <iconify-icon icon="mynaui:qr-code" class="text-3xl"></iconify-icon>
+          <iconify-icon icon="iconamoon:scanner-thin" class="text-3xl"></iconify-icon>
         </button>
 
         <button data-navigate="puntos" class="nav-item flex flex-col items-center text-emerald-700 font-bold text-xs" data-target="puntos">
