@@ -144,14 +144,14 @@ document.addEventListener('DOMContentLoaded', () => {
       el.textContent = state.ecoPuntos.toLocaleString('es-AR');
     });
 
-    // Renderizar lista de historial
+    // Renderizar lista de historial con Myna UI Icons
     const historyListContainer = document.getElementById('history-list');
     if (historyListContainer) {
       historyListContainer.innerHTML = state.history.map(item => `
         <article class="p-3 bg-white rounded-2xl border border-slate-100 shadow-sm flex items-center justify-between transition-all hover:shadow-md hover:border-emerald-200">
           <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold">
-              ♻️
+            <div class="w-10 h-10 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center">
+              <iconify-icon icon="mynaui:recycle" class="text-2xl"></iconify-icon>
             </div>
             <div>
               <h3 class="font-bold text-slate-800 text-sm">${item.title}</h3>
