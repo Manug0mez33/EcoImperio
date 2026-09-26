@@ -101,6 +101,42 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // Cargar y Alternar Modo Oscuro en todas las ventanas
+  const savedDarkMode = localStorage.getItem('ecoimperio_dark_mode');
+  if (savedDarkMode === 'true') {
+    state.darkMode = true;
+    document.body.classList.add('dark-mode');
+  }
+
+  function toggleDarkMode(enable) {
+    state.darkMode = enable;
+    if (state.darkMode) {
+      document.body.classList.add('dark-mode');
+      localStorage.setItem('ecoimperio_dark_mode', 'true');
+    } else {
+      document.body.classList.remove('dark-mode');
+      localStorage.setItem('ecoimperio_dark_mode', 'false');
+    }
+
+    document.querySelectorAll('.dark-mode-toggle').forEach(sw => {
+      sw.checked = state.darkMode;
+    });
+  }
+
+  document.querySelectorAll('.dark-mode-toggle').forEach(sw => {
+    sw.checked = state.darkMode || false;
+    sw.addEventListener('change', (e) => {
+      toggleDarkMode(e.target.checked);
+    });
+  });
+
+  document.querySelectorAll('.dark-mode-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      toggleDarkMode(!state.darkMode);
+    });
+  });
+
   // Event Listeners para Navegación Global
   document.querySelectorAll('[data-navigate]').forEach(btn => {
     btn.addEventListener('click', (e) => {

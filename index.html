@@ -50,7 +50,10 @@
          PANTALLA 1: SPLASH WELCOME
          ========================================================================== -->
     <section id="screen-splash" class="screen-view active justify-between p-6 bg-gradient-to-b from-slate-50 to-emerald-50">
-      <div class="pt-8 text-right">
+      <div class="pt-8 flex justify-between items-center">
+        <label class="relative inline-flex items-center cursor-pointer"><input type="checkbox" class="dark-mode-toggle sr-only peer" aria-label="Modo Oscuro"><div class="w-11 h-6 bg-gray-200 peer-checked:bg-emerald-600 rounded-full peer after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-full"></div></label>
+          <iconify-icon icon="mynaui:moon" class="text-lg"></iconify-icon>
+        </button>
         <span class="text-xs font-semibold tracking-wider text-emerald-800 uppercase bg-emerald-100 px-3 py-1 rounded-full">v1.2 Mobile</span>
       </div>
 
@@ -85,8 +88,13 @@
         <button data-navigate="splash" class="p-2 rounded-full text-slate-600 hover:bg-slate-100 flex items-center" aria-label="Volver">
           <iconify-icon icon="mynaui:arrow-left" class="text-2xl"></iconify-icon>
         </button>
-        <div class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center">
-          <iconify-icon icon="mynaui:leaf" class="text-xl"></iconify-icon>
+        <div class="flex items-center gap-2">
+          <button class="dark-mode-btn p-2 rounded-full text-slate-600 hover:bg-slate-100 flex items-center" aria-label="Modo Oscuro" title="Modo Oscuro">
+            <iconify-icon icon="mynaui:moon" class="text-xl"></iconify-icon>
+          </button>
+          <div class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center">
+            <iconify-icon icon="mynaui:leaf" class="text-xl"></iconify-icon>
+          </div>
         </div>
       </header>
 
@@ -317,7 +325,7 @@
       </header>
 
       <!-- Card Balance Actual -->
-      <article class="p-5 rounded-3xl bg-emerald-900 text-white shadow-xl relative overflow-hidden">
+      <article class="p-5 rounded-3xl bg-emerald-900 text-white shadow-xl relative overflow-hidden mx-auto mt-auto mb-auto"
         <div class="relative z-10">
           <span class="text-[10px] font-bold tracking-widest text-emerald-300 uppercase">Balance Actual</span>
           <div class="flex items-baseline gap-2 mt-1">

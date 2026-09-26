@@ -252,3 +252,78 @@ body.high-contrast .btn-primary:focus-visible {
 .drawer-menu.open {
   left: 0;
 }
+
+/* ==========================================================================
+   MODO OSCURO (DARK MODE)
+   ========================================================================== */
+body.dark-mode .mobile-viewport {
+  background-color: #090d16 !important;
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .bg-white,
+body.dark-mode .bg-slate-50 {
+  background-color: #0f172a !important;
+  color: #f8fafc !important;
+  border-color: #1e293b !important;
+}
+
+body.dark-mode .text-slate-900,
+body.dark-mode .text-slate-800,
+body.dark-mode .text-slate-700 {
+  color: #f8fafc !important;
+}
+
+body.dark-mode .text-slate-500,
+body.dark-mode .text-slate-400 {
+  color: #94a3b8 !important;
+}
+
+body.dark-mode .bg-slate-100 {
+  background-color: #1e293b !important;
+  color: #f8fafc !important;
+}
+
+body.dark-mode nav.bg-white {
+  background-color: #0f172a !important;
+  border-color: #334155 !important;
+}
+
+body.dark-mode .drawer-menu {
+  background-color: #0f172a !important;
+  color: #f8fafc !important;
+}
+
+body.dark-mode .drawer-menu .bg-slate-50 {
+  background-color: #1e293b !important;
+}
+
+body.dark-mode input {
+  background-color: #1e293b !important;
+  color: #ffffff !important;
+  border-color: #334155 !important;
+}
+
+/* Additional dark mode overrides */
+/* Hamburger button background */
+body.dark-mode #btn-open-drawer {
+  background-color: rgba(15,23,42,0.9) !important;
+  color: #f8fafc !important;
+}
+/* Filter button "Puntos Limpios" background */
+body.dark-mode button.bg-white\/90.text-slate-700 {
+  background-color: rgba(30,41,55,0.9) !important;
+  color: #e2e8f0 !important;
+}
+/* Drawer overlay dark overlay */
+body.dark-mode .drawer-overlay {
+  background-color: rgba(0,0,0,0.8) !important;
+}
+/* Map container background */
+body.dark-mode .mobile-viewport > div.bg-emerald-50 {
+  background-color: #0f172a !important;
+}
+/* SVG path stroke for dark mode */
+body.dark-mode svg path {
+  stroke: #334155 !important;
+}
