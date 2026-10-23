@@ -40,7 +40,9 @@ body {
   min-height: 100vh;
 }
 
-button {
+/* `body button` gana en especificidad al reset de Tailwind (`button { font-family: inherit }`),
+   que se inyecta después de este archivo y antes dejaba los botones en Roboto */
+body button {
   font-family: 'Inter', sans-serif;
 }
 
@@ -53,6 +55,8 @@ button {
   background-color: var(--color-bg-light);
   position: relative;
   overflow: hidden;
+  /* clip impide que el navegador desplace el marco al enfocar un elemento (overflow: hidden sí lo permite) */
+  overflow: clip;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
   display: flex;
   flex-direction: column;
@@ -202,6 +206,8 @@ body.high-contrast .btn-primary:focus-visible {
    ANIMACIONES DE PANTALLA Y SLIDE OVER
    ========================================================================== */
 .screen-view {
+  /* Contenedor de los inputs sr-only de cada pantalla: así el foco desplaza la pantalla y no el marco del celular */
+  position: relative;
   display: none;
   width: 100%;
   height: 100%;
@@ -212,6 +218,51 @@ body.high-contrast .btn-primary:focus-visible {
 
 .screen-view.active {
   display: flex;
+}
+
+/* Scroll táctil sin barra visible, como en un celular real (el contenido sigue desplazándose) */
+.screen-view,
+.drawer-menu nav {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.screen-view::-webkit-scrollbar,
+.drawer-menu nav::-webkit-scrollbar {
+  display: none;
+}
+
+/* ==========================================================================
+   PREFERENCIAS DE ACCESIBILIDAD (Configuración)
+   ========================================================================== */
+/* Tamaño de texto: las clases de Tailwind usan rem, así que escalan con el font-size raíz */
+html.text-size-large {
+  font-size: 112.5%;
+}
+
+html.text-size-xlarge {
+  font-size: 125%;
+}
+
+/* Reducir animaciones: preferencia del usuario o del sistema operativo */
+html.reduce-motion *,
+html.reduce-motion *::before,
+html.reduce-motion *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 @keyframes fadeIn {
@@ -254,76 +305,79 @@ body.high-contrast .btn-primary:focus-visible {
 }
 
 /* ==========================================================================
-   MODO OSCURO (DARK MODE)
+   NOTIFICACIÓN TOAST
    ========================================================================== */
-body.dark-mode .mobile-viewport {
-  background-color: #090d16 !important;
-  color: #f1f5f9 !important;
+.toast {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  right: 1rem;
+  z-index: 70;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.875rem 1rem;
+  border-radius: 1rem;
+  background-color: var(--color-primary);
+  color: #ffffff;
+  box-shadow: 0 10px 25px rgba(6, 78, 59, 0.35);
+  opacity: 0;
+  transform: translateY(-1rem);
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
-body.dark-mode .bg-white,
-body.dark-mode .bg-slate-50 {
-  background-color: #0f172a !important;
-  color: #f8fafc !important;
-  border-color: #1e293b !important;
+.toast.show {
+  opacity: 1;
+  transform: translateY(0);
 }
 
-body.dark-mode .text-slate-900,
-body.dark-mode .text-slate-800,
-body.dark-mode .text-slate-700 {
-  color: #f8fafc !important;
+body.high-contrast .toast {
+  background-color: #000000;
+  border: 2px solid #ffffff;
 }
 
-body.dark-mode .text-slate-500,
-body.dark-mode .text-slate-400 {
-  color: #94a3b8 !important;
+/* ==========================================================================
+   MODO OSCURO (DARK MODE)
+   Los componentes Tailwind usan variantes dark: en el HTML (clase `dark` en <html>).
+   Acá solo se tematizan las clases propias de este archivo.
+   ========================================================================== */
+html.dark .mobile-viewport {
+  background-color: var(--color-bg-dark);
+  color: #f1f5f9;
 }
 
-body.dark-mode .bg-slate-100 {
-  background-color: #1e293b !important;
-  color: #f8fafc !important;
+html.dark .btn-primary {
+  background-color: var(--color-primary-active);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
 }
 
-body.dark-mode nav.bg-white {
-  background-color: #0f172a !important;
-  border-color: #334155 !important;
+html.dark .btn-primary:hover {
+  background-color: #065f46;
 }
 
-body.dark-mode .drawer-menu {
-  background-color: #0f172a !important;
-  color: #f8fafc !important;
+html.dark .btn-primary:active {
+  background-color: var(--color-primary);
 }
 
-body.dark-mode .drawer-menu .bg-slate-50 {
-  background-color: #1e293b !important;
+html.dark .btn-secondary {
+  color: #6ee7b7;
+  border-color: #34d399;
 }
 
-body.dark-mode input {
-  background-color: #1e293b !important;
-  color: #ffffff !important;
-  border-color: #334155 !important;
+html.dark .btn-secondary:hover {
+  background-color: rgba(52, 211, 153, 0.1);
 }
 
-/* Additional dark mode overrides */
-/* Hamburger button background */
-body.dark-mode #btn-open-drawer {
-  background-color: rgba(15,23,42,0.9) !important;
-  color: #f8fafc !important;
+html.dark .drawer-menu {
+  background-color: var(--color-card-dark);
+  color: #f8fafc;
 }
-/* Filter button "Puntos Limpios" background */
-body.dark-mode button.bg-white\/90.text-slate-700 {
-  background-color: rgba(30,41,55,0.9) !important;
-  color: #e2e8f0 !important;
+
+html.dark .drawer-overlay {
+  background-color: rgba(0, 0, 0, 0.8);
 }
-/* Drawer overlay dark overlay */
-body.dark-mode .drawer-overlay {
-  background-color: rgba(0,0,0,0.8) !important;
-}
-/* Map container background */
-body.dark-mode .mobile-viewport > div.bg-emerald-50 {
-  background-color: #0f172a !important;
-}
-/* SVG path stroke for dark mode */
-body.dark-mode svg path {
-  stroke: #334155 !important;
+
+html.dark .toast {
+  border: 1px solid var(--color-primary-active);
 }

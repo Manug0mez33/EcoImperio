@@ -5,6 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>EcoImperio - Red de Reciclaje Barrial</title>
 
+  <!-- Preferencias aplicadas antes del primer pintado (tema, tamaño de texto y animaciones) para evitar destellos -->
+  <script>
+    (function () {
+      var saved = null;
+      try { saved = localStorage.getItem('ecoimperio_dark_mode'); } catch (e) {}
+      var dark = saved === null ? window.matchMedia('(prefers-color-scheme: dark)').matches : saved === 'true';
+      document.documentElement.classList.toggle('dark', dark);
+      var textSize = null, reduceMotion = null;
+      try {
+        textSize = localStorage.getItem('ecoimperio_text_size');
+        reduceMotion = localStorage.getItem('ecoimperio_reduce_motion');
+      } catch (e) {}
+      if (textSize === 'large' || textSize === 'xlarge') document.documentElement.classList.add('text-size-' + textSize);
+      document.documentElement.classList.toggle('reduce-motion', reduceMotion === 'true');
+    })();
+  </script>
+
   <!-- Google Fonts: Roboto & Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,6 +34,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
+      darkMode: 'class',
       theme: {
         extend: {
           colors: {
@@ -49,12 +67,14 @@
     <!-- ==========================================================================
          PANTALLA 1: SPLASH WELCOME
          ========================================================================== -->
-    <section id="screen-splash" class="screen-view active justify-between p-6 bg-gradient-to-b from-slate-50 to-emerald-50">
+    <section id="screen-splash" class="screen-view active justify-between p-6 bg-gradient-to-b from-slate-50 to-emerald-50 dark:from-slate-950 dark:to-emerald-950">
       <div class="pt-8 flex justify-between items-center">
-        <label class="relative inline-flex items-center cursor-pointer"><input type="checkbox" class="dark-mode-toggle sr-only peer" aria-label="Modo Oscuro"><div class="w-11 h-6 bg-gray-200 peer-checked:bg-emerald-600 rounded-full peer after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-full"></div></label>
-          <iconify-icon icon="mynaui:moon" class="text-lg"></iconify-icon>
-        </button>
-        <span class="text-xs font-semibold tracking-wider text-emerald-800 uppercase bg-emerald-100 px-3 py-1 rounded-full">v1.2 Mobile</span>
+        <label class="inline-flex items-center gap-2 cursor-pointer">
+          <input type="checkbox" class="dark-mode-toggle sr-only peer" aria-label="Modo Oscuro">
+          <span class="relative w-11 h-6 bg-gray-200 dark:bg-slate-700 peer-checked:bg-emerald-600 rounded-full peer-focus-visible:ring-4 peer-focus-visible:ring-emerald-400 after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-full" aria-hidden="true"></span>
+          <iconify-icon icon="mynaui:moon" class="text-lg text-slate-600 dark:text-slate-300" aria-hidden="true"></iconify-icon>
+        </label>
+        <span class="text-xs font-semibold tracking-wider text-emerald-800 dark:text-emerald-200 uppercase bg-emerald-100 dark:bg-emerald-900/60 px-3 py-1 rounded-full">v1.2 Mobile</span>
       </div>
 
       <div class="flex flex-col items-center text-center my-auto">
@@ -63,11 +83,11 @@
           <iconify-icon icon="akar-icons:crown" class="absolute -top-3 text-amber-400 text-3xl drop-shadow-md"></iconify-icon>
           <iconify-icon icon="hugeicons:plant-01" class="text-5xl"></iconify-icon>
         </div>
-        <h1 class="text-3xl font-black text-slate-900 tracking-tight mb-2">EcoImperio</h1>
-        <p class="text-emerald-800 font-semibold text-base mb-3 max-w-xs">
+        <h1 class="text-3xl font-black text-slate-900 dark:text-white tracking-tight mb-2">EcoImperio</h1>
+        <p class="text-emerald-800 dark:text-emerald-300 font-semibold text-base mb-3 max-w-xs">
           Reciclá, sumá puntos, transformá tu ciudad
         </p>
-        <p class="text-xs text-slate-500 max-w-xs">
+        <p class="text-xs text-slate-500 dark:text-slate-400 max-w-xs">
           Unite a la comunidad verde de Río Cuarto
         </p>
       </div>
@@ -83,113 +103,219 @@
     <!-- ==========================================================================
          PANTALLA 2: LOGIN
          ========================================================================== -->
-    <section id="screen-login" class="screen-view justify-between p-6 bg-white">
+    <section id="screen-login" class="screen-view justify-between p-6 bg-white dark:bg-slate-950">
       <header class="flex items-center justify-between pt-4 pb-2">
-        <button data-navigate="splash" class="p-2 rounded-full text-slate-600 hover:bg-slate-100 flex items-center" aria-label="Volver">
+        <button data-navigate="splash" class="p-2 rounded-full text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center" aria-label="Volver">
           <iconify-icon icon="mynaui:arrow-left" class="text-2xl"></iconify-icon>
         </button>
         <div class="flex items-center gap-2">
-          <button class="dark-mode-btn p-2 rounded-full text-slate-600 hover:bg-slate-100 flex items-center" aria-label="Modo Oscuro" title="Modo Oscuro">
+          <button class="dark-mode-btn p-2 rounded-full text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center" aria-label="Modo Oscuro" aria-pressed="false" title="Modo Oscuro">
             <iconify-icon icon="mynaui:moon" class="text-xl"></iconify-icon>
           </button>
-          <div class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center">
+          <div class="w-8 h-8 rounded-full bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-300 flex items-center justify-center">
             <iconify-icon icon="mynaui:leaf" class="text-xl"></iconify-icon>
           </div>
         </div>
       </header>
 
       <div class="my-auto">
-        <h1 class="text-2xl font-bold text-slate-900 mb-1">¡Hola de nuevo!</h1>
-        <p class="text-sm text-slate-500 mb-6">Ingresá para seguir sumando EcoPuntos</p>
+        <h1 class="text-2xl font-bold text-slate-900 dark:text-white mb-1">¡Hola de nuevo!</h1>
+        <p class="text-sm text-slate-500 dark:text-slate-400 mb-6">Ingresá para seguir sumando EcoPuntos</p>
 
-        <form onsubmit="event.preventDefault(); window.EcoImperio.navigateTo('mapa');" class="space-y-4">
+        <form id="login-form" class="space-y-4" novalidate>
+          <p id="login-error" class="field-error hidden px-4 py-3 rounded-2xl bg-red-50 dark:bg-red-950/60 border border-red-200 dark:border-red-900 text-sm font-medium text-red-700 dark:text-red-300" role="alert"></p>
+
           <div>
-            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1" for="email">Correo Electrónico</label>
-            <input type="email" id="email" value="vecino@rc.com" required class="w-full px-4 py-3 rounded-2xl border border-slate-200 focus:border-emerald-500 text-sm text-slate-800" placeholder="tu@correo.com">
+            <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1" for="email">Correo Electrónico</label>
+            <input type="email" id="email" name="email" value="vecino@rc.com" required autocomplete="email" aria-describedby="email-error" class="w-full px-4 py-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 focus:border-emerald-500 aria-[invalid=true]:border-red-500 dark:aria-[invalid=true]:border-red-400 text-sm text-slate-800 dark:text-slate-100 placeholder-slate-500 dark:placeholder-slate-400" placeholder="tu@correo.com">
+            <p id="email-error" class="field-error hidden mt-1 text-xs font-medium text-red-600 dark:text-red-400"></p>
           </div>
 
           <div>
-            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1" for="password">Contraseña</label>
+            <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1" for="password">Contraseña</label>
             <div class="relative flex items-center">
-              <input type="password" id="password" value="********" required class="w-full px-4 py-3 rounded-2xl border border-slate-200 focus:border-emerald-500 text-sm text-slate-800 pr-10" placeholder="••••••••">
-              <button type="button" class="absolute right-3 text-slate-400 hover:text-slate-600 flex items-center" aria-label="Mostrar contraseña">
+              <input type="password" id="password" name="password" value="eco12345" required autocomplete="current-password" aria-describedby="password-error" class="w-full px-4 py-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 focus:border-emerald-500 aria-[invalid=true]:border-red-500 dark:aria-[invalid=true]:border-red-400 text-sm text-slate-800 dark:text-slate-100 placeholder-slate-500 dark:placeholder-slate-400 pr-10" placeholder="••••••••">
+              <button type="button" class="toggle-password absolute right-3 text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 flex items-center" data-target="password" aria-label="Mostrar contraseña" aria-pressed="false">
                 <iconify-icon icon="mynaui:eye" class="text-xl"></iconify-icon>
               </button>
             </div>
+            <p id="password-error" class="field-error hidden mt-1 text-xs font-medium text-red-600 dark:text-red-400"></p>
           </div>
 
           <div class="text-right">
-            <a href="#" class="text-xs font-semibold text-emerald-700 hover:underline">¿Olvidaste tu contraseña?</a>
+            <a href="#" class="text-xs font-semibold text-emerald-700 dark:text-emerald-400 hover:underline">¿Olvidaste tu contraseña?</a>
           </div>
 
           <div class="space-y-3 pt-2">
             <button type="submit" class="btn-primary w-full">Iniciar Sesión</button>
-            <button type="button" data-navigate="mapa" class="btn-secondary w-full">Registrarse</button>
+            <button type="button" data-navigate="registro" class="btn-secondary w-full">Registrarse</button>
           </div>
         </form>
 
         <div class="relative my-6 text-center">
-          <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-slate-200"></div></div>
-          <span class="relative bg-white px-3 text-xs text-slate-400 uppercase font-semibold">O ingresar con</span>
+          <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-slate-200 dark:border-slate-700"></div></div>
+          <span class="relative bg-white dark:bg-slate-950 px-3 text-xs text-slate-500 dark:text-slate-400 uppercase font-semibold">O ingresar con</span>
         </div>
 
         <div class="flex justify-center gap-4">
-          <button class="w-12 h-12 rounded-2xl border border-slate-200 flex items-center justify-center hover:bg-slate-50 text-slate-800" aria-label="Ingresar con X">
+          <button class="w-12 h-12 rounded-2xl border border-slate-200 dark:border-slate-700 flex items-center justify-center hover:bg-slate-50 dark:hover:bg-slate-800 transition-all active:scale-95 cursor-pointer text-slate-800 dark:text-slate-100" aria-label="Ingresar con X">
             <iconify-icon icon="mynaui:brand-x" class="text-2xl"></iconify-icon>
           </button>
-          <button class="w-12 h-12 rounded-2xl border border-slate-200 flex items-center justify-center hover:bg-slate-50 text-blue-600" aria-label="Ingresar con Facebook">
+          <button class="w-12 h-12 rounded-2xl border border-slate-200 dark:border-slate-700 flex items-center justify-center hover:bg-slate-50 dark:hover:bg-slate-800 transition-all active:scale-95 cursor-pointer text-blue-600 dark:text-blue-400" aria-label="Ingresar con Facebook">
             <iconify-icon icon="mynaui:brand-facebook" class="text-2xl"></iconify-icon>
           </button>
-          <button class="w-12 h-12 rounded-2xl border border-slate-200 flex items-center justify-center hover:bg-slate-50 text-slate-900" aria-label="Ingresar con Apple">
+          <button class="w-12 h-12 rounded-2xl border border-slate-200 dark:border-slate-700 flex items-center justify-center hover:bg-slate-50 dark:hover:bg-slate-800 transition-all active:scale-95 cursor-pointer text-slate-900 dark:text-white" aria-label="Ingresar con Apple">
             <iconify-icon icon="basil:apple-outline" class="text-2xl"></iconify-icon>
           </button>
         </div>
       </div>
 
       <footer class="text-center pb-2">
-        <p class="text-xs text-slate-400">Municipalidad de Río Cuarto</p>
+        <p class="text-xs text-slate-500 dark:text-slate-400">Municipalidad de Río Cuarto</p>
       </footer>
+    </section>
+
+    <!-- ==========================================================================
+         PANTALLA 2B: REGISTRO DE USUARIO
+         ========================================================================== -->
+    <section id="screen-registro" class="screen-view p-6 bg-white dark:bg-slate-950">
+      <header class="flex items-center justify-between pt-4 pb-2">
+        <button data-navigate="login" class="p-2 rounded-full text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center" aria-label="Volver al inicio de sesión">
+          <iconify-icon icon="mynaui:arrow-left" class="text-2xl"></iconify-icon>
+        </button>
+        <button class="dark-mode-btn p-2 rounded-full text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center" aria-label="Modo Oscuro" aria-pressed="false" title="Modo Oscuro">
+          <iconify-icon icon="mynaui:moon" class="text-xl"></iconify-icon>
+        </button>
+      </header>
+
+      <div class="pt-2 pb-6">
+        <h1 class="text-2xl font-bold text-slate-900 dark:text-white mb-1">Creá tu cuenta</h1>
+        <p class="text-sm text-slate-500 dark:text-slate-400 mb-6">Sumate a la red de reciclaje de Río Cuarto y empezá a juntar EcoPuntos</p>
+
+        <form id="register-form" class="space-y-4" novalidate>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1" for="reg-nombre">Nombre</label>
+              <input type="text" id="reg-nombre" name="nombre" required autocomplete="given-name" aria-describedby="reg-nombre-error" class="w-full px-4 py-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 focus:border-emerald-500 aria-[invalid=true]:border-red-500 dark:aria-[invalid=true]:border-red-400 text-sm text-slate-800 dark:text-slate-100 placeholder-slate-500 dark:placeholder-slate-400" placeholder="Ej: Ana">
+              <p id="reg-nombre-error" class="field-error hidden mt-1 text-xs font-medium text-red-600 dark:text-red-400"></p>
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1" for="reg-apellido">Apellido</label>
+              <input type="text" id="reg-apellido" name="apellido" required autocomplete="family-name" aria-describedby="reg-apellido-error" class="w-full px-4 py-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 focus:border-emerald-500 aria-[invalid=true]:border-red-500 dark:aria-[invalid=true]:border-red-400 text-sm text-slate-800 dark:text-slate-100 placeholder-slate-500 dark:placeholder-slate-400" placeholder="Ej: Pérez">
+              <p id="reg-apellido-error" class="field-error hidden mt-1 text-xs font-medium text-red-600 dark:text-red-400"></p>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1" for="reg-email">Correo Electrónico</label>
+            <input type="email" id="reg-email" name="email" required autocomplete="email" aria-describedby="reg-email-error" class="w-full px-4 py-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 focus:border-emerald-500 aria-[invalid=true]:border-red-500 dark:aria-[invalid=true]:border-red-400 text-sm text-slate-800 dark:text-slate-100 placeholder-slate-500 dark:placeholder-slate-400" placeholder="tu@correo.com">
+            <p id="reg-email-error" class="field-error hidden mt-1 text-xs font-medium text-red-600 dark:text-red-400"></p>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1" for="reg-telefono">Teléfono</label>
+            <input type="tel" id="reg-telefono" name="telefono" required autocomplete="tel" inputmode="tel" aria-describedby="reg-telefono-hint reg-telefono-error" class="w-full px-4 py-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 focus:border-emerald-500 aria-[invalid=true]:border-red-500 dark:aria-[invalid=true]:border-red-400 text-sm text-slate-800 dark:text-slate-100 placeholder-slate-500 dark:placeholder-slate-400" placeholder="Ej: 358 4123456">
+            <p id="reg-telefono-hint" class="mt-1 text-xs text-slate-500 dark:text-slate-400">Código de área sin 0 y número sin 15</p>
+            <p id="reg-telefono-error" class="field-error hidden mt-1 text-xs font-medium text-red-600 dark:text-red-400"></p>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1" for="reg-barrio">Barrio</label>
+            <select id="reg-barrio" name="barrio" required aria-describedby="reg-barrio-error" class="w-full px-4 py-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 focus:border-emerald-500 aria-[invalid=true]:border-red-500 dark:aria-[invalid=true]:border-red-400 text-sm text-slate-800 dark:text-slate-100 cursor-pointer">
+              <option value="">Elegí tu barrio</option>
+              <option>Centro</option>
+              <option>Alberdi</option>
+              <option>Banda Norte</option>
+              <option>Bimaco</option>
+              <option>Barrio Jardín</option>
+              <option>Las Quintas</option>
+              <option>Golf</option>
+              <option>Otro</option>
+            </select>
+            <p id="reg-barrio-error" class="field-error hidden mt-1 text-xs font-medium text-red-600 dark:text-red-400"></p>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1" for="reg-password">Contraseña</label>
+            <div class="relative flex items-center">
+              <input type="password" id="reg-password" name="password" required autocomplete="new-password" aria-describedby="reg-password-hint reg-password-error" class="w-full px-4 py-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 focus:border-emerald-500 aria-[invalid=true]:border-red-500 dark:aria-[invalid=true]:border-red-400 text-sm text-slate-800 dark:text-slate-100 placeholder-slate-500 dark:placeholder-slate-400 pr-10">
+              <button type="button" class="toggle-password absolute right-3 text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 flex items-center" data-target="reg-password" aria-label="Mostrar contraseña" aria-pressed="false">
+                <iconify-icon icon="mynaui:eye" class="text-xl"></iconify-icon>
+              </button>
+            </div>
+            <p id="reg-password-hint" class="mt-1 text-xs text-slate-500 dark:text-slate-400">Mínimo 8 caracteres, con al menos un número</p>
+            <p id="reg-password-error" class="field-error hidden mt-1 text-xs font-medium text-red-600 dark:text-red-400"></p>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1" for="reg-password-confirm">Repetir Contraseña</label>
+            <div class="relative flex items-center">
+              <input type="password" id="reg-password-confirm" name="passwordConfirm" required autocomplete="new-password" aria-describedby="reg-password-confirm-error" class="w-full px-4 py-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 focus:border-emerald-500 aria-[invalid=true]:border-red-500 dark:aria-[invalid=true]:border-red-400 text-sm text-slate-800 dark:text-slate-100 placeholder-slate-500 dark:placeholder-slate-400 pr-10">
+              <button type="button" class="toggle-password absolute right-3 text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 flex items-center" data-target="reg-password-confirm" aria-label="Mostrar contraseña" aria-pressed="false">
+                <iconify-icon icon="mynaui:eye" class="text-xl"></iconify-icon>
+              </button>
+            </div>
+            <p id="reg-password-confirm-error" class="field-error hidden mt-1 text-xs font-medium text-red-600 dark:text-red-400"></p>
+          </div>
+
+          <div>
+            <label class="flex items-start gap-3 cursor-pointer text-sm text-slate-700 dark:text-slate-300" for="reg-terminos">
+              <input type="checkbox" id="reg-terminos" name="terminos" required aria-describedby="reg-terminos-error" class="mt-0.5 w-5 h-5 shrink-0 rounded accent-emerald-600 cursor-pointer">
+              <span>Acepto los <a href="#" class="font-semibold text-emerald-700 dark:text-emerald-400 underline">términos y condiciones</a> y la política de privacidad de EcoImperio</span>
+            </label>
+            <p id="reg-terminos-error" class="field-error hidden mt-1 text-xs font-medium text-red-600 dark:text-red-400"></p>
+          </div>
+
+          <div class="space-y-3 pt-2">
+            <button type="submit" class="btn-primary w-full">Crear cuenta</button>
+            <p class="text-center text-sm text-slate-500 dark:text-slate-400">
+              ¿Ya tenés cuenta?
+              <a href="#" data-navigate="login" class="font-semibold text-emerald-700 dark:text-emerald-400 hover:underline">Iniciá sesión</a>
+            </p>
+          </div>
+        </form>
+      </div>
     </section>
 
     <!-- ==========================================================================
          PANTALLA 3: HOME MAPA INTERACTIVO
          ========================================================================== -->
-    <section id="screen-mapa" class="screen-view relative bg-slate-100">
+    <section id="screen-mapa" class="screen-view relative bg-slate-100 dark:bg-slate-950">
       <!-- Top Bar Barra Superior -->
       <header class="absolute top-0 left-0 right-0 z-20 p-4 bg-gradient-to-b from-slate-900/60 to-transparent flex items-center justify-between">
-        <button id="btn-open-drawer" class="w-10 h-10 rounded-2xl bg-white/90 backdrop-blur shadow-md flex items-center justify-center text-slate-800 hover:bg-white" aria-label="Abrir Menú Hamburguesa">
+        <button id="btn-open-drawer" class="w-10 h-10 rounded-2xl bg-white/90 dark:bg-slate-800/90 backdrop-blur shadow-md flex items-center justify-center text-slate-800 dark:text-slate-100 hover:bg-white dark:hover:bg-slate-700" aria-label="Abrir Menú Hamburguesa">
           <iconify-icon icon="mynaui:menu" class="text-2xl"></iconify-icon>
         </button>
 
         <!-- Filtros Rápidos / Búsqueda -->
         <div class="flex-1 mx-3 relative flex items-center">
-          <input type="text" placeholder="Buscar puntos..." class="w-full pl-9 pr-3 py-2 text-xs rounded-full bg-white/90 backdrop-blur shadow-md border-0 focus:ring-2 focus:ring-emerald-500">
-          <iconify-icon icon="mynaui:search" class="absolute left-3 text-slate-400 text-lg"></iconify-icon>
+          <input type="text" placeholder="Buscar puntos..." aria-label="Buscar puntos de reciclaje" class="w-full pl-9 pr-3 py-2 text-xs rounded-full bg-white/90 dark:bg-slate-800/90 text-slate-800 dark:text-slate-100 placeholder-slate-500 dark:placeholder-slate-400 backdrop-blur shadow-md border-0 focus:ring-2 focus:ring-emerald-500">
+          <iconify-icon icon="mynaui:search" class="absolute left-3 text-slate-500 dark:text-slate-400 text-lg" aria-hidden="true"></iconify-icon>
         </div>
 
-        <button data-navigate="puntos" class="w-10 h-10 rounded-full bg-emerald-700 text-white font-bold text-xs flex items-center justify-center border-2 border-white shadow-md" title="Perfil Oscar Rodríguez">
-          OR
+        <button data-navigate="puntos" class="w-10 h-10 rounded-full bg-emerald-700 text-white font-bold text-xs flex items-center justify-center border-2 border-white dark:border-slate-900 shadow-md" aria-label="Ver mis EcoPuntos">
+          <span class="user-initials">OR</span>
         </button>
       </header>
 
       <!-- Vista de Mapa Simulado con Canvas/SVG -->
-      <div class="w-full h-full relative bg-emerald-50 flex items-center justify-center overflow-hidden">
-        <!-- Calles de fondo del mapa -->
-        <svg class="absolute inset-0 w-full h-full opacity-40" viewBox="0 0 400 700">
-          <path d="M-50 150 Q 150 120 450 200" stroke="#cbd5e1" stroke-width="20" fill="none"/>
-          <path d="M100 -50 L 120 750" stroke="#cbd5e1" stroke-width="16" fill="none"/>
-          <path d="M300 -50 L 280 750" stroke="#cbd5e1" stroke-width="12" fill="none"/>
-          <path d="M-50 450 L 450 400" stroke="#cbd5e1" stroke-width="24" fill="none"/>
+      <div class="w-full h-full relative bg-emerald-50 dark:bg-slate-900 flex items-center justify-center overflow-hidden">
+        <!-- Calles de fondo del mapa (el color sale de currentColor para seguir el tema) -->
+        <svg class="absolute inset-0 w-full h-full opacity-40 text-slate-300 dark:text-slate-600" viewBox="0 0 400 700" aria-hidden="true">
+          <path d="M-50 150 Q 150 120 450 200" stroke="currentColor" stroke-width="20" fill="none"/>
+          <path d="M100 -50 L 120 750" stroke="currentColor" stroke-width="16" fill="none"/>
+          <path d="M300 -50 L 280 750" stroke="currentColor" stroke-width="12" fill="none"/>
+          <path d="M-50 450 L 450 400" stroke="currentColor" stroke-width="24" fill="none"/>
         </svg>
 
         <!-- Filtros Flotantes de Categoría -->
         <div class="absolute top-16 left-4 right-4 z-10 flex gap-2">
-          <button class="px-3 py-1.5 rounded-full bg-emerald-800 text-white text-xs font-semibold shadow-md flex items-center gap-1.5 border border-emerald-600">
+          <button class="px-3 py-1.5 rounded-full bg-emerald-800 text-white text-xs font-semibold shadow-md flex items-center gap-1.5 border border-emerald-600 hover:bg-emerald-700 transition-all active:scale-95 cursor-pointer">
             <iconify-icon icon="keyline-icons:recycle-duotone" class="text-lg"></iconify-icon>
             <span>Campanas Verdes</span>
           </button>
-          <button class="px-3 py-1.5 rounded-full bg-white/90 text-slate-700 text-xs font-semibold shadow-md flex items-center gap-1.5 hover:bg-white">
-            <iconify-icon icon="mynaui:sparkles" class="text-base text-emerald-600"></iconify-icon>
+          <button class="px-3 py-1.5 rounded-full bg-white/90 dark:bg-slate-800/90 text-slate-700 dark:text-slate-200 text-xs font-semibold shadow-md flex items-center gap-1.5 hover:bg-white dark:hover:bg-slate-700 transition-all active:scale-95 cursor-pointer">
+            <iconify-icon icon="mynaui:sparkles" class="text-base text-emerald-600 dark:text-emerald-400"></iconify-icon>
             <span>Puntos Limpios</span>
           </button>
         </div>
@@ -197,29 +323,29 @@
         <!-- Marcadores en el Mapa Myna UI -->
         <!-- Marcador 1: Campana Alberdi (Verde - Vacío) -->
         <button data-navigate="escaner" class="absolute top-1/3 left-1/4 transform -translate-x-1/2 -translate-y-1/2 group z-10" aria-label="Campana Verde B° Alberdi">
-          <div class="w-12 h-12 rounded-full bg-emerald-600 text-white flex items-center justify-center shadow-lg border-2 border-white group-hover:scale-110 transition-transform">
+          <div class="w-12 h-12 rounded-full bg-emerald-600 text-white flex items-center justify-center shadow-lg border-2 border-white dark:border-slate-900 group-hover:scale-110 transition-transform">
             <iconify-icon icon="mynaui:location" class="text-2xl"></iconify-icon>
           </div>
-          <span class="bg-slate-900 text-white text-[10px] font-bold px-2 py-0.5 rounded-full mt-1 inline-block shadow">Alberdi (Vacío)</span>
+          <span class="bg-slate-900 dark:bg-slate-700 text-white text-xs font-bold px-2 py-0.5 rounded-full mt-1 inline-block shadow">Alberdi (Vacío)</span>
         </button>
 
         <!-- Marcador 2: Banda Norte (Rojo - Lleno) -->
         <div class="absolute top-1/2 right-1/4 transform translate-x-1/2 -translate-y-1/2 group z-10">
-          <div class="w-10 h-10 rounded-full bg-red-500 text-white flex items-center justify-center shadow-lg border-2 border-white">
+          <div class="w-10 h-10 rounded-full bg-red-500 text-white flex items-center justify-center shadow-lg border-2 border-white dark:border-slate-900">
             <iconify-icon icon="mynaui:ban" class="text-xl"></iconify-icon>
           </div>
-          <span class="bg-slate-900 text-white text-[10px] font-bold px-2 py-0.5 rounded-full mt-1 inline-block shadow">B° Norte (Lleno)</span>
+          <span class="bg-slate-900 dark:bg-slate-700 text-white text-xs font-bold px-2 py-0.5 rounded-full mt-1 inline-block shadow">B° Norte (Lleno)</span>
         </div>
 
         <!-- Card Inferior Flotante de Campana Cercana -->
-        <div class="absolute bottom-20 left-4 right-4 z-20 bg-white rounded-2xl p-4 shadow-xl border border-slate-100 flex items-center justify-between">
+        <div class="absolute bottom-20 left-4 right-4 z-20 bg-white dark:bg-slate-900 rounded-2xl p-4 shadow-xl border border-slate-100 dark:border-emerald-900/60 flex items-center justify-between">
           <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center">
+            <div class="w-10 h-10 rounded-xl bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-300 flex items-center justify-center">
               <iconify-icon icon="mynaui:bell" class="text-2xl"></iconify-icon>
             </div>
             <div>
-              <h3 class="font-bold text-slate-900 text-sm">Campana Verde - B° Alberdi</h3>
-              <p class="text-xs text-slate-500">A solo 350m de tu ubicación</p>
+              <h3 class="font-bold text-slate-900 dark:text-white text-sm">Campana Verde - B° Alberdi</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400">A solo 350m de tu ubicación</p>
             </div>
           </div>
           <button data-navigate="escaner" class="w-10 h-10 rounded-full bg-emerald-800 text-white flex items-center justify-center hover:bg-emerald-700 shadow-md" aria-label="Ir a la campana">
@@ -229,28 +355,28 @@
       </div>
 
       <!-- Barra de Navegación Inferior (Navbar) Myna UI Icons -->
-      <nav class="absolute bottom-0 left-0 right-0 bg-white border-t border-slate-200 px-4 py-2 flex justify-between items-center z-30">
-        <button data-navigate="splash" class="nav-item flex flex-col items-center text-slate-500 hover:text-emerald-700 text-xs" data-target="splash">
+      <nav class="absolute bottom-0 left-0 right-0 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 px-4 py-2 flex justify-between items-center z-30">
+        <button data-navigate="splash" class="nav-item flex flex-col items-center text-xs text-slate-500 dark:text-slate-400 hover:text-emerald-700 dark:hover:text-emerald-400 aria-[current=page]:font-bold aria-[current=page]:text-emerald-700 dark:aria-[current=page]:text-emerald-400" data-target="splash">
           <iconify-icon icon="mynaui:home" class="text-2xl"></iconify-icon>
           <span>Inicio</span>
         </button>
 
-        <button data-navigate="mapa" class="nav-item flex flex-col items-center text-emerald-700 font-bold text-xs" data-target="mapa">
+        <button data-navigate="mapa" class="nav-item flex flex-col items-center text-xs text-slate-500 dark:text-slate-400 hover:text-emerald-700 dark:hover:text-emerald-400 aria-[current=page]:font-bold aria-[current=page]:text-emerald-700 dark:aria-[current=page]:text-emerald-400" data-target="mapa" aria-current="page">
           <iconify-icon icon="mynaui:location" class="text-2xl"></iconify-icon>
           <span>Mapa</span>
         </button>
 
         <!-- Botón Escáner Flotante Central -->
-        <button data-navigate="escaner" class="w-14 h-14 -mt-7 rounded-full bg-emerald-900 text-white flex items-center justify-center shadow-xl border-4 border-white hover:scale-105 active:scale-95 transition-transform" aria-label="Escáner QR">
+        <button data-navigate="escaner" class="w-14 h-14 -mt-7 rounded-full bg-emerald-900 text-white flex items-center justify-center shadow-xl border-4 border-white dark:border-slate-900 hover:scale-105 active:scale-95 transition-transform" aria-label="Escáner QR">
           <iconify-icon icon="iconamoon:scanner-thin" class="text-3xl"></iconify-icon>
         </button>
 
-        <button data-navigate="puntos" class="nav-item flex flex-col items-center text-slate-500 hover:text-emerald-700 text-xs" data-target="puntos">
+        <button data-navigate="puntos" class="nav-item flex flex-col items-center text-xs text-slate-500 dark:text-slate-400 hover:text-emerald-700 dark:hover:text-emerald-400 aria-[current=page]:font-bold aria-[current=page]:text-emerald-700 dark:aria-[current=page]:text-emerald-400" data-target="puntos">
           <iconify-icon icon="mynaui:gift" class="text-2xl"></iconify-icon>
           <span>Puntos</span>
         </button>
 
-        <button class="btn-trigger-drawer nav-item flex flex-col items-center text-slate-500 hover:text-emerald-700 text-xs">
+        <button class="btn-trigger-drawer nav-item flex flex-col items-center text-xs text-slate-500 dark:text-slate-400 hover:text-emerald-700 dark:hover:text-emerald-400">
           <iconify-icon icon="mynaui:user" class="text-2xl"></iconify-icon>
           <span>Perfil</span>
         </button>
@@ -277,7 +403,7 @@
         <div class="relative w-64 h-64 rounded-3xl border-2 border-emerald-400/50 overflow-hidden shadow-2xl bg-slate-900 flex items-center justify-center">
           <!-- Imagen Simulada de Botellas en Cámara -->
           <img src="https://images.unsplash.com/photo-1530587191325-3db32d826c18?auto=format&fit=crop&w=400&q=80" alt="Botellas plásticas a escanear" class="w-full h-full object-cover opacity-80">
-          
+
           <!-- Marco con esquinas de visor -->
           <div class="absolute inset-4 border-2 border-dashed border-emerald-400 rounded-2xl pointer-events-none"></div>
 
@@ -288,18 +414,18 @@
       </div>
 
       <!-- Tarjeta Inferior de Material Detectado -->
-      <div class="p-5 bg-white text-slate-900 rounded-t-3xl shadow-2xl z-10 space-y-3">
+      <div class="p-5 bg-white dark:bg-slate-900 text-slate-900 dark:text-white rounded-t-3xl shadow-2xl dark:border-t dark:border-emerald-900/60 z-10 space-y-3">
         <div class="flex items-center justify-between">
-          <span class="text-xs font-bold px-3 py-1 bg-emerald-100 text-emerald-800 rounded-full flex items-center gap-1">
-            <iconify-icon icon="mynaui:check-circle" class="text-base text-emerald-600"></iconify-icon>
+          <span class="text-xs font-bold px-3 py-1 bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-200 rounded-full flex items-center gap-1">
+            <iconify-icon icon="mynaui:check-circle" class="text-base text-emerald-600 dark:text-emerald-400"></iconify-icon>
             <span>PET 1 • Reciclable</span>
           </span>
-          <span class="text-xs font-semibold text-emerald-700">+10 EcoPuntos</span>
+          <span class="text-xs font-semibold text-emerald-700 dark:text-emerald-400">+10 EcoPuntos</span>
         </div>
 
         <div>
           <h2 class="text-lg font-bold">Botella de Plástico</h2>
-          <p class="text-xs text-slate-500 mt-0.5">
+          <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
             Depositá en la <strong>Campana Verde</strong> más cercana para sumar <strong>+10 EcoPuntos</strong>.
           </p>
         </div>
@@ -314,20 +440,20 @@
     <!-- ==========================================================================
          PANTALLA 5: MIS ECOPUNTOS Y RECOMPENSAS
          ========================================================================== -->
-    <section id="screen-puntos" class="screen-view bg-slate-50 p-4 space-y-5 pb-24 relative">
+    <section id="screen-puntos" class="screen-view bg-slate-50 dark:bg-slate-950 p-4 space-y-5 pb-24 relative">
       <!-- Header -->
       <header class="flex items-center justify-between pt-2">
-        <h1 class="text-xl font-black text-slate-900">Mis EcoPuntos</h1>
-        <button data-navigate="mapa" class="text-xs font-semibold text-emerald-700 hover:underline flex items-center gap-1">
+        <h1 class="text-xl font-black text-slate-900 dark:text-white">Mis EcoPuntos</h1>
+        <button data-navigate="mapa" class="text-xs font-semibold text-emerald-700 dark:text-emerald-400 hover:underline flex items-center gap-1">
           <span>Ir al Mapa</span>
           <iconify-icon icon="mynaui:chevron-right" class="text-base"></iconify-icon>
         </button>
       </header>
 
       <!-- Card Balance Actual -->
-      <article class="p-5 rounded-3xl bg-emerald-900 text-white shadow-xl relative overflow-hidden mx-auto mt-auto mb-auto"
+      <article class="p-5 rounded-3xl bg-emerald-900 text-white shadow-xl dark:ring-1 dark:ring-emerald-700/60 relative overflow-hidden mx-auto mt-auto mb-auto">
         <div class="relative z-10">
-          <span class="text-[10px] font-bold tracking-widest text-emerald-300 uppercase">Balance Actual</span>
+          <span class="text-xs font-bold tracking-widest text-emerald-300 uppercase">Balance Actual</span>
           <div class="flex items-baseline gap-2 mt-1">
             <span class="text-3xl font-black tracking-tight user-ecopuntos-val">1.250</span>
             <span class="text-emerald-300 font-bold text-sm">EcoPuntos</span>
@@ -354,29 +480,29 @@
       <!-- Sección Comercios Adheridos -->
       <section class="space-y-3">
         <div class="flex justify-between items-center">
-          <h2 class="font-bold text-slate-900 text-sm">Comercios Adheridos</h2>
-          <a href="#" class="text-xs font-semibold text-emerald-700 hover:underline">Ver todos</a>
+          <h2 class="font-bold text-slate-900 dark:text-white text-sm">Comercios Adheridos</h2>
+          <a href="#" class="text-xs font-semibold text-emerald-700 dark:text-emerald-400 hover:underline">Ver todos</a>
         </div>
 
         <!-- Grid de Cards de Comercios (50% / 50%) -->
         <div class="grid grid-cols-2 gap-3">
           <!-- Card 1 -->
-          <article class="bg-white rounded-2xl overflow-hidden border border-slate-200/80 shadow-sm hover:shadow-md transition-shadow">
+          <article class="bg-white dark:bg-slate-900 rounded-2xl overflow-hidden border border-slate-200/80 dark:border-slate-800 shadow-sm hover:shadow-md transition-shadow">
             <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=300&q=80" alt="Panadería El Imperio" class="w-full h-24 object-cover">
             <div class="p-3">
-              <h3 class="font-bold text-slate-800 text-xs">Panadería El Imperio</h3>
-              <p class="text-[10px] text-slate-500 mb-2">Panadería y Café</p>
-              <span class="text-[10px] font-bold bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full">15% Descuento</span>
+              <h3 class="font-bold text-slate-800 dark:text-slate-100 text-xs">Panadería El Imperio</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400 mb-2">Panadería y Café</p>
+              <span class="text-xs font-bold bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-200 px-2 py-0.5 rounded-full">15% Descuento</span>
             </div>
           </article>
 
           <!-- Card 2 -->
-          <article class="bg-white rounded-2xl overflow-hidden border border-slate-200/80 shadow-sm hover:shadow-md transition-shadow">
+          <article class="bg-white dark:bg-slate-900 rounded-2xl overflow-hidden border border-slate-200/80 dark:border-slate-800 shadow-sm hover:shadow-md transition-shadow">
             <img src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=300&q=80" alt="Librería La Biblioteca" class="w-full h-24 object-cover">
             <div class="p-3">
-              <h3 class="font-bold text-slate-800 text-xs">La Biblioteca</h3>
-              <p class="text-[10px] text-slate-500 mb-2">Librería y Otros</p>
-              <span class="text-[10px] font-bold bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full">10% Descuento</span>
+              <h3 class="font-bold text-slate-800 dark:text-slate-100 text-xs">La Biblioteca</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400 mb-2">Librería y Otros</p>
+              <span class="text-xs font-bold bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-200 px-2 py-0.5 rounded-full">10% Descuento</span>
             </div>
           </article>
         </div>
@@ -384,7 +510,7 @@
 
       <!-- Sección Historial de Reciclaje -->
       <section class="space-y-3">
-        <h2 class="font-bold text-slate-900 text-sm">Historial de Reciclaje</h2>
+        <h2 class="font-bold text-slate-900 dark:text-white text-sm">Historial de Reciclaje</h2>
 
         <!-- Lista de Cards 80% ancho -->
         <div id="history-list" class="space-y-2">
@@ -393,30 +519,305 @@
       </section>
 
       <!-- Bottom Nav fijado internamente dentro de la pantalla Puntos -->
-      <nav class="absolute bottom-0 left-0 right-0 bg-white border-t border-slate-200 px-4 py-2 flex justify-between items-center z-30">
-        <button data-navigate="splash" class="nav-item flex flex-col items-center text-slate-500 hover:text-emerald-700 text-xs" data-target="splash">
+      <nav class="absolute bottom-0 left-0 right-0 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 px-4 py-2 flex justify-between items-center z-30">
+        <button data-navigate="splash" class="nav-item flex flex-col items-center text-xs text-slate-500 dark:text-slate-400 hover:text-emerald-700 dark:hover:text-emerald-400 aria-[current=page]:font-bold aria-[current=page]:text-emerald-700 dark:aria-[current=page]:text-emerald-400" data-target="splash">
           <iconify-icon icon="mynaui:home" class="text-2xl"></iconify-icon>
           <span>Inicio</span>
         </button>
-        <button data-navigate="mapa" class="nav-item flex flex-col items-center text-slate-500 hover:text-emerald-700 text-xs" data-target="mapa">
+        <button data-navigate="mapa" class="nav-item flex flex-col items-center text-xs text-slate-500 dark:text-slate-400 hover:text-emerald-700 dark:hover:text-emerald-400 aria-[current=page]:font-bold aria-[current=page]:text-emerald-700 dark:aria-[current=page]:text-emerald-400" data-target="mapa">
           <iconify-icon icon="mynaui:location" class="text-2xl"></iconify-icon>
           <span>Mapa</span>
         </button>
-        <button data-navigate="escaner" class="w-14 h-14 -mt-7 rounded-full bg-emerald-900 text-white flex items-center justify-center shadow-xl border-4 border-white hover:scale-105 active:scale-95 transition-transform" aria-label="Escáner QR">
+        <button data-navigate="escaner" class="w-14 h-14 -mt-7 rounded-full bg-emerald-900 text-white flex items-center justify-center shadow-xl border-4 border-white dark:border-slate-900 hover:scale-105 active:scale-95 transition-transform" aria-label="Escáner QR">
           <iconify-icon icon="iconamoon:scanner-thin" class="text-3xl"></iconify-icon>
         </button>
 
-        <button data-navigate="puntos" class="nav-item flex flex-col items-center text-emerald-700 font-bold text-xs" data-target="puntos">
+        <button data-navigate="puntos" class="nav-item flex flex-col items-center text-xs text-slate-500 dark:text-slate-400 hover:text-emerald-700 dark:hover:text-emerald-400 aria-[current=page]:font-bold aria-[current=page]:text-emerald-700 dark:aria-[current=page]:text-emerald-400" data-target="puntos" aria-current="page">
           <iconify-icon icon="mynaui:gift" class="text-2xl"></iconify-icon>
           <span>Puntos</span>
         </button>
 
-        <button class="btn-trigger-drawer nav-item flex flex-col items-center text-slate-500 hover:text-emerald-700 text-xs">
+        <button class="btn-trigger-drawer nav-item flex flex-col items-center text-xs text-slate-500 dark:text-slate-400 hover:text-emerald-700 dark:hover:text-emerald-400">
           <iconify-icon icon="mynaui:user" class="text-2xl"></iconify-icon>
           <span>Perfil</span>
         </button>
       </nav>
     </section>
+
+    <!-- ==========================================================================
+         PANTALLA 6: CONFIGURACIÓN
+         ========================================================================== -->
+    <section id="screen-config" class="screen-view bg-slate-50 dark:bg-slate-950">
+      <header class="sticky top-0 z-20 flex items-center gap-2 px-4 py-3 bg-slate-50/90 dark:bg-slate-950/90 backdrop-blur border-b border-slate-200 dark:border-slate-800">
+        <button data-navigate="mapa" class="p-2 rounded-full text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-800 flex items-center" aria-label="Volver al mapa">
+          <iconify-icon icon="mynaui:arrow-left" class="text-2xl"></iconify-icon>
+        </button>
+        <h1 class="text-xl font-black text-slate-900 dark:text-white">Configuración</h1>
+      </header>
+
+      <div class="p-4 space-y-6 pb-10">
+
+        <!-- 1. Mi Perfil -->
+        <section aria-labelledby="cfg-perfil-title" class="space-y-2">
+          <h2 id="cfg-perfil-title" class="px-1 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Mi perfil</h2>
+          <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm p-4 space-y-4">
+            <div class="flex items-center gap-3">
+              <div class="w-14 h-14 rounded-full bg-emerald-800 text-white font-bold text-lg flex items-center justify-center border-2 border-emerald-500 shrink-0" aria-hidden="true">
+                <span class="user-initials">OR</span>
+              </div>
+              <div class="min-w-0">
+                <p class="user-fullname font-bold text-slate-900 dark:text-white">Oscar Rodríguez</p>
+                <p class="user-email text-sm text-slate-500 dark:text-slate-400 truncate">vecino@rc.com</p>
+              </div>
+            </div>
+
+            <form id="profile-form" class="space-y-4" novalidate>
+              <div class="grid grid-cols-2 gap-3">
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1" for="cfg-nombre">Nombre</label>
+                  <input type="text" id="cfg-nombre" name="nombre" required autocomplete="given-name" aria-describedby="cfg-nombre-error" class="w-full px-4 py-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 focus:border-emerald-500 aria-[invalid=true]:border-red-500 dark:aria-[invalid=true]:border-red-400 text-sm text-slate-800 dark:text-slate-100">
+                  <p id="cfg-nombre-error" class="field-error hidden mt-1 text-xs font-medium text-red-600 dark:text-red-400"></p>
+                </div>
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1" for="cfg-apellido">Apellido</label>
+                  <input type="text" id="cfg-apellido" name="apellido" required autocomplete="family-name" aria-describedby="cfg-apellido-error" class="w-full px-4 py-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 focus:border-emerald-500 aria-[invalid=true]:border-red-500 dark:aria-[invalid=true]:border-red-400 text-sm text-slate-800 dark:text-slate-100">
+                  <p id="cfg-apellido-error" class="field-error hidden mt-1 text-xs font-medium text-red-600 dark:text-red-400"></p>
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1" for="cfg-telefono">Teléfono</label>
+                <input type="tel" id="cfg-telefono" name="telefono" required autocomplete="tel" inputmode="tel" aria-describedby="cfg-telefono-error" class="w-full px-4 py-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 focus:border-emerald-500 aria-[invalid=true]:border-red-500 dark:aria-[invalid=true]:border-red-400 text-sm text-slate-800 dark:text-slate-100">
+                <p id="cfg-telefono-error" class="field-error hidden mt-1 text-xs font-medium text-red-600 dark:text-red-400"></p>
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1" for="cfg-barrio">Barrio</label>
+                <select id="cfg-barrio" name="barrio" required aria-describedby="cfg-barrio-error" class="w-full px-4 py-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 focus:border-emerald-500 aria-[invalid=true]:border-red-500 dark:aria-[invalid=true]:border-red-400 text-sm text-slate-800 dark:text-slate-100 cursor-pointer">
+                  <option value="">Elegí tu barrio</option>
+                  <option>Centro</option>
+                  <option>Alberdi</option>
+                  <option>Banda Norte</option>
+                  <option>Bimaco</option>
+                  <option>Barrio Jardín</option>
+                  <option>Las Quintas</option>
+                  <option>Golf</option>
+                  <option>Otro</option>
+                </select>
+                <p id="cfg-barrio-error" class="field-error hidden mt-1 text-xs font-medium text-red-600 dark:text-red-400"></p>
+              </div>
+
+              <button type="submit" class="btn-primary w-full" disabled>Guardar cambios</button>
+            </form>
+          </div>
+        </section>
+
+        <!-- 2. Apariencia y Accesibilidad -->
+        <section aria-labelledby="cfg-apariencia-title" class="space-y-2">
+          <h2 id="cfg-apariencia-title" class="px-1 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Apariencia y accesibilidad</h2>
+          <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm divide-y divide-slate-100 dark:divide-slate-800 overflow-hidden">
+            <label class="flex items-center justify-between gap-4 px-4 py-3 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/60">
+              <span class="flex items-start gap-3">
+                <iconify-icon icon="mynaui:moon" class="text-xl text-emerald-700 dark:text-emerald-400 mt-0.5" aria-hidden="true"></iconify-icon>
+                <span>
+                  <span class="block text-sm font-semibold text-slate-800 dark:text-slate-100">Modo Oscuro</span>
+                  <span class="block text-xs text-slate-500 dark:text-slate-400">Fondo oscuro, ideal para usar de noche</span>
+                </span>
+              </span>
+              <input type="checkbox" class="dark-mode-toggle sr-only peer">
+              <span class="relative shrink-0 w-11 h-6 rounded-full bg-slate-200 dark:bg-slate-700 peer-checked:bg-emerald-600 peer-focus-visible:ring-4 peer-focus-visible:ring-emerald-400 after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:w-5 after:h-5 after:rounded-full after:bg-white after:border after:border-slate-300 after:transition-all peer-checked:after:translate-x-full peer-checked:after:border-white" aria-hidden="true"></span>
+            </label>
+
+            <label class="flex items-center justify-between gap-4 px-4 py-3 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/60">
+              <span class="flex items-start gap-3">
+                <iconify-icon icon="mynaui:circle-half" class="text-xl text-emerald-700 dark:text-emerald-400 mt-0.5" aria-hidden="true"></iconify-icon>
+                <span>
+                  <span class="block text-sm font-semibold text-slate-800 dark:text-slate-100">Alto Contraste</span>
+                  <span class="block text-xs text-slate-500 dark:text-slate-400">Colores con máximo contraste para visión reducida</span>
+                </span>
+              </span>
+              <input type="checkbox" class="contrast-toggle sr-only peer">
+              <span class="relative shrink-0 w-11 h-6 rounded-full bg-slate-200 dark:bg-slate-700 peer-checked:bg-emerald-600 peer-focus-visible:ring-4 peer-focus-visible:ring-emerald-400 after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:w-5 after:h-5 after:rounded-full after:bg-white after:border after:border-slate-300 after:transition-all peer-checked:after:translate-x-full peer-checked:after:border-white" aria-hidden="true"></span>
+            </label>
+
+            <fieldset class="px-4 py-3">
+              <legend class="sr-only">Tamaño de texto</legend>
+              <div class="flex items-start gap-3" aria-hidden="true">
+                <iconify-icon icon="mynaui:type-text" class="text-xl text-emerald-700 dark:text-emerald-400 mt-0.5"></iconify-icon>
+                <span>
+                  <span class="block text-sm font-semibold text-slate-800 dark:text-slate-100">Tamaño de texto</span>
+                  <span class="block text-xs text-slate-500 dark:text-slate-400">Agrandá las letras de toda la app</span>
+                </span>
+              </div>
+              <div class="mt-3 grid grid-cols-3 gap-2">
+                <label class="cursor-pointer">
+                  <input type="radio" name="text-size" value="normal" class="text-size-option sr-only peer">
+                  <span class="flex flex-col items-center justify-center gap-0.5 min-h-[56px] rounded-xl border-2 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:border-emerald-400 peer-checked:border-emerald-600 peer-checked:bg-emerald-50 dark:peer-checked:bg-emerald-900/40 peer-checked:text-emerald-800 dark:peer-checked:text-emerald-200 peer-focus-visible:ring-4 peer-focus-visible:ring-emerald-400 transition-all">
+                    <span class="text-sm font-bold" aria-hidden="true">Aa</span>
+                    <span class="text-xs">Normal</span>
+                  </span>
+                </label>
+                <label class="cursor-pointer">
+                  <input type="radio" name="text-size" value="large" class="text-size-option sr-only peer">
+                  <span class="flex flex-col items-center justify-center gap-0.5 min-h-[56px] rounded-xl border-2 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:border-emerald-400 peer-checked:border-emerald-600 peer-checked:bg-emerald-50 dark:peer-checked:bg-emerald-900/40 peer-checked:text-emerald-800 dark:peer-checked:text-emerald-200 peer-focus-visible:ring-4 peer-focus-visible:ring-emerald-400 transition-all">
+                    <span class="text-base font-bold" aria-hidden="true">Aa</span>
+                    <span class="text-xs">Grande</span>
+                  </span>
+                </label>
+                <label class="cursor-pointer">
+                  <input type="radio" name="text-size" value="xlarge" class="text-size-option sr-only peer">
+                  <span class="flex flex-col items-center justify-center gap-0.5 min-h-[56px] rounded-xl border-2 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:border-emerald-400 peer-checked:border-emerald-600 peer-checked:bg-emerald-50 dark:peer-checked:bg-emerald-900/40 peer-checked:text-emerald-800 dark:peer-checked:text-emerald-200 peer-focus-visible:ring-4 peer-focus-visible:ring-emerald-400 transition-all">
+                    <span class="text-lg font-bold" aria-hidden="true">Aa</span>
+                    <span class="text-xs">Muy grande</span>
+                  </span>
+                </label>
+              </div>
+            </fieldset>
+
+            <label class="flex items-center justify-between gap-4 px-4 py-3 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/60">
+              <span class="flex items-start gap-3">
+                <iconify-icon icon="mynaui:pause-circle" class="text-xl text-emerald-700 dark:text-emerald-400 mt-0.5" aria-hidden="true"></iconify-icon>
+                <span>
+                  <span class="block text-sm font-semibold text-slate-800 dark:text-slate-100">Reducir animaciones</span>
+                  <span class="block text-xs text-slate-500 dark:text-slate-400">Desactiva transiciones y el láser del escáner</span>
+                </span>
+              </span>
+              <input type="checkbox" id="reduce-motion-toggle" class="sr-only peer">
+              <span class="relative shrink-0 w-11 h-6 rounded-full bg-slate-200 dark:bg-slate-700 peer-checked:bg-emerald-600 peer-focus-visible:ring-4 peer-focus-visible:ring-emerald-400 after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:w-5 after:h-5 after:rounded-full after:bg-white after:border after:border-slate-300 after:transition-all peer-checked:after:translate-x-full peer-checked:after:border-white" aria-hidden="true"></span>
+            </label>
+          </div>
+        </section>
+
+        <!-- 3. Notificaciones -->
+        <section aria-labelledby="cfg-notif-title" class="space-y-2">
+          <h2 id="cfg-notif-title" class="px-1 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Notificaciones</h2>
+          <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm divide-y divide-slate-100 dark:divide-slate-800 overflow-hidden">
+            <label class="flex items-center justify-between gap-4 px-4 py-3 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/60">
+              <span class="flex items-start gap-3">
+                <iconify-icon icon="mynaui:location" class="text-xl text-emerald-700 dark:text-emerald-400 mt-0.5" aria-hidden="true"></iconify-icon>
+                <span>
+                  <span class="block text-sm font-semibold text-slate-800 dark:text-slate-100">Campana cercana disponible</span>
+                  <span class="block text-xs text-slate-500 dark:text-slate-400">Te avisamos cuando pasás cerca de una Campana Verde</span>
+                </span>
+              </span>
+              <input type="checkbox" class="notification-toggle sr-only peer" data-pref="campanaCercana">
+              <span class="relative shrink-0 w-11 h-6 rounded-full bg-slate-200 dark:bg-slate-700 peer-checked:bg-emerald-600 peer-focus-visible:ring-4 peer-focus-visible:ring-emerald-400 after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:w-5 after:h-5 after:rounded-full after:bg-white after:border after:border-slate-300 after:transition-all peer-checked:after:translate-x-full peer-checked:after:border-white" aria-hidden="true"></span>
+            </label>
+
+            <label class="flex items-center justify-between gap-4 px-4 py-3 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/60">
+              <span class="flex items-start gap-3">
+                <iconify-icon icon="mynaui:bell" class="text-xl text-emerald-700 dark:text-emerald-400 mt-0.5" aria-hidden="true"></iconify-icon>
+                <span>
+                  <span class="block text-sm font-semibold text-slate-800 dark:text-slate-100">Campana llena</span>
+                  <span class="block text-xs text-slate-500 dark:text-slate-400">Aviso cuando tu campana habitual no tiene lugar</span>
+                </span>
+              </span>
+              <input type="checkbox" class="notification-toggle sr-only peer" data-pref="campanaLlena">
+              <span class="relative shrink-0 w-11 h-6 rounded-full bg-slate-200 dark:bg-slate-700 peer-checked:bg-emerald-600 peer-focus-visible:ring-4 peer-focus-visible:ring-emerald-400 after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:w-5 after:h-5 after:rounded-full after:bg-white after:border after:border-slate-300 after:transition-all peer-checked:after:translate-x-full peer-checked:after:border-white" aria-hidden="true"></span>
+            </label>
+
+            <label class="flex items-center justify-between gap-4 px-4 py-3 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/60">
+              <span class="flex items-start gap-3">
+                <iconify-icon icon="mynaui:gift" class="text-xl text-emerald-700 dark:text-emerald-400 mt-0.5" aria-hidden="true"></iconify-icon>
+                <span>
+                  <span class="block text-sm font-semibold text-slate-800 dark:text-slate-100">Nuevos beneficios</span>
+                  <span class="block text-xs text-slate-500 dark:text-slate-400">Descuentos nuevos en Comercios Adheridos</span>
+                </span>
+              </span>
+              <input type="checkbox" class="notification-toggle sr-only peer" data-pref="beneficios">
+              <span class="relative shrink-0 w-11 h-6 rounded-full bg-slate-200 dark:bg-slate-700 peer-checked:bg-emerald-600 peer-focus-visible:ring-4 peer-focus-visible:ring-emerald-400 after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:w-5 after:h-5 after:rounded-full after:bg-white after:border after:border-slate-300 after:transition-all peer-checked:after:translate-x-full peer-checked:after:border-white" aria-hidden="true"></span>
+            </label>
+          </div>
+        </section>
+
+        <!-- 4. Cuenta y Seguridad -->
+        <section aria-labelledby="cfg-cuenta-title" class="space-y-2">
+          <h2 id="cfg-cuenta-title" class="px-1 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Cuenta y seguridad</h2>
+          <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm divide-y divide-slate-100 dark:divide-slate-800 overflow-hidden">
+            <div>
+              <button type="button" id="btn-toggle-password-form" class="w-full flex items-center justify-between gap-4 px-4 py-3 text-left hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-colors cursor-pointer" aria-expanded="false" aria-controls="password-form">
+                <span class="flex items-center gap-3">
+                  <iconify-icon icon="mynaui:lock" class="text-xl text-emerald-700 dark:text-emerald-400" aria-hidden="true"></iconify-icon>
+                  <span class="text-sm font-semibold text-slate-800 dark:text-slate-100">Cambiar contraseña</span>
+                </span>
+                <iconify-icon icon="mynaui:chevron-down" class="password-form-chevron text-xl text-slate-500 dark:text-slate-400 transition-transform" aria-hidden="true"></iconify-icon>
+              </button>
+
+              <form id="password-form" class="hidden px-4 pb-4 pt-1 space-y-4" novalidate>
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1" for="cfg-pass-actual">Contraseña actual</label>
+                  <div class="relative flex items-center">
+                    <input type="password" id="cfg-pass-actual" name="actual" required autocomplete="current-password" aria-describedby="cfg-pass-actual-error" class="w-full px-4 py-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 focus:border-emerald-500 aria-[invalid=true]:border-red-500 dark:aria-[invalid=true]:border-red-400 text-sm text-slate-800 dark:text-slate-100 pr-10">
+                    <button type="button" class="toggle-password absolute right-3 text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 flex items-center" data-target="cfg-pass-actual" aria-label="Mostrar contraseña" aria-pressed="false">
+                      <iconify-icon icon="mynaui:eye" class="text-xl"></iconify-icon>
+                    </button>
+                  </div>
+                  <p id="cfg-pass-actual-error" class="field-error hidden mt-1 text-xs font-medium text-red-600 dark:text-red-400"></p>
+                </div>
+
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1" for="cfg-pass-nueva">Nueva contraseña</label>
+                  <div class="relative flex items-center">
+                    <input type="password" id="cfg-pass-nueva" name="nueva" required autocomplete="new-password" aria-describedby="cfg-pass-nueva-hint cfg-pass-nueva-error" class="w-full px-4 py-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 focus:border-emerald-500 aria-[invalid=true]:border-red-500 dark:aria-[invalid=true]:border-red-400 text-sm text-slate-800 dark:text-slate-100 pr-10">
+                    <button type="button" class="toggle-password absolute right-3 text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 flex items-center" data-target="cfg-pass-nueva" aria-label="Mostrar contraseña" aria-pressed="false">
+                      <iconify-icon icon="mynaui:eye" class="text-xl"></iconify-icon>
+                    </button>
+                  </div>
+                  <p id="cfg-pass-nueva-hint" class="mt-1 text-xs text-slate-500 dark:text-slate-400">Mínimo 8 caracteres, con al menos un número</p>
+                  <p id="cfg-pass-nueva-error" class="field-error hidden mt-1 text-xs font-medium text-red-600 dark:text-red-400"></p>
+                </div>
+
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1" for="cfg-pass-confirm">Repetir nueva contraseña</label>
+                  <input type="password" id="cfg-pass-confirm" name="confirm" required autocomplete="new-password" aria-describedby="cfg-pass-confirm-error" class="w-full px-4 py-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 focus:border-emerald-500 aria-[invalid=true]:border-red-500 dark:aria-[invalid=true]:border-red-400 text-sm text-slate-800 dark:text-slate-100">
+                  <p id="cfg-pass-confirm-error" class="field-error hidden mt-1 text-xs font-medium text-red-600 dark:text-red-400"></p>
+                </div>
+
+                <button type="submit" class="btn-primary w-full">Actualizar contraseña</button>
+              </form>
+            </div>
+
+            <button type="button" class="btn-logout w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-colors cursor-pointer">
+              <iconify-icon icon="mynaui:logout" class="text-xl text-slate-500 dark:text-slate-400" aria-hidden="true"></iconify-icon>
+              <span class="text-sm font-semibold text-slate-800 dark:text-slate-100">Cerrar sesión</span>
+            </button>
+
+            <div>
+              <button type="button" id="btn-delete-account" class="w-full flex items-center gap-3 px-4 py-3 text-left text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/40 transition-colors cursor-pointer disabled:hover:bg-transparent" aria-describedby="delete-account-hint">
+                <iconify-icon icon="mynaui:trash" class="text-xl" aria-hidden="true"></iconify-icon>
+                <span class="text-sm font-semibold">Eliminar cuenta</span>
+              </button>
+              <p id="delete-account-hint" class="hidden px-4 pb-3 -mt-1 text-xs text-slate-500 dark:text-slate-400">La cuenta demo no se puede eliminar.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Información de la App -->
+        <footer class="text-center space-y-1">
+          <p class="text-xs text-slate-500 dark:text-slate-400">EcoImperio v1.2 • Gobierno de Río Cuarto</p>
+          <p class="text-xs">
+            <a href="#" class="font-semibold text-emerald-700 dark:text-emerald-400 hover:underline">Términos y condiciones</a>
+            <span class="text-slate-400 dark:text-slate-600" aria-hidden="true">•</span>
+            <a href="#" class="font-semibold text-emerald-700 dark:text-emerald-400 hover:underline">Ayuda</a>
+          </p>
+        </footer>
+      </div>
+    </section>
+
+    <!-- Diálogo de confirmación: Eliminar Cuenta -->
+    <dialog id="delete-dialog" aria-labelledby="delete-dialog-title" aria-describedby="delete-dialog-desc" class="w-[calc(100%-2rem)] max-w-sm rounded-3xl p-6 bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-2xl backdrop:bg-slate-950/70 backdrop:backdrop-blur-sm">
+      <div class="flex flex-col items-center text-center gap-3">
+        <div class="w-14 h-14 rounded-full bg-red-100 dark:bg-red-950/60 text-red-600 dark:text-red-400 flex items-center justify-center" aria-hidden="true">
+          <iconify-icon icon="mynaui:danger-triangle" class="text-3xl"></iconify-icon>
+        </div>
+        <h2 id="delete-dialog-title" class="text-lg font-bold">¿Eliminar tu cuenta?</h2>
+        <p id="delete-dialog-desc" class="text-sm text-slate-500 dark:text-slate-400">Se borran tus datos y tus EcoPuntos de este dispositivo. Esta acción no se puede deshacer.</p>
+      </div>
+      <form method="dialog" class="mt-6 space-y-3">
+        <button type="button" id="btn-confirm-delete" class="w-full min-h-[48px] rounded-full bg-red-600 hover:bg-red-700 active:scale-95 text-white font-semibold transition-all cursor-pointer focus-visible:ring-4 focus-visible:ring-red-300 disabled:opacity-50 disabled:cursor-not-allowed">Sí, eliminar cuenta</button>
+        <button value="cancel" class="btn-secondary w-full">Cancelar</button>
+      </form>
+    </dialog>
 
     <!-- ==========================================================================
          COMPONENTE 6: MENÚ LATERAL DRAWER SLIDE-OVER
@@ -425,18 +826,18 @@
 
     <aside id="drawer-menu" class="drawer-menu">
       <!-- Header Drawer: Perfil Usuario -->
-      <div class="p-6 bg-slate-50 border-b border-slate-200 flex items-center gap-3 relative">
-        <button id="btn-close-drawer" class="absolute right-4 top-4 text-slate-400 hover:text-slate-600 flex items-center" aria-label="Cerrar Menú">
+      <div class="p-6 bg-slate-50 dark:bg-slate-800/60 border-b border-slate-200 dark:border-slate-800 flex items-center gap-3 relative">
+        <button id="btn-close-drawer" class="absolute right-4 top-4 text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 flex items-center" aria-label="Cerrar Menú">
           <iconify-icon icon="mynaui:x" class="text-2xl"></iconify-icon>
         </button>
 
-        <div class="w-12 h-12 rounded-full bg-emerald-800 text-white font-bold flex items-center justify-center text-base border-2 border-emerald-500">
-          OR
+        <div class="w-12 h-12 rounded-full bg-emerald-800 text-white font-bold flex items-center justify-center text-base border-2 border-emerald-500" aria-hidden="true">
+          <span class="user-initials">OR</span>
         </div>
         <div>
-          <span class="text-[10px] text-slate-400 block uppercase font-bold tracking-wider">Vecino de Río Cuarto</span>
-          <h2 class="font-bold text-slate-900 text-sm">Oscar Rodríguez</h2>
-          <span class="text-xs font-semibold text-amber-600 flex items-center gap-1 mt-0.5">
+          <span class="user-barrio text-xs text-slate-500 dark:text-slate-400 block uppercase font-bold tracking-wider">Vecino de Río Cuarto</span>
+          <h2 class="user-fullname font-bold text-slate-900 dark:text-white text-sm">Oscar Rodríguez</h2>
+          <span class="text-xs font-semibold text-amber-600 dark:text-amber-400 flex items-center gap-1 mt-0.5">
             <iconify-icon icon="mynaui:star" class="text-amber-500 text-base"></iconify-icon>
             <span><span class="user-ecopuntos-val">1.250</span> EcoPuntos</span>
           </span>
@@ -445,55 +846,71 @@
 
       <!-- Lista de Opciones de Menú Myna UI Icons -->
       <nav class="flex-1 p-4 space-y-1 overflow-y-auto">
-        <button data-navigate="splash" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-700 hover:bg-slate-100 font-medium text-xs">
-          <iconify-icon icon="mynaui:home" class="text-xl text-slate-500"></iconify-icon>
+        <button data-navigate="splash" data-target="splash" class="nav-item group w-full flex items-center gap-3 px-3 py-2.5 rounded-xl border border-transparent transition-all active:scale-95 cursor-pointer text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 font-medium text-xs aria-[current=page]:bg-emerald-50 dark:aria-[current=page]:bg-emerald-900/40 aria-[current=page]:text-emerald-800 dark:aria-[current=page]:text-emerald-200 aria-[current=page]:font-bold aria-[current=page]:border-emerald-200 dark:aria-[current=page]:border-emerald-800">
+          <iconify-icon icon="mynaui:home" class="text-xl text-slate-500 dark:text-slate-400 group-aria-[current=page]:text-emerald-700 dark:group-aria-[current=page]:text-emerald-400" aria-hidden="true"></iconify-icon>
           <span>Inicio</span>
         </button>
 
-        <button data-navigate="mapa" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl bg-emerald-50 text-emerald-800 font-bold text-xs border border-emerald-200">
-          <iconify-icon icon="mynaui:location" class="text-xl text-emerald-700"></iconify-icon>
+        <button data-navigate="mapa" data-target="mapa" class="nav-item group w-full flex items-center gap-3 px-3 py-2.5 rounded-xl border border-transparent transition-all active:scale-95 cursor-pointer text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 font-medium text-xs aria-[current=page]:bg-emerald-50 dark:aria-[current=page]:bg-emerald-900/40 aria-[current=page]:text-emerald-800 dark:aria-[current=page]:text-emerald-200 aria-[current=page]:font-bold aria-[current=page]:border-emerald-200 dark:aria-[current=page]:border-emerald-800">
+          <iconify-icon icon="mynaui:location" class="text-xl text-slate-500 dark:text-slate-400 group-aria-[current=page]:text-emerald-700 dark:group-aria-[current=page]:text-emerald-400" aria-hidden="true"></iconify-icon>
           <span>Mapa de Puntos</span>
         </button>
 
-        <button data-navigate="escaner" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-700 hover:bg-slate-100 font-medium text-xs">
-          <iconify-icon icon="mynaui:qr-code" class="text-xl text-slate-500"></iconify-icon>
+        <button data-navigate="escaner" data-target="escaner" class="nav-item group w-full flex items-center gap-3 px-3 py-2.5 rounded-xl border border-transparent transition-all active:scale-95 cursor-pointer text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 font-medium text-xs aria-[current=page]:bg-emerald-50 dark:aria-[current=page]:bg-emerald-900/40 aria-[current=page]:text-emerald-800 dark:aria-[current=page]:text-emerald-200 aria-[current=page]:font-bold aria-[current=page]:border-emerald-200 dark:aria-[current=page]:border-emerald-800">
+          <iconify-icon icon="mynaui:scan" class="text-xl text-slate-500 dark:text-slate-400 group-aria-[current=page]:text-emerald-700 dark:group-aria-[current=page]:text-emerald-400" aria-hidden="true"></iconify-icon>
           <span>Escáner QR</span>
         </button>
 
-        <button data-navigate="puntos" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-700 hover:bg-slate-100 font-medium text-xs">
-          <iconify-icon icon="mynaui:gift" class="text-xl text-slate-500"></iconify-icon>
+        <button data-navigate="puntos" data-target="puntos" class="nav-item group w-full flex items-center gap-3 px-3 py-2.5 rounded-xl border border-transparent transition-all active:scale-95 cursor-pointer text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 font-medium text-xs aria-[current=page]:bg-emerald-50 dark:aria-[current=page]:bg-emerald-900/40 aria-[current=page]:text-emerald-800 dark:aria-[current=page]:text-emerald-200 aria-[current=page]:font-bold aria-[current=page]:border-emerald-200 dark:aria-[current=page]:border-emerald-800">
+          <iconify-icon icon="mynaui:gift" class="text-xl text-slate-500 dark:text-slate-400 group-aria-[current=page]:text-emerald-700 dark:group-aria-[current=page]:text-emerald-400" aria-hidden="true"></iconify-icon>
           <span>Mis Puntos</span>
         </button>
 
-        <div class="pt-3 pb-1 border-t border-slate-100 my-2"></div>
+        <div class="pt-3 pb-1 border-t border-slate-100 dark:border-slate-800 my-2"></div>
+
+        <!-- Toggle Modo Oscuro -->
+        <label class="flex items-center justify-between gap-3 px-3 py-2.5 rounded-xl text-slate-700 dark:text-slate-200 text-xs cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800">
+          <span class="flex items-center gap-3">
+            <iconify-icon icon="mynaui:moon" class="text-xl text-slate-500 dark:text-slate-400" aria-hidden="true"></iconify-icon>
+            <span class="font-medium">Modo Oscuro</span>
+          </span>
+          <input type="checkbox" class="dark-mode-toggle sr-only peer" aria-label="Modo Oscuro">
+          <span class="relative shrink-0 w-9 h-5 rounded-full bg-slate-200 dark:bg-slate-700 peer-checked:bg-emerald-600 peer-focus-visible:ring-4 peer-focus-visible:ring-emerald-400 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:w-4 after:h-4 after:rounded-full after:bg-white after:border after:border-slate-300 after:transition-all peer-checked:after:translate-x-full peer-checked:after:border-white" aria-hidden="true"></span>
+        </label>
 
         <!-- Toggle Modo Alto Contraste -->
-        <div class="flex items-center justify-between px-3 py-2.5 rounded-xl text-slate-700 text-xs">
-          <div class="flex items-center gap-3">
-            <iconify-icon icon="mynaui:contrast" class="text-xl text-slate-500"></iconify-icon>
+        <label class="flex items-center justify-between gap-3 px-3 py-2.5 rounded-xl text-slate-700 dark:text-slate-200 text-xs cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800">
+          <span class="flex items-center gap-3">
+            <iconify-icon icon="mynaui:circle-half" class="text-xl text-slate-500 dark:text-slate-400" aria-hidden="true"></iconify-icon>
             <span class="font-medium">Modo Alto Contraste</span>
-          </div>
-          <label class="relative inline-flex items-center cursor-pointer">
-            <input type="checkbox" id="contrast-toggle" class="sr-only peer">
-            <div class="w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-emerald-600"></div>
-          </label>
-        </div>
+          </span>
+          <input type="checkbox" class="contrast-toggle sr-only peer" aria-label="Modo Alto Contraste">
+          <span class="relative shrink-0 w-9 h-5 rounded-full bg-slate-200 dark:bg-slate-700 peer-checked:bg-emerald-600 peer-focus-visible:ring-4 peer-focus-visible:ring-emerald-400 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:w-4 after:h-4 after:rounded-full after:bg-white after:border after:border-slate-300 after:transition-all peer-checked:after:translate-x-full peer-checked:after:border-white" aria-hidden="true"></span>
+        </label>
 
-        <button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-700 hover:bg-slate-100 font-medium text-xs">
-          <iconify-icon icon="mynaui:cog" class="text-xl text-slate-500"></iconify-icon>
+        <button data-navigate="config" data-target="config" class="nav-item group w-full flex items-center gap-3 px-3 py-2.5 rounded-xl border border-transparent transition-all active:scale-95 cursor-pointer text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 font-medium text-xs aria-[current=page]:bg-emerald-50 dark:aria-[current=page]:bg-emerald-900/40 aria-[current=page]:text-emerald-800 dark:aria-[current=page]:text-emerald-200 aria-[current=page]:font-bold aria-[current=page]:border-emerald-200 dark:aria-[current=page]:border-emerald-800">
+          <iconify-icon icon="mynaui:cog" class="text-xl text-slate-500 dark:text-slate-400 group-aria-[current=page]:text-emerald-700 dark:group-aria-[current=page]:text-emerald-400" aria-hidden="true"></iconify-icon>
           <span>Configuración</span>
         </button>
       </nav>
 
       <!-- Footer Drawer -->
-      <div class="p-4 border-t border-slate-100">
-        <button data-navigate="login" class="w-full flex items-center gap-2 text-red-600 hover:text-red-700 font-bold text-xs p-2">
+      <div class="p-4 border-t border-slate-100 dark:border-slate-800">
+        <button type="button" class="btn-logout w-full flex items-center gap-2 text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 font-bold text-xs p-2 rounded-xl transition-all active:scale-95 cursor-pointer">
           <iconify-icon icon="mynaui:logout" class="text-xl"></iconify-icon>
           <span>Cerrar Sesión</span>
         </button>
-        <p class="text-[10px] text-slate-400 mt-2 text-center">EcoImperio v1.2 • Gobierno de Río Cuarto</p>
+        <p class="text-xs text-slate-500 dark:text-slate-400 mt-2 text-center">EcoImperio v1.2 • Gobierno de Río Cuarto</p>
       </div>
     </aside>
+
+    <!-- ==========================================================================
+         COMPONENTE 7: NOTIFICACIÓN TOAST
+         ========================================================================== -->
+    <div id="toast" class="toast" role="status" aria-live="polite">
+      <iconify-icon icon="mynaui:check-circle" class="text-2xl text-amber-400 shrink-0" aria-hidden="true"></iconify-icon>
+      <p id="toast-message" class="text-sm font-medium"></p>
+    </div>
 
   </main>
 

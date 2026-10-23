@@ -6,9 +6,13 @@
   - Color Primario (Verde Reciclaje): `#10b981` / `#059669` (para botones, fondo de card de balance, hover, botón escáner, puntos y badges).
   - Color Secundario/Detalles (Amarillo Oro): `#f59e0b` / `#fbbf24` (para medalla de balance, estrellas de puntos y barra de progreso).
   - Texto forzado de alto contraste: `.force-text-white` en botones y badges verdes.
-- **Modo Oscuro**:
+- **Modo Oscuro** (ver ADR-003):
   - Fondo: Slate-950 `#020617` / `#090713`.
   - Paneles/Tarjetas: Glassmorphism / Slate-900 con bordes verdes sutiles.
+  - Implementación: clase `dark` en `<html>` + variantes `dark:` en cada componente. Prohibido volver a overrides globales con `!important`.
+  - Mapeo base: `bg-white`/`bg-slate-50` → `dark:bg-slate-900`/`dark:bg-slate-950`; `text-slate-900` → `dark:text-white`; `text-slate-700` → `dark:text-slate-200`; `text-slate-500` → `dark:text-slate-400`; `border-slate-200` → `dark:border-slate-700`/`800`; `text-emerald-700` → `dark:text-emerald-400`; badges `bg-emerald-100 text-emerald-800` → `dark:bg-emerald-900/60 dark:text-emerald-200`.
+  - Botón primario en oscuro: Emerald-700 `#047857` (texto blanco 5.5:1).
+- **Texto secundario en claro**: mínimo `text-slate-500` sobre blanco; `text-slate-400` no alcanza WCAG AA (2.6:1).
 - **Modo Alto Contraste**:
   - Ajustado con bordes definidos y contraste máximo para usuarios con visión reducida (WCAG AAA).
 
