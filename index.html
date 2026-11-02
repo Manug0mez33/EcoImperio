@@ -96,6 +96,14 @@
         <p class="text-sm text-slate-600 dark:text-slate-300 max-w-xs">
           Unite a la comunidad verde de Río Cuarto
         </p>
+
+        <!-- Silueta arquitectónica de Río Cuarto (Puente Colgante, Catedral y perfil urbano) -->
+        <svg class="w-full max-w-[300px] h-16 mt-6 text-emerald-800/25 dark:text-emerald-400/25" viewBox="0 0 320 64" fill="currentColor" aria-hidden="true">
+          <path d="M0 64V48h16V34h18v14h10V26h22v22h12V18l10-10 10 10v30h10V36h18v12h14c8-18 22-28 40-28s32 10 40 28h14V30h20v18h14V24h18v24h14v16H0z"/>
+          <path d="M138 48c8-14 20-21 32-21s24 7 32 21h-64z" fill-opacity="0.5"/>
+          <rect x="74" y="8" width="4" height="10" rx="1"/>
+          <rect x="86" y="8" width="4" height="10" rx="1"/>
+        </svg>
       </div>
 
       <div class="pb-6">
@@ -307,12 +315,15 @@
 
       <!-- Vista de Mapa Simulado con Canvas/SVG -->
       <div class="w-full h-full relative bg-emerald-50 dark:bg-slate-900 flex items-center justify-center overflow-hidden">
-        <!-- Calles de fondo del mapa (el color sale de currentColor para seguir el tema) -->
+        <!-- Calles de fondo del mapa + ruta peatonal sugerida (el color sale de currentColor para seguir el tema) -->
         <svg class="absolute inset-0 w-full h-full opacity-40 text-slate-300 dark:text-slate-600" viewBox="0 0 400 700" aria-hidden="true">
           <path d="M-50 150 Q 150 120 450 200" stroke="currentColor" stroke-width="20" fill="none"/>
           <path d="M100 -50 L 120 750" stroke="currentColor" stroke-width="16" fill="none"/>
           <path d="M300 -50 L 280 750" stroke="currentColor" stroke-width="12" fill="none"/>
           <path d="M-50 450 L 450 400" stroke="currentColor" stroke-width="24" fill="none"/>
+          <!-- Ruta peatonal sugerida punteada desde ubicación actual hasta punto seleccionado -->
+          <path id="map-route-path" d="M200 430 Q 140 350 105 240" stroke="#059669" stroke-width="5" stroke-dasharray="8 6" stroke-linecap="round" fill="none"/>
+          <circle cx="200" cy="430" r="8" fill="#2563eb" stroke="#ffffff" stroke-width="3"/>
         </svg>
 
         <!-- Filtros Flotantes de Categoría -->
@@ -321,15 +332,15 @@
             <iconify-icon icon="keyline-icons:recycle-duotone" class="text-lg" aria-hidden="true"></iconify-icon>
             <span>Campanas Verdes</span>
           </button>
-          <button type="button" class="map-filter-pill min-h-[44px] px-3.5 py-2 rounded-full bg-white/95 dark:bg-slate-800/95 text-slate-700 dark:text-slate-200 text-xs font-semibold shadow-md flex items-center gap-1.5 border border-slate-200 dark:border-slate-700 hover:bg-white dark:hover:bg-slate-700 transition-all active:scale-95 cursor-pointer" data-filter="punto-limpio" aria-pressed="true">
-            <iconify-icon icon="mynaui:sparkles" class="text-base text-emerald-600 dark:text-emerald-400" aria-hidden="true"></iconify-icon>
+          <button type="button" class="map-filter-pill min-h-[44px] px-3.5 py-2 rounded-full bg-emerald-800 text-white text-xs font-semibold shadow-md flex items-center gap-1.5 border border-emerald-600 hover:bg-emerald-700 transition-all active:scale-95 cursor-pointer" data-filter="punto-limpio" aria-pressed="true">
+            <iconify-icon icon="mynaui:sparkles" class="text-base text-amber-300" aria-hidden="true"></iconify-icon>
             <span>Puntos Limpios</span>
           </button>
         </div>
 
         <!-- Marcadores en el Mapa Myna UI -->
         <!-- Marcador 1: Campana Alberdi (Verde - Vacío) -->
-        <button type="button" data-navigate="escaner" class="map-marker absolute top-1/3 left-1/4 transform -translate-x-1/2 -translate-y-1/2 group z-10 flex flex-col items-center min-w-[44px] min-h-[44px]" data-category="campana" data-search="campana verde alberdi vacio disponible" aria-label="Campana Verde B° Alberdi — Disponible (Vacío)">
+        <button type="button" class="map-marker absolute top-1/3 left-1/4 transform -translate-x-1/2 -translate-y-1/2 group z-10 flex flex-col items-center min-w-[44px] min-h-[44px]" data-point-id="alberdi" data-category="campana" data-status="available" data-title="Campana Verde - B° Alberdi" data-subtitle="A solo 350m • Ruta peatonal: 4 min a pie" data-route="M200 430 Q 140 350 105 240" data-search="campana verde alberdi vacio disponible" aria-label="Campana Verde B° Alberdi — Disponible (Vacío)">
           <div class="w-12 h-12 rounded-full bg-emerald-600 text-white flex items-center justify-center shadow-lg border-2 border-white dark:border-slate-900 group-hover:scale-110 transition-transform">
             <iconify-icon icon="mynaui:location" class="text-2xl" aria-hidden="true"></iconify-icon>
           </div>
@@ -337,25 +348,33 @@
         </button>
 
         <!-- Marcador 2: Banda Norte (Rojo - Lleno) -->
-        <button type="button" class="map-marker absolute top-1/2 right-1/4 transform translate-x-1/2 -translate-y-1/2 group z-10 flex flex-col items-center min-w-[44px] min-h-[44px]" data-category="campana" data-search="campana verde banda norte lleno" aria-label="Campana Verde B° Banda Norte — Sin capacidad (Lleno)">
+        <button type="button" class="map-marker absolute top-1/2 right-1/4 transform translate-x-1/2 -translate-y-1/2 group z-10 flex flex-col items-center min-w-[44px] min-h-[44px]" data-point-id="banda-norte" data-category="campana" data-status="full" data-title="Campana Verde - B° Norte (Lleno)" data-subtitle="A 820m • Sin capacidad (te sugerimos B° Alberdi)" data-route="M200 430 Q 260 390 295 350" data-search="campana verde banda norte lleno" aria-label="Campana Verde B° Banda Norte — Sin capacidad (Lleno)">
           <div class="w-11 h-11 rounded-full bg-red-600 text-white flex items-center justify-center shadow-lg border-2 border-white dark:border-slate-900 group-hover:scale-110 transition-transform">
             <iconify-icon icon="mynaui:ban" class="text-xl" aria-hidden="true"></iconify-icon>
           </div>
           <span class="bg-slate-900 dark:bg-slate-700 text-white text-xs font-bold px-2.5 py-0.5 rounded-full mt-1 inline-block shadow">B° Norte (Lleno)</span>
         </button>
 
+        <!-- Marcador 3: Punto Limpio Centro (Verde - Vacío) -->
+        <button type="button" class="map-marker absolute top-[62%] left-[36%] transform -translate-x-1/2 -translate-y-1/2 group z-10 flex flex-col items-center min-w-[44px] min-h-[44px]" data-point-id="centro" data-category="punto-limpio" data-status="available" data-title="Punto Limpio - Plaza Roca (Centro)" data-subtitle="A 540m • Ruta peatonal: 6 min a pie" data-route="M200 430 Q 175 435 145 440" data-search="punto limpio centro plaza roca vacio disponible vidrio" aria-label="Punto Limpio Centro Plaza Roca — Disponible (Vacío)">
+          <div class="w-11 h-11 rounded-full bg-emerald-700 text-white flex items-center justify-center shadow-lg border-2 border-amber-300 dark:border-amber-400 group-hover:scale-110 transition-transform">
+            <iconify-icon icon="mynaui:sparkles" class="text-xl text-amber-300" aria-hidden="true"></iconify-icon>
+          </div>
+          <span class="bg-slate-900 dark:bg-slate-700 text-white text-xs font-bold px-2.5 py-0.5 rounded-full mt-1 inline-block shadow">Centro (Vacío)</span>
+        </button>
+
         <!-- Card Inferior Flotante de Campana Cercana -->
         <article id="map-nearby-card" class="absolute bottom-20 left-4 right-4 z-20 bg-white dark:bg-slate-900 rounded-2xl p-4 shadow-xl border border-slate-100 dark:border-emerald-900/60 flex items-center justify-between gap-2">
           <div class="flex items-center gap-3 min-w-0">
-            <div class="w-11 h-11 rounded-xl bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-300 flex items-center justify-center shrink-0" aria-hidden="true">
-              <iconify-icon icon="mynaui:bell" class="text-2xl" aria-hidden="true"></iconify-icon>
+            <div id="nearby-card-icon-wrap" class="w-11 h-11 rounded-xl bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-300 flex items-center justify-center shrink-0" aria-hidden="true">
+              <iconify-icon id="nearby-card-icon" icon="mynaui:bell" class="text-2xl" aria-hidden="true"></iconify-icon>
             </div>
             <div class="min-w-0">
               <h3 id="nearby-card-title" class="font-bold text-slate-900 dark:text-white text-lg truncate">Campana Verde - B° Alberdi</h3>
               <p id="nearby-card-subtitle" class="text-xs text-slate-600 dark:text-slate-400">A solo 350m • Ruta peatonal: 4 min a pie</p>
             </div>
           </div>
-          <button type="button" id="btn-nearby-action" data-navigate="escaner" class="touch-target w-11 h-11 rounded-full bg-emerald-800 text-white flex items-center justify-center hover:bg-emerald-700 shadow-md shrink-0" aria-label="Escanear en esta campana">
+          <button type="button" id="btn-nearby-action" class="touch-target w-11 h-11 rounded-full bg-emerald-800 text-white flex items-center justify-center hover:bg-emerald-700 shadow-md shrink-0" aria-label="Escanear en este punto de reciclaje">
             <iconify-icon icon="mynaui:chevron-right" class="text-xl" aria-hidden="true"></iconify-icon>
           </button>
         </article>
@@ -406,8 +425,8 @@
       </header>
 
       <!-- Área de Visor de Cámara y Láser -->
-      <div class="relative flex-1 flex flex-col items-center justify-center p-5">
-        <div id="scanner-viewfinder" class="relative w-60 h-60 rounded-3xl border-2 border-emerald-400/50 overflow-hidden shadow-2xl bg-slate-900 flex items-center justify-center transition-all">
+      <div class="relative flex-1 flex flex-col items-center justify-center p-4">
+        <div id="scanner-viewfinder" class="relative w-56 h-56 rounded-3xl border-2 border-emerald-400/50 overflow-hidden shadow-2xl bg-slate-900 flex items-center justify-center transition-all">
           <!-- Imagen Simulada de Botellas en Cámara -->
           <img id="scanner-preview-img" src="https://images.unsplash.com/photo-1530587191325-3db32d826c18?auto=format&fit=crop&w=400&q=80" alt="Botellas plásticas listas para escanear en contenedor" class="w-full h-full object-cover opacity-80">
 
@@ -417,7 +436,15 @@
           <!-- Línea Laser Animada -->
           <div class="scanner-laser" aria-hidden="true"></div>
         </div>
-        <p id="scanner-status-hint" class="text-xs text-slate-300 mt-3 text-center">Centrá el código QR de la campana o seleccioná el material</p>
+        <p id="scanner-status-hint" class="text-xs text-slate-300 mt-3 text-center">Centrá el código QR de la campana o elegí el material a depositar</p>
+
+        <!-- Selector rápido de material reciclable -->
+        <div class="mt-3 flex flex-wrap justify-center gap-2" role="group" aria-label="Seleccionar material reciclable">
+          <button type="button" class="scanner-material-btn min-h-[44px] px-3 py-1.5 rounded-full text-xs font-semibold bg-emerald-700 text-white border border-emerald-400 shadow" data-material="pet" aria-pressed="true">Plástico PET (+10)</button>
+          <button type="button" class="scanner-material-btn min-h-[44px] px-3 py-1.5 rounded-full text-xs font-semibold bg-slate-800 text-slate-200 border border-slate-700 hover:bg-slate-700" data-material="carton" aria-pressed="false">Cartón y Papel (+15)</button>
+          <button type="button" class="scanner-material-btn min-h-[44px] px-3 py-1.5 rounded-full text-xs font-semibold bg-slate-800 text-slate-200 border border-slate-700 hover:bg-slate-700" data-material="vidrio" aria-pressed="false">Vidrio (+20)</button>
+          <button type="button" class="scanner-material-btn min-h-[44px] px-3 py-1.5 rounded-full text-xs font-semibold bg-slate-800 text-slate-200 border border-slate-700 hover:bg-slate-700" data-material="aluminio" aria-pressed="false">Aluminio (+15)</button>
+        </div>
       </div>
 
       <!-- Tarjeta Inferior de Material Detectado -->
@@ -431,9 +458,9 @@
         </div>
 
         <div>
-          <h2 id="scanner-material-title" class="text-2xl font-bold">Botella de Plástico</h2>
+          <h2 id="scanner-material-title" class="text-2xl font-bold">Botella de Plástico PET</h2>
           <p id="scanner-material-desc" class="text-xs text-slate-600 dark:text-slate-400 mt-0.5">
-            Depositá en la <strong>Campana Verde</strong> más cercana para sumar <strong>+10 EcoPuntos</strong>.
+            Depositá en <strong>Campana Verde Alberdi</strong> para sumar <strong>+10 EcoPuntos</strong>.
           </p>
         </div>
 
@@ -488,32 +515,68 @@
       <section class="space-y-3" aria-labelledby="comercios-heading">
         <div class="flex justify-between items-center">
           <h2 id="comercios-heading" class="font-bold text-slate-900 dark:text-white text-2xl">Comercios Adheridos</h2>
-          <button type="button" id="btn-toggle-comercios" class="touch-target px-2 py-1 text-xs font-semibold text-emerald-700 dark:text-emerald-400 underline hover:text-emerald-800" aria-expanded="false">Ver todos</button>
+          <button type="button" id="btn-toggle-comercios" class="touch-target px-2 py-1 text-xs font-semibold text-emerald-700 dark:text-emerald-400 underline hover:text-emerald-800" aria-expanded="false">Ver todos (4)</button>
         </div>
 
-        <!-- Grid de Cards de Comercios (50% / 50%) -->
+        <!-- Grid de Cards de Comercios (50% imagen / 50% info) -->
         <div id="comercios-grid" class="grid grid-cols-2 gap-3">
           <!-- Card 1 -->
           <article class="bg-white dark:bg-slate-900 rounded-2xl overflow-hidden border border-slate-200/80 dark:border-slate-800 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
             <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=300&q=80" alt="Mostrador de Panadería El Imperio con panes artesanales" class="w-full h-24 object-cover">
-            <div class="p-3 flex-1 flex flex-col justify-between">
+            <div class="p-3 flex-1 flex flex-col justify-between gap-2">
               <div>
                 <h3 class="font-bold text-slate-800 dark:text-slate-100 text-lg">Panadería El Imperio</h3>
-                <p class="text-xs text-slate-600 dark:text-slate-400 mb-2">Panadería y Café • Centro</p>
+                <p class="text-xs text-slate-600 dark:text-slate-400">Panadería y Café • Centro</p>
               </div>
-              <span class="inline-block text-xs font-bold bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-200 px-2.5 py-1 rounded-full self-start">15% Descuento</span>
+              <div class="flex items-center justify-between gap-1 pt-1">
+                <span class="text-xs font-bold bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-200 px-2 py-0.5 rounded-full">15% Dto.</span>
+                <button type="button" class="btn-redeem-comercio touch-target px-2.5 py-1 rounded-xl text-xs font-bold text-emerald-700 dark:text-emerald-300 hover:bg-emerald-50 dark:hover:bg-emerald-900/40 underline" data-comercio="Panadería El Imperio" data-discount="15% de descuento">Canjear</button>
+              </div>
             </div>
           </article>
 
           <!-- Card 2 -->
           <article class="bg-white dark:bg-slate-900 rounded-2xl overflow-hidden border border-slate-200/80 dark:border-slate-800 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
             <img src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=300&q=80" alt="Estanterías de libros en Librería La Biblioteca" class="w-full h-24 object-cover">
-            <div class="p-3 flex-1 flex flex-col justify-between">
+            <div class="p-3 flex-1 flex flex-col justify-between gap-2">
               <div>
                 <h3 class="font-bold text-slate-800 dark:text-slate-100 text-lg">La Biblioteca</h3>
-                <p class="text-xs text-slate-600 dark:text-slate-400 mb-2">Librería y Papelería • Alberdi</p>
+                <p class="text-xs text-slate-600 dark:text-slate-400">Librería y Papelería • Alberdi</p>
               </div>
-              <span class="inline-block text-xs font-bold bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-200 px-2.5 py-1 rounded-full self-start">10% Descuento</span>
+              <div class="flex items-center justify-between gap-1 pt-1">
+                <span class="text-xs font-bold bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-200 px-2 py-0.5 rounded-full">10% Dto.</span>
+                <button type="button" class="btn-redeem-comercio touch-target px-2.5 py-1 rounded-xl text-xs font-bold text-emerald-700 dark:text-emerald-300 hover:bg-emerald-50 dark:hover:bg-emerald-900/40 underline" data-comercio="Librería La Biblioteca" data-discount="10% de descuento">Canjear</button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 3: Café de la Plaza (recuperado de Figma v1) -->
+          <article class="bg-white dark:bg-slate-900 rounded-2xl overflow-hidden border border-slate-200/80 dark:border-slate-800 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
+            <img src="https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&w=300&q=80" alt="Taza de café de especialidad en Café de la Plaza" class="w-full h-24 object-cover">
+            <div class="p-3 flex-1 flex flex-col justify-between gap-2">
+              <div>
+                <h3 class="font-bold text-slate-800 dark:text-slate-100 text-lg">Café de la Plaza</h3>
+                <p class="text-xs text-slate-600 dark:text-slate-400">Cafetería • Plaza Roca</p>
+              </div>
+              <div class="flex items-center justify-between gap-1 pt-1">
+                <span class="text-xs font-bold bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-200 px-2 py-0.5 rounded-full">20% Dto.</span>
+                <button type="button" class="btn-redeem-comercio touch-target px-2.5 py-1 rounded-xl text-xs font-bold text-emerald-700 dark:text-emerald-300 hover:bg-emerald-50 dark:hover:bg-emerald-900/40 underline" data-comercio="Café de la Plaza" data-discount="20% de descuento">Canjear</button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 4: Almacén Natural Río (expandible con Ver todos) -->
+          <article id="comercio-extra-card" class="hidden bg-white dark:bg-slate-900 rounded-2xl overflow-hidden border border-slate-200/80 dark:border-slate-800 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
+            <img src="https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=300&q=80" alt="Productos orgánicos y regionales en Almacén Natural Río" class="w-full h-24 object-cover">
+            <div class="p-3 flex-1 flex flex-col justify-between gap-2">
+              <div>
+                <h3 class="font-bold text-slate-800 dark:text-slate-100 text-lg">Almacén Natural Río</h3>
+                <p class="text-xs text-slate-600 dark:text-slate-400"> Orgánicos • Banda Norte</p>
+              </div>
+              <div class="flex items-center justify-between gap-1 pt-1">
+                <span class="text-xs font-bold bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-200 px-2 py-0.5 rounded-full">15% Dto.</span>
+                <button type="button" class="btn-redeem-comercio touch-target px-2.5 py-1 rounded-xl text-xs font-bold text-emerald-700 dark:text-emerald-300 hover:bg-emerald-50 dark:hover:bg-emerald-900/40 underline" data-comercio="Almacén Natural Río" data-discount="15% de descuento">Canjear</button>
+              </div>
             </div>
           </article>
         </div>
@@ -877,6 +940,11 @@
           <span>Mis Puntos</span>
         </button>
 
+        <button type="button" id="btn-open-guide" class="w-full min-h-[44px] flex items-center gap-3 px-3 py-2.5 rounded-xl border border-transparent transition-all active:scale-95 cursor-pointer text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 font-medium text-xs">
+          <iconify-icon icon="mynaui:calendar" class="text-xl text-emerald-700 dark:text-emerald-400" aria-hidden="true"></iconify-icon>
+          <span>Guía y Cronograma</span>
+        </button>
+
         <div class="pt-3 pb-1 border-t border-slate-100 dark:border-slate-800 my-2"></div>
 
         <!-- Toggle Modo Oscuro -->
@@ -914,6 +982,44 @@
         <p class="text-xs text-slate-600 dark:text-slate-400 mt-2 text-center">EcoImperio v1.2 • Gobierno de Río Cuarto</p>
       </div>
     </aside>
+
+    <!-- Diálogo informativo: Guía y Cronograma de Reciclaje de Río Cuarto -->
+    <dialog id="guide-dialog" aria-labelledby="guide-dialog-title" aria-describedby="guide-dialog-desc" class="w-[calc(100%-2rem)] max-w-sm rounded-3xl p-5 bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-2xl backdrop:bg-slate-950/70 backdrop:backdrop-blur-sm">
+      <div class="space-y-4">
+        <div class="flex items-start justify-between gap-2">
+          <div>
+            <h2 id="guide-dialog-title" class="text-2xl font-bold text-slate-900 dark:text-white">Guía y Cronograma</h2>
+            <p id="guide-dialog-desc" class="text-xs text-slate-600 dark:text-slate-400">Separación en origen y recolección diferenciada en Río Cuarto</p>
+          </div>
+          <button type="button" id="btn-close-guide-top" class="touch-target rounded-full text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-center shrink-0" aria-label="Cerrar guía">
+            <iconify-icon icon="mynaui:x" class="text-2xl" aria-hidden="true"></iconify-icon>
+          </button>
+        </div>
+
+        <div class="space-y-2.5 text-xs">
+          <article class="p-3 rounded-2xl bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800">
+            <h3 class="font-bold text-emerald-900 dark:text-emerald-200 text-lg">Campanas Verdes (Secos)</h3>
+            <p class="text-slate-700 dark:text-slate-300 mt-0.5">Botellas PET limpias y aplastadas, papel y cartón seco, envases Tetra Pak y latas de aluminio.</p>
+          </article>
+
+          <article class="p-3 rounded-2xl bg-amber-50 dark:bg-slate-800 border border-amber-200 dark:border-slate-700">
+            <h3 class="font-bold text-slate-900 dark:text-white text-lg">Puntos Limpios Municipales</h3>
+            <p class="text-slate-700 dark:text-slate-300 mt-0.5">Frascos y botellas de vidrio sanos, pequeños aparatos electrónicos (RAEE), pilas y aceite vegetal usado.</p>
+          </article>
+
+          <article class="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 space-y-1">
+            <h3 class="font-bold text-slate-900 dark:text-white text-lg">Cronograma Barrial (Secos)</h3>
+            <p class="text-slate-700 dark:text-slate-300"><strong>Centro y Macrocentro:</strong> Martes y Jueves (14:00 a 18:00 hs)</p>
+            <p class="text-slate-700 dark:text-slate-300"><strong>Alberdi y Bimaco:</strong> Miércoles y Viernes (08:00 a 13:00 hs)</p>
+            <p class="text-slate-700 dark:text-slate-300"><strong>Banda Norte y Golf:</strong> Lunes y Jueves (08:00 a 13:00 hs)</p>
+          </article>
+        </div>
+
+        <form method="dialog">
+          <button type="submit" id="btn-close-guide" class="btn-primary w-full">Entendido</button>
+        </form>
+      </div>
+    </dialog>
 
     <!-- ==========================================================================
          COMPONENTE 7: NOTIFICACIÓN TOAST

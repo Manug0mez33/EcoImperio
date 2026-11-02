@@ -5,7 +5,7 @@
 - **Branch**: `feat/efi-ui-alignment`
 - **Delivery Strategy**: `ask-on-risk`
 - **Forecast Authored Changed Lines**: ~350 lines (Phase 1 docs; total feature across phases ~650 lines)
-- **Running Authored Changed Lines**: 0
+- **Running Authored Changed Lines**: 507
 - **TDD Mode**: `disabled` (source: repository has no automated test runner / `package.json`; verification uses structural DOM/CSS/JS checks and live Chrome DevTools inspection)
 
 ## Objective
@@ -24,13 +24,13 @@ The audit identified:
 
 ## Actionable Checklist (Stable Task IDs)
 
-- [ ] **TASK-1 (Phase 1A — Contexto & Rules Alignment)**
+- [x] **TASK-1 (Phase 1A — Contexto & Rules Alignment)** — Commit `c9899c9`
   - **Route**: `delegated` (touches 5 documentation files: `docs/contexto/arquitectura.md`, `docs/contexto/convenciones.md`, `docs/contexto/decisiones.md`, `docs/contexto/glosario.md`, `.agents/rules/antigravity_rules.md`).
   - **Trigger Evidence**: Writer trigger (5 files to update coherently).
   - **Scope**: Unify stack definition (`index.html` + `style.css` + `app.js` with Tailwind v3 CDN), align Mermaid navigation and component anatomy (`80%` width + `<h4>` on History cards, 50%/50% Comercios cards, dynamic progress bar, interactive map filters & route indicator), mandate `localStorage` persistence for `ecoPuntos` and `history` per account (`ADR-004`), and unify user personas (`Oscar Rodríguez` demo / `Tomás` young neighbor / `Vecino con visión reducida`).
-  - **Checks**: Verify zero contradictions across all 6 `docs/contexto/*` files and `.agents/rules/antigravity_rules.md`.
+  - **Checks**: Verified zero contradictions across all 6 `docs/contexto/*` files and `.agents/rules/antigravity_rules.md`.
 
-- [ ] **TASK-2 (Phase 1B — Part 1 Research Document Creation)**
+- [x] **TASK-2 (Phase 1B — Part 1 Research Document Creation)** — Commit `c9899c9`
   - **Route**: `inline` (1 new file: `docs/investigacion_efi_ecoimperio.md`).
   - **Trigger Evidence**: Single cohesive document creation based on already-mapped `docs/consigna/` and `docs/conceptos/01..10`.
   - **Scope**: Create `docs/investigacion_efi_ecoimperio.md` covering all sections required by `docs/consigna/proyecto_de_efi_de_interfaz_de_usuario.md`:
@@ -40,7 +40,7 @@ The audit identified:
     4. Impacto en la comunidad local (Río Cuarto).
     5. Implementación detallada de los 10 conceptos de la cátedra (`01_UX` a `10_accesibilidad_aplicada`), incluyendo Personas, User Journey Map, Arquitectura de Información, Leyes de Gestalt, Patrón Z, Escala Tipográfica, 5 Estados UI y Accesibilidad WCAG AA/AAA, con espacios marcados para las capturas definitivas de la Fase 4.
     6. Estructura de Equipo (plantilla lista con roles para completar fotos/bios).
-  - **Checks**: Verify every point of `docs/consigna/proyecto_de_efi_de_interfaz_de_usuario.md` and all 10 `docs/conceptos/*` files are addressed.
+  - **Checks**: Verified every point of `docs/consigna/proyecto_de_efi_de_interfaz_de_usuario.md` and all 10 `docs/conceptos/*` files are addressed.
 
 - [ ] **TASK-3 (Phase 2A — Design System, Typography, 5 UI States & WCAG A11y in SPA)**
   - **Route**: `delegated` (`index.html`, `style.css`, `app.js`).
@@ -56,4 +56,5 @@ The audit identified:
 
 ## Progress & Verification Evidence
 - Branch `feat/efi-ui-alignment` created from `main`.
-- Next Step: Execute `TASK-1` and `TASK-2` for Phase 1.
+- Completed `TASK-1` and `TASK-2` in commit `c9899c9` (`docs(contexto): align architecture specs and add EFI research document`).
+- Next Step: Execute `TASK-3` and `TASK-4` (Phase 2 — SPA implementation).
