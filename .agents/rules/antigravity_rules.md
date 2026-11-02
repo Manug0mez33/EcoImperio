@@ -12,23 +12,23 @@ description: Reglas Globales y Sistema Operativo del proyecto basándonos en Gen
 - **UX Sobresaliente**: Diseñar interfaces y flujos pensando en la mejor experiencia, fluidez y accesibilidad para el usuario final.
 
 ## 2. Tech Stack & Defaults
-- **Arquitectura**: Single Page Application (SPA).
-- **Herramientas & Lenguaje**: Vite + TypeScript (tipado estricto).
-- **Estilos & Semántica**: HTML5 semántico + Tailwind CSS.
+- **Arquitectura**: Single Page Application (SPA) modular en 3 archivos (`index.html`, `style.css`, `app.js`).
+- **Herramientas & Lenguaje**: HTML5 semántico + CSS3 (`style.css`) + Tailwind CSS v3 (CDN) + JavaScript Vanilla ES6+ (`app.js`), sin frameworks ni bundlers (según ADR-001).
+- **Estilos & Semántica**: HTML5 semántico + Tailwind CSS v3 (con soporte de temas `dark:` mediante clase `dark` en `<html>` y Modo Alto Contraste `body.high-contrast`).
 - **Estados de Componentes UI**: Obligatorio definir y validar los 5 estados en cada componente visual:
   1. `Default` (Estado base)
   2. `Hover` (Interacción al pasar el cursor)
   3. `Active` (Estado al presionar / presionado)
-  4. `Focus` (Foco accesible por teclado)
+  4. `Focus` (Foco accesible por teclado vía `:focus-visible`)
   5. `Disabled` (Estado deshabilitado / inactivo)
-- **Persistencia**: LocalStorage e IndexedDB para estado local y caché.
+- **Persistencia**: `LocalStorage` para cuentas registradas, sesión/saldo de EcoPuntos, historial de reciclaje y preferencias de accesibilidad/tema (según ADR-004 y ADR-005).
 
 ## 3. Definition of Done (DoD)
 - **Justificación Técnica**: Todo cambio o artefacto debe explicar el *Why* y el *How*.
-- **Pruebas y Tipos**: Cobertura de pruebas y cero uso de `any` no justificado en TypeScript.
+- **Pruebas y Tipos**: Validación estricta de estado, formularios y manipulación segura del DOM en Vanilla JS sin errores ni warnings en consola.
 - **Verificación Visual & Accesibilidad**:
   - Confirmación visual de los 5 estados de cada componente de interfaz.
-  - Cumplimiento estricto del contraste **WCAG AA** (ratio mínimo de 4.5:1 para texto estándar).
+  - Cumplimiento estricto del contraste **WCAG AA** (ratio mínimo de 4.5:1 para texto estándar) y **WCAG AAA** ($\ge 7:1$) en Modo Alto Contraste.
 - **Código Limpio**: Sin código muerto, logs innecesarios o comentarios obsoletos.
 
 ## 4. Guards de Reglas de Negocio & Telemetría

@@ -17,25 +17,30 @@
   - Ajustado con bordes definidos y contraste máximo para usuarios con visión reducida (WCAG AAA).
 
 ## 2. Tipografía y Escala Modular
-- **Fuente Global**: `Roboto, sans-serif` (para cuerpos de texto, títulos, descripciones y datos).
-- **Fuente de Botones y Acciones**: `Inter, sans-serif` (para botones de acción primaria, navbars y CTAs).
-- **Escala de Tamaños**:
-  - `h1`: 32px (bold)
-  - `h2`: 24px (semibold)
-  - `h3`: 18px (bold)
-  - `body`: 16px (regular)
-  - `caption / badges`: 12px-14px (semibold)
+- **Fuente Global**: `Roboto, sans-serif` (para cuerpos de texto, títulos, descripciones, formularios y datos).
+- **Fuente de Botones y Acciones**: `Inter, sans-serif` (para botones de acción primaria/secundaria, navbars y CTAs).
+- **Escala Modular de Tamaños (Unidades Relativas `rem` / Base `16px`)**:
+  - `h1`: `32px` / `2rem` (`font-bold`, `line-height: 1.2`) — Títulos principales de pantalla (Splash, Login, Mis EcoPuntos).
+  - `h2`: `24px` / `1.5rem` (`font-semibold` / `font-bold`, `line-height: 1.3`) — Encabezados de sección y modales.
+  - `h3`: `18px` / `1.125rem` (`font-bold`, `line-height: 1.4`) — Títulos de tarjetas (Comercios Adheridos, ítem de Historial, Campana cercana).
+  - `h4`: `16px` / `1rem` (`font-bold`, `line-height: 1.4`) — Subtítulos destacados y etiqueta de EcoPuntos ganados (`+15 pts`) en tarjetas de Historial.
+  - `body` e `inputs` (`<input>`, `<select>`, `<textarea>`): `16px` / `1rem` mínimo (`font-normal`, `line-height: 1.5`) — Cumple el estándar de legibilidad de `10_accesibilidad_aplicada.md` y previene el auto-zoom forzado en navegadores móviles (iOS/Android).
+  - `caption / badges`: `12px - 14px` / `0.75rem - 0.875rem` (`font-semibold`) — Etiquetas secundarias, estados de capacidad (`Vacío`/`Lleno`) y metadatos.
 
 ## 3. Los 5 Estados Obligatorios de Componentes UI
-1. **Default**: Estado base con elevación y sombras suaves.
-2. **Hover**: Elevación/agrandamiento gradual (`scale-105` o `translate-y-1`) y sombra verde proyectada.
-3. **Active**: Efecto de hundimiento táctil (`scale-95`).
-4. **Focus**: Anillo de foco con luz de alto contraste (`:focus-visible` con `ring-4 ring-emerald-400`).
-5. **Disabled**: Opacidad al 50% (`opacity-50 cursor-not-allowed`).
+Todos los controles interactivos del sistema (botones primarios `.btn-primary`, botones secundarios `.btn-secondary`, botones de ícono, píldoras de filtro del mapa, ítems de navegación del Bottom Navbar y Drawer, campos `<input>` y desplegables `<select>`) deben implementar y evidenciar los 5 estados:
+1. **Default**: Estado base en reposo con jerarquía cromática clara, bordes definidos y sombra suave.
+2. **Hover**: Retroalimentación al pasar el puntero (`scale-[1.02]` o cambio de luminosidad/borde y sombra proyectada).
+3. **Active**: Efecto táctil inmediato al presionar (`scale-95` / `scale-[0.98]` o inversión de tono).
+4. **Focus**: Anillo de foco accesible por teclado mediante `:focus-visible` (`outline` / `ring` de alto contraste `#34d399` en modo estándar y `#facc15` en Modo Alto Contraste), incluyendo explícitamente `input:focus-visible` y `select:focus-visible`.
+5. **Disabled**: Estado inactivo inequívoco (`opacity-50`, `cursor-not-allowed`, `pointer-events-none` y atributo nativo `disabled`).
 
-## 4. Estándares Mobile-First y Accesibilidad
-- Diseño exclusivamente **Mobile-First** centrado en navegación táctil con una sola mano.
-- Zona de toque mínima para botones: 44px - 60px.
-- Menú hamburguesa colapsable para navegación en dispositivos móviles.
-- Atributos `alt` descriptivos obligatorios en todas las imágenes.
-- Uso estricto de elementos HTML interactivos reales (`<button>`, `<a href="...">`, `<input>`).
+## 4. Estándares Mobile-First y Accesibilidad (WCAG AA / AAA)
+- Diseño exclusivamente **Mobile-First** centrado en navegación ergonómica con una sola mano (Ley de Fitts).
+- **Área táctil mínima obligatoria**: `44x44px` (óptimo `48x48px`) en todos los botones, enlaces, switches, filtros y controles de formulario.
+- **Menú lateral (Drawer) accesible**: Colapsable, con atributo `inert` cuando se encuentra cerrado (`aria-hidden="true"`), sincronización de `aria-expanded` en el botón hamburguesa y cierre mediante tecla `Escape` o clic en el backdrop.
+- **Semántica en formularios e íconos**:
+  - Todos los elementos `<input>`, `<select>` y `<textarea>` deben poseer atributos `id` y `name` únicos y estar vinculados a su `<label for="...">` o `aria-label`.
+  - Todos los íconos decorativos (`<i>`, `<svg>`) deben incluir `aria-hidden="true"` para evitar ruido en lectores de pantalla.
+  - Atributos `alt` descriptivos obligatorios en todas las imágenes informativas (`<img>`).
+- Uso estricto de elementos HTML interactivos nativos (`<button>`, `<a href="...">`, `<input>`, `<select>`, `<dialog>`).
