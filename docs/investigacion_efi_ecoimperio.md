@@ -61,7 +61,9 @@ A continuación se detalla cómo se implementó técnicamente cada uno de los **
   - **Desempeño percibido y cero parpadeo (FOUC)**: Un script crítico en el `<head>` lee las preferencias de tema y tamaño tipográfico desde `localStorage` antes del primer pintado de pantalla. Además, las acciones transaccionales muestran feedback inmediato mediante un componente Toast no bloqueante (`role="status" aria-live="polite"`).
   - **Prevención de errores sin culpar al usuario**: En Login, Registro y Configuración se eliminó el `alert()` nativo y se implementaron mensajes contextuales debajo de cada campo con instrucciones constructivas (ej. *"Ingresá los 10 dígitos sin 0 ni 15. Ej: 3584123456"*).
   - **Separación de acciones destructivas**: En `Configuración`, la acción *"Eliminar cuenta"* está aislada en una "Zona de peligro" al final de la vista y protegida por un modal `<dialog>` nativo donde el foco inicial recae en *"Cancelar"*.
-- **Evidencia visual (Captura)**: `[Ver Captura 01: Validación constructiva en Registro y Modal de confirmación destructiva en Configuración]`.
+- **Evidencia visual (Captura)**:
+
+  ![Captura 01: Validación constructiva en Registro y Modal de confirmación destructiva en Configuración](assets/screenshots/captura_01_registro_y_dialogs.png)
 
 ### 5.2. Concepto 02 — Usabilidad y Accesibilidad (Principios POUR y WCAG 2.0/2.2)
 - **Fundamento teórico**: La usabilidad es relativa al perfil del usuario, mientras que la accesibilidad es universal (Perceptible, Operable, Comprensible y Robusto — POUR).
@@ -69,7 +71,10 @@ A continuación se detalla cómo se implementó técnicamente cada uno de los **
   - **Prueba de la Mano Atada (100% Operable por Teclado)**: Todos los flujos (`Splash → Login → Mapa → Escáner → Mis EcoPuntos → Configuración`) son recorribles con `Tab`, `Shift+Tab`, `Enter`, `Espacio` y `Escape` (para cerrar el menú lateral o modales). El menú lateral (`#drawer-menu`) utiliza el atributo `inert` cuando está cerrado para evitar trampas de foco fuera de pantalla.
   - **Contraste Verificado (WCAG AA $\ge 4.5:1$ y WCAG AAA $\ge 7:1$)**: En Modo Claro y Oscuro se supera el ratio 4.5:1 (usando `#047857` para botones primarios con texto blanco a `5.48:1` y `slate-600`/`slate-300` para textos secundarios), mientras que el **Modo Alto Contraste** emplea fondo negro `#000000`, bordes blancos `#ffffff` y acentos amarillos `#ffff00` (`> 15:1`).
   - **Codificación Redundante**: En el mapa, el estado de las campanas nunca depende solo del color: combina **Color** (verde/rojo) + **Ícono distinto** (`location` vs `ban`) + **Etiqueta explícita entre paréntesis** (`Alberdi (Vacío)` vs `B° Norte (Lleno)`).
-- **Evidencia visual (Captura)**: `[Ver Captura 02: Comparativa de los 3 modos visuales — Claro, Oscuro y Alto Contraste WCAG AAA]`.
+- **Evidencia visual (Captura)**:
+
+  ![Captura 02a: Modo Oscuro con ratio WCAG AA](assets/screenshots/captura_02_modos_visuales_oscuro.png)
+  ![Captura 02b: Modo Alto Contraste con ratio WCAG AAA](assets/screenshots/captura_02_modos_visuales_contraste.png)
 
 ### 5.3. Concepto 03 — Modelos Mentales, Affordance y Mapeo Natural
 - **Fundamento teórico**: El usuario llega con modelos mentales previos (Leyes de Jakob) y necesita pistas visuales claras de cómo se opera cada objeto (**Affordance** de Norman) y correspondencia espacial (**Mapeo Natural**).
@@ -77,7 +82,9 @@ A continuación se detalla cómo se implementó técnicamente cada uno de los **
   - **Affordance táctil**: Los botones parecen botones reales gracias a su volumen, bordes redondeados, sombras y efecto de hundimiento físico al presionarlos (`transform: scale(0.98)` / `active:scale-95`). Jamás se usan textos ambiguos como *"Click aquí"*.
   - **Íconos acompañados de texto**: Tanto en la barra de navegación inferior (`Inicio`, `Mapa`, `Escáner`, `Puntos`, `Perfil`) como en el menú lateral y filtros del mapa, cada ícono va acompañado de su rótulo textual para evitar ambigüedad.
   - **Mapeo Natural**: Los toggles de Modo Oscuro, Alto Contraste, Tamaño de texto y Reducción de animaciones aplican el cambio en vivo en el mismo instante en que el usuario los acciona, sin obligarlo a presionar un botón de guardado.
-- **Evidencia visual (Captura)**: `[Ver Captura 03: Affordance en Barra de Navegación Inferior, Filtros de Mapa y Controles en Vivo]`.
+- **Evidencia visual (Captura)**:
+
+  ![Captura 03: Affordance en Barra de Navegación Inferior, Filtros de Mapa y Controles en Vivo](assets/screenshots/captura_03_affordance_y_controles.png)
 
 ### 5.4. Concepto 04 — Psicología de la Gestalt y Jerarquía Visual
 - **Fundamento teórico**: El cerebro agrupa estímulos visuales según las leyes de **Proximidad, Semejanza, Región Común, Continuidad y Cierre**, y escanea la pantalla siguiendo patrones **Z** y **F**.
@@ -86,7 +93,9 @@ A continuación se detalla cómo se implementó técnicamente cada uno de los **
   - **Ley de Región Común**: La Card de Balance, las Cards de Comercios Adheridos, las Cards de Historial y las 4 secciones de Configuración están delimitadas por contenedores `<article>` y `<section>` con bordes, fondo diferenciado y `border-radius: 16px` (`rounded-2xl`).
   - **Patrón en Z (Splash y Mapa)**: El ojo inicia arriba a la izquierda (selector de tema / menú hamburguesa), cruza arriba a la derecha (badge de versión / avatar de perfil `OR`), baja en diagonal por el centro (identidad visual con silueta de Río Cuarto / marcadores del mapa) y remata abajo en el llamado a la acción principal (`"Comenzar"` / card flotante y botón central de Escáner).
   - **Prueba del Entrecerrar los Ojos (Squint Test)**: Al aplicar desenfoque sobre `Mis EcoPuntos`, el saldo `1.250 EcoPuntos` y el botón central destacan inmediatamente como primer nivel jerárquico.
-- **Evidencia visual (Captura)**: `[Ver Captura 04: Aplicación de Leyes de Gestalt en Mis EcoPuntos y Patrón Z en Splash/Mapa]`.
+- **Evidencia visual (Captura)**:
+
+  ![Captura 04: Aplicación de Leyes de Gestalt en Mis EcoPuntos y Patrón Z en Splash/Mapa](assets/screenshots/captura_04_gestalt_ecopuntos.png)
 
 ### 5.5. Concepto 05 — Estética Funcional: Color, Tipografía y los 5 Estados UI
 - **Fundamento teórico**: El color comunica estados semánticos (límite de ~5 colores activos), la tipografía establece una escala modular legible y todo elemento interactivo debe responder a **5 estados obligatorios**.
@@ -103,7 +112,9 @@ A continuación se detalla cómo se implementó técnicamente cada uno de los **
     3. `Active`: Hundimiento físico (`scale(0.98)` / `active:scale-95`).
     4. `Focus`: Anillo de alto contraste `:focus-visible` (`4px solid rgba(52, 211, 153, 0.4)`).
     5. `Disabled`: Opacidad reducida (`opacity: 0.55`), `cursor: not-allowed` y bloqueo de envío duplicado.
-- **Evidencia visual (Captura)**: `[Ver Captura 05: Matriz de los 5 Estados Interactivos y Escala Tipográfica]`.
+- **Evidencia visual (Captura)**:
+
+  ![Captura 05: Matriz de los 5 Estados Interactivos y Escala Tipográfica](assets/screenshots/captura_05_cinco_estados_ui.png)
 
 ### 5.6. Concepto 06 — Diseño Centrado en el Usuario (DCU), Personas y Journey Map
 - **Fundamento teórico**: Diseñar para arquetipos realistas documentando sus metas, frustraciones y el mapa de experiencia (User Journey Map) en contexto real de uso.
@@ -115,7 +126,9 @@ A continuación se detalla cómo se implementó técnicamente cada uno de los **
     2. *Búsqueda*: Filtra `"Campanas Verdes"` en el Mapa y verifica cuál está `(Vacío)` a 350m con ruta peatonal sugerida.
     3. *Acción en calle*: Escanea el QR en la campana, verifica que su material (`PET 1`) es aceptado y presiona `"Registrar Depósito"`.
     4. *Recompensa*: Recibe confirmación instantánea (`+10 EcoPuntos`), ve avanzar su barra de progreso hacia el próximo beneficio y consulta sus descuentos en comercios del barrio.
-- **Evidencia visual (Captura)**: `[Ver Captura 06: Flujo del User Journey Map y Controles de Accesibilidad para Baja Visión]`.
+- **Evidencia visual (Captura)**:
+
+  ![Captura 06: Flujo del User Journey Map y Controles de Accesibilidad para Baja Visión](assets/screenshots/captura_06_accesibilidad_config.png)
 
 ### 5.7. Concepto 07 — Arquitectura de la Información (AI) y Rotulado
 - **Fundamento teórico**: Los 4 pilares de Morville y Rosenfeld: **Organización, Etiquetado (Labeling) libre de jerga técnica, Navegación con profundidad máxima de 2–3 clics y Búsqueda/Filtrado**.
@@ -123,7 +136,9 @@ A continuación se detalla cómo se implementó técnicamente cada uno de los **
   - **Profundidad plana (máximo 2 clics)**: Cualquier pantalla principal (`Mapa`, `Escáner QR`, `Mis EcoPuntos`, `Configuración`) está a **1 clic** desde la barra de navegación inferior o el menú lateral.
   - **Consistencia de rotulado**: El botón `"Configuración"` lleva a la pantalla titulada `"Configuración"`; el tab `"Puntos"` lleva a `"Mis EcoPuntos"`; el botón `"Registrar Depósito"` ejecuta exactamente el alta del depósito.
   - **Búsqueda y Filtrado Facetado en el Mapa**: El buscador superior permite filtrar por nombre/barrio en vivo, y las píldoras superiores (`Campanas Verdes`, `Puntos Limpios`) filtran los marcadores visibles en el mapa con estado `aria-pressed`.
-- **Evidencia visual (Captura)**: `[Ver Captura 07: Buscador y Filtros Facetados en el Mapa Interactivo]`.
+- **Evidencia visual (Captura)**:
+
+  ![Captura 07: Buscador y Filtros Facetados en el Mapa Interactivo](assets/screenshots/captura_07_mapa_buscador_filtros.png)
 
 ### 5.8. Concepto 08 — Wireframing y Buenas Prácticas en Figma (Auto-Layout y Restricciones)
 - **Fundamento teórico**: Evolución desde el wireframe de baja fidelidad (Lo-Fi) en escala de grises hacia el prototipo de alta fidelidad (Hi-Fi) aplicando Auto-Layout, Constraints y cero pantallas callejón sin salida (*dead-ends*).
@@ -131,7 +146,9 @@ A continuación se detalla cómo se implementó técnicamente cada uno de los **
   - **Evolución documentada en Figma**: El archivo cuenta con la página `Prototipo (Baja Calidad)` (wireframes estructurales con componentes maestros) y las páginas de alta fidelidad en Modo Claro y Modo Oscuro.
   - **Traducción a CSS Flexbox/Grid**: El contenedor `.mobile-viewport` implementa un layout vertical flexible (`display: flex; flex-direction: column`) donde el header y el bottom-nav permanecen fijos y el área central (`flex-1 overflow-y-auto`) absorbe el scroll vertical sin desborde horizontal (`overflow: clip`).
   - **Cero pantallas sin salida**: Todas las vistas secundarias (`Login`, `Registro`, `Escáner QR`, `Configuración`) cuentan con botón `"← Volver"` en la esquina superior izquierda, además de navegación inferior o lateral en las vistas internas.
-- **Evidencia visual (Captura)**: `[Ver Captura 08: Comparativa Wireframe Lo-Fi vs. Implementación Final Hi-Fi]`.
+- **Evidencia visual (Captura)**:
+
+  ![Captura 08: Implementación Hi-Fi del Escáner y Navegación sin Callejones sin Salida](assets/screenshots/captura_08_hifi_prototype.png)
 
 ### 5.9. Concepto 09 — Sistema de Diseño, Diseño Atómico y Microinteracciones
 - **Fundamento teórico**: Construcción modular mediante **Átomos, Moléculas y Organismos** gobernados por Design Tokens (variables CSS) y microinteracciones con propósito.
@@ -142,7 +159,9 @@ A continuación se detalla cómo se implementó técnicamente cada uno de los **
     - *Moléculas*: Campo de formulario con label + input + mensaje de error accesible; fila de switch de configuración; card de historial de reciclaje (al `80%` de ancho con `<h3>`, `<p>` y `<h4>`).
     - *Organismos*: Card de Balance con barra de progreso dinámica, grilla de Comercios Adheridos (50% imagen / 50% información), Barra de Navegación Inferior y Menú Lateral (`Drawer`).
   - **Microinteracciones**: Animación de láser de escaneo (`@keyframes scan`) que se desactiva automáticamente si el usuario activa `"Reducir animaciones"`, y transición suave del Toast y del Drawer (`cubic-bezier(0.4, 0, 0.2, 1)`).
-- **Evidencia visual (Captura)**: `[Ver Captura 09: Átomos, Moléculas y Organismos del Sistema de Diseño de EcoImperio]`.
+- **Evidencia visual (Captura)**:
+
+  ![Captura 09: Átomos, Moléculas y Organismos del Sistema de Diseño de EcoImperio](assets/screenshots/captura_09_sistema_disenio_escaner.png)
 
 ### 5.10. Concepto 10 — Accesibilidad Aplicada, UX Writing y Patrones Avanzados
 - **Fundamento teórico**: Contraste real verificado, áreas táctiles $\ge 44\times44\text{px}$, formularios con `aria-invalid`/`aria-describedby`, enlaces diferenciados por subrayado, verbos específicos en diálogos y **Empty States** accionables.
@@ -151,7 +170,9 @@ A continuación se detalla cómo se implementó técnicamente cada uno de los **
   - **Inputs móviles a `16px` (`1rem`)**: Evita el zoom forzado en navegadores móviles y garantiza lectura cómoda.
   - **Empty State accionable**: Cuando una cuenta recién creada ingresa a `"Mis EcoPuntos"`, en lugar de una lista vacía en blanco ve un estado informativo con ícono y llamado a la acción para escanear su primera campana verde.
   - **UX Writing en confirmaciones**: El diálogo de eliminación de cuenta evita el ambiguo *"Sí / No"* y utiliza *"Cancelar"* y *"Sí, eliminar"*.
-- **Evidencia visual (Captura)**: `[Ver Captura 10: Empty State en cuentas nuevas, enlaces subrayados y áreas táctiles verificadas]`.
+- **Evidencia visual (Captura)**:
+
+  ![Captura 10: Guía barrial, diálogo modal informativo y áreas táctiles mayores a 44x44px](assets/screenshots/captura_10_guia_cronograma_dialog.png)
 
 ---
 
@@ -161,8 +182,7 @@ A continuación se detalla cómo se implementó técnicamente cada uno de los **
 
 | Foto / Avatar | Nombre y Apellido | Rol en el Proyecto | Breve Biografía / Enfoque |
 | :---: | :--- | :--- | :--- |
-| `[Foto Integrante 1]` | **Tomás** *(Completar Apellido)* | UX/UI Lead & Frontend Architect | Estudiante de la tecnicatura/carrera, enfocado en arquitectura de información, accesibilidad WCAG y desarrollo de interfaces web Mobile-First. |
-| `[Foto Integrante 2]` | *(Completar si aplica)* | UX Researcher & Prototyping | *(Completar breve descripción del integrante o dejar fila única si el trabajo es individual)* |
+| ![Avatar Tomás](data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Ccircle%20cx='32'%20cy='32'%20r='30'%20fill='%23047857'/%3E%3Ctext%20x='32'%20y='40'%20font-size='22'%20font-weight='bold'%20fill='white'%20text-anchor='middle'%20font-family='Inter,%20sans-serif'%3ETB%3C/text%3E%3C/svg%3E) | **Tomás Benavidez** | UX/UI Lead & Frontend Architect | Estudiante de ITEC Río Cuarto, enfocado en arquitectura de información, accesibilidad WCAG y desarrollo de interfaces web Mobile-First. |
 
 ---
 

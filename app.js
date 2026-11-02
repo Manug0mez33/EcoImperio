@@ -1093,11 +1093,46 @@ document.addEventListener('DOMContentLoaded', () => {
   updatePointsUI();
 
   // Exponer API global para pruebas manuales y verificación
+  // Inicialización mediante parámetros de URL (útil para inspección, pruebas y capturas de pantalla)
+  try {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('demo') === '1' || params.has('screen')) {
+      if (!state.user) {
+        startSession(DEMO_ACCOUNT, DEMO_WALLET);
+      }
+    }
+    const themeParam = params.get('theme');
+    if (themeParam === 'dark') {
+      toggleDarkMode(true);
+    } else if (themeParam === 'light') {
+      toggleDarkMode(false);
+    } else if (themeParam === 'contrast') {
+      setHighContrast(true);
+    }
+    const matParam = params.get('material');
+    if (matParam && MATERIALS[matParam]) {
+      state.selectedMaterial = matParam;
+    }
+    const screenParam = params.get('screen');
+    if (screenParam) {
+      navigateTo(screenParam);
+    }
+    if (params.get('drawer') === '1') {
+      openDrawer();
+    }
+    if (params.get('guide') === '1') {
+      openGuideModal();
+    }
+  } catch (e) {}
+
+  // Exponer API global para pruebas manuales y verificación
   window.EcoImperio = {
     state,
     navigateTo,
     openDrawer,
     closeDrawer,
-    openGuideModal
+    openGuideModal,
+    toggleDarkMode,
+    setHighContrast
   };
 });
