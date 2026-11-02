@@ -5,19 +5,21 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto:wght@300;400;500;700;900&display=swap');
 
 :root {
-  --color-primary: #064e3b;      /* Emerald 900 */
-  --color-primary-light: #10b981;/* Emerald 500 */
-  --color-primary-hover: #059669;/* Emerald 600 */
-  --color-primary-active: #047857;/* Emerald 700 */
-  --color-gold: #f59e0b;         /* Amber 500 */
-  --color-gold-light: #fbbf24;   /* Amber 400 */
-  --color-bg-light: #f8fafc;     /* Slate 50 */
-  --color-bg-dark: #020617;      /* Slate 950 */
+  --color-primary: #064e3b;       /* Emerald 900 */
+  --color-primary-light: #10b981; /* Emerald 500 */
+  --color-primary-hover: #059669; /* Emerald 600 */
+  --color-primary-active: #047857;/* Emerald 700 (5.48:1 sobre blanco) */
+  --color-gold: #f59e0b;          /* Amber 500 */
+  --color-gold-light: #fbbf24;    /* Amber 400 */
+  --color-danger: #dc2626;        /* Red 600 */
+  --color-bg-light: #f8fafc;      /* Slate 50 */
+  --color-bg-dark: #020617;       /* Slate 950 */
   --color-card-light: #ffffff;
-  --color-card-dark: #0f172a;    /* Slate 900 */
+  --color-card-dark: #0f172a;     /* Slate 900 */
   --color-text-main: #0f172a;
-  --color-text-muted: #64748b;
+  --color-text-muted: #475569;    /* Slate 600 (> 7:1 sobre blanco) */
   --focus-ring: 0 0 0 4px rgba(16, 185, 129, 0.45);
+  --focus-ring-hc: 0 0 0 3px #000000, 0 0 0 6px #facc15;
 }
 
 /* ==========================================================================
@@ -38,12 +40,65 @@ body {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
+  line-height: 1.5;
 }
 
 /* `body button` gana en especificidad al reset de Tailwind (`button { font-family: inherit }`),
-   que se inyecta después de este archivo y antes dejaba los botones en Roboto */
+   que se inyecta después de este archivo */
 body button {
   font-family: 'Inter', sans-serif;
+  touch-action: manipulation;
+}
+
+/* ==========================================================================
+   ESCALA TIPOGRÁFICA MODULAR (docs/contexto/convenciones.md)
+   h1: 2rem (32px) | h2: 1.5rem (24px) | h3: 1.125rem (18px) | h4: 1rem (16px)
+   body & inputs: 1rem (16px) mínimo para evitar auto-zoom móvil y cumplir WCAG
+   ========================================================================== */
+.mobile-viewport h1 {
+  font-size: 2rem;
+  line-height: 1.2;
+}
+
+.mobile-viewport h2 {
+  font-size: 1.5rem;
+  line-height: 1.3;
+}
+
+.mobile-viewport h3 {
+  font-size: 1.125rem;
+  line-height: 1.4;
+}
+
+.mobile-viewport h4 {
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+/* Subtítulos de sección compactos cuando usan clase explícita .section-kicker */
+.mobile-viewport h2.section-kicker {
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+body input:not([type="checkbox"]):not([type="radio"]),
+body select,
+body textarea {
+  font-size: 1rem !important;
+  line-height: 1.5;
+  min-height: 48px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+body input:not([type="checkbox"]):not([type="radio"]):hover:not(:disabled),
+body select:hover:not(:disabled),
+body textarea:hover:not(:disabled) {
+  border-color: #10b981;
+}
+
+body input:not([type="checkbox"]):not([type="radio"]):active:not(:disabled),
+body select:active:not(:disabled) {
+  border-color: #047857;
 }
 
 /* Contenedor Mockup de Celular Mobile-First */
@@ -71,56 +126,50 @@ body button {
 }
 
 /* ==========================================================================
-   LOS 5 ESTADOS DE COMPONENTES UI (Gentle-AI Standard)
+   LOS 5 ESTADOS DE COMPONENTES UI (Default, Hover, Active, Focus, Disabled)
    ========================================================================== */
 
-/* 1. Default & 2. Hover */
+/* Área táctil mínima obligatoria WCAG 2.2 / Concepto 10 (>= 44x44px) */
+.touch-target,
+.nav-item,
+.toggle-password,
+.dark-mode-btn,
+#btn-open-drawer,
+#btn-close-drawer,
+#btn-scanner-flash {
+  min-width: 44px;
+  min-height: 44px;
+}
+
+/* 1. Default & 2. Hover - Botón Primario */
 .btn-primary {
-  background-color: var(--color-primary);
+  background-color: var(--color-primary-active);
   color: #ffffff !important;
   font-weight: 600;
   border-radius: 9999px;
   padding: 0.85rem 1.5rem;
-  border: none;
+  border: 2px solid transparent;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 4px 12px rgba(6, 78, 59, 0.25);
+  transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 12px rgba(4, 120, 87, 0.28);
   touch-action: manipulation;
   min-height: 48px;
 }
 
-.btn-primary:hover {
-  background-color: #047857;
-  transform: translateY(-2px) scale(1.02);
-  box-shadow: 0 6px 18px rgba(6, 78, 59, 0.35);
+.btn-primary:hover:not(:disabled) {
+  background-color: var(--color-primary);
+  transform: translateY(-2px) scale(1.01);
+  box-shadow: 0 6px 18px rgba(6, 78, 59, 0.38);
 }
 
-/* 3. Active */
-.btn-primary:active {
+/* 3. Active (Hundimiento táctil físico) */
+.btn-primary:active:not(:disabled) {
   transform: translateY(0) scale(0.97);
   background-color: #064e3b;
-}
-
-/* 4. Focus (Accesibilidad Teclado) */
-.btn-primary:focus-visible,
-button:focus-visible,
-a:focus-visible,
-input:focus-visible {
-  outline: none;
-  box-shadow: var(--focus-ring);
-}
-
-/* 5. Disabled */
-.btn-primary:disabled,
-button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  transform: none !important;
-  box-shadow: none !important;
 }
 
 /* Botón secundario outline */
@@ -135,21 +184,60 @@ button:disabled {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.25s ease;
+  gap: 0.5rem;
+  transition: all 0.22s ease;
   min-height: 48px;
 }
 
-.btn-secondary:hover {
+.btn-secondary:hover:not(:disabled) {
   background-color: rgba(6, 78, 59, 0.08);
   transform: translateY(-1px);
+  box-shadow: 0 3px 10px rgba(6, 78, 59, 0.12);
 }
 
-.btn-secondary:active {
-  transform: scale(0.98);
+.btn-secondary:active:not(:disabled) {
+  transform: scale(0.97);
+  background-color: rgba(6, 78, 59, 0.15);
+}
+
+/* Respuesta táctil Active universal para todos los botones e ítems interactivos */
+body button:not(.btn-primary):not(.btn-secondary):not(:disabled) {
+  transition: transform 0.18s ease, background-color 0.18s ease, color 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+body button:not(.btn-primary):not(.btn-secondary):active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+/* 4. Focus (Accesibilidad 100% Teclado vía :focus-visible) */
+.btn-primary:focus-visible,
+.btn-secondary:focus-visible,
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+summary:focus-visible {
+  outline: none !important;
+  box-shadow: var(--focus-ring) !important;
+}
+
+/* 5. Disabled (Estado inactivo inequívoco) */
+.btn-primary:disabled,
+.btn-secondary:disabled,
+button:disabled,
+input:disabled,
+select:disabled,
+textarea:disabled {
+  opacity: 0.55 !important;
+  cursor: not-allowed !important;
+  pointer-events: none;
+  transform: none !important;
+  box-shadow: none !important;
 }
 
 /* ==========================================================================
-   Efecto Laser Scanner QR
+   Efecto Laser Scanner QR y Flash
    ========================================================================== */
 .scanner-laser {
   position: absolute;
@@ -162,6 +250,11 @@ button:disabled {
   animation: scanSweep 2.2s infinite ease-in-out;
 }
 
+.scanner-flash-active {
+  box-shadow: 0 0 40px 8px rgba(251, 191, 36, 0.55) !important;
+  border-color: #fbbf24 !important;
+}
+
 @keyframes scanSweep {
   0% { top: 15%; opacity: 0.8; }
   50% { top: 80%; opacity: 1; }
@@ -169,41 +262,7 @@ button:disabled {
 }
 
 /* ==========================================================================
-   MODO ALTO CONTRASTE (WCAG AAA Compliance)
-   ========================================================================== */
-body.high-contrast .mobile-viewport {
-  background-color: #000000 !important;
-  color: #ffffff !important;
-  border-color: #ffffff;
-}
-
-body.high-contrast .bg-white,
-body.high-contrast .bg-slate-50,
-body.high-contrast .bg-slate-100 {
-  background-color: #000000 !important;
-  color: #ffffff !important;
-  border: 2px solid #ffffff !important;
-}
-
-body.high-contrast .text-slate-600,
-body.high-contrast .text-slate-500,
-body.high-contrast .text-slate-400 {
-  color: #ffff00 !important; /* Amarillo de alto contraste para textos secundarios */
-}
-
-body.high-contrast .btn-primary {
-  background-color: #ffff00 !important;
-  color: #000000 !important;
-  font-weight: 900;
-  border: 3px solid #ffffff !important;
-}
-
-body.high-contrast .btn-primary:focus-visible {
-  box-shadow: 0 0 0 5px #ffffff, 0 0 0 8px #000000 !important;
-}
-
-/* ==========================================================================
-   ANIMACIONES DE PANTALLA Y SLIDE OVER
+   ANIMACIONES DE PANTALLA Y DRAWER SLIDE-OVER ACCESIBLE
    ========================================================================== */
 .screen-view {
   /* Contenedor de los inputs sr-only de cada pantalla: así el foco desplaza la pantalla y no el marco del celular */
@@ -277,12 +336,14 @@ html.reduce-motion *::after {
   backdrop-filter: blur(4px);
   z-index: 50;
   opacity: 0;
+  visibility: hidden;
   pointer-events: none;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
 .drawer-overlay.open {
   opacity: 1;
+  visibility: visible;
   pointer-events: auto;
 }
 
@@ -295,13 +356,17 @@ html.reduce-motion *::after {
   background-color: #ffffff;
   z-index: 60;
   box-shadow: 10px 0 30px rgba(0, 0, 0, 0.3);
-  transition: left 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  visibility: hidden;
+  pointer-events: none;
+  transition: left 0.35s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.35s ease;
   display: flex;
   flex-direction: column;
 }
 
 .drawer-menu.open {
   left: 0;
+  visibility: visible;
+  pointer-events: auto;
 }
 
 /* ==========================================================================
@@ -322,19 +387,16 @@ html.reduce-motion *::after {
   color: #ffffff;
   box-shadow: 0 10px 25px rgba(6, 78, 59, 0.35);
   opacity: 0;
+  visibility: hidden;
   transform: translateY(-1rem);
   pointer-events: none;
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
 }
 
 .toast.show {
   opacity: 1;
+  visibility: visible;
   transform: translateY(0);
-}
-
-body.high-contrast .toast {
-  background-color: #000000;
-  border: 2px solid #ffffff;
 }
 
 /* ==========================================================================
@@ -352,11 +414,11 @@ html.dark .btn-primary {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
 }
 
-html.dark .btn-primary:hover {
-  background-color: #065f46;
+html.dark .btn-primary:hover:not(:disabled) {
+  background-color: #059669;
 }
 
-html.dark .btn-primary:active {
+html.dark .btn-primary:active:not(:disabled) {
   background-color: var(--color-primary);
 }
 
@@ -365,8 +427,8 @@ html.dark .btn-secondary {
   border-color: #34d399;
 }
 
-html.dark .btn-secondary:hover {
-  background-color: rgba(52, 211, 153, 0.1);
+html.dark .btn-secondary:hover:not(:disabled) {
+  background-color: rgba(52, 211, 153, 0.12);
 }
 
 html.dark .drawer-menu {
@@ -380,4 +442,140 @@ html.dark .drawer-overlay {
 
 html.dark .toast {
   border: 1px solid var(--color-primary-active);
+}
+
+/* ==========================================================================
+   MODO ALTO CONTRASTE (WCAG AAA >= 7:1 Compliance)
+   Prioridad determinista sobre Modo Claro y Modo Oscuro (html.dark)
+   ========================================================================== */
+html.high-contrast .mobile-viewport,
+body.high-contrast .mobile-viewport,
+html.dark body.high-contrast .mobile-viewport {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border-color: #ffffff !important;
+}
+
+html.high-contrast .screen-view,
+body.high-contrast .screen-view,
+html.high-contrast .drawer-menu,
+body.high-contrast .drawer-menu,
+html.high-contrast dialog,
+body.high-contrast dialog {
+  background-color: #000000 !important;
+  background-image: none !important;
+  color: #ffffff !important;
+}
+
+html.high-contrast .bg-white,
+body.high-contrast .bg-white,
+html.high-contrast .bg-slate-50,
+body.high-contrast .bg-slate-50,
+html.high-contrast .bg-slate-100,
+body.high-contrast .bg-slate-100,
+html.high-contrast .bg-slate-900,
+body.high-contrast .bg-slate-900,
+html.high-contrast .bg-slate-950,
+body.high-contrast .bg-slate-950,
+html.high-contrast .bg-emerald-900,
+body.high-contrast .bg-emerald-900,
+html.high-contrast .bg-emerald-50,
+body.high-contrast .bg-emerald-50,
+html.high-contrast nav,
+body.high-contrast nav,
+html.high-contrast article,
+body.high-contrast article {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border: 2px solid #ffffff !important;
+}
+
+html.high-contrast .text-slate-900,
+body.high-contrast .text-slate-900,
+html.high-contrast .text-slate-800,
+body.high-contrast .text-slate-800,
+html.high-contrast .text-slate-700,
+body.high-contrast .text-slate-700 {
+  color: #ffffff !important;
+}
+
+html.high-contrast .text-slate-600,
+body.high-contrast .text-slate-600,
+html.high-contrast .text-slate-500,
+body.high-contrast .text-slate-500,
+html.high-contrast .text-slate-400,
+body.high-contrast .text-slate-400,
+html.high-contrast .text-emerald-800,
+body.high-contrast .text-emerald-800,
+html.high-contrast .text-emerald-700,
+body.high-contrast .text-emerald-700,
+html.high-contrast .text-emerald-600,
+body.high-contrast .text-emerald-600,
+html.high-contrast .text-emerald-300,
+body.high-contrast .text-emerald-300,
+html.high-contrast .text-emerald-200,
+body.high-contrast .text-emerald-200,
+html.high-contrast a,
+body.high-contrast a {
+  color: #ffff00 !important; /* Amarillo puro sobre negro = 19.56:1 (WCAG AAA) */
+}
+
+html.high-contrast .btn-primary,
+body.high-contrast .btn-primary,
+html.dark body.high-contrast .btn-primary {
+  background-color: #ffff00 !important;
+  color: #000000 !important;
+  font-weight: 900 !important;
+  border: 3px solid #ffffff !important;
+  box-shadow: none !important;
+}
+
+html.high-contrast .btn-primary *,
+body.high-contrast .btn-primary * {
+  color: #000000 !important;
+}
+
+html.high-contrast .btn-secondary,
+body.high-contrast .btn-secondary,
+html.dark body.high-contrast .btn-secondary {
+  background-color: #000000 !important;
+  color: #ffff00 !important;
+  font-weight: 800 !important;
+  border: 3px solid #ffff00 !important;
+}
+
+html.high-contrast input:not([type="checkbox"]):not([type="radio"]),
+body.high-contrast input:not([type="checkbox"]):not([type="radio"]),
+html.high-contrast select,
+body.high-contrast select,
+html.high-contrast textarea,
+body.high-contrast textarea {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border: 2px solid #ffffff !important;
+}
+
+html.high-contrast input::placeholder,
+body.high-contrast input::placeholder {
+  color: #e2e8f0 !important;
+}
+
+html.high-contrast button:focus-visible,
+body.high-contrast button:focus-visible,
+html.high-contrast a:focus-visible,
+body.high-contrast a:focus-visible,
+html.high-contrast input:focus-visible,
+body.high-contrast input:focus-visible,
+html.high-contrast select:focus-visible,
+body.high-contrast select:focus-visible {
+  outline: 3px solid #facc15 !important;
+  outline-offset: 2px !important;
+  box-shadow: var(--focus-ring-hc) !important;
+}
+
+html.high-contrast .toast,
+body.high-contrast .toast {
+  background-color: #000000 !important;
+  color: #ffff00 !important;
+  border: 3px solid #ffff00 !important;
 }

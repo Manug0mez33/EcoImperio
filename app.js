@@ -65,23 +65,51 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Drawer Menu Slide-Over Controls
+  // Drawer Menu Slide-Over Controls (Accesibilidad Teclado: inert + aria-expanded + Escape + Focus Trap)
   const drawerOverlay = document.getElementById('drawer-overlay');
   const drawerMenu = document.getElementById('drawer-menu');
   const openDrawerBtn = document.getElementById('btn-open-drawer');
   const closeDrawerBtn = document.getElementById('btn-close-drawer');
+  let lastDrawerTrigger = null;
 
-  function openDrawer() {
+  function syncDrawerAria(isOpen) {
+    if (openDrawerBtn) openDrawerBtn.setAttribute('aria-expanded', String(isOpen));
+    document.querySelectorAll('.btn-trigger-drawer').forEach(btn => {
+      btn.setAttribute('aria-expanded', String(isOpen));
+    });
+    if (drawerMenu) {
+      drawerMenu.setAttribute('aria-hidden', String(!isOpen));
+      if (isOpen) {
+        drawerMenu.removeAttribute('inert');
+      } else {
+        drawerMenu.setAttribute('inert', '');
+      }
+    }
+  }
+
+  function openDrawer(e) {
     if (drawerOverlay && drawerMenu) {
+      lastDrawerTrigger = (e && e.currentTarget) ? e.currentTarget : document.activeElement;
       drawerOverlay.classList.add('open');
       drawerMenu.classList.add('open');
+      syncDrawerAria(true);
+      if (closeDrawerBtn) {
+        requestAnimationFrame(() => closeDrawerBtn.focus());
+      }
     }
   }
 
   function closeDrawer() {
     if (drawerOverlay && drawerMenu) {
+      const wasOpen = drawerMenu.classList.contains('open');
+      const focusInsideDrawer = drawerMenu.contains(document.activeElement);
       drawerOverlay.classList.remove('open');
       drawerMenu.classList.remove('open');
+      syncDrawerAria(false);
+      if (wasOpen && focusInsideDrawer) {
+        const targetToFocus = (lastDrawerTrigger && document.body.contains(lastDrawerTrigger)) ? lastDrawerTrigger : openDrawerBtn;
+        if (targetToFocus) targetToFocus.focus();
+      }
     }
   }
 
@@ -93,9 +121,32 @@ document.addEventListener('DOMContentLoaded', () => {
     btn.addEventListener('click', openDrawer);
   });
 
+  document.addEventListener('keydown', (e) => {
+    if (!drawerMenu || !drawerMenu.classList.contains('open')) return;
+    if (e.key === 'Escape') {
+      e.preventDefault();
+      closeDrawer();
+      return;
+    }
+    if (e.key === 'Tab') {
+      const focusables = [...drawerMenu.querySelectorAll('button:not(:disabled), input:not(:disabled), [href], select:not(:disabled), [tabindex]:not([tabindex="-1"])')];
+      if (focusables.length === 0) return;
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+  });
+
   // Modo Alto Contraste: toggles sincronizados en el Drawer y en Configuración
   function setHighContrast(enable) {
     state.highContrast = enable;
+    document.documentElement.classList.toggle('high-contrast', enable);
     document.body.classList.toggle('high-contrast', enable);
     localStorage.setItem('ecoimperio_high_contrast', String(enable));
     document.querySelectorAll('.contrast-toggle').forEach(sw => {
