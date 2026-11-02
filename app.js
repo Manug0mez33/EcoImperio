@@ -164,6 +164,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (targetScreen) {
       targetScreen.classList.add('active');
       targetScreen.scrollTop = 0;
+      const scrollableChild = targetScreen.querySelector('.overflow-y-auto');
+      if (scrollableChild) scrollableChild.scrollTop = 0;
       state.currentScreen = screenId;
     }
     if (screenId === 'config') fillSettings();

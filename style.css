@@ -125,6 +125,23 @@ body select:active:not(:disabled) {
   }
 }
 
+/* Card Balance Actual: tamaño mínimo fijo para evitar colapso en flexbox */
+.balance-card {
+  min-height: 155px;
+  flex-shrink: 0;
+}
+
+dialog:not([open]) {
+  display: none !important;
+}
+
+dialog[open] {
+  display: flex !important;
+  flex-direction: column;
+  max-height: 85vh;
+  margin: auto;
+}
+
 /* ==========================================================================
    LOS 5 ESTADOS DE COMPONENTES UI (Default, Hover, Active, Focus, Disabled)
    ========================================================================== */
@@ -446,82 +463,196 @@ html.dark .toast {
 
 /* ==========================================================================
    MODO ALTO CONTRASTE (WCAG AAA >= 7:1 Compliance)
-   Prioridad determinista sobre Modo Claro y Modo Oscuro (html.dark)
+   Diferenciado rigurosamente: Alto Contraste Claro vs Alto Contraste Oscuro
    ========================================================================== */
-html.high-contrast .mobile-viewport,
-body.high-contrast .mobile-viewport,
+
+/* --------------------------------------------------------------------------
+   1. ALTO CONTRASTE CLARO (Sin Modo Noche: html:not(.dark).high-contrast)
+   Fondo blanco puro #ffffff, texto negro puro #000000, bordes negros 2px/3px
+   Ratio WCAG AAA: 21:1 (Negro sobre Blanco)
+   -------------------------------------------------------------------------- */
+html:not(.dark).high-contrast .mobile-viewport,
+html:not(.dark) body.high-contrast .mobile-viewport {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  border-color: #000000 !important;
+}
+
+html:not(.dark).high-contrast .screen-view,
+html:not(.dark) body.high-contrast .screen-view,
+html:not(.dark).high-contrast .drawer-menu,
+html:not(.dark) body.high-contrast .drawer-menu,
+html:not(.dark).high-contrast dialog,
+html:not(.dark) body.high-contrast dialog {
+  background-color: #ffffff !important;
+  background-image: none !important;
+  color: #000000 !important;
+}
+
+html:not(.dark).high-contrast .bg-white,
+html:not(.dark) body.high-contrast .bg-white,
+html:not(.dark).high-contrast .bg-slate-50,
+html:not(.dark) body.high-contrast .bg-slate-50,
+html:not(.dark).high-contrast .bg-slate-100,
+html:not(.dark) body.high-contrast .bg-slate-100,
+html:not(.dark).high-contrast .bg-slate-900,
+html:not(.dark) body.high-contrast .bg-slate-900,
+html:not(.dark).high-contrast .bg-slate-950,
+html:not(.dark) body.high-contrast .bg-slate-950,
+html:not(.dark).high-contrast .bg-emerald-900,
+html:not(.dark) body.high-contrast .bg-emerald-900,
+html:not(.dark).high-contrast .bg-emerald-50,
+html:not(.dark) body.high-contrast .bg-emerald-50,
+html:not(.dark).high-contrast nav,
+html:not(.dark) body.high-contrast nav,
+html:not(.dark).high-contrast article,
+html:not(.dark) body.high-contrast article {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  border: 2px solid #000000 !important;
+}
+
+html:not(.dark).high-contrast [class*="text-slate-"],
+html:not(.dark) body.high-contrast [class*="text-slate-"],
+html:not(.dark).high-contrast [class*="text-emerald-"],
+html:not(.dark) body.high-contrast [class*="text-emerald-"],
+html:not(.dark).high-contrast span,
+html:not(.dark) body.high-contrast span,
+html:not(.dark).high-contrast p,
+html:not(.dark) body.high-contrast p,
+html:not(.dark).high-contrast h1,
+html:not(.dark) body.high-contrast h1,
+html:not(.dark).high-contrast h2,
+html:not(.dark) body.high-contrast h2,
+html:not(.dark).high-contrast h3,
+html:not(.dark) body.high-contrast h3,
+html:not(.dark).high-contrast h4,
+html:not(.dark) body.high-contrast h4 {
+  color: #000000 !important;
+}
+
+html:not(.dark).high-contrast a,
+html:not(.dark) body.high-contrast a {
+  color: #0000ee !important;
+  text-decoration: underline !important;
+  font-weight: 700 !important;
+}
+
+html:not(.dark).high-contrast .btn-primary,
+html:not(.dark) body.high-contrast .btn-primary {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border: 3px solid #000000 !important;
+  font-weight: 900 !important;
+}
+
+html:not(.dark).high-contrast .btn-primary *,
+html:not(.dark) body.high-contrast .btn-primary * {
+  color: #ffffff !important;
+}
+
+html:not(.dark).high-contrast .btn-secondary,
+html:not(.dark) body.high-contrast .btn-secondary {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  border: 3px solid #000000 !important;
+  font-weight: 800 !important;
+}
+
+html:not(.dark).high-contrast input:not([type="checkbox"]):not([type="radio"]),
+html:not(.dark) body.high-contrast input:not([type="checkbox"]):not([type="radio"]),
+html:not(.dark).high-contrast select,
+html:not(.dark) body.high-contrast select,
+html:not(.dark).high-contrast textarea,
+html:not(.dark) body.high-contrast textarea {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  border: 2px solid #000000 !important;
+}
+
+html:not(.dark).high-contrast input::placeholder,
+html:not(.dark) body.high-contrast input::placeholder {
+  color: #475569 !important;
+}
+
+html:not(.dark).high-contrast button:focus-visible,
+html:not(.dark) body.high-contrast button:focus-visible,
+html:not(.dark).high-contrast a:focus-visible,
+html:not(.dark) body.high-contrast a:focus-visible,
+html:not(.dark).high-contrast input:focus-visible,
+html:not(.dark) body.high-contrast input:focus-visible,
+html:not(.dark).high-contrast select:focus-visible,
+html:not(.dark) body.high-contrast select:focus-visible {
+  outline: 3px solid #000000 !important;
+  outline-offset: 2px !important;
+}
+
+html:not(.dark).high-contrast .toast,
+html:not(.dark) body.high-contrast .toast {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  border: 3px solid #000000 !important;
+}
+
+/* --------------------------------------------------------------------------
+   2. ALTO CONTRASTE OSCURO (Con Modo Noche: html.dark.high-contrast)
+   Fondo negro puro #000000, texto blanco puro #ffffff, acento amarillo #ffff00
+   Ratio WCAG AAA: 19.56:1 (Amarillo sobre Negro)
+   -------------------------------------------------------------------------- */
+html.dark.high-contrast .mobile-viewport,
 html.dark body.high-contrast .mobile-viewport {
   background-color: #000000 !important;
   color: #ffffff !important;
   border-color: #ffffff !important;
 }
 
-html.high-contrast .screen-view,
-body.high-contrast .screen-view,
-html.high-contrast .drawer-menu,
-body.high-contrast .drawer-menu,
-html.high-contrast dialog,
-body.high-contrast dialog {
+html.dark.high-contrast .screen-view,
+html.dark body.high-contrast .screen-view,
+html.dark.high-contrast .drawer-menu,
+html.dark body.high-contrast .drawer-menu,
+html.dark.high-contrast dialog,
+html.dark body.high-contrast dialog {
   background-color: #000000 !important;
   background-image: none !important;
   color: #ffffff !important;
 }
 
-html.high-contrast .bg-white,
-body.high-contrast .bg-white,
-html.high-contrast .bg-slate-50,
-body.high-contrast .bg-slate-50,
-html.high-contrast .bg-slate-100,
-body.high-contrast .bg-slate-100,
-html.high-contrast .bg-slate-900,
-body.high-contrast .bg-slate-900,
-html.high-contrast .bg-slate-950,
-body.high-contrast .bg-slate-950,
-html.high-contrast .bg-emerald-900,
-body.high-contrast .bg-emerald-900,
-html.high-contrast .bg-emerald-50,
-body.high-contrast .bg-emerald-50,
-html.high-contrast nav,
-body.high-contrast nav,
-html.high-contrast article,
-body.high-contrast article {
+html.dark.high-contrast .bg-white,
+html.dark body.high-contrast .bg-white,
+html.dark.high-contrast .bg-slate-50,
+html.dark body.high-contrast .bg-slate-50,
+html.dark.high-contrast .bg-slate-100,
+html.dark body.high-contrast .bg-slate-100,
+html.dark.high-contrast .bg-slate-900,
+html.dark body.high-contrast .bg-slate-900,
+html.dark.high-contrast .bg-slate-950,
+html.dark body.high-contrast .bg-slate-950,
+html.dark.high-contrast .bg-emerald-900,
+html.dark body.high-contrast .bg-emerald-900,
+html.dark.high-contrast .bg-emerald-50,
+html.dark body.high-contrast .bg-emerald-50,
+html.dark.high-contrast nav,
+html.dark body.high-contrast nav,
+html.dark.high-contrast article,
+html.dark body.high-contrast article {
   background-color: #000000 !important;
   color: #ffffff !important;
   border: 2px solid #ffffff !important;
 }
 
-html.high-contrast .text-slate-900,
-body.high-contrast .text-slate-900,
-html.high-contrast .text-slate-800,
-body.high-contrast .text-slate-800,
-html.high-contrast .text-slate-700,
-body.high-contrast .text-slate-700 {
+html.dark.high-contrast [class*="text-slate-"],
+html.dark body.high-contrast [class*="text-slate-"],
+html.dark.high-contrast [class*="text-emerald-"],
+html.dark body.high-contrast [class*="text-emerald-"] {
   color: #ffffff !important;
 }
 
-html.high-contrast .text-slate-600,
-body.high-contrast .text-slate-600,
-html.high-contrast .text-slate-500,
-body.high-contrast .text-slate-500,
-html.high-contrast .text-slate-400,
-body.high-contrast .text-slate-400,
-html.high-contrast .text-emerald-800,
-body.high-contrast .text-emerald-800,
-html.high-contrast .text-emerald-700,
-body.high-contrast .text-emerald-700,
-html.high-contrast .text-emerald-600,
-body.high-contrast .text-emerald-600,
-html.high-contrast .text-emerald-300,
-body.high-contrast .text-emerald-300,
-html.high-contrast .text-emerald-200,
-body.high-contrast .text-emerald-200,
-html.high-contrast a,
-body.high-contrast a {
-  color: #ffff00 !important; /* Amarillo puro sobre negro = 19.56:1 (WCAG AAA) */
+html.dark.high-contrast a,
+html.dark body.high-contrast a {
+  color: #ffff00 !important;
 }
 
-html.high-contrast .btn-primary,
-body.high-contrast .btn-primary,
+html.dark.high-contrast .btn-primary,
 html.dark body.high-contrast .btn-primary {
   background-color: #ffff00 !important;
   color: #000000 !important;
@@ -530,13 +661,12 @@ html.dark body.high-contrast .btn-primary {
   box-shadow: none !important;
 }
 
-html.high-contrast .btn-primary *,
-body.high-contrast .btn-primary * {
+html.dark.high-contrast .btn-primary *,
+html.dark body.high-contrast .btn-primary * {
   color: #000000 !important;
 }
 
-html.high-contrast .btn-secondary,
-body.high-contrast .btn-secondary,
+html.dark.high-contrast .btn-secondary,
 html.dark body.high-contrast .btn-secondary {
   background-color: #000000 !important;
   color: #ffff00 !important;
@@ -544,37 +674,37 @@ html.dark body.high-contrast .btn-secondary {
   border: 3px solid #ffff00 !important;
 }
 
-html.high-contrast input:not([type="checkbox"]):not([type="radio"]),
-body.high-contrast input:not([type="checkbox"]):not([type="radio"]),
-html.high-contrast select,
-body.high-contrast select,
-html.high-contrast textarea,
-body.high-contrast textarea {
+html.dark.high-contrast input:not([type="checkbox"]):not([type="radio"]),
+html.dark body.high-contrast input:not([type="checkbox"]):not([type="radio"]),
+html.dark.high-contrast select,
+html.dark body.high-contrast select,
+html.dark.high-contrast textarea,
+html.dark body.high-contrast textarea {
   background-color: #000000 !important;
   color: #ffffff !important;
   border: 2px solid #ffffff !important;
 }
 
-html.high-contrast input::placeholder,
-body.high-contrast input::placeholder {
+html.dark.high-contrast input::placeholder,
+html.dark body.high-contrast input::placeholder {
   color: #e2e8f0 !important;
 }
 
-html.high-contrast button:focus-visible,
-body.high-contrast button:focus-visible,
-html.high-contrast a:focus-visible,
-body.high-contrast a:focus-visible,
-html.high-contrast input:focus-visible,
-body.high-contrast input:focus-visible,
-html.high-contrast select:focus-visible,
-body.high-contrast select:focus-visible {
+html.dark.high-contrast button:focus-visible,
+html.dark body.high-contrast button:focus-visible,
+html.dark.high-contrast a:focus-visible,
+html.dark body.high-contrast a:focus-visible,
+html.dark.high-contrast input:focus-visible,
+html.dark body.high-contrast input:focus-visible,
+html.dark.high-contrast select:focus-visible,
+html.dark body.high-contrast select:focus-visible {
   outline: 3px solid #facc15 !important;
   outline-offset: 2px !important;
   box-shadow: var(--focus-ring-hc) !important;
 }
 
-html.high-contrast .toast,
-body.high-contrast .toast {
+html.dark.high-contrast .toast,
+html.dark body.high-contrast .toast {
   background-color: #000000 !important;
   color: #ffff00 !important;
   border: 3px solid #ffff00 !important;

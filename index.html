@@ -14,7 +14,7 @@
         saved = localStorage.getItem('ecoimperio_dark_mode');
         highContrast = localStorage.getItem('ecoimperio_high_contrast');
       } catch (e) {}
-      var dark = saved === null ? window.matchMedia('(prefers-color-scheme: dark)').matches : saved === 'true';
+      var dark = saved === 'true';
       document.documentElement.classList.toggle('dark', dark);
       document.documentElement.classList.toggle('high-contrast', highContrast === 'true');
       var textSize = null, reduceMotion = null;
@@ -474,42 +474,44 @@
     <!-- ==========================================================================
          PANTALLA 5: MIS ECOPUNTOS Y RECOMPENSAS
          ========================================================================== -->
-    <section id="screen-puntos" class="screen-view bg-slate-50 dark:bg-slate-950 p-4 space-y-5 pb-24 relative">
-      <!-- Header -->
-      <header class="flex items-center justify-between pt-2">
-        <h1 class="text-3xl font-black text-slate-900 dark:text-white">Mis EcoPuntos</h1>
-        <button type="button" data-navigate="mapa" class="touch-target px-3 py-2 rounded-xl text-xs font-semibold text-emerald-700 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-slate-900 underline flex items-center gap-1">
-          <span>Ir al Mapa</span>
-          <iconify-icon icon="mynaui:chevron-right" class="text-base" aria-hidden="true"></iconify-icon>
-        </button>
-      </header>
+    <section id="screen-puntos" class="screen-view bg-slate-50 dark:bg-slate-950 h-full flex flex-col overflow-hidden relative">
+      <!-- Área scrollable independiente: Header, Balance, Comercios e Historial -->
+      <div class="flex-1 overflow-y-auto p-4 space-y-5">
+        <!-- Header -->
+        <header class="flex items-center justify-between pt-2 shrink-0">
+          <h1 class="text-3xl font-black text-slate-900 dark:text-white">Mis EcoPuntos</h1>
+          <button type="button" data-navigate="mapa" class="touch-target px-3 py-2 rounded-xl text-xs font-semibold text-emerald-700 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-slate-900 underline flex items-center gap-1">
+            <span>Ir al Mapa</span>
+            <iconify-icon icon="mynaui:chevron-right" class="text-base" aria-hidden="true"></iconify-icon>
+          </button>
+        </header>
 
-      <!-- Card Balance Actual -->
-      <article class="p-5 rounded-3xl bg-emerald-900 text-white shadow-xl dark:ring-1 dark:ring-emerald-700/60 relative overflow-hidden">
-        <div class="relative z-10">
-          <span class="text-xs font-bold tracking-widest text-emerald-300 uppercase">Balance Actual</span>
-          <div class="flex items-baseline gap-2 mt-1">
-            <span class="text-3xl font-black tracking-tight user-ecopuntos-val">1.250</span>
-            <span class="text-emerald-300 font-bold text-sm">EcoPuntos</span>
+        <!-- Card Balance Actual (Fija e indeformable con min-height, nunca se corta) -->
+        <article class="balance-card shrink-0 p-5 rounded-3xl bg-emerald-900 text-white shadow-xl dark:ring-1 dark:ring-emerald-700/60 relative">
+          <div class="relative z-10">
+            <span class="text-xs font-bold tracking-widest text-emerald-300 uppercase">Balance Actual</span>
+            <div class="flex items-baseline gap-2 mt-1">
+              <span class="text-3xl font-black tracking-tight user-ecopuntos-val">1.250</span>
+              <span class="text-emerald-300 font-bold text-sm">EcoPuntos</span>
+            </div>
+
+            <!-- Barra de Progreso hacia el próximo beneficio -->
+            <div class="mt-4 pt-3 border-t border-emerald-800/80">
+              <div class="flex justify-between text-xs text-emerald-200 mb-1">
+                <span id="balance-goal-text">Próximo beneficio: 1.500 pts</span>
+                <span id="balance-progress-pct" class="font-bold text-amber-400">83%</span>
+              </div>
+              <div class="w-full bg-emerald-950 h-2.5 rounded-full overflow-hidden" role="progressbar" id="balance-progressbar" aria-label="Progreso hacia el próximo beneficio de 1500 EcoPuntos" aria-valuemin="0" aria-valuemax="1500" aria-valuenow="1250">
+                <div id="balance-progress-fill" class="bg-gradient-to-r from-amber-400 to-amber-500 h-full w-[83%] rounded-full transition-all duration-300"></div>
+              </div>
+            </div>
           </div>
 
-          <!-- Barra de Progreso hacia el próximo beneficio -->
-          <div class="mt-4 pt-3 border-t border-emerald-800/80">
-            <div class="flex justify-between text-xs text-emerald-200 mb-1">
-              <span id="balance-goal-text">Próximo beneficio: 1.500 pts</span>
-              <span id="balance-progress-pct" class="font-bold text-amber-400">83%</span>
-            </div>
-            <div class="w-full bg-emerald-950 h-2.5 rounded-full overflow-hidden" role="progressbar" id="balance-progressbar" aria-label="Progreso hacia el próximo beneficio de 1500 EcoPuntos" aria-valuemin="0" aria-valuemax="1500" aria-valuenow="1250">
-              <div id="balance-progress-fill" class="bg-gradient-to-r from-amber-400 to-amber-500 h-full w-[83%] rounded-full transition-all duration-300"></div>
-            </div>
+          <!-- Medalla Dorada (fluent-emoji-flat:sports-medal) -->
+          <div class="absolute right-3 top-3 w-14 h-14 rounded-full bg-amber-500/20 border border-amber-400/40 flex items-center justify-center shadow-inner" aria-hidden="true">
+            <iconify-icon icon="fluent-emoji-flat:sports-medal" class="text-4xl" aria-hidden="true"></iconify-icon>
           </div>
-        </div>
-
-        <!-- Medalla Dorada (fluent-emoji-flat:sports-medal) -->
-        <div class="absolute right-3 top-3 w-14 h-14 rounded-full bg-amber-500/20 border border-amber-400/40 flex items-center justify-center shadow-inner" aria-hidden="true">
-          <iconify-icon icon="fluent-emoji-flat:sports-medal" class="text-4xl" aria-hidden="true"></iconify-icon>
-        </div>
-      </article>
+        </article>
 
       <!-- Sección Comercios Adheridos -->
       <section class="space-y-3" aria-labelledby="comercios-heading">
@@ -592,8 +594,10 @@
         </div>
       </section>
 
-      <!-- Bottom Nav fijado internamente dentro de la pantalla Puntos -->
-      <nav aria-label="Navegación principal en Mis EcoPuntos" class="absolute bottom-0 left-0 right-0 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 px-3 py-1.5 flex justify-between items-center z-30">
+      </div>
+
+      <!-- Bottom Nav SIEMPRE FIJO al pie de la pantalla, fuera del contenedor scrollable -->
+      <nav aria-label="Navegación principal en Mis EcoPuntos" class="shrink-0 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 px-3 py-1.5 flex justify-between items-center z-30">
         <button type="button" data-navigate="splash" class="nav-item px-2 py-1 rounded-xl flex flex-col items-center justify-center text-xs text-slate-600 dark:text-slate-400 hover:text-emerald-700 dark:hover:text-emerald-400 aria-[current=page]:font-bold aria-[current=page]:text-emerald-700 dark:aria-[current=page]:text-emerald-400" data-target="splash">
           <iconify-icon icon="mynaui:home" class="text-2xl" aria-hidden="true"></iconify-icon>
           <span>Inicio</span>
@@ -983,40 +987,43 @@
       </div>
     </aside>
 
-    <!-- Diálogo informativo: Guía y Cronograma de Reciclaje de Río Cuarto -->
-    <dialog id="guide-dialog" aria-labelledby="guide-dialog-title" aria-describedby="guide-dialog-desc" class="w-[calc(100%-2rem)] max-w-sm rounded-3xl p-5 bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-2xl backdrop:bg-slate-950/70 backdrop:backdrop-blur-sm">
-      <div class="space-y-4">
-        <div class="flex items-start justify-between gap-2">
-          <div>
-            <h2 id="guide-dialog-title" class="text-2xl font-bold text-slate-900 dark:text-white">Guía y Cronograma</h2>
-            <p id="guide-dialog-desc" class="text-xs text-slate-600 dark:text-slate-400">Separación en origen y recolección diferenciada en Río Cuarto</p>
-          </div>
-          <button type="button" id="btn-close-guide-top" class="touch-target rounded-full text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-center shrink-0" aria-label="Cerrar guía">
-            <iconify-icon icon="mynaui:x" class="text-2xl" aria-hidden="true"></iconify-icon>
-          </button>
+    <!-- Diálogo informativo: Guía y Cronograma de Reciclaje de Río Cuarto (Adaptable con max-h y scroll interno para tipografía grande/muy grande) -->
+    <dialog id="guide-dialog" aria-labelledby="guide-dialog-title" aria-describedby="guide-dialog-desc" class="w-[calc(100%-2rem)] max-w-sm max-h-[85vh] my-auto rounded-3xl p-5 bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-2xl backdrop:bg-slate-950/70 backdrop:backdrop-blur-sm overflow-hidden">
+      <div class="flex flex-col max-h-[calc(85vh-2.5rem)] h-full">
+      <!-- Header fijo del modal -->
+      <div class="flex items-start justify-between gap-2 shrink-0 pb-3 border-b border-slate-100 dark:border-slate-800">
+        <div>
+          <h2 id="guide-dialog-title" class="text-2xl font-bold text-slate-900 dark:text-white">Guía y Cronograma</h2>
+          <p id="guide-dialog-desc" class="text-xs text-slate-600 dark:text-slate-400">Separación en origen y recolección diferenciada en Río Cuarto</p>
         </div>
+        <button type="button" id="btn-close-guide-top" class="touch-target rounded-full text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-center shrink-0" aria-label="Cerrar guía">
+          <iconify-icon icon="mynaui:x" class="text-2xl" aria-hidden="true"></iconify-icon>
+        </button>
+      </div>
 
-        <div class="space-y-2.5 text-xs">
-          <article class="p-3 rounded-2xl bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800">
-            <h3 class="font-bold text-emerald-900 dark:text-emerald-200 text-lg">Campanas Verdes (Secos)</h3>
-            <p class="text-slate-700 dark:text-slate-300 mt-0.5">Botellas PET limpias y aplastadas, papel y cartón seco, envases Tetra Pak y latas de aluminio.</p>
-          </article>
+      <!-- Contenedor scrollable de las tarjetas de información -->
+      <div class="flex-1 overflow-y-auto space-y-2.5 py-3 pr-1 text-xs">
+        <article class="p-3 rounded-2xl bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800">
+          <h3 class="font-bold text-emerald-900 dark:text-emerald-200 text-lg">Campanas Verdes (Secos)</h3>
+          <p class="text-slate-700 dark:text-slate-300 mt-0.5">Botellas PET limpias y aplastadas, papel y cartón seco, envases Tetra Pak y latas de aluminio.</p>
+        </article>
 
-          <article class="p-3 rounded-2xl bg-amber-50 dark:bg-slate-800 border border-amber-200 dark:border-slate-700">
-            <h3 class="font-bold text-slate-900 dark:text-white text-lg">Puntos Limpios Municipales</h3>
-            <p class="text-slate-700 dark:text-slate-300 mt-0.5">Frascos y botellas de vidrio sanos, pequeños aparatos electrónicos (RAEE), pilas y aceite vegetal usado.</p>
-          </article>
+        <article class="p-3 rounded-2xl bg-amber-50 dark:bg-slate-800 border border-amber-200 dark:border-slate-700">
+          <h3 class="font-bold text-slate-900 dark:text-white text-lg">Puntos Limpios Municipales</h3>
+          <p class="text-slate-700 dark:text-slate-300 mt-0.5">Frascos y botellas de vidrio sanos, pequeños aparatos electrónicos (RAEE), pilas y aceite vegetal usado.</p>
+        </article>
 
-          <article class="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 space-y-1">
-            <h3 class="font-bold text-slate-900 dark:text-white text-lg">Cronograma Barrial (Secos)</h3>
-            <p class="text-slate-700 dark:text-slate-300"><strong>Centro y Macrocentro:</strong> Martes y Jueves (14:00 a 18:00 hs)</p>
-            <p class="text-slate-700 dark:text-slate-300"><strong>Alberdi y Bimaco:</strong> Miércoles y Viernes (08:00 a 13:00 hs)</p>
-            <p class="text-slate-700 dark:text-slate-300"><strong>Banda Norte y Golf:</strong> Lunes y Jueves (08:00 a 13:00 hs)</p>
-          </article>
-        </div>
+        <article class="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 space-y-1">
+          <h3 class="font-bold text-slate-900 dark:text-white text-lg">Cronograma Barrial (Secos)</h3>
+          <p class="text-slate-700 dark:text-slate-300"><strong>Centro y Macrocentro:</strong> Martes y Jueves (14:00 a 18:00 hs)</p>
+          <p class="text-slate-700 dark:text-slate-300"><strong>Alberdi y Bimaco:</strong> Miércoles y Viernes (08:00 a 13:00 hs)</p>
+          <p class="text-slate-700 dark:text-slate-300"><strong>Banda Norte y Golf:</strong> Lunes y Jueves (08:00 a 13:00 hs)</p>
+        </article>
+      </div>
 
-        <form method="dialog">
-          <button type="submit" id="btn-close-guide" class="btn-primary w-full">Entendido</button>
+        <!-- Footer fijo del modal -->
+        <form method="dialog" class="shrink-0 pt-3 border-t border-slate-100 dark:border-slate-800">
+          <button type="submit" id="btn-close-guide" class="btn-primary w-full min-h-[44px]">Entendido</button>
         </form>
       </div>
     </dialog>
