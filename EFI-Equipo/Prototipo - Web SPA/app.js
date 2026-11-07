@@ -954,10 +954,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (nearbyCardIcon && nearbyCardIconWrap) {
       nearbyCardIcon.setAttribute('icon', isFull ? 'mynaui:ban' : (marker.dataset.category === 'punto-limpio' ? 'mynaui:sparkles' : 'mynaui:location'));
       nearbyCardIconWrap.className = isFull
-        ? 'w-9 h-9 rounded-xl bg-red-100 dark:bg-red-950/60 text-red-600 dark:text-red-400 flex items-center justify-center shrink-0'
+        ? 'w-9 h-9 rounded-xl bg-red-100 dark:bg-red-950/60 text-red-600 dark:text-red-400 flex items-center justify-center shrink-0 mt-0.5'
         : isWarning
-          ? 'w-9 h-9 rounded-xl bg-amber-100 dark:bg-amber-950/60 text-amber-700 dark:text-amber-400 flex items-center justify-center shrink-0'
-          : 'w-9 h-9 rounded-xl bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-300 flex items-center justify-center shrink-0';
+          ? 'w-9 h-9 rounded-xl bg-amber-100 dark:bg-amber-950/60 text-amber-700 dark:text-amber-400 flex items-center justify-center shrink-0 mt-0.5'
+          : 'w-9 h-9 rounded-xl bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-300 flex items-center justify-center shrink-0 mt-0.5';
     }
 
     if (nearbyActionLabel && nearbyActionBtn) {
