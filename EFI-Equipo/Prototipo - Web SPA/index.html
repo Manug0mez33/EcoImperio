@@ -6,24 +6,21 @@
   <title>EcoImperio - Red de Reciclaje Barrial</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%23064e3b' stroke='%2310b981' stroke-width='4'/%3E%3Cpath d='M22 18l5 6 5-7 5 7 5-6 2 9H20l2-9z' fill='%23fbbf24'/%3E%3Cpath d='M32 48V30M32 36c-8 0-12-6-12-12 8 0 12 6 12 12zm0-4c8 0 12-6 12-12-8 0-12 6-12 12z' stroke='%2334d399' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E">
 
-  <!-- Preferencias aplicadas antes del primer pintado (tema, alto contraste, tamaño de texto y animaciones) para evitar destellos -->
+  <!-- Limpieza automática de estado cacheado al iniciar para arrancar siempre limpio -->
   <script>
     (function () {
-      var saved = null, highContrast = null;
       try {
-        saved = localStorage.getItem('ecoimperio_dark_mode');
-        highContrast = localStorage.getItem('ecoimperio_high_contrast');
+        [
+          'ecoimperio_session_email',
+          'ecoimperio_user_data',
+          'ecoimperio_community_posts',
+          'ecoimperio_dark_mode',
+          'ecoimperio_high_contrast',
+          'ecoimperio_text_size',
+          'ecoimperio_reduce_motion',
+          'ecoimperio_notifications'
+        ].forEach(function (k) { localStorage.removeItem(k); });
       } catch (e) {}
-      var dark = saved === 'true';
-      document.documentElement.classList.toggle('dark', dark);
-      document.documentElement.classList.toggle('high-contrast', highContrast === 'true');
-      var textSize = null, reduceMotion = null;
-      try {
-        textSize = localStorage.getItem('ecoimperio_text_size');
-        reduceMotion = localStorage.getItem('ecoimperio_reduce_motion');
-      } catch (e) {}
-      if (textSize === 'large' || textSize === 'xlarge') document.documentElement.classList.add('text-size-' + textSize);
-      document.documentElement.classList.toggle('reduce-motion', reduceMotion === 'true');
     })();
   </script>
 

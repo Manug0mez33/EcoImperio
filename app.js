@@ -501,21 +501,14 @@ document.addEventListener('DOMContentLoaded', () => {
     updatePointsUI();
   }
 
-  // Restaurar sesión activa si se recarga la página
-  (function restoreActiveSession() {
-    let savedEmail = null;
+  // Al iniciar la app, se limpia cualquier sesión previa para comenzar siempre desde la portada sin auto-login
+  (function clearCachedSessionOnBoot() {
     try {
-      savedEmail = localStorage.getItem(SESSION_EMAIL_KEY);
+      localStorage.removeItem(SESSION_EMAIL_KEY);
+      localStorage.removeItem(USER_DATA_KEY);
+      localStorage.removeItem(COMMUNITY_POSTS_KEY);
     } catch (e) {}
-    if (!savedEmail) return;
-    if (savedEmail === DEMO_ACCOUNT.email) {
-      startSession(DEMO_ACCOUNT, DEMO_WALLET);
-    } else {
-      const account = loadAccounts().find(acc => acc.email === savedEmail);
-      if (account) {
-        startSession(account, { ecoPuntos: 0, history: [] });
-      }
-    }
+    syncSplashCTA();
   })();
 
   const normalizePhone = value => value.replace(/[\s-]/g, '');
