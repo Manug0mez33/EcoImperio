@@ -7,7 +7,7 @@ Los rótulos de la aplicación siguen las reglas de inteligibilidad y mapeo natu
 - **"Registrarse" / "Crear cuenta"**: Alta de un nuevo vecino completando sus datos personales y barrio de Río Cuarto.
 - **"Campanas Verdes" / "Puntos Limpios"**: Píldoras de filtrado en el encabezado del mapa interactivo para segmentar los puntos de reciclaje por categoría.
 - **"Escáner QR"**: Botón central elevado de la barra inferior y acción en la tarjeta del mapa para abrir el visor de cámara y validar el código QR del contenedor.
-- **"Registrar Depósito"**: Acción transaccional final del escáner para confirmar el material reciclable depositado y acreditar los EcoPuntos correspondientes.
+- **"Depositar"**: Acción final del escáner (habilitada solo con GPS validado junto a la campana) que abre la compuerta; la campana detecta el material por sensor y acredita los EcoPuntos correspondientes. El vecino no elige el material.
 - **"Mis EcoPuntos"**: Sección de billetera digital donde el vecino consulta su balance actual, su progreso hacia el próximo canje, el catálogo de comercios y su historial.
 - **"Comercios Adheridos"**: Catálogo de negocios locales de Río Cuarto donde canjear EcoPuntos por descuentos directos.
 - **"Historial de Reciclaje"**: Lista cronológica de depósitos verificados con detalle de material, punto verde, fecha/hora y EcoPuntos sumados.
@@ -32,3 +32,10 @@ Alineados con `decisiones.md` (ADR-002) y `docs/conceptos/06_DCU_Personas_y_Jour
 2. **Arquetipo 2 — Marta / Vecino con Visión Reducida y Baja Alfabetización Digital**:
    - *Perfil*: Vecina mayor o usuario con disminución visual que desea participar del reciclaje urbano sin depender de terceros.
    - *Necesidades UX/UI*: Etiquetas en lenguaje llano y sin tecnicismos, soporte de **Modo Claro, Modo Oscuro y Modo Alto Contraste (WCAG AAA $\ge 7:1$)**, escalado tipográfico desde `16px` hasta `125%`, codificación redundante (color + ícono + texto) y botones táctiles amplios ($\ge 44\text{x}44\text{px}$ a $48\text{x}48\text{px}$).
+
+## 4. Campana Inteligente IoT (ver ADR-006)
+- **QR Dinámico de Campana**: Código QR que muestra la pantalla de cada campana y rota cada ~30 s. Contiene `id_campana + nonce + timestamp` firmados, por lo que una foto del QR no sirve después ni desde otro lugar.
+- **Geovallado GPS (Geofencing)**: Validación de que el celular del vecino está a menos de 20 m de la campana. Fuera de ese radio, el botón `Escanear` no aparece en el mapa.
+- **Sesión de Depósito**: Ventana corta (~60 s) que el servidor abre al validar QR + GPS + usuario. Vincula la campana con la cuenta del vecino: todo lo que la campana detecte en esa ventana se acredita a esa cuenta.
+- **Detección Óptica/Gravimétrica de Material**: La campana identifica el material (PET, cartón, aluminio, vidrio) con cámara/sensor óptico y verifica el peso con una celda de carga. Si no detecta material válido, no se acreditan puntos.
+- **Bonus por Baja Ocupación**: `+10 pts` extra al depositar en campanas con baja ocupación, para que las campanas se llenen de forma pareja.

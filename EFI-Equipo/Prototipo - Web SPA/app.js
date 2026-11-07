@@ -918,9 +918,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const targetY = marker.dataset.y || '43';
     const chipX = marker.dataset.chipX || '44';
     const chipY = marker.dataset.chipY || '48';
-    const distanceChip = marker.dataset.distanceChip || '350m • 4 min';
+    const distanceChip = marker.dataset.distanceChip || 'A 8m • QR activo';
     const isFull = status === 'full';
     const isWarning = status === 'warning';
+    const inRange = marker.dataset.inRange === 'true';
 
     state.selectedPoint = cleanTitle;
     state.selectedPointStatus = status;
@@ -961,10 +962,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (nearbyActionLabel && nearbyActionBtn) {
-      nearbyActionLabel.textContent = isFull ? 'Ver cercano' : 'Escanear';
-      nearbyActionBtn.className = isFull
-        ? 'touch-target px-3 py-1.5 rounded-xl bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold flex items-center gap-1 shadow-md shrink-0 cursor-pointer transition-all'
-        : 'touch-target px-3 py-1.5 rounded-xl bg-emerald-800 hover:bg-emerald-700 text-white text-xs font-bold flex items-center gap-1 shadow-md shrink-0 cursor-pointer transition-all';
+      if (isFull) {
+        nearbyActionLabel.textContent = 'Ver cercano';
+        nearbyActionBtn.className = 'touch-target px-3 py-1.5 rounded-xl bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold flex items-center gap-1 shadow-md shrink-0 cursor-pointer transition-all';
+      } else if (inRange) {
+        nearbyActionLabel.textContent = 'Escanear';
+        nearbyActionBtn.className = 'touch-target px-3 py-1.5 rounded-xl bg-emerald-800 hover:bg-emerald-700 text-white text-xs font-bold flex items-center gap-1 shadow-md shrink-0 cursor-pointer transition-all';
+      } else {
+        nearbyActionBtn.className = 'hidden';
+      }
     }
 
     if (route) {
@@ -1105,12 +1111,14 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ==========================================================================
-  // ESCÁNER QR: Linterna / Flash, Selector de Material y Registro de Depósito
+  // ESCÁNER QR DINÁMICO + DETECCIÓN AUTOMÁTICA DE MATERIAL EN CAMPANA IOT
   // ==========================================================================
   const scannerFlashBtn = document.getElementById('btn-scanner-flash');
   const scannerViewfinder = document.getElementById('scanner-viewfinder');
   const scannerStatusHint = document.getElementById('scanner-status-hint');
-  const materialBtns = document.querySelectorAll('.scanner-material-btn');
+  const scannerGpsPill = document.getElementById('scanner-gps-pill');
+  const AUTO_DETECT_KEYS = ['pet', 'carton', 'aluminio'];
+  let autoDetectIdx = 0;
 
   if (scannerFlashBtn) {
     scannerFlashBtn.addEventListener('click', () => {
@@ -1120,81 +1128,21 @@ document.addEventListener('DOMContentLoaded', () => {
       if (scannerViewfinder) scannerViewfinder.classList.toggle('scanner-flash-active', state.scannerFlash);
       if (scannerStatusHint) {
         scannerStatusHint.textContent = state.scannerFlash
-          ? 'Linterna activa • Enfocá el código QR del contenedor'
-          : 'Centrá el código QR de la campana o elegí el material a depositar';
+          ? 'Linterna activa • Apuntá al QR dinámico de la campana'
+          : 'Escaneá el QR dinámico de la campana para destrabar la compuerta';
       }
-      showToast(state.scannerFlash ? 'Linterna de cámara activada.' : 'Linterna desactivada.');
+      showToast(state.scannerFlash ? 'Linterna activada.' : 'Linterna desactivada.');
     });
-  }
-
-  function getPointBonus(pointTitle) {
-    if (/alberdi|plaza roca|centro/i.test(pointTitle || '')) {
-      return 10;
-    }
-    return 0;
-  }
-
-  function getTargetDepositLocation(materialKey) {
-    const mat = MATERIALS[materialKey] || MATERIALS.pet;
-    const currentPoint = state.selectedPoint || 'Campana Verde - B° Alberdi';
-    if (mat.container === 'Punto Limpio' && !/punto limpio/i.test(currentPoint)) {
-      return {
-        targetPoint: 'Punto Limpio - Plaza Roca',
-        redirected: true,
-        bonusPoints: 10
-      };
-    }
-    return {
-      targetPoint: currentPoint,
-      redirected: false,
-      bonusPoints: getPointBonus(currentPoint)
-    };
   }
 
   function updateScannerMaterialUI() {
-    const mat = MATERIALS[state.selectedMaterial] || MATERIALS.pet;
-    const codeEl = document.getElementById('scanner-material-code');
-    const pointsEl = document.getElementById('scanner-material-points');
-    const titleEl = document.getElementById('scanner-material-title');
-    const descEl = document.getElementById('scanner-material-desc');
-    const { targetPoint, redirected, bonusPoints } = getTargetDepositLocation(state.selectedMaterial);
-    const totalPoints = mat.points + bonusPoints;
-
-    if (codeEl) codeEl.textContent = mat.code;
-    if (pointsEl) {
-      pointsEl.textContent = bonusPoints > 0
-        ? `+${totalPoints} pts (${mat.points} + ${bonusPoints} Bonus)`
-        : `+${mat.points} EcoPuntos`;
+    if (scannerGpsPill) {
+      scannerGpsPill.textContent = 'GPS validado • Campana Alberdi (a 8m)';
     }
-    if (titleEl) titleEl.textContent = mat.title;
-    if (descEl) {
-      if (redirected) {
-        descEl.innerHTML = `El vidrio se recibe en <strong>${targetPoint} (15%)</strong>. Sumás <strong>+${mat.points} pts</strong> + <strong>${bonusPoints} pts Bonus</strong> por baja ocupación (Total: <strong>+${totalPoints} EcoPuntos</strong>).`;
-      } else if (bonusPoints > 0) {
-        descEl.innerHTML = `Depositá en <strong>${targetPoint}</strong> (baja ocupación) y sumá <strong>+${mat.points} pts</strong> + <strong>${bonusPoints} pts Bonus</strong> para equilibrar el llenado (Total: <strong>+${totalPoints} EcoPuntos</strong>).`;
-      } else {
-        descEl.innerHTML = `Depositá en <strong>${targetPoint} (75%)</strong> para sumar <strong>+${mat.points} EcoPuntos</strong>. <em>Tip: las campanas más vacías otorgan +10 pts bonus.</em>`;
-      }
+    if (scannerStatusHint) {
+      scannerStatusHint.textContent = 'Escaneá el QR dinámico de la campana para destrabar la compuerta';
     }
-
-    materialBtns.forEach(btn => {
-      const isSelected = btn.dataset.material === state.selectedMaterial;
-      btn.setAttribute('aria-pressed', String(isSelected));
-      btn.classList.toggle('bg-emerald-700', isSelected);
-      btn.classList.toggle('text-white', isSelected);
-      btn.classList.toggle('border-emerald-400', isSelected);
-      btn.classList.toggle('bg-slate-800', !isSelected);
-      btn.classList.toggle('text-slate-200', !isSelected);
-      btn.classList.toggle('border-slate-700', !isSelected);
-    });
   }
-
-  materialBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      state.selectedMaterial = btn.dataset.material;
-      updateScannerMaterialUI();
-    });
-  });
 
   const btnRegisterDeposit = document.getElementById('btn-register-deposit');
   if (btnRegisterDeposit) {
@@ -1202,43 +1150,47 @@ document.addEventListener('DOMContentLoaded', () => {
       if (btnRegisterDeposit.disabled) return;
       btnRegisterDeposit.disabled = true;
 
-      const mat = MATERIALS[state.selectedMaterial] || MATERIALS.pet;
-      const { targetPoint, bonusPoints } = getTargetDepositLocation(state.selectedMaterial);
-      const totalPoints = mat.points + bonusPoints;
-      state.ecoPuntos += totalPoints;
-
-      const nowStr = new Date().toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' });
-      const selectedMarkerEl = [...document.querySelectorAll('.map-marker')].find(m => (m.dataset.title || '').includes(targetPoint));
-      const capacityStr = selectedMarkerEl && selectedMarkerEl.dataset.capacity
-        ? (bonusPoints > 0 ? `Baja ocupación (${selectedMarkerEl.dataset.capacity}) • +${bonusPoints} pts Bonus` : `Ocupación media-alta (${selectedMarkerEl.dataset.capacity})`)
-        : (bonusPoints > 0 ? `Baja ocupación (25% ocupado) • +${bonusPoints} pts Bonus` : 'Ocupación media-alta (75% ocupado)');
-      const co2Saved = (totalPoints * 0.04).toFixed(1).replace('.', ',');
-
-      const newItem = {
-        id: Date.now(),
-        title: bonusPoints > 0 ? `${mat.title} (+${bonusPoints} pts Bonus vaciado parejo)` : `${mat.title} (${mat.code})`,
-        location: targetPoint,
-        time: `Hoy, ${nowStr} hs`,
-        points: totalPoints,
-        containerStatus: capacityStr,
-        impact: `Material limpio verificado • ${co2Saved} kg CO₂ evitado`,
-        ticketCode: `#ECO-${String(Date.now()).slice(-4)}`
-      };
-      state.history.unshift(newItem);
-      state.historyPage = 1;
-
-      saveUserWallet();
-      updatePointsUI();
-      showToast(
-        bonusPoints > 0
-          ? `¡Depósito registrado! Sumaste +${totalPoints} EcoPuntos (${mat.points} base + ${bonusPoints} bonus por campana con baja ocupación).`
-          : `¡Depósito registrado! Sumaste +${totalPoints} EcoPuntos a tu billetera.`
-      );
-      navigateTo('puntos');
+      const btnSpan = btnRegisterDeposit.querySelector('span');
+      if (btnSpan) btnSpan.textContent = 'Abriendo compuerta...';
+      if (scannerStatusHint) {
+        scannerStatusHint.textContent = 'QR verificado • Compuerta abierta, sensor detectando material...';
+      }
 
       setTimeout(() => {
+        const detectedKey = AUTO_DETECT_KEYS[autoDetectIdx % AUTO_DETECT_KEYS.length];
+        autoDetectIdx += 1;
+        state.selectedMaterial = detectedKey;
+
+        const mat = MATERIALS[detectedKey] || MATERIALS.pet;
+        const targetPoint = 'Campana Verde - B° Alberdi';
+        const bonusPoints = 10;
+        const totalPoints = mat.points + bonusPoints;
+        state.ecoPuntos += totalPoints;
+
+        const nowStr = new Date().toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' });
+        const co2Saved = (totalPoints * 0.04).toFixed(1).replace('.', ',');
+
+        const newItem = {
+          id: Date.now(),
+          title: `${mat.title} (Detectado por sensor • +${bonusPoints} pts Bonus)`,
+          location: targetPoint,
+          time: `Hoy, ${nowStr} hs`,
+          points: totalPoints,
+          containerStatus: 'Baja ocupación (25% ocupado) • +10 pts Bonus',
+          impact: `Sensor óptico IoT verificado • ${co2Saved} kg CO₂ evitado`,
+          ticketCode: `#ECO-${String(Date.now()).slice(-4)}`
+        };
+        state.history.unshift(newItem);
+        state.historyPage = 1;
+
+        saveUserWallet();
+        updatePointsUI();
+        showToast(`Sensor detectó ${mat.title}: sumaste +${totalPoints} EcoPuntos (+${bonusPoints} Bonus).`);
+        navigateTo('puntos');
+
+        if (btnSpan) btnSpan.textContent = 'Depositar';
         btnRegisterDeposit.disabled = false;
-      }, 250);
+      }, 500);
     });
   }
 

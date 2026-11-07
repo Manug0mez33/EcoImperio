@@ -59,3 +59,45 @@
   - Las validaciones de Registro y Perfil comparten un único objeto `validators` en `app.js`.
   - El Drawer fuera de pantalla utiliza el atributo `inert` (y control de foco con cierre mediante tecla `Escape`) para impedir que el foco de teclado quede atrapado en elementos ocultos.
 - **Consecuencias**: Preferencias de accesibilidad y notificaciones persistidas en `localStorage` y sincronizadas en tiempo real con todos los controles de la aplicación.
+
+## ADR-006: Validación de Depósitos con Campana Inteligente IoT (QR Dinámico + GPS + Sensor)
+- **Estado**: Aceptado (prototipo simulado en la SPA)
+- **Fecha**: 2026-11-07
+- **Contexto**: Si el vecino elige el material y confirma desde la app, puede sumar puntos sin depositar nada. Necesitamos probar tres cosas: que está **en el lugar**, que es **él** y que **realmente depositó** un material válido.
+- **Decisión**:
+  1. **Ubicación validada (GPS)**: el escáner solo se habilita a menos de 20 m de la campana. En el mapa, el botón `Escanear` aparece únicamente en la card del punto en rango (demo: Campana B° Alberdi, a 8 m); en los puntos lejanos se oculta.
+  2. **QR dinámico**: la pantalla de la campana muestra un QR que rota cada ~30 s (`id_campana + nonce + timestamp` firmados). Una foto vieja del QR no sirve.
+  3. **Handshake con el servidor**: la app envía `QR + GPS + token del usuario`. El servidor valida y abre una **sesión de depósito** de ~60 s, y ordena a la campana abrir la compuerta. Así la campana sabe a quién acreditar: todo lo detectado en esa sesión va a esa cuenta.
+  4. **Detección por sensor**: la campana identifica el material (cámara/sensor óptico) y confirma el peso (celda de carga). Los puntos se calculan según lo detectado; el vecino **no elige** el material.
+  5. **Acreditación**: la campana informa el resultado al servidor, que suma los EcoPuntos (más `+10 pts` de bonus si la campana tiene baja ocupación) y cierra la sesión.
+- **En el prototipo**: el botón `Depositar` simula `Abriendo compuerta...` → detección automática → acreditación. No hay selección manual de material.
+- **Consecuencias**: Antifraude por tres capas (lugar + identidad + material). Requiere hardware (pantalla, cerradura, sensores, conectividad 4G/LoRa) y backend, fuera del alcance del prototipo (ADR-001).
+
+```mermaid
+sequenceDiagram
+    participant V as Vecino (App)
+    participant S as Servidor
+    participant C as Campana IoT
+    C->>C: Muestra QR dinámico (rota c/30 s)
+    V->>S: QR + GPS + token
+    S->>S: Valida firma, distancia < 20 m y usuario
+    S->>C: Abrir compuerta (sesión 60 s)
+    C->>C: Sensor detecta material y peso
+    C->>S: Resultado del depósito
+    S->>V: +EcoPuntos acreditados
+```
+
+## ADR-007: Proceso de Aprobación Municipal e Implementación en Vía Pública
+- **Estado**: Propuesto (para presentación; 1 diapositiva)
+- **Fecha**: 2026-11-07
+- **Contexto**: Las campanas se instalan en espacio público de Río Cuarto, por lo que requieren autorización de la Municipalidad. El proceso se resume en 4 etapas.
+- **Decisión** (resumen para diapositiva):
+
+| Etapa | Qué se hace | Quién |
+|---|---|---|
+| 1. Presentación | Nota formal por Mesa de Entradas con el proyecto, ubicaciones propuestas y costos. | Equipo EcoImperio |
+| 2. Evaluación | Revisión técnica, ambiental y legal; posible convenio con la Secretaría de Ambiente. | Municipalidad |
+| 3. Aprobación | Firma de convenio o decreto/ordenanza y permiso de uso del espacio público. | Intendencia / Concejo Deliberante |
+| 4. Puesta en marcha | Piloto con pocas campanas (ej. B° Alberdi y Centro), medición de resultados y ampliación por barrios. | Equipo + Municipalidad |
+
+- **Consecuencias**: El piloto acotado reduce riesgos y costos, y genera datos (kg reciclados, vecinos activos) para justificar la ampliación.
