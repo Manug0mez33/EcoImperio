@@ -40,9 +40,17 @@ Alineados con `decisiones.md` (ADR-002) y `docs/conceptos/06_DCU_Personas_y_Jour
 - **Detección Óptica/Gravimétrica de Material**: La campana identifica el material (PET, cartón, aluminio, vidrio) con cámara/sensor óptico y verifica el peso con una celda de carga. Si no detecta material válido, no se acreditan puntos.
 - **Bonus por Baja Ocupación**: `+10 pts` extra al depositar en campanas con baja ocupación, para que las campanas se llenen de forma pareja.
 
-## 5. Perfil del Vecino
-- **Perfil**: Pantalla `screen-config` (antes "Mi Perfil y Cuenta"). Muestra avatar, sello de vecino verificado, impacto acumulado, credencial QR, datos personales y seguridad.
-- **Impacto acumulado**: kg reciclados (peso informado por la celda de carga de la campana), cantidad de depósitos y nivel del vecino.
-- **Nivel vecinal**: Se calcula con los EcoPuntos ganados históricamente (saldo + canjeados): Nivel 1 Semilla (< 500), Nivel 2 Brote (500–999), Nivel 3 EcoVecino (1.000–1.999), Nivel 4 Guardián Verde (≥ 2.000).
-- **Credencial QR del vecino**: Código personal (`#RC-XXXX`) para identificarse en Puntos Limpios y EcoEventos sin dictar datos. Distinto del QR dinámico de la campana (ADR-006).
-- **Avatar**: Iniciales o uno de 4 íconos ecológicos (planta, gota, sol, reciclaje), guardado por cuenta en `localStorage` (`ecoimperio_avatars`).
+## 5. Perfil del Vecino y Gamificación (XP y Niveles)
+- **Perfil**: Pantalla accesible directamente desde la barra inferior (esquina inferior derecha). Muestra avatar personalizable, sello de vecino verificado, métricas de impacto ambiental, credencial QR, edición de datos personales y seguridad.
+- **EcoPuntos canjeables**: Saldo disponible para canjear por descuentos en Comercios Adheridos. Disminuye con cada canje realizado.
+- **Puntos de Experiencia (XP acumulados)**: Total histórico acumulado de puntos ganados por reciclajes y participación comunitaria. **Nunca disminuye al canjear cupones**; funciona como barra de progreso continuo hacia el siguiente nivel.
+- **Escala de Niveles Vecinales**:
+  - *Nivel 1: Semilla* (0 a 499 XP)
+  - *Nivel 2: Brote* (500 a 999 XP)
+  - *Nivel 3: EcoVecino* (1.000 a 1.999 XP)
+  - *Nivel 4: Guardián Verde* (2.000 a 3.499 XP)
+  - *Nivel 5: Héroe Ambiental* (≥ 3.500 XP)
+- **Impacto acumulado**: kg reciclados (peso medido por la celda de carga de la campana), cantidad de depósitos verificados y nivel de experiencia.
+- **Credencial QR del vecino**: Código identificador personal (`#RC-XXXX`) para identificarse presencialmente en Puntos Limpios atendidos y EcoEventos sin dictar datos personales.
+- **Avatar personalizable**: Permite elegir entre las iniciales del vecino o 4 íconos ecológicos (planta, gota de agua, sol, reciclaje), persistidos en `localStorage` (`ecoimperio_avatars`).
+- **Menú Más opciones (Hamburguesa)**: Accesible desde la esquina superior izquierda de las pantallas principales, centralizando accesos secundarios (Mis Eventos, Historial de Reciclaje, Cronograma, Centro de Ayuda, Ajustes de Accesibilidad y Sesión).

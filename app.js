@@ -217,6 +217,8 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Router de Navegación de Pantallas
+  let lastMainScreen = 'mapa';
+
   function navigateTo(screenId) {
     // Si el vecino ya inició sesión, tocar "Inicio" abre el Muro Comunitario (Red Social Barrial)
     if (screenId === 'splash' && state.user) {
@@ -227,6 +229,10 @@ document.addEventListener('DOMContentLoaded', () => {
     } else if ((screenId === 'login' || screenId === 'registro') && state.user) {
       // Si ya inició sesión, no volver al formulario de login a menos que cierre sesión explícitamente
       screenId = 'comunidad';
+    }
+
+    if (['comunidad', 'mapa', 'puntos', 'config'].includes(screenId)) {
+      lastMainScreen = screenId;
     }
 
     const screens = document.querySelectorAll('.screen-view');
@@ -255,12 +261,12 @@ document.addEventListener('DOMContentLoaded', () => {
     let normalizedActive = activeScreen;
     if (activeScreen === 'splash') normalizedActive = 'comunidad';
     if (activeScreen === 'historial') normalizedActive = 'puntos';
-    if (activeScreen === 'config' || activeScreen === 'eventos') normalizedActive = 'mas';
+    if (activeScreen === 'mas' || activeScreen === 'eventos') normalizedActive = '';
 
     const navItems = document.querySelectorAll('.nav-item');
     navItems.forEach(item => {
       const itemTarget = item.getAttribute('data-target');
-      if (itemTarget === activeScreen || itemTarget === normalizedActive) {
+      if (itemTarget === activeScreen || (normalizedActive && itemTarget === normalizedActive)) {
         item.setAttribute('aria-current', 'page');
       } else {
         item.removeAttribute('aria-current');
@@ -588,11 +594,52 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  function getProfileLevel(lifetimePoints) {
-    if (lifetimePoints >= 2000) return { n: 4, name: 'Guardián Verde' };
-    if (lifetimePoints >= 1000) return { n: 3, name: 'EcoVecino' };
-    if (lifetimePoints >= 500) return { n: 2, name: 'Brote' };
-    return { n: 1, name: 'Semilla' };
+  function getLevelInfo(lifetimeXp) {
+    const levels = [
+      { n: 1, name: 'Semilla', min: 0, next: 500 },
+      { n: 2, name: 'Brote', min: 500, next: 1000 },
+      { n: 3, name: 'EcoVecino', min: 1000, next: 2000 },
+      { n: 4, name: 'Guardián Verde', min: 2000, next: 3500 },
+      { n: 5, name: 'Héroe Ambiental', min: 3500, next: null }
+    ];
+
+    let current = levels[0];
+    for (let i = levels.length - 1; i >= 0; i--) {
+      if (lifetimeXp >= levels[i].min) {
+        current = levels[i];
+        break;
+      }
+    }
+
+    if (!current.next) {
+      return {
+        level: current.n,
+        name: current.name,
+        currentXp: lifetimeXp,
+        nextLevelXp: lifetimeXp,
+        remainingXp: 0,
+        pct: 100,
+        nextLevelName: null,
+        nextLevelNumber: current.n,
+        isMax: true
+      };
+    }
+
+    const pct = Math.min(100, Math.round((lifetimeXp / current.next) * 100));
+    const remainingXp = Math.max(0, current.next - lifetimeXp);
+    const nextLevel = levels.find(l => l.n === current.n + 1);
+
+    return {
+      level: current.n,
+      name: current.name,
+      currentXp: lifetimeXp,
+      nextLevelXp: current.next,
+      remainingXp,
+      pct,
+      nextLevelName: nextLevel ? nextLevel.name : 'Siguiente nivel',
+      nextLevelNumber: current.n + 1,
+      isMax: false
+    };
   }
 
   function renderProfileSummary() {
@@ -603,7 +650,8 @@ document.addEventListener('DOMContentLoaded', () => {
       return acc + (match ? parseFloat(match[1].replace(',', '.')) : 0);
     }, 0);
     const redeemed = history.reduce((acc, it) => acc + (it.points < 0 ? -it.points : 0), 0);
-    const level = getProfileLevel((state.ecoPuntos || 0) + redeemed);
+    const lifetimeXp = (state.ecoPuntos || 0) + redeemed;
+    const levelInfo = getLevelInfo(lifetimeXp);
 
     const kgEl = document.getElementById('profile-stat-kg');
     const depositsEl = document.getElementById('profile-stat-deposits');
@@ -611,8 +659,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const levelNameEl = document.getElementById('profile-stat-level-name');
     if (kgEl) kgEl.textContent = `${kg.toFixed(1).replace('.', ',')} kg`;
     if (depositsEl) depositsEl.textContent = String(deposits.length);
-    if (levelEl) levelEl.textContent = `Nivel ${level.n}`;
-    if (levelNameEl) levelNameEl.textContent = level.name;
+    if (levelEl) levelEl.textContent = `Nivel ${levelInfo.level}`;
+    if (levelNameEl) levelNameEl.textContent = levelInfo.name;
   }
 
   // QR ilustrativo determinista por vecino (prototipo: patrón visual con marcadores de posición estándar)
@@ -1494,22 +1542,43 @@ document.addEventListener('DOMContentLoaded', () => {
       el.textContent = state.ecoPuntos.toLocaleString('es-AR');
     });
 
-    // Actualizar barra de progreso dinámica hacia 1.500 pts
-    const pct = Math.min(100, Math.round((state.ecoPuntos / GOAL_POINTS) * 100));
-    const remaining = Math.max(0, GOAL_POINTS - state.ecoPuntos);
+    // Puntos de Experiencia (XP) acumulados: los canjes no restan XP ni nivel
+    const history = Array.isArray(state.history) ? state.history : [];
+    const redeemed = history.reduce((acc, it) => acc + (it.points < 0 ? -it.points : 0), 0);
+    const lifetimeXp = (state.ecoPuntos || 0) + redeemed;
+    const levelInfo = getLevelInfo(lifetimeXp);
+
     const goalTextEl = document.getElementById('balance-goal-text');
     const progressPctEl = document.getElementById('balance-progress-pct');
     const progressFillEl = document.getElementById('balance-progress-fill');
     const progressBarEl = document.getElementById('balance-progressbar');
+    const balanceLevelTag = document.getElementById('balance-level-tag');
+    const balanceCurrentXp = document.getElementById('balance-current-xp');
+    const balanceNextXp = document.getElementById('balance-next-xp');
+    const balanceRemainingXp = document.getElementById('balance-remaining-xp');
 
-    if (goalTextEl) {
-      goalTextEl.textContent = remaining === 0
-        ? '¡Meta de 1.500 pts alcanzada! Beneficio desbloqueado'
-        : `Próximo beneficio: 1.500 pts (faltan ${remaining.toLocaleString('es-AR')} pts)`;
+    if (balanceLevelTag) {
+      balanceLevelTag.textContent = `Nivel ${levelInfo.level} • ${levelInfo.name}`;
     }
-    if (progressPctEl) progressPctEl.textContent = `${pct}%`;
-    if (progressFillEl) progressFillEl.style.width = `${pct}%`;
-    if (progressBarEl) progressBarEl.setAttribute('aria-valuenow', String(Math.min(GOAL_POINTS, state.ecoPuntos)));
+    if (goalTextEl) {
+      goalTextEl.textContent = levelInfo.isMax
+        ? `Nivel ${levelInfo.level}: ${levelInfo.name} (Nivel Máximo)`
+        : `Progreso a Nivel ${levelInfo.nextLevelNumber} (${levelInfo.nextLevelName})`;
+    }
+    if (progressPctEl) progressPctEl.textContent = `${levelInfo.pct}%`;
+    if (progressFillEl) progressFillEl.style.width = `${levelInfo.pct}%`;
+    if (progressBarEl) {
+      progressBarEl.setAttribute('aria-valuenow', String(lifetimeXp));
+      progressBarEl.setAttribute('aria-valuemax', String(levelInfo.nextLevelXp));
+      progressBarEl.setAttribute('aria-label', `Progreso de experiencia: ${levelInfo.pct}% hacia Nivel ${levelInfo.nextLevelNumber}`);
+    }
+    if (balanceCurrentXp) balanceCurrentXp.textContent = lifetimeXp.toLocaleString('es-AR');
+    if (balanceNextXp) balanceNextXp.textContent = levelInfo.nextLevelXp.toLocaleString('es-AR');
+    if (balanceRemainingXp) {
+      balanceRemainingXp.textContent = levelInfo.isMax
+        ? '¡Meta máxima de nivel alcanzada!'
+        : `Faltan ${levelInfo.remainingXp.toLocaleString('es-AR')} XP para subir de nivel`;
+    }
 
     // Actualizar tarjeta de resumen hacia Historial en Mis EcoPuntos y KPIs en #screen-historial
     const historyListContainer = document.getElementById('history-list');
@@ -1729,6 +1798,13 @@ document.addEventListener('DOMContentLoaded', () => {
     btnGuideToHelp.addEventListener('click', () => {
       if (guideDialog && guideDialog.open) guideDialog.close();
       openHelpModal();
+    });
+  }
+
+  const btnBackFromMas = document.getElementById('btn-back-from-mas');
+  if (btnBackFromMas) {
+    btnBackFromMas.addEventListener('click', () => {
+      navigateTo(lastMainScreen || 'mapa');
     });
   }
   document.querySelectorAll('.link-help').forEach(link => {

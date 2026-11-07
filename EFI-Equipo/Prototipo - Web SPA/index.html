@@ -308,21 +308,16 @@
          PANTALLA 2C: COMUNIDAD VERDE (MURO SOCIAL BARRIAL Y ECOEVENTOS)
          ========================================================================== -->
     <section id="screen-comunidad" class="screen-view bg-slate-50 dark:bg-slate-950 h-full flex-col overflow-hidden relative">
-      <!-- Header estructurado con línea divisoria y espaciado aireado (sin botón Publicar redundante) -->
-      <header class="shrink-0 z-20 px-5 pt-3.5 pb-3 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 space-y-3 shadow-xs">
-        <div class="flex items-center justify-between gap-3">
-          <div class="flex items-center gap-3 min-w-0">
-            <div class="w-10 h-10 rounded-2xl bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-300 flex items-center justify-center shrink-0" aria-hidden="true">
-              <iconify-icon icon="mynaui:users" class="text-xl" aria-hidden="true"></iconify-icon>
-            </div>
-            <div class="min-w-0">
-              <h1 class="font-black text-slate-900 dark:text-white leading-tight">Comunidad Verde</h1>
-              <p class="text-xs text-slate-600 dark:text-slate-400">Muro vecinal y EcoEventos de Río Cuarto</p>
-            </div>
-          </div>
-          <button type="button" data-navigate="config" class="touch-target w-10 h-10 rounded-full bg-emerald-800 hover:bg-emerald-700 text-white font-bold text-xs flex items-center justify-center border-2 border-emerald-400 shadow-sm shrink-0" aria-label="Ir a Mi Perfil">
-            <span class="user-initials">OR</span>
+      <!-- Header estructurado con línea divisoria y espaciado aireado con Menú Hamburguesa (Más opciones) en esquina superior izquierda -->
+      <header class="shrink-0 z-20 px-4 pt-3.5 pb-3 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 space-y-3 shadow-xs">
+        <div class="flex items-center gap-2.5">
+          <button type="button" data-navigate="mas" class="touch-target p-2 rounded-xl text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-center shrink-0 cursor-pointer" aria-label="Abrir Más opciones">
+            <iconify-icon icon="mynaui:menu" class="text-2xl" aria-hidden="true"></iconify-icon>
           </button>
+          <div class="min-w-0 flex-1">
+            <h1 class="font-black text-slate-900 dark:text-white leading-tight">Comunidad Verde</h1>
+            <p class="text-xs text-slate-600 dark:text-slate-400">Muro vecinal y EcoEventos de Río Cuarto</p>
+          </div>
         </div>
 
         <!-- Filtros del Muro Social aislados: Depósitos Vecinales y EcoEventos -->
@@ -404,9 +399,9 @@
           <iconify-icon icon="mynaui:gift" class="text-2xl" aria-hidden="true"></iconify-icon>
           <span>Puntos</span>
         </button>
-        <button type="button" data-navigate="mas" class="nav-item w-full py-1 rounded-xl flex flex-col items-center justify-center text-xs text-slate-600 dark:text-slate-400 hover:text-emerald-700 dark:hover:text-emerald-400 aria-[current=page]:font-bold aria-[current=page]:text-emerald-700 dark:aria-[current=page]:text-emerald-400" data-target="mas">
-          <iconify-icon icon="mynaui:menu" class="text-2xl" aria-hidden="true"></iconify-icon>
-          <span>Más</span>
+        <button type="button" data-navigate="config" class="nav-item w-full py-1 rounded-xl flex flex-col items-center justify-center text-xs text-slate-600 dark:text-slate-400 hover:text-emerald-700 dark:hover:text-emerald-400 aria-[current=page]:font-bold aria-[current=page]:text-emerald-700 dark:aria-[current=page]:text-emerald-400" data-target="config">
+          <iconify-icon icon="mynaui:user" class="text-2xl" aria-hidden="true"></iconify-icon>
+          <span>Perfil</span>
         </button>
       </nav>
     </section>
@@ -415,18 +410,18 @@
          PANTALLA 3: HOME MAPA INTERACTIVO
          ========================================================================== -->
     <section id="screen-mapa" class="screen-view relative bg-slate-100 dark:bg-slate-950">
-      <!-- Top Bar Barra Superior -->
+      <!-- Top Bar Barra Superior con Menú Hamburguesa (Más opciones) en esquina superior izquierda -->
       <header class="absolute top-0 left-0 right-0 z-20 p-4 bg-gradient-to-b from-slate-900/60 to-transparent flex items-center justify-between gap-2.5">
+        <button type="button" data-navigate="mas" class="touch-target w-11 h-11 rounded-full bg-white/95 dark:bg-slate-800/95 text-slate-700 dark:text-slate-200 hover:bg-white dark:hover:bg-slate-800 flex items-center justify-center shadow-md border border-slate-200/80 dark:border-slate-700 shrink-0 cursor-pointer" aria-label="Abrir Más opciones">
+          <iconify-icon icon="mynaui:menu" class="text-2xl" aria-hidden="true"></iconify-icon>
+        </button>
+
         <!-- Filtros Rápidos / Búsqueda -->
         <div class="flex-1 relative flex items-center">
           <label for="map-search-input" class="sr-only">Buscar puntos de reciclaje</label>
           <input type="search" id="map-search-input" name="mapSearch" placeholder="Buscar barrio o punto..." aria-label="Buscar puntos de reciclaje" class="w-full pl-9 pr-3 py-2 text-base rounded-full bg-white/95 dark:bg-slate-800/95 text-slate-800 dark:text-slate-100 placeholder-slate-500 dark:placeholder-slate-400 backdrop-blur shadow-md border border-slate-200/80 dark:border-slate-700 focus:border-emerald-500">
           <iconify-icon icon="mynaui:search" class="absolute left-3 text-slate-500 dark:text-slate-400 text-lg pointer-events-none" aria-hidden="true"></iconify-icon>
         </div>
-
-        <button type="button" data-navigate="config" class="touch-target w-11 h-11 rounded-full bg-emerald-700 hover:bg-emerald-600 text-white font-bold text-xs flex items-center justify-center border-2 border-white dark:border-slate-900 shadow-md shrink-0" aria-label="Ir a Mi Perfil">
-          <span class="user-initials">OR</span>
-        </button>
       </header>
 
       <!-- Vista de Mapa Simulado con Canvas/SVG Expandido (170% con límites de borde y recorrido instantáneo) -->
@@ -613,9 +608,9 @@
           <span>Puntos</span>
         </button>
 
-        <button type="button" data-navigate="mas" class="nav-item w-full py-1 rounded-xl flex flex-col items-center justify-center text-xs text-slate-600 dark:text-slate-400 hover:text-emerald-700 dark:hover:text-emerald-400 aria-[current=page]:font-bold aria-[current=page]:text-emerald-700 dark:aria-[current=page]:text-emerald-400" data-target="mas">
-          <iconify-icon icon="mynaui:menu" class="text-2xl" aria-hidden="true"></iconify-icon>
-          <span>Más</span>
+        <button type="button" data-navigate="config" class="nav-item w-full py-1 rounded-xl flex flex-col items-center justify-center text-xs text-slate-600 dark:text-slate-400 hover:text-emerald-700 dark:hover:text-emerald-400 aria-[current=page]:font-bold aria-[current=page]:text-emerald-700 dark:aria-[current=page]:text-emerald-400" data-target="config">
+          <iconify-icon icon="mynaui:user" class="text-2xl" aria-hidden="true"></iconify-icon>
+          <span>Perfil</span>
         </button>
       </nav>
     </section>
@@ -668,20 +663,17 @@
          PANTALLA 5: MIS ECOPUNTOS Y RECOMPENSAS
          ========================================================================== -->
     <section id="screen-puntos" class="screen-view bg-slate-50 dark:bg-slate-950 h-full flex-col overflow-hidden relative">
-      <!-- Header fijo separado con línea divisoria y espaciado aireado -->
-      <header class="shrink-0 z-20 px-5 py-3.5 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between gap-3 shadow-xs">
-        <div class="flex items-center gap-3 min-w-0">
-          <div class="w-10 h-10 rounded-2xl bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-300 flex items-center justify-center shrink-0" aria-hidden="true">
-            <iconify-icon icon="mynaui:gift" class="text-xl" aria-hidden="true"></iconify-icon>
-          </div>
+      <!-- Header fijo separado con línea divisoria y Menú Hamburguesa (Más opciones) en esquina superior izquierda -->
+      <header class="shrink-0 z-20 px-4 py-3.5 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between gap-3 shadow-xs">
+        <div class="flex items-center gap-2.5 min-w-0">
+          <button type="button" data-navigate="mas" class="touch-target p-2 rounded-xl text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-center shrink-0 cursor-pointer" aria-label="Abrir Más opciones">
+            <iconify-icon icon="mynaui:menu" class="text-2xl" aria-hidden="true"></iconify-icon>
+          </button>
           <div class="min-w-0">
             <h1 class="font-black text-slate-900 dark:text-white leading-tight">Mis EcoPuntos</h1>
             <p class="text-xs text-slate-600 dark:text-slate-400">Canjeá tus puntos en comercios de Río Cuarto</p>
           </div>
         </div>
-        <button type="button" data-navigate="config" class="touch-target w-10 h-10 rounded-full bg-emerald-800 hover:bg-emerald-700 text-white font-bold text-xs flex items-center justify-center border-2 border-emerald-400 shadow-sm shrink-0" aria-label="Ir a Mi Perfil">
-          <span class="user-initials">OR</span>
-        </button>
       </header>
 
       <!-- Área scrollable independiente: Balance, Comercios e Historial -->
@@ -689,20 +681,30 @@
         <!-- Card Balance Actual (Fija e indeformable con min-height, nunca se corta) -->
         <article class="balance-card shrink-0 p-5 rounded-3xl bg-emerald-900 text-white shadow-xl dark:ring-1 dark:ring-emerald-700/60 relative">
           <div class="relative z-10">
-            <span class="text-xs font-bold tracking-widest text-emerald-300 uppercase">Balance Actual</span>
+            <div class="flex items-center justify-between gap-2 pr-14">
+              <span class="text-xs font-bold tracking-widest text-emerald-300 uppercase">Balance Disponible</span>
+              <span class="px-2.5 py-0.5 rounded-full bg-amber-400/20 text-amber-300 border border-amber-400/40 text-[11px] font-extrabold flex items-center gap-1 shrink-0">
+                <iconify-icon icon="ph:medal-fill" class="text-xs text-amber-300" aria-hidden="true"></iconify-icon>
+                <span id="balance-level-tag">Nivel 3 • EcoVecino</span>
+              </span>
+            </div>
             <div class="flex items-baseline gap-2 mt-1">
               <span class="text-3xl font-black tracking-tight user-ecopuntos-val">1.250</span>
-              <span class="text-emerald-300 font-bold text-sm">EcoPuntos</span>
+              <span class="text-emerald-300 font-bold text-sm">EcoPuntos para canjes</span>
             </div>
 
-            <!-- Barra de Progreso hacia el próximo beneficio -->
+            <!-- Barra de Progreso de Experiencia XP acumulada hacia el próximo Nivel (los canjes no restan XP) -->
             <div class="mt-4 pt-3 border-t border-emerald-800/80">
               <div class="flex justify-between text-xs text-emerald-200 mb-1">
-                <span id="balance-goal-text">Próximo beneficio: 1.500 pts</span>
-                <span id="balance-progress-pct" class="font-bold text-amber-400">83%</span>
+                <span id="balance-goal-text">Progreso a Nivel 4 (Guardián Verde)</span>
+                <span id="balance-progress-pct" class="font-bold text-amber-400">63%</span>
               </div>
-              <div class="w-full bg-emerald-950 h-2.5 rounded-full overflow-hidden" role="progressbar" id="balance-progressbar" aria-label="Progreso hacia el próximo beneficio de 1500 EcoPuntos" aria-valuemin="0" aria-valuemax="1500" aria-valuenow="1250">
-                <div id="balance-progress-fill" class="bg-gradient-to-r from-amber-400 to-amber-500 h-full w-[83%] rounded-full transition-all duration-300"></div>
+              <div class="w-full bg-emerald-950 h-2.5 rounded-full overflow-hidden" role="progressbar" id="balance-progressbar" aria-label="Progreso de experiencia para subir de nivel" aria-valuemin="0" aria-valuemax="2000" aria-valuenow="1250">
+                <div id="balance-progress-fill" class="bg-gradient-to-r from-amber-400 to-amber-500 h-full w-[63%] rounded-full transition-all duration-300"></div>
+              </div>
+              <div class="flex items-center justify-between text-[11px] text-emerald-300/80 mt-1.5 flex-wrap gap-1">
+                <span><span id="balance-current-xp">1.250</span> / <span id="balance-next-xp">2.000</span> XP acumulados</span>
+                <span id="balance-remaining-xp">Faltan 750 XP para subir de nivel</span>
               </div>
             </div>
           </div>
@@ -835,9 +837,9 @@
           <span>Puntos</span>
         </button>
 
-        <button type="button" data-navigate="mas" class="nav-item w-full py-1 rounded-xl flex flex-col items-center justify-center text-xs text-slate-600 dark:text-slate-400 hover:text-emerald-700 dark:hover:text-emerald-400 aria-[current=page]:font-bold aria-[current=page]:text-emerald-700 dark:aria-[current=page]:text-emerald-400" data-target="mas">
-          <iconify-icon icon="mynaui:menu" class="text-2xl" aria-hidden="true"></iconify-icon>
-          <span>Más</span>
+        <button type="button" data-navigate="config" class="nav-item w-full py-1 rounded-xl flex flex-col items-center justify-center text-xs text-slate-600 dark:text-slate-400 hover:text-emerald-700 dark:hover:text-emerald-400 aria-[current=page]:font-bold aria-[current=page]:text-emerald-700 dark:aria-[current=page]:text-emerald-400" data-target="config">
+          <iconify-icon icon="mynaui:user" class="text-2xl" aria-hidden="true"></iconify-icon>
+          <span>Perfil</span>
         </button>
       </nav>
     </section>
@@ -918,9 +920,9 @@
           <span>Puntos</span>
         </button>
 
-        <button type="button" data-navigate="mas" class="nav-item w-full py-1 rounded-xl flex flex-col items-center justify-center text-xs text-slate-600 dark:text-slate-400 hover:text-emerald-700 dark:hover:text-emerald-400 aria-[current=page]:font-bold aria-[current=page]:text-emerald-700 dark:aria-[current=page]:text-emerald-400" data-target="mas">
-          <iconify-icon icon="mynaui:menu" class="text-2xl" aria-hidden="true"></iconify-icon>
-          <span>Más</span>
+        <button type="button" data-navigate="config" class="nav-item w-full py-1 rounded-xl flex flex-col items-center justify-center text-xs text-slate-600 dark:text-slate-400 hover:text-emerald-700 dark:hover:text-emerald-400 aria-[current=page]:font-bold aria-[current=page]:text-emerald-700 dark:aria-[current=page]:text-emerald-400" data-target="config">
+          <iconify-icon icon="mynaui:user" class="text-2xl" aria-hidden="true"></iconify-icon>
+          <span>Perfil</span>
         </button>
       </nav>
     </section>
@@ -929,10 +931,10 @@
          PANTALLA 6: MI PERFIL Y SEGURIDAD (Datos Personales y Cuenta)
          ========================================================================== -->
     <section id="screen-config" class="screen-view bg-slate-50 dark:bg-slate-950 h-full flex-col overflow-hidden relative">
-      <header class="shrink-0 z-20 flex items-center justify-between gap-2 px-5 py-3.5 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 shadow-xs">
+      <header class="shrink-0 z-20 flex items-center justify-between gap-2 px-4 py-3.5 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 shadow-xs">
         <div class="flex items-center gap-2.5">
-          <button type="button" data-navigate="mas" class="touch-target p-2 rounded-full text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-center" aria-label="Volver a Más opciones">
-            <iconify-icon icon="mynaui:arrow-left" class="text-2xl" aria-hidden="true"></iconify-icon>
+          <button type="button" data-navigate="mas" class="touch-target p-2 rounded-xl text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-center cursor-pointer" aria-label="Abrir Más opciones">
+            <iconify-icon icon="mynaui:menu" class="text-2xl" aria-hidden="true"></iconify-icon>
           </button>
           <div>
             <h1 class="font-black text-slate-900 dark:text-white leading-tight">Perfil</h1>
@@ -1135,9 +1137,9 @@
           <span>Puntos</span>
         </button>
 
-        <button type="button" data-navigate="mas" class="nav-item w-full py-1 rounded-xl flex flex-col items-center justify-center text-xs text-slate-600 dark:text-slate-400 hover:text-emerald-700 dark:hover:text-emerald-400 aria-[current=page]:font-bold aria-[current=page]:text-emerald-700 dark:aria-[current=page]:text-emerald-400" data-target="config" aria-current="page">
-          <iconify-icon icon="mynaui:menu" class="text-2xl" aria-hidden="true"></iconify-icon>
-          <span>Más</span>
+        <button type="button" data-navigate="config" class="nav-item w-full py-1 rounded-xl flex flex-col items-center justify-center text-xs text-slate-600 dark:text-slate-400 hover:text-emerald-700 dark:hover:text-emerald-400 aria-[current=page]:font-bold aria-[current=page]:text-emerald-700 dark:aria-[current=page]:text-emerald-400" data-target="config" aria-current="page">
+          <iconify-icon icon="mynaui:user" class="text-2xl" aria-hidden="true"></iconify-icon>
+          <span>Perfil</span>
         </button>
       </nav>
     </section>
@@ -1198,9 +1200,9 @@
           <iconify-icon icon="mynaui:gift" class="text-2xl" aria-hidden="true"></iconify-icon>
           <span>Puntos</span>
         </button>
-        <button type="button" data-navigate="mas" class="nav-item w-full py-1 rounded-xl flex flex-col items-center justify-center text-xs text-slate-600 dark:text-slate-400 hover:text-emerald-700 dark:hover:text-emerald-400 aria-[current=page]:font-bold aria-[current=page]:text-emerald-700 dark:aria-[current=page]:text-emerald-400" data-target="eventos" aria-current="page">
-          <iconify-icon icon="mynaui:menu" class="text-2xl" aria-hidden="true"></iconify-icon>
-          <span>Más</span>
+        <button type="button" data-navigate="config" class="nav-item w-full py-1 rounded-xl flex flex-col items-center justify-center text-xs text-slate-600 dark:text-slate-400 hover:text-emerald-700 dark:hover:text-emerald-400 aria-[current=page]:font-bold aria-[current=page]:text-emerald-700 dark:aria-[current=page]:text-emerald-400" data-target="config">
+          <iconify-icon icon="mynaui:user" class="text-2xl" aria-hidden="true"></iconify-icon>
+          <span>Perfil</span>
         </button>
       </nav>
     </section>
@@ -1209,11 +1211,16 @@
          PANTALLA 7: MÁS OPCIONES (VENTANA PRINCIPAL INTEGRADA CON EL MISMO MENÚ INFERIOR)
          ========================================================================== -->
     <section id="screen-mas" class="screen-view bg-slate-50 dark:bg-slate-950 h-full flex-col overflow-hidden relative">
-      <!-- Header fijo separado con línea divisoria (sin ícono hamburguesa redundante) -->
-      <header class="shrink-0 z-20 px-5 py-3.5 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between gap-3 shadow-xs">
-        <div class="min-w-0">
-          <h1 class="font-black text-slate-900 dark:text-white leading-tight">Más opciones</h1>
-          <p class="text-xs text-slate-600 dark:text-slate-400">Menú general, eventos y ajustes de la app</p>
+      <!-- Header fijo con botón Volver a la pantalla anterior -->
+      <header class="shrink-0 z-20 px-4 py-3.5 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between gap-3 shadow-xs">
+        <div class="flex items-center gap-2.5 min-w-0">
+          <button type="button" id="btn-back-from-mas" class="touch-target p-2 rounded-full text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-center shrink-0 cursor-pointer" aria-label="Volver">
+            <iconify-icon icon="mynaui:arrow-left" class="text-2xl" aria-hidden="true"></iconify-icon>
+          </button>
+          <div class="min-w-0">
+            <h1 class="font-black text-slate-900 dark:text-white leading-tight">Más opciones</h1>
+            <p class="text-xs text-slate-600 dark:text-slate-400">Menú general, eventos y ajustes de la app</p>
+          </div>
         </div>
       </header>
 
@@ -1415,9 +1422,9 @@
           <span>Puntos</span>
         </button>
 
-        <button type="button" data-navigate="mas" class="nav-item w-full py-1 rounded-xl flex flex-col items-center justify-center text-xs text-slate-600 dark:text-slate-400 hover:text-emerald-700 dark:hover:text-emerald-400 aria-[current=page]:font-bold aria-[current=page]:text-emerald-700 dark:aria-[current=page]:text-emerald-400" data-target="mas" aria-current="page">
-          <iconify-icon icon="mynaui:menu" class="text-2xl" aria-hidden="true"></iconify-icon>
-          <span>Más</span>
+        <button type="button" data-navigate="config" class="nav-item w-full py-1 rounded-xl flex flex-col items-center justify-center text-xs text-slate-600 dark:text-slate-400 hover:text-emerald-700 dark:hover:text-emerald-400 aria-[current=page]:font-bold aria-[current=page]:text-emerald-700 dark:aria-[current=page]:text-emerald-400" data-target="config">
+          <iconify-icon icon="mynaui:user" class="text-2xl" aria-hidden="true"></iconify-icon>
+          <span>Perfil</span>
         </button>
       </nav>
     </section>
