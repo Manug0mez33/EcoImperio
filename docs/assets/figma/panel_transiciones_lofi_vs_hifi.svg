@@ -1,0 +1,197 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1880" height="1120" viewBox="0 0 1880 1120" fill="none">
+  <rect width="100%" height="100%" fill="#F1F5F9"/>
+  <text x="60" y="48" font-family="Inter, sans-serif" font-weight="800" font-size="28" fill="#0F172A">PANEL DE TRANSICIONES Y MUTACIONES: LO-FI vs HI-FI (ECOIMPERIO)</text>
+  <text x="60" y="76" font-family="Inter, sans-serif" font-size="15" fill="#475569">Contraste deliberado entre el boceto primitivo de baja fidelidad y el software vivo final con justificación de cambios de UX</text>
+
+    <g id="comparativa-0">
+      <text x="60" y="72" font-family="Inter, sans-serif" font-weight="800" font-size="20" fill="#0F172A">Transición 1: Mapa Barrial (screen-mapa)</text>
+      <text x="60" y="92" font-family="Inter, sans-serif" font-weight="500" font-size="13" fill="#64748B">De 3 círculos grises ciegos a Codificación Redundante Triple (Color + Icono + Texto Vacío/Lleno) y 3 Temas</text>
+
+      <!-- COLUMNA IZQUIERDA: LO-FI (BAJA CALIDAD) -->
+      <rect x="60" y="102" width="180" height="20" rx="4" fill="#E5E7EB"/>
+      <text x="150" y="116" font-family="Patrick Hand, monospace" font-size="12" fill="#374151" text-anchor="middle">v1: WIREFRAME LO-FI</text>
+      <rect x="60" y="120" width="390" height="844" rx="20" fill="#FFFFFF" stroke="#4B5563" stroke-width="2.5"/>
+      <rect x="60" y="120" width="390" height="26" fill="#374151"/>
+      <text x="434" y="138" font-family="Patrick Hand, monospace" font-size="13" fill="#FFFFFF" text-anchor="end">12:00</text>
+      
+    <!-- LO-FI: Mapa plano básico -->
+    <rect x="60" y="148" width="390" height="50" fill="#E5E7EB" stroke="#4B5563" stroke-width="2"/>
+    <text x="80" y="178" font-family="Patrick Hand, monospace" font-size="16" fill="#1F2937">🔍 Buscar...</text>
+    
+    <rect x="74" y="210" width="362" height="420" rx="10" fill="#F3F4F6" stroke="#4B5563" stroke-width="2"/>
+    <line x1="74" y1="210" x2="436" y2="630" stroke="#D1D5DB" stroke-width="2"/>
+    <text x="255" y="250" font-family="Patrick Hand, monospace" font-size="16" fill="#4B5563" text-anchor="middle">[ Mapa Río Cuarto Boceto ]</text>
+    
+    <!-- 3 Pines idénticos (problema visual) -->
+    <circle cx="150" cy="340" r="16" fill="#9CA3AF" stroke="#374151" stroke-width="2"/>
+    <circle cx="300" cy="400" r="16" fill="#9CA3AF" stroke="#374151" stroke-width="2"/>
+    <circle cx="220" cy="510" r="16" fill="#9CA3AF" stroke="#374151" stroke-width="2"/>
+    <text x="255" y="560" font-family="Patrick Hand, monospace" font-size="13" fill="#EF4444" text-anchor="middle">⚠ Falla: No indica si está lleno ni qué material recibe</text>
+
+    <rect x="74" y="644" width="362" height="100" rx="8" fill="#FFFFFF" stroke="#4B5563" stroke-width="2"/>
+    <text x="86" y="674" font-family="Patrick Hand, monospace" font-weight="700" font-size="14" fill="#111827">Campana Alberdi</text>
+    <text x="86" y="694" font-family="Patrick Hand, monospace" font-size="12" fill="#6B7280">Estado desconocido · Sin botón directo</text>
+
+    <rect x="60" y="904" width="390" height="60" fill="#E5E7EB" stroke="#4B5563" stroke-width="2"/>
+    <text x="255" y="939" font-family="Patrick Hand, monospace" font-size="13" fill="#374151" text-anchor="middle">Nav Bar genérica</text>
+  
+
+      <!-- FLECHA DE MUTACIÓN -->
+      <g id="flecha-mutacion-0">
+        <circle cx="475" cy="542" r="22" fill="#047857"/>
+        <text x="475" y="548" font-family="Inter, sans-serif" font-weight="800" font-size="16" fill="#FFFFFF" text-anchor="middle">→</text>
+      </g>
+
+      <!-- COLUMNA DERECHA: HI-FI (SOFTWARE VIVO) -->
+      <rect x="500" y="102" width="200" height="20" rx="4" fill="#D1FAE5"/>
+      <text x="600" y="116" font-family="Inter, sans-serif" font-weight="700" font-size="11" fill="#065F46" text-anchor="middle">v2: SOFTWARE VIVO HI-FI</text>
+      <rect x="500" y="120" width="390" height="844" rx="20" fill="#F8FAFC" stroke="#047857" stroke-width="2"/>
+      <rect x="500" y="120" width="390" height="26" fill="#047857"/>
+      <text x="874" y="138" font-family="Inter, sans-serif" font-weight="600" font-size="12" fill="#FFFFFF" text-anchor="end">9:41</text>
+      
+    <!-- HI-FI: Software Vivo con Codificación Redundante Triple y 3 Temas -->
+    <rect x="500" y="148" width="390" height="56" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+    <rect x="514" y="158" width="36" height="36" rx="10" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.5"/>
+    <text x="532" y="180" font-family="Inter, sans-serif" font-weight="700" font-size="15" fill="#0F172A" text-anchor="middle">☰</text>
+    
+    <rect x="558" y="158" width="318" height="36" rx="18" fill="#F1F5F9"/>
+    <text x="574" y="181" font-family="Inter, sans-serif" font-size="12" fill="#64748B">🔍 Buscar barrio, material o calle...</text>
+
+    <!-- Filtros de píldoras facetadas -->
+    <rect x="514" y="212" width="76" height="28" rx="14" fill="#047857"/>
+    <text x="552" y="230" font-family="Inter, sans-serif" font-weight="700" font-size="11" fill="#FFFFFF" text-anchor="middle">✓ Todos</text>
+    <rect x="596" y="212" width="134" height="28" rx="14" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+    <text x="663" y="230" font-family="Inter, sans-serif" font-weight="600" font-size="11" fill="#334155" text-anchor="middle">Campanas Verdes</text>
+    <rect x="736" y="212" width="110" height="28" rx="14" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+    <text x="791" y="230" font-family="Inter, sans-serif" font-weight="600" font-size="11" fill="#334155" text-anchor="middle">Puntos Limpios</text>
+
+    <!-- Mapa estilizado con río y áreas verdes de Río Cuarto -->
+    <rect x="514" y="248" width="362" height="420" rx="14" fill="#ECFDF5" stroke="#A7F3D0" stroke-width="1.5"/>
+    <!-- Río Cuarto estilizado en celeste -->
+    <path d="M 514 440 Q 660 480 876 450" fill="none" stroke="#93C5FD" stroke-width="18"/>
+    <text x="640" y="466" font-family="Inter, sans-serif" font-weight="700" font-size="10" fill="#1E40AF">RÍO CUARTO</text>
+
+    <!-- Pin Vacío (Verde + Ícono + Texto) -->
+    <rect x="540" y="320" width="130" height="34" rx="8" fill="#047857"/>
+    <text x="605" y="341" font-family="Inter, sans-serif" font-weight="700" font-size="11" fill="#FFFFFF" text-anchor="middle">📍 Alberdi (Vacío)</text>
+
+    <!-- Pin Lleno (Rojo + Alerta + Texto) -->
+    <rect x="710" y="340" width="136" height="34" rx="8" fill="#DC2626"/>
+    <text x="778" y="361" font-family="Inter, sans-serif" font-weight="700" font-size="11" fill="#FFFFFF" text-anchor="middle">⛔ B° Norte (Lleno)</text>
+
+    <!-- Pin Plaza Roca -->
+    <rect x="610" y="510" width="150" height="34" rx="8" fill="#047857"/>
+    <text x="685" y="531" font-family="Inter, sans-serif" font-weight="700" font-size="11" fill="#FFFFFF" text-anchor="middle">📍 Plaza Roca (Vacío)</text>
+
+    <!-- Tarjeta flotante interactiva de detalle -->
+    <rect x="514" y="676" width="362" height="140" rx="14" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+    <text x="528" y="704" font-family="Inter, sans-serif" font-weight="800" font-size="15" fill="#0F172A">Campana Verde - B° Alberdi</text>
+    <rect x="528" y="714" width="80" height="20" rx="6" fill="#D1FAE5"/>
+    <text x="568" y="728" font-family="Inter, sans-serif" font-weight="700" font-size="10" fill="#065F46" text-anchor="middle">DISPONIBLE</text>
+    <text x="616" y="728" font-family="Inter, sans-serif" font-size="11" fill="#64748B">A solo 350m · PET y Cartón</text>
+    
+    <rect x="528" y="746" width="334" height="42" rx="21" fill="#047857"/>
+    <text x="695" y="772" font-family="Inter, sans-serif" font-weight="700" font-size="13" fill="#FFFFFF" text-anchor="middle">Registrar reciclaje acá  →</text>
+
+    <!-- Bottom Nav definitiva (5 pestañas en Main) -->
+    <rect x="500" y="896" width="390" height="68" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+    <circle cx="695" cy="914" r="26" fill="#047857" stroke="#FFFFFF" stroke-width="3"/>
+    <text x="695" y="919" font-family="Inter, sans-serif" font-size="18" fill="#FFFFFF" text-anchor="middle">📷</text>
+  
+    </g>
+  
+    <g id="comparativa-1">
+      <text x="940" y="72" font-family="Inter, sans-serif" font-weight="800" font-size="20" fill="#0F172A">Transición 2: Reemplazo de Drawer Flotante por Pantalla Más (screen-mas)</text>
+      <text x="940" y="92" font-family="Inter, sans-serif" font-weight="500" font-size="13" fill="#64748B">De un panel overlay lateral (con conflictos táctiles y difícil foco) a una Pantalla Completa accesible</text>
+
+      <!-- COLUMNA IZQUIERDA: LO-FI (BAJA CALIDAD) -->
+      <rect x="940" y="102" width="180" height="20" rx="4" fill="#E5E7EB"/>
+      <text x="1030" y="116" font-family="Patrick Hand, monospace" font-size="12" fill="#374151" text-anchor="middle">v1: WIREFRAME LO-FI</text>
+      <rect x="940" y="120" width="390" height="844" rx="20" fill="#FFFFFF" stroke="#4B5563" stroke-width="2.5"/>
+      <rect x="940" y="120" width="390" height="26" fill="#374151"/>
+      <text x="1314" y="138" font-family="Patrick Hand, monospace" font-size="13" fill="#FFFFFF" text-anchor="end">12:00</text>
+      
+    <!-- LO-FI: Drawer lateral superpuesto -->
+    <rect x="940" y="148" width="90" height="816" fill="#000000" fill-opacity="0.4"/>
+    <rect x="1030" y="148" width="300" height="816" fill="#FFFFFF" stroke="#4B5563" stroke-width="2"/>
+    <text x="1290" y="180" font-family="Patrick Hand, monospace" font-size="20" fill="#111827">✕</text>
+    <text x="1050" y="190" font-family="Kalam, monospace" font-weight="700" font-size="18" fill="#111827">Menú Lateral</text>
+    <text x="1050" y="210" font-family="Patrick Hand, monospace" font-size="12" fill="#6B7280">Oscar Rodríguez · 1.250 pts</text>
+
+    <!-- Links apilados -->
+    <text x="1050" y="250" font-family="Patrick Hand, monospace" font-size="14" fill="#111827">• Inicio</text>
+    <text x="1050" y="285" font-family="Patrick Hand, monospace" font-size="14" fill="#111827">• Mapa</text>
+    <text x="1050" y="320" font-family="Patrick Hand, monospace" font-size="14" fill="#111827">• Escáner QR</text>
+    <text x="1050" y="355" font-family="Patrick Hand, monospace" font-size="14" fill="#111827">• Mis Puntos</text>
+    <text x="1050" y="390" font-family="Patrick Hand, monospace" font-size="14" fill="#111827">• Cronograma</text>
+    <text x="1050" y="425" font-family="Patrick Hand, monospace" font-size="14" fill="#111827">• Configuración</text>
+
+    <rect x="1044" y="480" width="270" height="90" rx="8" fill="#FEE2E2" stroke="#EF4444" stroke-width="1.5"/>
+    <text x="1054" y="506" font-family="Inter, sans-serif" font-weight="700" font-size="11" fill="#991B1B">Problemas de Usabilidad del Drawer:</text>
+    <text x="1054" y="524" font-family="Inter, sans-serif" font-size="10" fill="#7F1D1D">1. Conflicto con gestos "swipe back" de Android/iOS.</text>
+    <text x="1054" y="540" font-family="Inter, sans-serif" font-size="10" fill="#7F1D1D">2. Trampas de foco de teclado para baja visión.</text>
+    <text x="1054" y="556" font-family="Inter, sans-serif" font-size="10" fill="#7F1D1D">3. Desborde en pantallas pequeñas.</text>
+  
+
+      <!-- FLECHA DE MUTACIÓN -->
+      <g id="flecha-mutacion-1">
+        <circle cx="1355" cy="542" r="22" fill="#047857"/>
+        <text x="1355" y="548" font-family="Inter, sans-serif" font-weight="800" font-size="16" fill="#FFFFFF" text-anchor="middle">→</text>
+      </g>
+
+      <!-- COLUMNA DERECHA: HI-FI (SOFTWARE VIVO) -->
+      <rect x="1380" y="102" width="200" height="20" rx="4" fill="#D1FAE5"/>
+      <text x="1480" y="116" font-family="Inter, sans-serif" font-weight="700" font-size="11" fill="#065F46" text-anchor="middle">v2: SOFTWARE VIVO HI-FI</text>
+      <rect x="1380" y="120" width="390" height="844" rx="20" fill="#F8FAFC" stroke="#047857" stroke-width="2"/>
+      <rect x="1380" y="120" width="390" height="26" fill="#047857"/>
+      <text x="1754" y="138" font-family="Inter, sans-serif" font-weight="600" font-size="12" fill="#FFFFFF" text-anchor="end">9:41</text>
+      
+    <!-- HI-FI: Pantalla Completa 'Más Opciones' con Header fijo y Botón Volver -->
+    <rect x="1380" y="148" width="390" height="56" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+    <circle cx="1412" cy="176" r="16" fill="#F1F5F9"/>
+    <text x="1412" y="181" font-family="Inter, sans-serif" font-size="14" fill="#0F172A" text-anchor="middle">←</text>
+    <text x="1438" y="175" font-family="Inter, sans-serif" font-weight="800" font-size="16" fill="#0F172A">Más opciones</text>
+    <text x="1438" y="190" font-family="Inter, sans-serif" font-size="11" fill="#64748B">Menú general, eventos y consultas</text>
+
+    <!-- Tarjeta Resumen del Vecino -->
+    <rect x="1394" y="216" width="362" height="68" rx="14" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+    <circle cx="1426" cy="250" r="20" fill="#047857"/>
+    <text x="1426" y="255" font-family="Inter, sans-serif" font-weight="700" font-size="12" fill="#FFFFFF" text-anchor="middle">OR</text>
+    <text x="1456" y="242" font-family="Inter, sans-serif" font-weight="700" font-size="14" fill="#0F172A">Oscar Rodríguez</text>
+    <text x="1456" y="258" font-family="Inter, sans-serif" font-size="11" fill="#64748B">B° Alberdi · 1.250 EcoPuntos acumulados</text>
+
+    <!-- Lista de Navegación Organizada con Chevron -->
+    <rect x="1394" y="296" width="362" height="280" rx="14" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+    
+    <text x="1408" y="326" font-family="Inter, sans-serif" font-weight="600" font-size="13" fill="#0F172A">📅 Mis Eventos Agendados</text>
+    <rect x="1660" y="312" width="76" height="20" rx="10" fill="#FEF3C7"/>
+    <text x="1698" y="326" font-family="Inter, sans-serif" font-weight="700" font-size="10" fill="#92400E" text-anchor="middle">1 agendado</text>
+    <line x1="1408" y1="344" x2="1742" y2="344" stroke="#F1F5F9" stroke-width="1.5"/>
+
+    <text x="1408" y="372" font-family="Inter, sans-serif" font-weight="600" font-size="13" fill="#0F172A">📜 Historial Completo de Reciclaje</text>
+    <text x="1728" y="372" font-family="Inter, sans-serif" font-size="14" fill="#94A3B8">›</text>
+    <line x1="1408" y1="390" x2="1742" y2="390" stroke="#F1F5F9" stroke-width="1.5"/>
+
+    <text x="1408" y="418" font-family="Inter, sans-serif" font-weight="600" font-size="13" fill="#0F172A">👤 Mi Perfil y Credencial QR</text>
+    <text x="1728" y="418" font-family="Inter, sans-serif" font-size="14" fill="#94A3B8">›</text>
+    <line x1="1408" y1="436" x2="1742" y2="436" stroke="#F1F5F9" stroke-width="1.5"/>
+
+    <text x="1408" y="464" font-family="Inter, sans-serif" font-weight="600" font-size="13" fill="#0F172A">📖 Cronograma Barrial Río Cuarto</text>
+    <text x="1728" y="464" font-family="Inter, sans-serif" font-size="14" fill="#94A3B8">›</text>
+    <line x1="1408" y1="482" x2="1742" y2="482" stroke="#F1F5F9" stroke-width="1.5"/>
+
+    <text x="1408" y="510" font-family="Inter, sans-serif" font-weight="600" font-size="13" fill="#0F172A">❓ Centro de Ayuda y FAQ</text>
+    <text x="1728" y="510" font-family="Inter, sans-serif" font-size="14" fill="#94A3B8">›</text>
+
+    <!-- Ficha de Solución -->
+    <rect x="1394" y="592" width="362" height="90" rx="10" fill="#DCFCE7" stroke="#86EFAC" stroke-width="1.5"/>
+    <text x="1406" y="618" font-family="Inter, sans-serif" font-weight="700" font-size="11" fill="#166534">Ventajas de la Pantalla Completa:</text>
+    <text x="1406" y="636" font-family="Inter, sans-serif" font-size="10" fill="#14532D">1. Navegación con historial nativo (Stack retrocede con 1 toque).</text>
+    <text x="1406" y="652" font-family="Inter, sans-serif" font-size="10" fill="#14532D">2. Botones de 44px táctiles sin sobreposición de capas.</text>
+    <text x="1406" y="668" font-family="Inter, sans-serif" font-size="10" fill="#14532D">3. Accesibilidad por teclado natural sin gestión de inert.</text>
+
+    <!-- Bottom Nav -->
+    <rect x="1380" y="896" width="390" height="68" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  
+    </g>
+  </svg>
