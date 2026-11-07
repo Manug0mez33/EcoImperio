@@ -4,7 +4,7 @@
 
 document.addEventListener('DOMContentLoaded', () => {
   // Pantallas que requieren una sesión iniciada
-  const PROTECTED_SCREENS = ['mapa', 'escaner', 'puntos', 'config'];
+  const PROTECTED_SCREENS = ['mapa', 'escaner', 'puntos', 'historial', 'config'];
   const ACCOUNTS_KEY = 'ecoimperio_accounts';
   const USER_DATA_KEY = 'ecoimperio_user_data';
   const SESSION_EMAIL_KEY = 'ecoimperio_session_email';
@@ -27,14 +27,59 @@ document.addEventListener('DOMContentLoaded', () => {
   const DEMO_WALLET = {
     ecoPuntos: 1250,
     history: [
-      { id: 1, title: 'Botellas Plásticas PET', location: 'Campana Verde Alberdi', time: 'Hoy, 14:32', points: 15 },
-      { id: 2, title: 'Cartón y Papel Seco', location: 'Punto Limpio Banda Norte', time: '24 Ene, 11:15', points: 45 },
-      { id: 3, title: 'Envases de Vidrio', location: 'Punto Limpio Plaza Roca', time: '18 Ene, 17:40', points: 30 },
-      { id: 4, title: 'Latas de Aluminio', location: 'Campana Verde Bimaco', time: '12 Ene, 10:20', points: 15 },
-      { id: 5, title: 'Botellas Plásticas PET', location: 'Campana Verde Alberdi', time: '05 Ene, 18:05', points: 20 }
+      {
+        id: 1,
+        title: 'Botellas Plásticas PET (6 unidades)',
+        location: 'Campana Verde Alberdi',
+        time: 'Hoy, 14:32 hs',
+        points: 15,
+        containerStatus: 'Con capacidad (25% ocupado)',
+        impact: '0,4 kg recuperados • 0,6 kg CO₂ evitado',
+        ticketCode: '#ECO-1048'
+      },
+      {
+        id: 2,
+        title: 'Cartón y Papel Seco (Cajas plegadas)',
+        location: 'Punto Limpio Banda Norte',
+        time: '24 Ene, 11:15 hs',
+        points: 45,
+        containerStatus: 'Operativo con atención municipal (35% ocupado)',
+        impact: '1,2 kg recuperados • 1,1 kg CO₂ evitado',
+        ticketCode: '#ECO-1039'
+      },
+      {
+        id: 3,
+        title: 'Envases de Vidrio Sano (4 frascos)',
+        location: 'Punto Limpio Plaza Roca',
+        time: '18 Ene, 17:40 hs',
+        points: 30,
+        containerStatus: 'Con capacidad amplia (20% ocupado)',
+        impact: '0,9 kg recuperados • 0,5 kg CO₂ evitado',
+        ticketCode: '#ECO-1024'
+      },
+      {
+        id: 4,
+        title: 'Latas de Aluminio Compactadas',
+        location: 'Campana Verde Bimaco',
+        time: '12 Ene, 10:20 hs',
+        points: 15,
+        containerStatus: 'Con capacidad media (55% ocupado)',
+        impact: '0,3 kg recuperados • 0,5 kg CO₂ evitado',
+        ticketCode: '#ECO-1011'
+      },
+      {
+        id: 5,
+        title: 'Botellas Plásticas PET (8 unidades)',
+        location: 'Campana Verde Alberdi',
+        time: '05 Ene, 18:05 hs',
+        points: 20,
+        containerStatus: 'Recién vaciada por camión recolector (10% ocupado)',
+        impact: '0,5 kg recuperados • 0,5 kg CO₂ evitado',
+        ticketCode: '#ECO-0998'
+      }
     ]
   };
-  const HISTORY_PAGE_SIZE = 3;
+  const HISTORY_PAGE_SIZE = 4;
 
   // Catálogo de materiales reciclables en el Escáner QR
   const MATERIALS = {
@@ -1002,12 +1047,22 @@ document.addEventListener('DOMContentLoaded', () => {
       const { targetPoint } = getTargetDepositLocation(state.selectedMaterial);
       state.ecoPuntos += mat.points;
 
+      const nowStr = new Date().toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' });
+      const selectedMarkerEl = [...document.querySelectorAll('.map-marker')].find(m => m.dataset.title === targetPoint);
+      const capacityStr = selectedMarkerEl && selectedMarkerEl.dataset.capacity
+        ? `Con capacidad (${selectedMarkerEl.dataset.capacity})`
+        : (/punto limpio/i.test(targetPoint) ? 'Operativo con atención municipal (30% ocupado)' : 'Con capacidad (25% ocupado)');
+      const co2Saved = (mat.points * 0.04).toFixed(1).replace('.', ',');
+
       const newItem = {
         id: Date.now(),
-        title: mat.title,
+        title: `${mat.title} (${mat.code})`,
         location: targetPoint,
-        time: 'Recién',
-        points: mat.points
+        time: `Hoy, ${nowStr} hs`,
+        points: mat.points,
+        containerStatus: capacityStr,
+        impact: `Material limpio verificado • ${co2Saved} kg CO₂ evitado`,
+        ticketCode: `#ECO-${String(Date.now()).slice(-4)}`
       };
       state.history.unshift(newItem);
       state.historyPage = 1;
@@ -1100,13 +1155,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const cleanPrefix = comercio.replace(/[^A-Za-z]/g, '').slice(0, 3).toUpperCase() || 'ECO';
     const code = `ECO-${cleanPrefix}-2026`;
 
+    const nowStr = new Date().toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' });
     state.history.unshift({
       id: Date.now(),
       type: 'redeem',
-      title: `Canje: ${discount}`,
-      location: `${comercio} • Cupón ${code}`,
-      time: 'Recién',
-      points: -cost
+      title: `Beneficio canjeado: ${discount}`,
+      location: comercio,
+      time: `Hoy, ${nowStr} hs`,
+      points: -cost,
+      containerStatus: 'Comercio adherido activo • Cupón listo para usar',
+      impact: `Descuento local sustentable • Código ${code}`,
+      ticketCode: `#${code}`
     });
     state.historyPage = 1;
 
@@ -1144,13 +1203,29 @@ document.addEventListener('DOMContentLoaded', () => {
     if (progressFillEl) progressFillEl.style.width = `${pct}%`;
     if (progressBarEl) progressBarEl.setAttribute('aria-valuenow', String(Math.min(GOAL_POINTS, state.ecoPuntos)));
 
-    // Renderizar lista de historial paginada al 80% de ancho (w-4/5) con puntos en <h4> a la derecha
+    // Actualizar tarjeta de resumen hacia Historial en Mis EcoPuntos y KPIs en #screen-historial
     const historyListContainer = document.getElementById('history-list');
     const historyPagination = document.getElementById('history-pagination');
     const historyPageIndicator = document.getElementById('history-page-indicator');
     const historyTotalBadge = document.getElementById('history-total-badge');
+    const puntosHistorySummary = document.getElementById('puntos-history-summary');
+    const statCountEl = document.getElementById('history-stat-count');
+    const statEarnedEl = document.getElementById('history-stat-earned');
+    const statCo2El = document.getElementById('history-stat-co2');
 
     const totalItems = state.history.length;
+    const earnedPoints = state.history.reduce((acc, it) => acc + (it.points > 0 ? it.points : 0), 0);
+    const co2Total = (earnedPoints * 0.025).toFixed(1).replace('.', ',');
+
+    if (puntosHistorySummary) {
+      puntosHistorySummary.textContent = totalItems > 0
+        ? `${totalItems} movimientos registrados • Tocá para ver detalles`
+        : 'Sin movimientos aún • Escaneá tu primer reciclable';
+    }
+    if (statCountEl) statCountEl.textContent = String(totalItems);
+    if (statEarnedEl) statEarnedEl.textContent = `+${earnedPoints}`;
+    if (statCo2El) statCo2El.textContent = `${co2Total} kg`;
+
     const totalPages = Math.max(1, Math.ceil(totalItems / HISTORY_PAGE_SIZE));
     if (state.historyPage > totalPages) state.historyPage = totalPages;
     if (state.historyPage < 1) state.historyPage = 1;
@@ -1162,7 +1237,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (historyListContainer && totalItems === 0) {
       if (historyPagination) historyPagination.classList.add('hidden');
       historyListContainer.innerHTML = `
-        <div class="w-4/5 mx-auto p-5 rounded-2xl border border-dashed border-slate-300 dark:border-slate-700 bg-white/70 dark:bg-slate-900/70 text-center space-y-3">
+        <div class="p-5 rounded-2xl border border-dashed border-slate-300 dark:border-slate-700 bg-white/70 dark:bg-slate-900/70 text-center space-y-3">
           <div class="w-12 h-12 mx-auto rounded-full bg-emerald-100 dark:bg-emerald-900/60 text-emerald-700 dark:text-emerald-300 flex items-center justify-center" aria-hidden="true">
             <iconify-icon icon="keyline-icons:recycle-duotone" class="text-2xl" aria-hidden="true"></iconify-icon>
           </div>
@@ -1178,30 +1253,60 @@ document.addEventListener('DOMContentLoaded', () => {
       const startIdx = (state.historyPage - 1) * HISTORY_PAGE_SIZE;
       const pageItems = state.history.slice(startIdx, startIdx + HISTORY_PAGE_SIZE);
 
-      historyListContainer.innerHTML = pageItems.map(item => {
+      historyListContainer.innerHTML = pageItems.map((item, idx) => {
         const isRedeem = item.type === 'redeem' || item.points < 0;
-        const iconName = isRedeem ? 'mynaui:gift' : 'keyline-icons:recycle-duotone';
+        const iconName = isRedeem ? 'mynaui:gift' : 'mynaui:location';
         const iconWrapClass = isRedeem
           ? 'bg-amber-100 dark:bg-amber-900/50 text-amber-800 dark:text-amber-300'
           : 'bg-emerald-100 dark:bg-emerald-900/60 text-emerald-700 dark:text-emerald-300';
         const pointsClass = isRedeem
-          ? 'text-amber-700 dark:text-amber-400'
-          : 'text-emerald-700 dark:text-emerald-400';
+          ? 'text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/60 border-amber-200 dark:border-amber-800'
+          : 'text-emerald-800 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/60 border-emerald-200 dark:border-emerald-800';
         const pointsLabel = item.points > 0 ? `+${item.points} pts` : `${item.points} pts`;
 
+        const materialText = item.title || 'Material reciclable separado en origen';
+        const timeText = item.time || 'Recién';
+        const statusText = item.containerStatus || (isRedeem ? 'Cupón verificado en comercio adherido' : 'Con capacidad (30% ocupado)');
+        const impactText = item.impact || (isRedeem ? 'Canje sustentable en comercio local' : 'Material recuperado • 0,5 kg CO₂ evitado');
+        const ticketText = item.ticketCode || `#ECO-10${40 + idx}`;
+
         return `
-        <article class="w-4/5 mx-auto p-3.5 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm flex items-center justify-between gap-2 transition-all hover:shadow-md hover:border-emerald-300 dark:hover:border-emerald-700">
-          <div class="flex items-center gap-3 min-w-0">
-            <div class="w-10 h-10 rounded-full ${iconWrapClass} flex items-center justify-center shrink-0" aria-hidden="true">
-              <iconify-icon icon="${iconName}" class="text-2xl" aria-hidden="true"></iconify-icon>
+        <details name="history-accordion" class="history-card-item group bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/90 dark:border-slate-800 shadow-sm overflow-hidden transition-all open:border-emerald-500 dark:open:border-emerald-500 open:shadow-md">
+          <summary class="px-3.5 py-3 cursor-pointer list-none flex items-center justify-between gap-2.5 select-none hover:bg-slate-50/80 dark:hover:bg-slate-800/50 transition-colors">
+            <div class="flex items-center gap-2.5 min-w-0">
+              <div class="w-9 h-9 rounded-xl ${iconWrapClass} flex items-center justify-center shrink-0" aria-hidden="true">
+                <iconify-icon icon="${iconName}" class="text-xl" aria-hidden="true"></iconify-icon>
+              </div>
+              <div class="min-w-0">
+                <h3 class="font-bold text-slate-900 dark:text-white text-sm truncate">${item.location}</h3>
+                <p class="text-[11px] text-slate-500 dark:text-slate-400 truncate">Tocá para ver detalle del registro</p>
+              </div>
             </div>
-            <div class="min-w-0">
-              <h3 class="font-bold text-slate-800 dark:text-slate-100 text-lg truncate">${item.title}</h3>
-              <p class="text-xs text-slate-600 dark:text-slate-400 truncate">${item.location} • ${item.time}</p>
+            <div class="flex items-center gap-2 shrink-0">
+              <span class="px-2.5 py-1 rounded-xl border text-xs font-black ${pointsClass}">${pointsLabel}</span>
+              <iconify-icon icon="mynaui:chevron-down" class="text-lg text-slate-400 dark:text-slate-500 transition-transform duration-200 group-open:rotate-180 group-open:text-emerald-600" aria-hidden="true"></iconify-icon>
+            </div>
+          </summary>
+
+          <div class="px-3.5 pb-3.5 pt-2.5 border-t border-slate-100 dark:border-slate-800 bg-slate-50/70 dark:bg-slate-950/50 space-y-2 text-xs">
+            <div class="flex items-start justify-between gap-2">
+              <span class="text-slate-500 dark:text-slate-400 font-semibold shrink-0">Qué se registró:</span>
+              <span class="font-bold text-slate-900 dark:text-white text-right">${materialText}</span>
+            </div>
+            <div class="flex items-center justify-between gap-2">
+              <span class="text-slate-500 dark:text-slate-400 font-semibold shrink-0">Fecha y hora:</span>
+              <span class="font-semibold text-slate-800 dark:text-slate-200 text-right">${timeText}</span>
+            </div>
+            <div class="flex items-start justify-between gap-2">
+              <span class="text-slate-500 dark:text-slate-400 font-semibold shrink-0">Estado en ese momento:</span>
+              <span class="font-semibold text-emerald-700 dark:text-emerald-400 text-right">${statusText}</span>
+            </div>
+            <div class="pt-1.5 border-t border-slate-200/70 dark:border-slate-800 flex items-center justify-between gap-2 text-[11px]">
+              <span class="font-semibold text-slate-600 dark:text-slate-300">${impactText}</span>
+              <span class="px-2 py-0.5 rounded-md bg-slate-200/80 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-mono font-bold shrink-0">${ticketText}</span>
             </div>
           </div>
-          <h4 class="font-bold ${pointsClass} text-base text-right shrink-0">${pointsLabel}</h4>
-        </article>
+        </details>
       `;
       }).join('');
 
@@ -1305,6 +1410,22 @@ document.addEventListener('DOMContentLoaded', () => {
       openHelpModal();
     });
   });
+
+  // Acordeón exclusivo para Centro de Ayuda (.help-faq-item) e Historial de Reciclaje (.history-card-item):
+  // Al desplegar un ítem <details>, cualquier otro ítem abierto del mismo grupo se cierra automáticamente.
+  document.addEventListener('toggle', (e) => {
+    const target = e.target;
+    if (!(target instanceof HTMLDetailsElement) || !target.open) return;
+    if (target.classList.contains('help-faq-item')) {
+      document.querySelectorAll('.help-faq-item').forEach(other => {
+        if (other !== target && other.open) other.open = false;
+      });
+    } else if (target.classList.contains('history-card-item')) {
+      document.querySelectorAll('.history-card-item').forEach(other => {
+        if (other !== target && other.open) other.open = false;
+      });
+    }
+  }, true);
 
   // ==========================================================================
   // CONFIGURACIÓN: Perfil, Apariencia, Notificaciones y Cuenta

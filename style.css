@@ -300,15 +300,31 @@ textarea:disabled {
   display: none !important;
 }
 
-/* Scroll táctil sin barra visible, como en un celular real (el contenido sigue desplazándose) */
+/* Scroll táctil sin barra visible, como en un celular real (el contenido sigue desplazándose sin mostrar barra en ningún contenedor) */
+.mobile-viewport,
+.mobile-viewport *,
 .screen-view,
-.drawer-menu nav {
-  scrollbar-width: none;
-  -ms-overflow-style: none;
+.overflow-y-auto,
+.drawer-menu nav,
+dialog,
+dialog * {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
 }
 
+.mobile-viewport::-webkit-scrollbar,
+.mobile-viewport *::-webkit-scrollbar,
 .screen-view::-webkit-scrollbar,
-.drawer-menu nav::-webkit-scrollbar {
+.overflow-y-auto::-webkit-scrollbar,
+.drawer-menu nav::-webkit-scrollbar,
+dialog::-webkit-scrollbar,
+dialog *::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+details > summary::-webkit-details-marker {
   display: none;
 }
 
@@ -801,6 +817,7 @@ html.dark body.high-contrast .bottom-nav-item[aria-current="page"] * {
 #screen-mapa,
 #screen-escaner,
 #screen-puntos,
+#screen-historial,
 #screen-config {
   overflow: hidden !important;
 }
