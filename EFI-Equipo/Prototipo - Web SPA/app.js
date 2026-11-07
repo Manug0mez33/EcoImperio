@@ -4,7 +4,7 @@
 
 document.addEventListener('DOMContentLoaded', () => {
   // Pantallas que requieren una sesión iniciada
-  const PROTECTED_SCREENS = ['comunidad', 'mapa', 'escaner', 'puntos', 'historial', 'config'];
+  const PROTECTED_SCREENS = ['comunidad', 'mapa', 'escaner', 'puntos', 'historial', 'config', 'eventos', 'mas'];
   const ACCOUNTS_KEY = 'ecoimperio_accounts';
   const USER_DATA_KEY = 'ecoimperio_user_data';
   const SESSION_EMAIL_KEY = 'ecoimperio_session_email';
@@ -227,6 +227,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (screenId === 'config') fillSettings();
     if (screenId === 'escaner') updateScannerMaterialUI();
     if (screenId === 'comunidad') renderCommunityFeed();
+    if (screenId === 'eventos') renderMyEvents();
+    if (screenId === 'mas') updateMyEventsBadges();
 
     // Actualizar navbars activos
     updateNavbars(screenId);
@@ -234,7 +236,11 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function updateNavbars(activeScreen) {
-    const normalizedActive = activeScreen === 'splash' ? 'comunidad' : activeScreen;
+    let normalizedActive = activeScreen;
+    if (activeScreen === 'splash') normalizedActive = 'comunidad';
+    if (activeScreen === 'historial') normalizedActive = 'puntos';
+    if (activeScreen === 'config' || activeScreen === 'eventos') normalizedActive = 'mas';
+
     const navItems = document.querySelectorAll('.nav-item');
     navItems.forEach(item => {
       const itemTarget = item.getAttribute('data-target');
@@ -279,6 +285,8 @@ document.addEventListener('DOMContentLoaded', () => {
       if (closeDrawerBtn) {
         requestAnimationFrame(() => closeDrawerBtn.focus());
       }
+    } else {
+      navigateTo('mas');
     }
   }
 
@@ -885,7 +893,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const title = marker.dataset.title || 'Campana Verde - B° Alberdi';
     const subtitle = marker.dataset.subtitle || 'A solo 350m • 4 min a pie';
     const status = marker.dataset.status || 'available';
-    const capacity = marker.dataset.capacity || (status === 'full' ? '98% • Lleno' : '25% ocupado');
+    const capacity = marker.dataset.capacity || (status === 'full' ? '98% • Lleno' : (status === 'warning' ? '75% • Media-Alta' : '25% ocupado'));
     const materials = marker.dataset.materials || 'PET 1, Cartón, Latas';
     const route = marker.dataset.route;
     const targetX = marker.dataset.x || '26';
@@ -894,8 +902,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const chipY = marker.dataset.chipY || '44';
     const distanceChip = marker.dataset.distanceChip || '350m • 4 min';
     const isFull = status === 'full';
+    const isWarning = status === 'warning';
 
-    state.selectedPoint = title.replace(/\s*\(Lleno\)/i, '');
+    state.selectedPoint = title.replace(/\s*\((Lleno|\d+%)\)/i, '');
     state.selectedPointStatus = status;
 
     if (nearbyCardTitle) nearbyCardTitle.textContent = title;
@@ -906,14 +915,18 @@ document.addEventListener('DOMContentLoaded', () => {
       nearbyCardStatusBadge.textContent = capacity;
       nearbyCardStatusBadge.className = isFull
         ? 'text-[11px] font-bold px-2 py-0.5 rounded-full bg-red-100 dark:bg-red-950/70 text-red-700 dark:text-red-300'
-        : 'text-[11px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-200';
+        : isWarning
+          ? 'text-[11px] font-bold px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-950/70 text-amber-800 dark:text-amber-300'
+          : 'text-[11px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-200';
     }
 
     if (nearbyCardIcon && nearbyCardIconWrap) {
       nearbyCardIcon.setAttribute('icon', isFull ? 'mynaui:ban' : (marker.dataset.category === 'punto-limpio' ? 'mynaui:sparkles' : 'mynaui:location'));
       nearbyCardIconWrap.className = isFull
         ? 'w-11 h-11 rounded-xl bg-red-100 dark:bg-red-950/60 text-red-600 dark:text-red-400 flex items-center justify-center shrink-0 mt-0.5'
-        : 'w-11 h-11 rounded-xl bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-300 flex items-center justify-center shrink-0 mt-0.5';
+        : isWarning
+          ? 'w-11 h-11 rounded-xl bg-amber-100 dark:bg-amber-950/60 text-amber-700 dark:text-amber-400 flex items-center justify-center shrink-0 mt-0.5'
+          : 'w-11 h-11 rounded-xl bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-300 flex items-center justify-center shrink-0 mt-0.5';
     }
 
     if (nearbyActionLabel && nearbyActionBtn) {
@@ -926,7 +939,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (route) {
       if (mapRoutePath) {
         mapRoutePath.setAttribute('d', route);
-        mapRoutePath.setAttribute('stroke', isFull ? '#dc2626' : '#059669');
+        mapRoutePath.setAttribute('stroke', isFull ? '#dc2626' : (isWarning ? '#d97706' : '#059669'));
       }
       if (mapRouteGlow) {
         mapRouteGlow.setAttribute('d', route);
@@ -936,7 +949,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (mapRouteTargetRing) {
       mapRouteTargetRing.setAttribute('cx', targetX);
       mapRouteTargetRing.setAttribute('cy', targetY);
-      mapRouteTargetRing.setAttribute('fill', isFull ? '#ef4444' : '#10b981');
+      mapRouteTargetRing.setAttribute('fill', isFull ? '#ef4444' : (isWarning ? '#f59e0b' : '#10b981'));
     }
 
     if (mapRouteChip) {
@@ -945,7 +958,9 @@ document.addEventListener('DOMContentLoaded', () => {
       mapRouteChip.textContent = distanceChip;
       mapRouteChip.className = isFull
         ? 'absolute -translate-x-1/2 -translate-y-1/2 z-[8] pointer-events-none px-2 py-0.5 rounded-full bg-red-700/95 text-white text-[10px] font-extrabold shadow-md border border-red-300 whitespace-nowrap'
-        : 'absolute -translate-x-1/2 -translate-y-1/2 z-[8] pointer-events-none px-2 py-0.5 rounded-full bg-emerald-900/95 text-white text-[10px] font-extrabold shadow-md border border-emerald-400/80 whitespace-nowrap';
+        : isWarning
+          ? 'absolute -translate-x-1/2 -translate-y-1/2 z-[8] pointer-events-none px-2 py-0.5 rounded-full bg-amber-700/95 text-white text-[10px] font-extrabold shadow-md border border-amber-300 whitespace-nowrap'
+          : 'absolute -translate-x-1/2 -translate-y-1/2 z-[8] pointer-events-none px-2 py-0.5 rounded-full bg-emerald-900/95 text-white text-[10px] font-extrabold shadow-md border border-emerald-400/80 whitespace-nowrap';
     }
 
     if (focusCamera) {
@@ -1003,15 +1018,32 @@ document.addEventListener('DOMContentLoaded', () => {
     mapSearchInput.addEventListener('input', filterMapMarkers);
   }
 
-  mapMarkers.forEach(marker => {
-    marker.addEventListener('click', (e) => {
-      e.stopPropagation();
-      selectMapMarker(marker, { focusCamera: true, focusElement: true });
+  let lastMarkerActivationAt = 0;
+  function handleMarkerActivate(marker, e) {
+    if (e) e.stopPropagation();
+    const now = Date.now();
+    const isDuplicate = now - lastMarkerActivationAt < 350;
+    lastMarkerActivationAt = now;
+
+    selectMapMarker(marker, { focusCamera: true, focusElement: true });
+    if (!isDuplicate) {
       if (marker.dataset.status === 'full') {
         showToast('Punto lleno (98%). Tocá "Ver cercano" en la tarjeta inferior para ir al punto disponible más próximo.');
+      } else if (marker.dataset.status === 'warning') {
+        showToast(`${marker.dataset.title}: capacidad al 75% (Media-Alta). Todavía podés depositar.`);
       } else {
         showToast(`Recorrido trazado hacia ${marker.dataset.title}.`);
       }
+    }
+  }
+
+  mapMarkers.forEach(marker => {
+    marker.addEventListener('pointerdown', (e) => {
+      if (e.button && e.button !== 0) return;
+      handleMarkerActivate(marker, e);
+    });
+    marker.addEventListener('click', (e) => {
+      handleMarkerActivate(marker, e);
     });
   });
 
@@ -1576,18 +1608,25 @@ document.addEventListener('DOMContentLoaded', () => {
       state.ecoPuntos = DEMO_WALLET.ecoPuntos;
       state.history = DEMO_WALLET.history.slice();
       state.historyPage = 1;
-      communityPosts = INITIAL_COMMUNITY_POSTS.map(post => ({ ...post }));
+      communityPosts = INITIAL_COMMUNITY_POSTS.map(cloneCommunityPost);
       saveCommunityPosts(communityPosts);
       saveUserWallet();
       updatePointsUI();
       renderCommunityFeed();
+      renderMyEvents();
       showToast('Datos de demostración restablecidos (1.250 EcoPuntos, historial y muro comunitario).');
     });
   }
 
   // ==========================================================================
-  // COMUNIDAD VERDE (MURO SOCIAL BARRIAL EN "INICIO"): Publicaciones y EcoEventos
+  // COMUNIDAD VERDE (MURO SOCIAL BARRIAL) Y MIS EVENTOS AGENDADOS
   // ==========================================================================
+  const DEFAULT_EVENT_CHECKLIST = [
+    { id: 'sep', label: 'Reciclables limpios, secos y aplastados', done: true },
+    { id: 'bag', label: 'Bolsa reutilizable o caja plegada', done: false },
+    { id: 'qr', label: 'Credencial QR de vecino en la app', done: false }
+  ];
+
   const INITIAL_COMMUNITY_POSTS = [
     {
       id: 'evt-plaza-roca',
@@ -1595,10 +1634,14 @@ document.addEventListener('DOMContentLoaded', () => {
       badge: 'ECOEVENTO MUNICIPAL • SÁB 15 NOV, 10:00 HS',
       title: 'Feria Circular y EcoCanje en Plaza Roca',
       location: 'Plaza Roca (Centro)',
+      pointId: 'centro',
+      bonusPoints: 50,
+      reminder: '24h',
+      checklist: DEFAULT_EVENT_CHECKLIST.map(item => ({ ...item })),
       caption: 'Acercate con tus reciclables limpios y secos: canjeamos por plantines nativos, compost municipal y +50 EcoPuntos extra en tu billetera.',
       image: 'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&w=600&q=80',
-      attendees: 42,
-      attending: false
+      attendees: 43,
+      attending: true
     },
     {
       id: 'post-lucia-alberdi',
@@ -1634,19 +1677,47 @@ document.addEventListener('DOMContentLoaded', () => {
       badge: 'JORNADA BARRIAL • DOM 23 NOV, 16:00 HS',
       title: 'Recolección de Electrónicos (RAEE) en Parque Sarmiento',
       location: 'Anfiteatro Parque Sarmiento (Banda Norte)',
+      pointId: 'banda-norte',
+      bonusPoints: 50,
+      reminder: '24h',
+      checklist: DEFAULT_EVENT_CHECKLIST.map(item => ({ ...item, done: false })),
       caption: 'Recibimos celulares, cables, teclados y pequeños electrodomésticos en desuso para recuperación segura de componentes.',
       image: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=600&q=80',
       attendees: 31,
       attending: false
+    },
+    {
+      id: 'evt-compost-alberdi',
+      type: 'evento',
+      badge: 'TALLER VECINAL • SÁB 29 NOV, 17:30 HS',
+      title: 'Taller de Compostaje Domiciliario y Canje Verde',
+      location: 'Centro Cívico B° Alberdi',
+      pointId: 'alberdi',
+      bonusPoints: 50,
+      reminder: '2h',
+      checklist: DEFAULT_EVENT_CHECKLIST.map(item => ({ ...item, done: false })),
+      caption: 'Aprendé a transformar tus residuos orgánicos en abono y llevate un núcleo de lombrices californianas + 50 EcoPuntos.',
+      image: 'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?auto=format&fit=crop&w=600&q=80',
+      attendees: 19,
+      attending: false
     }
   ];
+
+  function cloneCommunityPost(post) {
+    return {
+      ...post,
+      checklist: Array.isArray(post.checklist)
+        ? post.checklist.map(item => ({ ...item }))
+        : (post.type === 'evento' ? DEFAULT_EVENT_CHECKLIST.map(item => ({ ...item })) : undefined)
+    };
+  }
 
   function loadCommunityPosts() {
     try {
       const raw = JSON.parse(localStorage.getItem(COMMUNITY_POSTS_KEY));
-      if (Array.isArray(raw) && raw.length > 0) return raw;
+      if (Array.isArray(raw) && raw.length > 0) return raw.map(cloneCommunityPost);
     } catch (e) {}
-    return INITIAL_COMMUNITY_POSTS.map(post => ({ ...post }));
+    return INITIAL_COMMUNITY_POSTS.map(cloneCommunityPost);
   }
 
   function saveCommunityPosts(posts) {
@@ -1664,6 +1735,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const postDialog = document.getElementById('post-dialog');
   const openPostDialogBtn = document.getElementById('btn-open-post-dialog');
   const composerCardBtn = document.getElementById('btn-composer-card');
+  const communityMyEventsBtn = document.getElementById('btn-community-my-events');
+  const myEventsList = document.getElementById('my-events-list');
   const closePostTopBtn = document.getElementById('btn-close-post-top');
   const cancelPostBtn = document.getElementById('btn-cancel-post');
   const communityPostForm = document.getElementById('community-post-form');
@@ -1671,7 +1744,161 @@ document.addEventListener('DOMContentLoaded', () => {
   const postFileInput = document.getElementById('post-file-input');
   const postPresetImgBtns = document.querySelectorAll('.post-preset-img-btn');
 
+  function updateMyEventsBadges() {
+    const attendingEvents = communityPosts.filter(p => p.type === 'evento' && p.attending);
+    const count = attendingEvents.length;
+    const totalBonus = attendingEvents.reduce((acc, ev) => acc + (ev.bonusPoints || 50), 0);
+
+    let totalTasks = 0;
+    let doneTasks = 0;
+    attendingEvents.forEach(ev => {
+      const list = Array.isArray(ev.checklist) ? ev.checklist : DEFAULT_EVENT_CHECKLIST;
+      totalTasks += list.length;
+      doneTasks += list.filter(item => item.done).length;
+    });
+    const prepPct = totalTasks > 0 ? Math.round((doneTasks / totalTasks) * 100) : 0;
+
+    document.querySelectorAll('.my-events-count-badge').forEach(el => {
+      el.textContent = String(count);
+    });
+    document.querySelectorAll('.my-events-count-label').forEach(el => {
+      el.textContent = count === 1 ? '1 evento confirmado' : `${count} eventos confirmados`;
+    });
+
+    const statCount = document.getElementById('events-stat-count');
+    const statBonus = document.getElementById('events-stat-bonus');
+    const statPrep = document.getElementById('events-stat-prep');
+    if (statCount) statCount.textContent = String(count);
+    if (statBonus) statBonus.textContent = `+${totalBonus}`;
+    if (statPrep) statPrep.textContent = `${prepPct}%`;
+  }
+
+  function renderMyEvents() {
+    updateMyEventsBadges();
+    if (!myEventsList) return;
+
+    const allEvents = communityPosts.filter(p => p.type === 'evento');
+    const attendingEvents = allEvents.filter(p => p.attending);
+    const availableEvents = allEvents.filter(p => !p.attending);
+
+    const attendingHtml = attendingEvents.length > 0
+      ? attendingEvents.map(ev => {
+          const checklist = Array.isArray(ev.checklist) ? ev.checklist : DEFAULT_EVENT_CHECKLIST;
+          const doneCount = checklist.filter(i => i.done).length;
+          const reminderVal = ev.reminder || '24h';
+
+          return `
+          <article class="bg-white dark:bg-slate-900 rounded-2xl border-2 border-emerald-500/80 dark:border-emerald-600/80 shadow-sm overflow-hidden">
+            <div class="px-3.5 py-2 bg-emerald-800 text-white flex items-center justify-between gap-2">
+              <span class="text-[11px] font-black uppercase tracking-wider flex items-center gap-1.5">
+                <iconify-icon icon="mynaui:calendar" class="text-sm" aria-hidden="true"></iconify-icon>
+                <span>${ev.badge}</span>
+              </span>
+              <span class="px-2 py-0.5 rounded-full bg-amber-300 text-emerald-950 text-[10px] font-black shrink-0">+${ev.bonusPoints || 50} pts</span>
+            </div>
+
+            <div class="p-3.5 space-y-3">
+              <div class="flex items-start gap-3">
+                <img src="${ev.image}" alt="${ev.title}" class="w-16 h-16 rounded-xl object-cover shrink-0 border border-slate-200 dark:border-slate-700">
+                <div class="min-w-0 flex-1">
+                  <h2 class="font-bold text-slate-900 dark:text-white text-sm leading-snug">${ev.title}</h2>
+                  <p class="text-xs font-semibold text-emerald-700 dark:text-emerald-400 mt-0.5 flex items-center gap-1">
+                    <iconify-icon icon="mynaui:location" class="text-sm shrink-0" aria-hidden="true"></iconify-icon>
+                    <span class="truncate">${ev.location}</span>
+                  </p>
+                  <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1">${ev.attendees} vecinos confirmados</p>
+                </div>
+              </div>
+
+              <!-- Checklist interactivo de preparación para el EcoEvento -->
+              <div class="p-3 rounded-xl bg-emerald-50/70 dark:bg-slate-800/70 border border-emerald-200/80 dark:border-slate-700 space-y-2">
+                <div class="flex items-center justify-between gap-2">
+                  <p class="text-[11px] font-extrabold uppercase tracking-wider text-emerald-900 dark:text-emerald-300 flex items-center gap-1">
+                    <iconify-icon icon="mynaui:check-circle" class="text-sm" aria-hidden="true"></iconify-icon>
+                    <span>Lista de preparación</span>
+                  </p>
+                  <span class="text-[11px] font-bold text-emerald-800 dark:text-emerald-300">${doneCount}/${checklist.length} listos</span>
+                </div>
+                <div class="space-y-1.5">
+                  ${checklist.map(item => `
+                    <label class="flex items-center gap-2.5 text-xs text-slate-700 dark:text-slate-200 cursor-pointer select-none py-0.5">
+                      <input type="checkbox" class="event-check-input w-4 h-4 rounded accent-emerald-700 cursor-pointer" data-event-id="${ev.id}" data-check-id="${item.id}" ${item.done ? 'checked' : ''}>
+                      <span class="${item.done ? 'line-through text-slate-400 dark:text-slate-500' : 'font-medium'}">${item.label}</span>
+                    </label>
+                  `).join('')}
+                </div>
+              </div>
+
+              <!-- Selector de recordatorio -->
+              <div class="flex items-center justify-between gap-2 px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200/80 dark:border-slate-700">
+                <label for="rem-${ev.id}" class="text-xs font-semibold text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
+                  <iconify-icon icon="mynaui:bell" class="text-base text-amber-600 dark:text-amber-400" aria-hidden="true"></iconify-icon>
+                  <span>Recordatorio:</span>
+                </label>
+                <select id="rem-${ev.id}" class="event-reminder-select text-xs font-bold bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200 border border-slate-300 dark:border-slate-700 rounded-lg px-2.5 py-1 cursor-pointer" data-event-id="${ev.id}">
+                  <option value="24h" ${reminderVal === '24h' ? 'selected' : ''}>1 día antes</option>
+                  <option value="2h" ${reminderVal === '2h' ? 'selected' : ''}>2 horas antes</option>
+                  <option value="30m" ${reminderVal === '30m' ? 'selected' : ''}>30 min antes</option>
+                </select>
+              </div>
+
+              <!-- Acciones del evento agendado -->
+              <div class="grid grid-cols-2 gap-2 pt-0.5">
+                <button type="button" class="btn-event-map touch-target px-3 py-2 rounded-xl bg-emerald-800 hover:bg-emerald-700 text-white text-xs font-bold flex items-center justify-center gap-1.5 cursor-pointer transition-all" data-point-id="${ev.pointId || 'centro'}">
+                  <iconify-icon icon="mynaui:map" class="text-base" aria-hidden="true"></iconify-icon>
+                  <span>Ver en Mapa</span>
+                </button>
+                <button type="button" class="btn-event-cancel touch-target px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-red-50 dark:hover:bg-red-950/50 text-slate-700 dark:text-slate-300 hover:text-red-700 dark:hover:text-red-300 border border-slate-200 dark:border-slate-700 text-xs font-bold flex items-center justify-center gap-1.5 cursor-pointer transition-all" data-event-id="${ev.id}">
+                  <iconify-icon icon="mynaui:x" class="text-base" aria-hidden="true"></iconify-icon>
+                  <span>Cancelar</span>
+                </button>
+              </div>
+            </div>
+          </article>`;
+        }).join('')
+      : `
+        <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-dashed border-slate-300 dark:border-slate-700 text-center space-y-2.5">
+          <div class="w-12 h-12 rounded-2xl bg-amber-100 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300 flex items-center justify-center mx-auto">
+            <iconify-icon icon="mynaui:calendar" class="text-2xl" aria-hidden="true"></iconify-icon>
+          </div>
+          <h2 class="font-bold text-slate-900 dark:text-white text-sm">Todavía no tenés eventos agendados</h2>
+          <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">Sumate a las jornadas barriales acá abajo o desde la pestaña <strong>EcoEventos</strong> en Comunidad para ganar EcoPuntos extra.</p>
+        </div>`;
+
+    const availableHtml = availableEvents.length > 0
+      ? `
+        <div class="pt-2 space-y-2.5">
+          <h2 class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 px-1">Próximos EcoEventos para sumarte</h2>
+          ${availableEvents.map(ev => `
+            <article class="p-3.5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 shadow-sm flex items-center justify-between gap-3">
+              <div class="min-w-0 flex-1">
+                <span class="text-[10px] font-extrabold uppercase tracking-wider text-amber-700 dark:text-amber-400 block">${ev.badge}</span>
+                <h3 class="font-bold text-slate-900 dark:text-white text-xs leading-snug mt-0.5">${ev.title}</h3>
+                <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5 flex items-center gap-1">
+                  <iconify-icon icon="mynaui:location" class="text-xs text-emerald-700 dark:text-emerald-400 shrink-0" aria-hidden="true"></iconify-icon>
+                  <span class="truncate">${ev.location}</span>
+                </p>
+              </div>
+              <button type="button" class="btn-event-add touch-target px-3 py-2 rounded-xl bg-amber-100 dark:bg-amber-950/70 hover:bg-emerald-800 hover:text-white text-amber-900 dark:text-amber-200 border border-amber-300 dark:border-amber-700 text-xs font-bold flex items-center gap-1 shrink-0 cursor-pointer transition-all" data-event-id="${ev.id}">
+                <iconify-icon icon="mynaui:plus" class="text-sm" aria-hidden="true"></iconify-icon>
+                <span>Agendar</span>
+              </button>
+            </article>
+          `).join('')}
+        </div>`
+      : '';
+
+    myEventsList.innerHTML = attendingHtml + availableHtml;
+  }
+
   function renderCommunityFeed() {
+    updateMyEventsBadges();
+    if (composerCardBtn) {
+      composerCardBtn.classList.toggle('hidden', activeCommunityFilter === 'evento');
+    }
+    if (communityMyEventsBtn) {
+      communityMyEventsBtn.classList.toggle('hidden', activeCommunityFilter !== 'evento');
+    }
     if (!communityFeedList) return;
     const visiblePosts = communityPosts.filter(post => (
       activeCommunityFilter === 'all' ? true : post.type === activeCommunityFilter
@@ -1683,8 +1910,8 @@ document.addEventListener('DOMContentLoaded', () => {
           ? 'bg-emerald-800 text-white border-emerald-700'
           : 'bg-amber-50 dark:bg-slate-800 text-amber-900 dark:text-amber-300 border-amber-300 dark:border-amber-700 hover:bg-amber-100';
         const rsvpLabel = post.attending
-          ? `Confirmado (${post.attendees} vecinos)`
-          : `Me sumo al evento (${post.attendees} vecinos)`;
+          ? `Agendado en Mis Eventos (${post.attendees} vecinos)`
+          : `Agendar en Mis Eventos (${post.attendees} vecinos)`;
 
         return `
         <article class="bg-white dark:bg-slate-900 rounded-2xl border-2 border-amber-300/90 dark:border-amber-700/80 shadow-sm overflow-hidden">
@@ -1768,6 +1995,7 @@ document.addEventListener('DOMContentLoaded', () => {
         b.classList.toggle('dark:text-slate-300', !active);
       });
       renderCommunityFeed();
+  renderMyEvents();
     });
   });
 
@@ -1781,6 +2009,7 @@ document.addEventListener('DOMContentLoaded', () => {
           post.likes = Math.max(0, (post.likes || 0) + (post.liked ? 1 : -1));
           saveCommunityPosts(communityPosts);
           renderCommunityFeed();
+  renderMyEvents();
         }
         return;
       }
@@ -1792,9 +2021,107 @@ document.addEventListener('DOMContentLoaded', () => {
           evt.attendees = Math.max(0, (evt.attendees || 0) + (evt.attending ? 1 : -1));
           saveCommunityPosts(communityPosts);
           renderCommunityFeed();
-          showToast(evt.attending ? `¡Te sumaste a "${evt.title}"!` : 'Cancelaste tu asistencia al evento.');
+  renderMyEvents();
+          renderMyEvents();
+          showToast(evt.attending ? `¡Agendado en Mis Eventos: "${evt.title}"!` : 'Cancelaste tu asistencia al evento.');
         }
       }
+    });
+  }
+
+  if (myEventsList) {
+    myEventsList.addEventListener('click', (e) => {
+      const cancelBtn = e.target.closest('.btn-event-cancel');
+      if (cancelBtn) {
+        const evt = communityPosts.find(p => p.id === cancelBtn.dataset.eventId);
+        if (evt && evt.attending) {
+          evt.attending = false;
+          evt.attendees = Math.max(0, (evt.attendees || 1) - 1);
+          saveCommunityPosts(communityPosts);
+          renderMyEvents();
+          renderCommunityFeed();
+          showToast(`Quitaste "${evt.title}" de Mis Eventos.`);
+        }
+        return;
+      }
+
+      const addBtn = e.target.closest('.btn-event-add');
+      if (addBtn) {
+        const evt = communityPosts.find(p => p.id === addBtn.dataset.eventId);
+        if (evt && !evt.attending) {
+          evt.attending = true;
+          evt.attendees = (evt.attendees || 0) + 1;
+          if (!Array.isArray(evt.checklist)) {
+            evt.checklist = DEFAULT_EVENT_CHECKLIST.map(item => ({ ...item, done: false }));
+          }
+          saveCommunityPosts(communityPosts);
+          renderMyEvents();
+          renderCommunityFeed();
+          showToast(`¡Agendaste "${evt.title}" en Mis Eventos!`);
+        }
+        return;
+      }
+
+      const mapBtn = e.target.closest('.btn-event-map');
+      if (mapBtn) {
+        const pointId = mapBtn.dataset.pointId || 'centro';
+        navigateTo('mapa');
+        const targetMarker = [...mapMarkers].find(m => m.dataset.pointId === pointId);
+        if (targetMarker) {
+          requestAnimationFrame(() => {
+            selectMapMarker(targetMarker, { focusCamera: true, focusElement: true });
+            showToast(`Ubicación del evento: ${targetMarker.dataset.title}`);
+          });
+        }
+      }
+    });
+
+    myEventsList.addEventListener('change', (e) => {
+      const checkInput = e.target.closest('.event-check-input');
+      if (checkInput) {
+        const evt = communityPosts.find(p => p.id === checkInput.dataset.eventId);
+        if (evt) {
+          if (!Array.isArray(evt.checklist)) {
+            evt.checklist = DEFAULT_EVENT_CHECKLIST.map(item => ({ ...item }));
+          }
+          const item = evt.checklist.find(i => i.id === checkInput.dataset.checkId);
+          if (item) {
+            item.done = checkInput.checked;
+            saveCommunityPosts(communityPosts);
+            renderMyEvents();
+          }
+        }
+        return;
+      }
+
+      const reminderSelect = e.target.closest('.event-reminder-select');
+      if (reminderSelect) {
+        const evt = communityPosts.find(p => p.id === reminderSelect.dataset.eventId);
+        if (evt) {
+          evt.reminder = reminderSelect.value;
+          saveCommunityPosts(communityPosts);
+          const labels = { '24h': '1 día antes', '2h': '2 horas antes', '30m': '30 minutos antes' };
+          showToast(`Recordatorio actualizado (${labels[evt.reminder] || 'activado'}).`);
+        }
+      }
+    });
+  }
+
+  const exploreEventsBtn = document.getElementById('btn-events-explore-community');
+  if (exploreEventsBtn) {
+    exploreEventsBtn.addEventListener('click', () => {
+      activeCommunityFilter = 'evento';
+      communityFilterBtns.forEach(b => {
+        const active = (b.dataset.feedFilter || 'all') === 'evento';
+        b.setAttribute('aria-selected', String(active));
+        b.setAttribute('aria-pressed', String(active));
+        b.classList.toggle('bg-emerald-800', active);
+        b.classList.toggle('text-white', active);
+        b.classList.toggle('shadow-sm', active);
+        b.classList.toggle('text-slate-700', !active);
+        b.classList.toggle('dark:text-slate-300', !active);
+      });
+      navigateTo('comunidad');
     });
   }
 
@@ -1899,6 +2226,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       activeCommunityFilter = 'all';
       renderCommunityFeed();
+  renderMyEvents();
       communityPostForm.reset();
       if (postDialog && postDialog.open) postDialog.close();
       showToast('¡Publicación compartida en el muro! Sumaste +5 EcoPuntos.');
@@ -1906,6 +2234,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   renderCommunityFeed();
+  renderMyEvents();
 
   if (profileForm) {
     const profileSubmit = profileForm.querySelector('[type="submit"]');

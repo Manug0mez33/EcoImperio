@@ -217,12 +217,12 @@ dialog[open] {
   background-color: rgba(6, 78, 59, 0.15);
 }
 
-/* Respuesta táctil Active universal para todos los botones e ítems interactivos */
-body button:not(.btn-primary):not(.btn-secondary):not(:disabled) {
+/* Respuesta táctil Active universal para todos los botones e ítems interactivos (excluye .map-marker para conservar translate(-50%, -50%)) */
+body button:not(.btn-primary):not(.btn-secondary):not(.map-marker):not(:disabled) {
   transition: transform 0.18s ease, background-color 0.18s ease, color 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
 }
 
-body button:not(.btn-primary):not(.btn-secondary):active:not(:disabled) {
+body button:not(.btn-primary):not(.btn-secondary):not(.map-marker):active:not(:disabled) {
   transform: scale(0.95);
 }
 
@@ -819,13 +819,29 @@ html.dark body.high-contrast .bottom-nav-item[aria-current="page"] * {
 #screen-escaner,
 #screen-puntos,
 #screen-historial,
-#screen-config {
+#screen-config,
+#screen-eventos,
+#screen-mas {
   overflow: hidden !important;
 }
 
-/* Marcador seleccionado en el mapa: realce fluido y halo pulsante de focus */
+/* Marcador en el mapa: mantiene siempre su centrado (-50%, -50%) para no desplazarse en :active y responder al 1° click */
 .map-marker {
-  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.2s ease;
+  transform: translate(-50%, -50%) scale(1) !important;
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.2s ease;
+  touch-action: manipulation;
+}
+
+.map-marker > * {
+  pointer-events: none;
+}
+
+.map-marker:hover:not(:disabled) {
+  transform: translate(-50%, -50%) scale(1.08) !important;
+}
+
+.map-marker:active:not(:disabled) {
+  transform: translate(-50%, -50%) scale(0.95) !important;
 }
 
 .map-marker.is-selected {
