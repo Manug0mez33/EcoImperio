@@ -24,9 +24,16 @@ A través de un mapa barrial interactivo con estados de ocupación en tiempo rea
 - **Nombre de la marca / producto**: **EcoImperio** (en articulación con la iniciativa de gestión ambiental de la *Municipalidad de Río Cuarto*, conocida históricamente como la *"Capital Alterna"* o *"El Imperio del Sur"*).
 - **Eslogan**: *"Reciclá, sumá puntos, transformá tu ciudad — Unite a la comunidad verde de Río Cuarto"*.
 - **Identidad Visual e Iconografía de Tienda (App Icon & Variantes de Logo)**:
-  1. **App Icon / Store Badge (Formato Circular / Squircle 1:1)**: Círculo de fondo verde bosque profundo (`#1b4332` en claro / `#064e3b` con halo `#10b981` en oscuro), coronado en el borde superior por la **corona dorada (`#f59e0b`)** que alude al apodo de Río Cuarto (*"El Imperio"*), y en el centro el **brote orgánico de dos hojas (`#34d399` / `#d8f3dc`)** que simboliza regeneración ambiental.
-  2. **Logotipo Tipográfico Principal (Horizontal / Vertical)**: Tipografía geométrica `Inter ExtraBold` / `Roboto Black` con alto peso visual, acompañada del isotipo de brote y corona.
-  3. **Variante Monocromática / Alto Contraste (WCAG AAA)**: Versión en trazo amarillo puro (`#ffff00`) o blanco (`#ffffff`) sobre fondo negro absoluto (`#000000`) para máxima legibilidad en lectores con baja visión.
+  1. **App Icon / Store Badge (Formato Circular / Squircle 1:1)**: Contenedor `Squircle` con gradiente verde bosque profundo (`#065f46` → `#1b4332`), coronado en el borde superior por la **corona dorada (`#f59e0b`)** que alude al apodo histórico de Río Cuarto (*"El Imperio del Sur"*), y en el centro el **brote orgánico de dos hojas (`#34d399` / `#6ee7b7`)** que simboliza regeneración ambiental. Diseñado para lectura instantánea en grillas de tiendas (`Google Play` / `App Store` / `PWA Home Screen`).
+  2. **Logotipo Tipográfico Principal (Horizontal)**: Tipografía geométrica `Inter Black` (`900`) de alto peso visual que combina el prefijo `"Eco"` en esmeralda accesible (`#047857`) y `"Imperio"` en pizarra profundo (`#0f172a`), acompañado del isotipo circular y el descriptor local `"COMUNIDAD VERDE • RÍO CUARTO"`.
+  3. **Variante Monocromática / Alto Contraste (WCAG AAA $\ge 7:1$)**: Versión en trazo amarillo puro (`#ffff00`, ratio `19.56:1`) y blanco (`#ffffff`, ratio `21:1`) sobre fondo negro absoluto (`#000000`) para máxima legibilidad en personas con baja visión, cataratas o fotofobia.
+
+### Galería de Variantes Oficiales de Marca
+
+| Variante 1: App Icon / Store Badge (1:1) | Variante 2: Logotipo Horizontal Oficial | Variante 3: Monocromático Alto Contraste (AAA) |
+| :---: | :---: | :---: |
+| ![App Icon de EcoImperio](assets/logos/logo_app_icon.svg) | ![Logotipo Horizontal de EcoImperio](assets/logos/logo_horizontal.svg) | ![Logotipo Alto Contraste de EcoImperio](assets/logos/logo_high_contrast.svg) |
+| *Ícono de tienda e instalador PWA (`160×160`)* | *Cabeceras, papelería institucional y presentación* | *Modo Alto Contraste WCAG AAA (`19.56:1`)* |
 
 ---
 
@@ -178,11 +185,14 @@ A continuación se detalla cómo se implementó técnicamente cada uno de los **
 
 ## 6. Equipo de Trabajo
 
-> *(Completar con los datos finales de los integrantes del grupo para la entrega en `EFI-Equipo/`)*
+El proyecto **EcoImperio** fue investigado, diseñado y desarrollado por el equipo de estudiantes de la carrera de **Desarrollo de Software — ITEC Río Cuarto**:
 
-| Foto / Avatar | Nombre y Apellido | Rol en el Proyecto | Breve Biografía / Enfoque |
+| Foto / Avatar | Nombre y Apellido | Rol en el Proyecto | Breve Biografía / Enfoque Técnico |
 | :---: | :--- | :--- | :--- |
-| ![Avatar Tomás](data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Ccircle%20cx='32'%20cy='32'%20r='30'%20fill='%23047857'/%3E%3Ctext%20x='32'%20y='40'%20font-size='22'%20font-weight='bold'%20fill='white'%20text-anchor='middle'%20font-family='Inter,%20sans-serif'%3ETB%3C/text%3E%3C/svg%3E) | **Tomás Benavidez** | UX/UI Lead & Frontend Architect | Estudiante de ITEC Río Cuarto, enfocado en arquitectura de información, accesibilidad WCAG y desarrollo de interfaces web Mobile-First. |
+| ![Avatar Manuel Gómez](data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Ccircle%20cx='32'%20cy='32'%20r='30'%20fill='%23065f46'%20stroke='%2334d399'%20stroke-width='2'/%3E%3Ctext%20x='32'%20y='40'%20font-size='22'%20font-weight='bold'%20fill='white'%20text-anchor='middle'%20font-family='Inter,%20sans-serif'%3EMG%3C/text%3E%3C/svg%3E) | **Manuel Gómez** | Product Lead, Frontend Architecture & UX Interaction | Estudiante de Desarrollo de Software en ITEC Río Cuarto (`manuel.gomez@itecriocuarto.org.ar`). Responsable de la lógica interactiva de la SPA (`app.js`), persistencia de estado, motor de canje de EcoPuntos, validaciones de formularios y coordinación técnica del repositorio. |
+| ![Avatar Tomás Benavidez](data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Ccircle%20cx='32'%20cy='32'%20r='30'%20fill='%23047857'%20stroke='%236ee7b7'%20stroke-width='2'/%3E%3Ctext%20x='32'%20y='40'%20font-size='22'%20font-weight='bold'%20fill='white'%20text-anchor='middle'%20font-family='Inter,%20sans-serif'%3ETB%3C/text%3E%3C/svg%3E) | **Tomás Benavidez** | UX/UI Design Lead & Accessibility Specialist | Estudiante de Desarrollo de Software en ITEC Río Cuarto (`t.benavidez@itecriocuarto.org.ar`). Enfocado en el Sistema de Diseño Atómico, prototipado en Figma (Lo-Fi a Hi-Fi), cumplimiento de contrastes WCAG AA/AAA y arquitectura de la información. |
+| ![Avatar Valentino Cambria](data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Ccircle%20cx='32'%20cy='32'%20r='30'%20fill='%230f766e'%20stroke='%235eead4'%20stroke-width='2'/%3E%3Ctext%20x='32'%20y='40'%20font-size='22'%20font-weight='bold'%20fill='white'%20text-anchor='middle'%20font-family='Inter,%20sans-serif'%3EVC%3C/text%3E%3C/svg%3E) | **Valentino Cambria** | UI Components, Mobile-First Layout & QA | Estudiante de Desarrollo de Software en ITEC Río Cuarto (`v.cambria@itecriocuarto.org.ar`). Especializado en maquetación semántica HTML5, estilizado adaptable con Tailwind CSS, verificación de los 5 estados interactivos y pruebas de usabilidad móvil. |
+| ![Avatar Juan Falco](data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Ccircle%20cx='32'%20cy='32'%20r='30'%20fill='%23b45309'%20stroke='%23fcd34d'%20stroke-width='2'/%3E%3Ctext%20x='32'%20y='40'%20font-size='22'%20font-weight='bold'%20fill='white'%20text-anchor='middle'%20font-family='Inter,%20sans-serif'%3EJF%3C/text%3E%3C/svg%3E) | **Juan Falco** | UX Research, Relevamiento Territorial & Testing | Estudiante de Desarrollo de Software en ITEC Río Cuarto. Responsable del relevamiento de Puntos Verdes y comercios barriales de Río Cuarto, definición de User Personas, pruebas de recorrido por teclado y validación heurística. |
 
 ---
 
