@@ -1,0 +1,790 @@
+/* ==========================================================================
+   ESTILOS Y SISTEMA DE DISEÑO - ECOIMPERIO (Gentle-AI / Tailwind v3 Extended)
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto:wght@300;400;500;700;900&display=swap');
+
+:root {
+  --color-primary: #064e3b;       /* Emerald 900 */
+  --color-primary-light: #10b981; /* Emerald 500 */
+  --color-primary-hover: #059669; /* Emerald 600 */
+  --color-primary-active: #047857;/* Emerald 700 (5.48:1 sobre blanco) */
+  --color-gold: #f59e0b;          /* Amber 500 */
+  --color-gold-light: #fbbf24;    /* Amber 400 */
+  --color-danger: #dc2626;        /* Red 600 */
+  --color-bg-light: #f8fafc;      /* Slate 50 */
+  --color-bg-dark: #020617;       /* Slate 950 */
+  --color-card-light: #ffffff;
+  --color-card-dark: #0f172a;     /* Slate 900 */
+  --color-text-main: #0f172a;
+  --color-text-muted: #475569;    /* Slate 600 (> 7:1 sobre blanco) */
+  --focus-ring: 0 0 0 4px rgba(16, 185, 129, 0.45);
+  --focus-ring-hc: 0 0 0 3px #000000, 0 0 0 6px #facc15;
+}
+
+/* ==========================================================================
+   RESET Y BASE ACCESIBLE
+   ========================================================================== */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: #0f172a;
+  color: var(--color-text-main);
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  line-height: 1.5;
+}
+
+/* `body button` gana en especificidad al reset de Tailwind (`button { font-family: inherit }`),
+   que se inyecta después de este archivo */
+body button {
+  font-family: 'Inter', sans-serif;
+  touch-action: manipulation;
+}
+
+/* ==========================================================================
+   ESCALA TIPOGRÁFICA MODULAR (docs/contexto/convenciones.md)
+   h1: 2rem (32px) | h2: 1.5rem (24px) | h3: 1.125rem (18px) | h4: 1rem (16px)
+   body & inputs: 1rem (16px) mínimo para evitar auto-zoom móvil y cumplir WCAG
+   ========================================================================== */
+.mobile-viewport h1 {
+  font-size: 2rem;
+  line-height: 1.2;
+}
+
+.mobile-viewport h2 {
+  font-size: 1.5rem;
+  line-height: 1.3;
+}
+
+.mobile-viewport h3 {
+  font-size: 1.125rem;
+  line-height: 1.4;
+}
+
+.mobile-viewport h4 {
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+/* Subtítulos de sección compactos cuando usan clase explícita .section-kicker */
+.mobile-viewport h2.section-kicker {
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+body input:not([type="checkbox"]):not([type="radio"]),
+body select,
+body textarea {
+  font-size: 1rem !important;
+  line-height: 1.5;
+  min-height: 48px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+body input:not([type="checkbox"]):not([type="radio"]):hover:not(:disabled),
+body select:hover:not(:disabled),
+body textarea:hover:not(:disabled) {
+  border-color: #10b981;
+}
+
+body input:not([type="checkbox"]):not([type="radio"]):active:not(:disabled),
+body select:active:not(:disabled) {
+  border-color: #047857;
+}
+
+/* Contenedor Mockup de Celular Mobile-First */
+.mobile-viewport {
+  width: 100%;
+  max-width: 412px;
+  height: 100vh;
+  max-height: 870px;
+  background-color: var(--color-bg-light);
+  position: relative;
+  overflow: hidden;
+  /* clip impide que el navegador desplace el marco al enfocar un elemento (overflow: hidden sí lo permite) */
+  overflow: clip;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+}
+
+@media (min-width: 640px) {
+  .mobile-viewport {
+    border-radius: 36px;
+    border: 10px solid #1e293b;
+    height: 840px;
+  }
+}
+
+/* Card Balance Actual: tamaño mínimo fijo para evitar colapso en flexbox */
+.balance-card {
+  min-height: 155px;
+  flex-shrink: 0;
+}
+
+dialog:not([open]) {
+  display: none !important;
+}
+
+dialog[open] {
+  display: flex !important;
+  flex-direction: column;
+  max-height: 85vh;
+  margin: auto;
+}
+
+/* ==========================================================================
+   LOS 5 ESTADOS DE COMPONENTES UI (Default, Hover, Active, Focus, Disabled)
+   ========================================================================== */
+
+/* Área táctil mínima obligatoria WCAG 2.2 / Concepto 10 (>= 44x44px) */
+.touch-target,
+.nav-item,
+.toggle-password,
+.dark-mode-btn,
+#btn-open-drawer,
+#btn-close-drawer,
+#btn-scanner-flash {
+  min-width: 44px;
+  min-height: 44px;
+}
+
+/* 1. Default & 2. Hover - Botón Primario */
+.btn-primary {
+  background-color: var(--color-primary-active);
+  color: #ffffff !important;
+  font-weight: 600;
+  border-radius: 9999px;
+  padding: 0.85rem 1.5rem;
+  border: 2px solid transparent;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 12px rgba(4, 120, 87, 0.28);
+  touch-action: manipulation;
+  min-height: 48px;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: var(--color-primary);
+  transform: translateY(-2px) scale(1.01);
+  box-shadow: 0 6px 18px rgba(6, 78, 59, 0.38);
+}
+
+/* 3. Active (Hundimiento táctil físico) */
+.btn-primary:active:not(:disabled) {
+  transform: translateY(0) scale(0.97);
+  background-color: #064e3b;
+}
+
+/* Botón secundario outline */
+.btn-secondary {
+  background-color: transparent;
+  color: var(--color-primary);
+  font-weight: 600;
+  border-radius: 9999px;
+  padding: 0.85rem 1.5rem;
+  border: 2px solid var(--color-primary);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.22s ease;
+  min-height: 48px;
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background-color: rgba(6, 78, 59, 0.08);
+  transform: translateY(-1px);
+  box-shadow: 0 3px 10px rgba(6, 78, 59, 0.12);
+}
+
+.btn-secondary:active:not(:disabled) {
+  transform: scale(0.97);
+  background-color: rgba(6, 78, 59, 0.15);
+}
+
+/* Respuesta táctil Active universal para todos los botones e ítems interactivos */
+body button:not(.btn-primary):not(.btn-secondary):not(:disabled) {
+  transition: transform 0.18s ease, background-color 0.18s ease, color 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+body button:not(.btn-primary):not(.btn-secondary):active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+/* 4. Focus (Accesibilidad 100% Teclado vía :focus-visible) */
+.btn-primary:focus-visible,
+.btn-secondary:focus-visible,
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+summary:focus-visible {
+  outline: none !important;
+  box-shadow: var(--focus-ring) !important;
+}
+
+/* 5. Disabled (Estado inactivo inequívoco) */
+.btn-primary:disabled,
+.btn-secondary:disabled,
+button:disabled,
+input:disabled,
+select:disabled,
+textarea:disabled {
+  opacity: 0.55 !important;
+  cursor: not-allowed !important;
+  pointer-events: none;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* ==========================================================================
+   Efecto Laser Scanner QR y Flash
+   ========================================================================== */
+.scanner-laser {
+  position: absolute;
+  top: 15%;
+  left: 10%;
+  right: 10%;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #ef4444, #f59e0b, #ef4444, transparent);
+  box-shadow: 0 0 15px #ef4444;
+  animation: scanSweep 2.2s infinite ease-in-out;
+}
+
+.scanner-flash-active {
+  box-shadow: 0 0 40px 8px rgba(251, 191, 36, 0.55) !important;
+  border-color: #fbbf24 !important;
+}
+
+@keyframes scanSweep {
+  0% { top: 15%; opacity: 0.8; }
+  50% { top: 80%; opacity: 1; }
+  100% { top: 15%; opacity: 0.8; }
+}
+
+/* ==========================================================================
+   ANIMACIONES DE PANTALLA Y DRAWER SLIDE-OVER ACCESIBLE
+   ========================================================================== */
+.screen-view {
+  /* Contenedor de los inputs sr-only de cada pantalla: así el foco desplaza la pantalla y no el marco del celular */
+  position: relative;
+  display: none;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+  overflow-y: auto;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.screen-view.active {
+  display: flex;
+}
+
+/* Scroll táctil sin barra visible, como en un celular real (el contenido sigue desplazándose) */
+.screen-view,
+.drawer-menu nav {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.screen-view::-webkit-scrollbar,
+.drawer-menu nav::-webkit-scrollbar {
+  display: none;
+}
+
+/* ==========================================================================
+   PREFERENCIAS DE ACCESIBILIDAD (Configuración)
+   ========================================================================== */
+/* Tamaño de texto: las clases de Tailwind usan rem, así que escalan con el font-size raíz */
+html.text-size-large {
+  font-size: 112.5%;
+}
+
+html.text-size-xlarge {
+  font-size: 125%;
+}
+
+/* Reducir animaciones: preferencia del usuario o del sistema operativo */
+html.reduce-motion *,
+html.reduce-motion *::before,
+html.reduce-motion *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.98); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.drawer-overlay {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: 50;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.drawer-overlay.open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.drawer-menu {
+  position: absolute;
+  top: 0;
+  left: -85%;
+  width: 85%;
+  height: 100%;
+  background-color: #ffffff;
+  z-index: 60;
+  box-shadow: 10px 0 30px rgba(0, 0, 0, 0.3);
+  visibility: hidden;
+  pointer-events: none;
+  transition: left 0.35s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.35s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.drawer-menu.open {
+  left: 0;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+/* ==========================================================================
+   NOTIFICACIÓN TOAST
+   ========================================================================== */
+.toast {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  right: 1rem;
+  z-index: 70;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.875rem 1rem;
+  border-radius: 1rem;
+  background-color: var(--color-primary);
+  color: #ffffff;
+  box-shadow: 0 10px 25px rgba(6, 78, 59, 0.35);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-1rem);
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
+}
+
+.toast.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+/* ==========================================================================
+   MODO OSCURO (DARK MODE)
+   Los componentes Tailwind usan variantes dark: en el HTML (clase `dark` en <html>).
+   Acá solo se tematizan las clases propias de este archivo.
+   ========================================================================== */
+html.dark .mobile-viewport {
+  background-color: var(--color-bg-dark);
+  color: #f1f5f9;
+}
+
+html.dark .btn-primary {
+  background-color: var(--color-primary-active);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+html.dark .btn-primary:hover:not(:disabled) {
+  background-color: #059669;
+}
+
+html.dark .btn-primary:active:not(:disabled) {
+  background-color: var(--color-primary);
+}
+
+html.dark .btn-secondary {
+  color: #6ee7b7;
+  border-color: #34d399;
+}
+
+html.dark .btn-secondary:hover:not(:disabled) {
+  background-color: rgba(52, 211, 153, 0.12);
+}
+
+html.dark .drawer-menu {
+  background-color: var(--color-card-dark);
+  color: #f8fafc;
+}
+
+html.dark .drawer-overlay {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+html.dark .toast {
+  border: 1px solid var(--color-primary-active);
+}
+
+/* ==========================================================================
+   MODO ALTO CONTRASTE (WCAG AAA >= 7:1 Compliance)
+   Diferenciado rigurosamente: Alto Contraste Claro vs Alto Contraste Oscuro
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. ALTO CONTRASTE CLARO (Sin Modo Noche: html:not(.dark).high-contrast)
+   Fondo blanco puro #ffffff, texto negro puro #000000, bordes negros 2px/3px
+   Ratio WCAG AAA: 21:1 (Negro sobre Blanco)
+   -------------------------------------------------------------------------- */
+html:not(.dark).high-contrast .mobile-viewport,
+html:not(.dark) body.high-contrast .mobile-viewport {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  border-color: #000000 !important;
+}
+
+html:not(.dark).high-contrast .screen-view,
+html:not(.dark) body.high-contrast .screen-view,
+html:not(.dark).high-contrast .drawer-menu,
+html:not(.dark) body.high-contrast .drawer-menu,
+html:not(.dark).high-contrast dialog,
+html:not(.dark) body.high-contrast dialog {
+  background-color: #ffffff !important;
+  background-image: none !important;
+  color: #000000 !important;
+}
+
+html:not(.dark).high-contrast .bg-white,
+html:not(.dark) body.high-contrast .bg-white,
+html:not(.dark).high-contrast .bg-slate-50,
+html:not(.dark) body.high-contrast .bg-slate-50,
+html:not(.dark).high-contrast .bg-slate-100,
+html:not(.dark) body.high-contrast .bg-slate-100,
+html:not(.dark).high-contrast .bg-slate-900,
+html:not(.dark) body.high-contrast .bg-slate-900,
+html:not(.dark).high-contrast .bg-slate-950,
+html:not(.dark) body.high-contrast .bg-slate-950,
+html:not(.dark).high-contrast .bg-emerald-900,
+html:not(.dark) body.high-contrast .bg-emerald-900,
+html:not(.dark).high-contrast .bg-emerald-50,
+html:not(.dark) body.high-contrast .bg-emerald-50,
+html:not(.dark).high-contrast nav,
+html:not(.dark) body.high-contrast nav,
+html:not(.dark).high-contrast article,
+html:not(.dark) body.high-contrast article {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  border: 2px solid #000000 !important;
+}
+
+html:not(.dark).high-contrast [class*="text-slate-"],
+html:not(.dark) body.high-contrast [class*="text-slate-"],
+html:not(.dark).high-contrast [class*="text-emerald-"],
+html:not(.dark) body.high-contrast [class*="text-emerald-"],
+html:not(.dark).high-contrast span,
+html:not(.dark) body.high-contrast span,
+html:not(.dark).high-contrast p,
+html:not(.dark) body.high-contrast p,
+html:not(.dark).high-contrast h1,
+html:not(.dark) body.high-contrast h1,
+html:not(.dark).high-contrast h2,
+html:not(.dark) body.high-contrast h2,
+html:not(.dark).high-contrast h3,
+html:not(.dark) body.high-contrast h3,
+html:not(.dark).high-contrast h4,
+html:not(.dark) body.high-contrast h4 {
+  color: #000000 !important;
+}
+
+html:not(.dark).high-contrast a,
+html:not(.dark) body.high-contrast a {
+  color: #0000ee !important;
+  text-decoration: underline !important;
+  font-weight: 700 !important;
+}
+
+html:not(.dark).high-contrast .btn-primary,
+html:not(.dark) body.high-contrast .btn-primary {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border: 3px solid #000000 !important;
+  font-weight: 900 !important;
+}
+
+html:not(.dark).high-contrast .btn-primary *,
+html:not(.dark) body.high-contrast .btn-primary * {
+  color: #ffffff !important;
+}
+
+html:not(.dark).high-contrast .btn-secondary,
+html:not(.dark) body.high-contrast .btn-secondary {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  border: 3px solid #000000 !important;
+  font-weight: 800 !important;
+}
+
+html:not(.dark).high-contrast input:not([type="checkbox"]):not([type="radio"]),
+html:not(.dark) body.high-contrast input:not([type="checkbox"]):not([type="radio"]),
+html:not(.dark).high-contrast select,
+html:not(.dark) body.high-contrast select,
+html:not(.dark).high-contrast textarea,
+html:not(.dark) body.high-contrast textarea {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  border: 2px solid #000000 !important;
+}
+
+html:not(.dark).high-contrast input::placeholder,
+html:not(.dark) body.high-contrast input::placeholder {
+  color: #475569 !important;
+}
+
+html:not(.dark).high-contrast button:focus-visible,
+html:not(.dark) body.high-contrast button:focus-visible,
+html:not(.dark).high-contrast a:focus-visible,
+html:not(.dark) body.high-contrast a:focus-visible,
+html:not(.dark).high-contrast input:focus-visible,
+html:not(.dark) body.high-contrast input:focus-visible,
+html:not(.dark).high-contrast select:focus-visible,
+html:not(.dark) body.high-contrast select:focus-visible {
+  outline: 3px solid #000000 !important;
+  outline-offset: 2px !important;
+}
+
+html:not(.dark).high-contrast .toast,
+html:not(.dark) body.high-contrast .toast {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  border: 3px solid #000000 !important;
+}
+
+/* --------------------------------------------------------------------------
+   2. ALTO CONTRASTE OSCURO (Con Modo Noche: html.dark.high-contrast)
+   Fondo negro puro #000000, texto blanco puro #ffffff, acento amarillo #ffff00
+   Ratio WCAG AAA: 19.56:1 (Amarillo sobre Negro)
+   -------------------------------------------------------------------------- */
+html.dark.high-contrast .mobile-viewport,
+html.dark body.high-contrast .mobile-viewport {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border-color: #ffffff !important;
+}
+
+html.dark.high-contrast .screen-view,
+html.dark body.high-contrast .screen-view,
+html.dark.high-contrast .drawer-menu,
+html.dark body.high-contrast .drawer-menu,
+html.dark.high-contrast dialog,
+html.dark body.high-contrast dialog {
+  background-color: #000000 !important;
+  background-image: none !important;
+  color: #ffffff !important;
+}
+
+html.dark.high-contrast .bg-white,
+html.dark body.high-contrast .bg-white,
+html.dark.high-contrast .bg-slate-50,
+html.dark body.high-contrast .bg-slate-50,
+html.dark.high-contrast .bg-slate-100,
+html.dark body.high-contrast .bg-slate-100,
+html.dark.high-contrast .bg-slate-900,
+html.dark body.high-contrast .bg-slate-900,
+html.dark.high-contrast .bg-slate-950,
+html.dark body.high-contrast .bg-slate-950,
+html.dark.high-contrast .bg-emerald-900,
+html.dark body.high-contrast .bg-emerald-900,
+html.dark.high-contrast .bg-emerald-50,
+html.dark body.high-contrast .bg-emerald-50,
+html.dark.high-contrast nav,
+html.dark body.high-contrast nav,
+html.dark.high-contrast article,
+html.dark body.high-contrast article {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border: 2px solid #ffffff !important;
+}
+
+html.dark.high-contrast [class*="text-slate-"],
+html.dark body.high-contrast [class*="text-slate-"],
+html.dark.high-contrast [class*="text-emerald-"],
+html.dark body.high-contrast [class*="text-emerald-"] {
+  color: #ffffff !important;
+}
+
+html.dark.high-contrast a,
+html.dark body.high-contrast a {
+  color: #ffff00 !important;
+}
+
+html.dark.high-contrast .btn-primary,
+html.dark body.high-contrast .btn-primary {
+  background-color: #ffff00 !important;
+  color: #000000 !important;
+  font-weight: 900 !important;
+  border: 3px solid #ffffff !important;
+  box-shadow: none !important;
+}
+
+html.dark.high-contrast .btn-primary *,
+html.dark body.high-contrast .btn-primary * {
+  color: #000000 !important;
+}
+
+html.dark.high-contrast .btn-secondary,
+html.dark body.high-contrast .btn-secondary {
+  background-color: #000000 !important;
+  color: #ffff00 !important;
+  font-weight: 800 !important;
+  border: 3px solid #ffff00 !important;
+}
+
+html.dark.high-contrast input:not([type="checkbox"]):not([type="radio"]),
+html.dark body.high-contrast input:not([type="checkbox"]):not([type="radio"]),
+html.dark.high-contrast select,
+html.dark body.high-contrast select,
+html.dark.high-contrast textarea,
+html.dark body.high-contrast textarea {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border: 2px solid #ffffff !important;
+}
+
+html.dark.high-contrast input::placeholder,
+html.dark body.high-contrast input::placeholder {
+  color: #e2e8f0 !important;
+}
+
+html.dark.high-contrast button:focus-visible,
+html.dark body.high-contrast button:focus-visible,
+html.dark.high-contrast a:focus-visible,
+html.dark body.high-contrast a:focus-visible,
+html.dark.high-contrast input:focus-visible,
+html.dark body.high-contrast input:focus-visible,
+html.dark.high-contrast select:focus-visible,
+html.dark body.high-contrast select:focus-visible {
+  outline: 3px solid #facc15 !important;
+  outline-offset: 2px !important;
+  box-shadow: var(--focus-ring-hc) !important;
+}
+
+html.dark.high-contrast .toast,
+html.dark body.high-contrast .toast {
+  background-color: #000000 !important;
+  color: #ffff00 !important;
+  border: 3px solid #ffff00 !important;
+}
+
+
+/* --------------------------------------------------------------------------
+   3. ESTADOS ACTIVOS/INACTIVOS DE FILTROS Y NAVEGACIÓN EN ALTO CONTRASTE
+   Garantiza diferenciación visual binaria (WCAG AAA) para aria-pressed y aria-current
+   -------------------------------------------------------------------------- */
+html:not(.dark).high-contrast .map-filter-pill[aria-pressed="true"],
+html:not(.dark) body.high-contrast .map-filter-pill[aria-pressed="true"],
+html:not(.dark).high-contrast .scanner-material-btn[aria-pressed="true"],
+html:not(.dark) body.high-contrast .scanner-material-btn[aria-pressed="true"] {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border: 3px solid #000000 !important;
+  font-weight: 900 !important;
+}
+
+html:not(.dark).high-contrast .map-filter-pill[aria-pressed="true"] *,
+html:not(.dark) body.high-contrast .map-filter-pill[aria-pressed="true"] *,
+html:not(.dark).high-contrast .scanner-material-btn[aria-pressed="true"] *,
+html:not(.dark) body.high-contrast .scanner-material-btn[aria-pressed="true"] * {
+  color: #ffffff !important;
+}
+
+html:not(.dark).high-contrast .map-filter-pill[aria-pressed="false"],
+html:not(.dark) body.high-contrast .map-filter-pill[aria-pressed="false"],
+html:not(.dark).high-contrast .scanner-material-btn[aria-pressed="false"],
+html:not(.dark) body.high-contrast .scanner-material-btn[aria-pressed="false"] {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  border: 2px dashed #000000 !important;
+}
+
+html:not(.dark).high-contrast .bottom-nav-item[aria-current="page"],
+html:not(.dark) body.high-contrast .bottom-nav-item[aria-current="page"] {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+}
+
+html:not(.dark).high-contrast .bottom-nav-item[aria-current="page"] *,
+html:not(.dark) body.high-contrast .bottom-nav-item[aria-current="page"] * {
+  color: #ffffff !important;
+}
+
+html.dark.high-contrast .map-filter-pill[aria-pressed="true"],
+html.dark body.high-contrast .map-filter-pill[aria-pressed="true"],
+html.dark.high-contrast .scanner-material-btn[aria-pressed="true"],
+html.dark body.high-contrast .scanner-material-btn[aria-pressed="true"] {
+  background-color: #ffff00 !important;
+  color: #000000 !important;
+  border: 3px solid #ffffff !important;
+  font-weight: 900 !important;
+}
+
+html.dark.high-contrast .map-filter-pill[aria-pressed="true"] *,
+html.dark body.high-contrast .map-filter-pill[aria-pressed="true"] *,
+html.dark.high-contrast .scanner-material-btn[aria-pressed="true"] *,
+html.dark body.high-contrast .scanner-material-btn[aria-pressed="true"] * {
+  color: #000000 !important;
+}
+
+html.dark.high-contrast .map-filter-pill[aria-pressed="false"],
+html.dark body.high-contrast .map-filter-pill[aria-pressed="false"],
+html.dark.high-contrast .scanner-material-btn[aria-pressed="false"],
+html.dark body.high-contrast .scanner-material-btn[aria-pressed="false"] {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border: 2px dashed #ffffff !important;
+}
+
+html.dark.high-contrast .bottom-nav-item[aria-current="page"],
+html.dark body.high-contrast .bottom-nav-item[aria-current="page"] {
+  background-color: #ffff00 !important;
+  color: #000000 !important;
+}
+
+html.dark.high-contrast .bottom-nav-item[aria-current="page"] *,
+html.dark body.high-contrast .bottom-nav-item[aria-current="page"] * {
+  color: #000000 !important;
+}
