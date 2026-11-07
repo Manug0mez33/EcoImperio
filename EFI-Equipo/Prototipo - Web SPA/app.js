@@ -1030,23 +1030,29 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  function setMapFilterPillActive(targetPill, isActive) {
+    targetPill.setAttribute('aria-pressed', String(isActive));
+    targetPill.classList.toggle('bg-emerald-800', isActive);
+    targetPill.classList.toggle('text-white', isActive);
+    targetPill.classList.toggle('border-emerald-600', isActive);
+    targetPill.classList.toggle('bg-white/95', !isActive);
+    targetPill.classList.toggle('dark:bg-slate-800/95', !isActive);
+    targetPill.classList.toggle('text-slate-700', !isActive);
+    targetPill.classList.toggle('dark:text-slate-200', !isActive);
+  }
+
   mapFilterPills.forEach(pill => {
     pill.addEventListener('click', () => {
       const nextPressed = pill.getAttribute('aria-pressed') !== 'true';
       if (!nextPressed) {
         const activeCount = [...mapFilterPills].filter(p => p.getAttribute('aria-pressed') === 'true').length;
         if (activeCount <= 1) {
-          return;
+          mapFilterPills.forEach(other => {
+            if (other !== pill) setMapFilterPillActive(other, true);
+          });
         }
       }
-      pill.setAttribute('aria-pressed', String(nextPressed));
-      pill.classList.toggle('bg-emerald-800', nextPressed);
-      pill.classList.toggle('text-white', nextPressed);
-      pill.classList.toggle('border-emerald-600', nextPressed);
-      pill.classList.toggle('bg-white/95', !nextPressed);
-      pill.classList.toggle('dark:bg-slate-800/95', !nextPressed);
-      pill.classList.toggle('text-slate-700', !nextPressed);
-      pill.classList.toggle('dark:text-slate-200', !nextPressed);
+      setMapFilterPillActive(pill, nextPressed);
       filterMapMarkers();
     });
   });
