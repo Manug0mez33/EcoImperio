@@ -74,7 +74,7 @@
          ========================================================================== -->
     <section id="screen-splash" class="screen-view active justify-between p-6 bg-gradient-to-b from-slate-50 to-emerald-50 dark:from-slate-950 dark:to-emerald-950">
       <div class="pt-6 flex justify-between items-center">
-        <label for="splash-dark-toggle" class="inline-flex items-center gap-2 min-h-[44px] px-1 cursor-pointer">
+        <label for="splash-dark-toggle" class="relative inline-flex items-center gap-2 min-h-[44px] px-1 cursor-pointer">
           <input type="checkbox" id="splash-dark-toggle" name="splashDarkMode" class="dark-mode-toggle sr-only peer" aria-label="Modo Oscuro">
           <span class="relative w-11 h-6 bg-gray-200 dark:bg-slate-700 peer-checked:bg-emerald-600 rounded-full peer-focus-visible:ring-4 peer-focus-visible:ring-emerald-400 after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-full" aria-hidden="true"></span>
           <iconify-icon icon="mynaui:moon" class="text-lg text-slate-600 dark:text-slate-300" aria-hidden="true"></iconify-icon>
@@ -107,8 +107,8 @@
       </div>
 
       <div class="pb-6">
-        <button type="button" data-navigate="login" class="btn-primary w-full shadow-lg text-base">
-          <span>Comenzar</span>
+        <button type="button" id="btn-splash-start" data-navigate="login" class="btn-primary w-full shadow-lg text-base">
+          <span id="btn-splash-start-label">Comenzar</span>
           <iconify-icon icon="mynaui:arrow-right" class="text-xl ml-1" aria-hidden="true"></iconify-icon>
         </button>
       </div>
@@ -123,7 +123,7 @@
           <iconify-icon icon="mynaui:arrow-left" class="text-2xl" aria-hidden="true"></iconify-icon>
         </button>
         <div class="flex items-center gap-3">
-          <label for="login-dark-toggle" class="inline-flex items-center gap-2 min-h-[44px] px-1 cursor-pointer">
+          <label for="login-dark-toggle" class="relative inline-flex items-center gap-2 min-h-[44px] px-1 cursor-pointer">
             <input type="checkbox" id="login-dark-toggle" name="loginDarkMode" class="dark-mode-toggle sr-only peer" aria-label="Modo Oscuro">
             <span class="relative w-11 h-6 bg-gray-200 dark:bg-slate-700 peer-checked:bg-emerald-600 rounded-full peer-focus-visible:ring-4 peer-focus-visible:ring-emerald-400 after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-full" aria-hidden="true"></span>
             <iconify-icon icon="mynaui:moon" class="text-lg text-slate-600 dark:text-slate-300" aria-hidden="true"></iconify-icon>
@@ -200,7 +200,7 @@
         <button type="button" data-navigate="login" class="touch-target p-2.5 rounded-full text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-center" aria-label="Volver al inicio de sesión">
           <iconify-icon icon="mynaui:arrow-left" class="text-2xl" aria-hidden="true"></iconify-icon>
         </button>
-        <label for="registro-dark-toggle" class="inline-flex items-center gap-2 min-h-[44px] px-1 cursor-pointer">
+        <label for="registro-dark-toggle" class="relative inline-flex items-center gap-2 min-h-[44px] px-1 cursor-pointer">
           <input type="checkbox" id="registro-dark-toggle" name="registroDarkMode" class="dark-mode-toggle sr-only peer" aria-label="Modo Oscuro">
           <span class="relative w-11 h-6 bg-gray-200 dark:bg-slate-700 peer-checked:bg-emerald-600 rounded-full peer-focus-visible:ring-4 peer-focus-visible:ring-emerald-400 after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-full" aria-hidden="true"></span>
           <iconify-icon icon="mynaui:moon" class="text-lg text-slate-600 dark:text-slate-300" aria-hidden="true"></iconify-icon>
@@ -319,21 +319,66 @@
         </button>
       </header>
 
-      <!-- Vista de Mapa Simulado con Canvas/SVG -->
-      <div class="w-full h-full relative bg-emerald-50 dark:bg-slate-900 flex items-center justify-center overflow-hidden">
-        <!-- Calles de fondo del mapa + ruta peatonal sugerida (el color sale de currentColor para seguir el tema) -->
-        <svg class="absolute inset-0 w-full h-full opacity-40 text-slate-300 dark:text-slate-600" viewBox="0 0 400 700" aria-hidden="true">
-          <path d="M-50 150 Q 150 120 450 200" stroke="currentColor" stroke-width="20" fill="none"/>
-          <path d="M100 -50 L 120 750" stroke="currentColor" stroke-width="16" fill="none"/>
-          <path d="M300 -50 L 280 750" stroke="currentColor" stroke-width="12" fill="none"/>
-          <path d="M-50 450 L 450 400" stroke="currentColor" stroke-width="24" fill="none"/>
-          <!-- Ruta peatonal sugerida punteada desde ubicación actual hasta punto seleccionado -->
-          <path id="map-route-path" d="M200 430 Q 140 350 105 240" stroke="#059669" stroke-width="5" stroke-dasharray="8 6" stroke-linecap="round" fill="none"/>
-          <circle cx="200" cy="430" r="8" fill="#2563eb" stroke="#ffffff" stroke-width="3"/>
-        </svg>
+      <!-- Vista de Mapa Simulado con Canvas/SVG Interactivo (Pan & Zoom) -->
+      <div id="map-viewport-area" class="w-full h-full relative bg-emerald-50 dark:bg-slate-900 flex items-center justify-center overflow-hidden select-none">
+        <!-- Contenedor transformable del mapa (soporta zoom y arrastre suave) -->
+        <div id="map-canvas" class="absolute inset-0 w-full h-full transition-transform duration-300 ease-out cursor-grab active:cursor-grabbing">
+          <!-- Calles de fondo del mapa + río Cuarto + ruta peatonal sugerida -->
+          <svg class="absolute inset-0 w-full h-full opacity-55 text-slate-300 dark:text-slate-700" viewBox="0 0 400 700" aria-hidden="true">
+            <!-- Manzanas y espacios verdes barriales -->
+            <rect x="30" y="90" width="75" height="90" rx="12" fill="currentColor" fill-opacity="0.25"/>
+            <rect x="145" y="85" width="120" height="95" rx="14" fill="currentColor" fill-opacity="0.2"/>
+            <rect x="140" y="380" width="115" height="105" rx="16" fill="#10b981" fill-opacity="0.18"/>
+            <!-- Río Chocancharava (Río Cuarto) -->
+            <path d="M-40 275 Q 140 245 240 285 T 440 265" stroke="#38bdf8" stroke-opacity="0.35" stroke-width="28" fill="none"/>
+            <!-- Avenidas y calles principales -->
+            <path d="M-50 150 Q 150 120 450 200" stroke="currentColor" stroke-width="20" fill="none"/>
+            <path d="M100 -50 L 120 750" stroke="currentColor" stroke-width="16" fill="none"/>
+            <path d="M300 -50 L 280 750" stroke="currentColor" stroke-width="12" fill="none"/>
+            <path d="M-50 450 L 450 400" stroke="currentColor" stroke-width="24" fill="none"/>
+            <path d="M-40 550 L 440 520" stroke="currentColor" stroke-width="10" fill="none"/>
+            <!-- Ruta peatonal sugerida animada desde ubicación actual (200,430) hasta el punto seleccionado -->
+            <path id="map-route-path" class="map-route-animated" d="M200 430 Q 140 350 105 240" stroke="#059669" stroke-width="5" stroke-dasharray="8 6" stroke-linecap="round" fill="none"/>
+            <!-- Marcador de ubicación actual del vecino ("Vos estás acá") -->
+            <circle cx="200" cy="430" r="16" fill="#2563eb" fill-opacity="0.22"/>
+            <circle cx="200" cy="430" r="8" fill="#2563eb" stroke="#ffffff" stroke-width="3"/>
+          </svg>
+
+          <!-- Marcador 1: Campana Alberdi (Verde - Vacío) -->
+          <button type="button" class="map-marker is-selected absolute top-[34%] left-[26%] transform -translate-x-1/2 -translate-y-1/2 group z-10 flex flex-col items-center min-w-[44px] min-h-[44px] cursor-pointer" data-point-id="alberdi" data-category="campana" data-status="available" data-capacity="25% ocupado" data-materials="PET 1, Cartón, Latas" data-title="Campana Verde - B° Alberdi" data-subtitle="A solo 350m • 4 min a pie" data-route="M200 430 Q 140 350 105 240" data-search="campana verde alberdi vacio disponible" aria-label="Campana Verde B° Alberdi — Disponible (Vacío)" aria-pressed="true">
+            <div class="marker-pin w-12 h-12 rounded-full bg-emerald-600 text-white flex items-center justify-center shadow-lg border-2 border-white dark:border-slate-900 group-hover:scale-110 transition-transform relative">
+              <iconify-icon icon="mynaui:location" class="text-2xl" aria-hidden="true"></iconify-icon>
+            </div>
+            <span class="marker-badge bg-slate-900 dark:bg-slate-700 text-white text-xs font-bold px-2.5 py-0.5 rounded-full mt-1 inline-block shadow">Alberdi (Vacío)</span>
+          </button>
+
+          <!-- Marcador 2: Banda Norte (Rojo - Lleno) -->
+          <button type="button" class="map-marker absolute top-[48%] left-[74%] transform -translate-x-1/2 -translate-y-1/2 group z-10 flex flex-col items-center min-w-[44px] min-h-[44px] cursor-pointer" data-point-id="banda-norte" data-category="campana" data-status="full" data-capacity="98% • Lleno" data-materials="Sin capacidad temporal" data-title="Campana Verde - B° Norte (Lleno)" data-subtitle="A 820m • Sin lugar (sugerido: Alberdi)" data-route="M200 430 Q 260 390 295 335" data-search="campana verde banda norte lleno" aria-label="Campana Verde B° Banda Norte — Sin capacidad (Lleno)" aria-pressed="false">
+            <div class="marker-pin w-11 h-11 rounded-full bg-red-600 text-white flex items-center justify-center shadow-lg border-2 border-white dark:border-slate-900 group-hover:scale-110 transition-transform relative">
+              <iconify-icon icon="mynaui:ban" class="text-xl" aria-hidden="true"></iconify-icon>
+            </div>
+            <span class="marker-badge bg-slate-900 dark:bg-slate-700 text-white text-xs font-bold px-2.5 py-0.5 rounded-full mt-1 inline-block shadow">B° Norte (Lleno)</span>
+          </button>
+
+          <!-- Marcador 3: Punto Limpio Centro (Verde - Vacío) -->
+          <button type="button" class="map-marker absolute top-[62%] left-[36%] transform -translate-x-1/2 -translate-y-1/2 group z-10 flex flex-col items-center min-w-[44px] min-h-[44px] cursor-pointer" data-point-id="centro" data-category="punto-limpio" data-status="available" data-capacity="15% ocupado" data-materials="Vidrio, PET, Cartón, RAEE" data-title="Punto Limpio - Plaza Roca (Centro)" data-subtitle="A 540m • 6 min a pie" data-route="M200 430 Q 175 435 145 435" data-search="punto limpio centro plaza roca vacio disponible vidrio" aria-label="Punto Limpio Centro Plaza Roca — Disponible (Vacío)" aria-pressed="false">
+            <div class="marker-pin w-11 h-11 rounded-full bg-emerald-700 text-white flex items-center justify-center shadow-lg border-2 border-amber-300 dark:border-amber-400 group-hover:scale-110 transition-transform relative">
+              <iconify-icon icon="mynaui:sparkles" class="text-xl text-amber-300" aria-hidden="true"></iconify-icon>
+            </div>
+            <span class="marker-badge bg-slate-900 dark:bg-slate-700 text-white text-xs font-bold px-2.5 py-0.5 rounded-full mt-1 inline-block shadow">Centro (Vacío)</span>
+          </button>
+
+          <!-- Marcador 4: Campana Bimaco (Verde - Vacío) -->
+          <button type="button" class="map-marker absolute top-[72%] left-[70%] transform -translate-x-1/2 -translate-y-1/2 group z-10 flex flex-col items-center min-w-[44px] min-h-[44px] cursor-pointer" data-point-id="bimaco" data-category="campana" data-status="available" data-capacity="40% ocupado" data-materials="PET 1, Cartón, Latas" data-title="Campana Verde - B° Bimaco" data-subtitle="A 690m • 8 min a pie" data-route="M200 430 Q 245 470 280 505" data-search="campana verde bimaco sur vacio disponible" aria-label="Campana Verde B° Bimaco — Disponible (Vacío)" aria-pressed="false">
+            <div class="marker-pin w-11 h-11 rounded-full bg-emerald-600 text-white flex items-center justify-center shadow-lg border-2 border-white dark:border-slate-900 group-hover:scale-110 transition-transform relative">
+              <iconify-icon icon="mynaui:location" class="text-xl" aria-hidden="true"></iconify-icon>
+            </div>
+            <span class="marker-badge bg-slate-900 dark:bg-slate-700 text-white text-xs font-bold px-2.5 py-0.5 rounded-full mt-1 inline-block shadow">Bimaco (Vacío)</span>
+          </button>
+        </div>
 
         <!-- Filtros Flotantes de Categoría -->
-        <div class="absolute top-20 left-4 right-4 z-10 flex gap-2">
+        <div class="absolute top-20 left-4 right-4 z-20 flex gap-2 flex-wrap">
           <button type="button" class="map-filter-pill min-h-[44px] px-3.5 py-2 rounded-full bg-emerald-800 text-white text-xs font-semibold shadow-md flex items-center gap-1.5 border border-emerald-600 hover:bg-emerald-700 transition-all active:scale-95 cursor-pointer" data-filter="campana" aria-pressed="true">
             <iconify-icon icon="keyline-icons:recycle-duotone" class="text-lg" aria-hidden="true"></iconify-icon>
             <span>Campanas Verdes</span>
@@ -344,45 +389,40 @@
           </button>
         </div>
 
-        <!-- Marcadores en el Mapa Myna UI -->
-        <!-- Marcador 1: Campana Alberdi (Verde - Vacío) -->
-        <button type="button" class="map-marker absolute top-1/3 left-1/4 transform -translate-x-1/2 -translate-y-1/2 group z-10 flex flex-col items-center min-w-[44px] min-h-[44px]" data-point-id="alberdi" data-category="campana" data-status="available" data-title="Campana Verde - B° Alberdi" data-subtitle="A solo 350m • Ruta peatonal: 4 min a pie" data-route="M200 430 Q 140 350 105 240" data-search="campana verde alberdi vacio disponible" aria-label="Campana Verde B° Alberdi — Disponible (Vacío)">
-          <div class="w-12 h-12 rounded-full bg-emerald-600 text-white flex items-center justify-center shadow-lg border-2 border-white dark:border-slate-900 group-hover:scale-110 transition-transform">
-            <iconify-icon icon="mynaui:location" class="text-2xl" aria-hidden="true"></iconify-icon>
-          </div>
-          <span class="bg-slate-900 dark:bg-slate-700 text-white text-xs font-bold px-2.5 py-0.5 rounded-full mt-1 inline-block shadow">Alberdi (Vacío)</span>
-        </button>
-
-        <!-- Marcador 2: Banda Norte (Rojo - Lleno) -->
-        <button type="button" class="map-marker absolute top-1/2 right-1/4 transform translate-x-1/2 -translate-y-1/2 group z-10 flex flex-col items-center min-w-[44px] min-h-[44px]" data-point-id="banda-norte" data-category="campana" data-status="full" data-title="Campana Verde - B° Norte (Lleno)" data-subtitle="A 820m • Sin capacidad (te sugerimos B° Alberdi)" data-route="M200 430 Q 260 390 295 350" data-search="campana verde banda norte lleno" aria-label="Campana Verde B° Banda Norte — Sin capacidad (Lleno)">
-          <div class="w-11 h-11 rounded-full bg-red-600 text-white flex items-center justify-center shadow-lg border-2 border-white dark:border-slate-900 group-hover:scale-110 transition-transform">
-            <iconify-icon icon="mynaui:ban" class="text-xl" aria-hidden="true"></iconify-icon>
-          </div>
-          <span class="bg-slate-900 dark:bg-slate-700 text-white text-xs font-bold px-2.5 py-0.5 rounded-full mt-1 inline-block shadow">B° Norte (Lleno)</span>
-        </button>
-
-        <!-- Marcador 3: Punto Limpio Centro (Verde - Vacío) -->
-        <button type="button" class="map-marker absolute top-[62%] left-[36%] transform -translate-x-1/2 -translate-y-1/2 group z-10 flex flex-col items-center min-w-[44px] min-h-[44px]" data-point-id="centro" data-category="punto-limpio" data-status="available" data-title="Punto Limpio - Plaza Roca (Centro)" data-subtitle="A 540m • Ruta peatonal: 6 min a pie" data-route="M200 430 Q 175 435 145 440" data-search="punto limpio centro plaza roca vacio disponible vidrio" aria-label="Punto Limpio Centro Plaza Roca — Disponible (Vacío)">
-          <div class="w-11 h-11 rounded-full bg-emerald-700 text-white flex items-center justify-center shadow-lg border-2 border-amber-300 dark:border-amber-400 group-hover:scale-110 transition-transform">
-            <iconify-icon icon="mynaui:sparkles" class="text-xl text-amber-300" aria-hidden="true"></iconify-icon>
-          </div>
-          <span class="bg-slate-900 dark:bg-slate-700 text-white text-xs font-bold px-2.5 py-0.5 rounded-full mt-1 inline-block shadow">Centro (Vacío)</span>
-        </button>
-
-        <!-- Card Inferior Flotante de Campana Cercana -->
-        <article id="map-nearby-card" class="absolute bottom-20 left-4 right-4 z-20 bg-white dark:bg-slate-900 rounded-2xl p-4 shadow-xl border border-slate-100 dark:border-emerald-900/60 flex items-center justify-between gap-2">
-          <div class="flex items-center gap-3 min-w-0">
-            <div id="nearby-card-icon-wrap" class="w-11 h-11 rounded-xl bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-300 flex items-center justify-center shrink-0" aria-hidden="true">
-              <iconify-icon id="nearby-card-icon" icon="mynaui:bell" class="text-2xl" aria-hidden="true"></iconify-icon>
-            </div>
-            <div class="min-w-0">
-              <h3 id="nearby-card-title" class="font-bold text-slate-900 dark:text-white text-lg truncate">Campana Verde - B° Alberdi</h3>
-              <p id="nearby-card-subtitle" class="text-xs text-slate-600 dark:text-slate-400">A solo 350m • Ruta peatonal: 4 min a pie</p>
-            </div>
-          </div>
-          <button type="button" id="btn-nearby-action" class="touch-target w-11 h-11 rounded-full bg-emerald-800 text-white flex items-center justify-center hover:bg-emerald-700 shadow-md shrink-0" aria-label="Escanear en este punto de reciclaje">
-            <iconify-icon icon="mynaui:chevron-right" class="text-xl" aria-hidden="true"></iconify-icon>
+        <!-- Controles Flotantes de Zoom y Centrado del Mapa -->
+        <div class="absolute right-3 top-36 z-20 flex flex-col gap-1.5" role="group" aria-label="Controles de vista del mapa">
+          <button type="button" id="btn-map-zoom-in" class="touch-target w-11 h-11 rounded-2xl bg-white/95 dark:bg-slate-800/95 text-slate-800 dark:text-slate-100 shadow-md border border-slate-200 dark:border-slate-700 flex items-center justify-center hover:bg-emerald-50 dark:hover:bg-slate-700 cursor-pointer" aria-label="Acercar mapa">
+            <iconify-icon icon="mynaui:plus" class="text-xl" aria-hidden="true"></iconify-icon>
           </button>
+          <button type="button" id="btn-map-zoom-out" class="touch-target w-11 h-11 rounded-2xl bg-white/95 dark:bg-slate-800/95 text-slate-800 dark:text-slate-100 shadow-md border border-slate-200 dark:border-slate-700 flex items-center justify-center hover:bg-emerald-50 dark:hover:bg-slate-700 cursor-pointer" aria-label="Alejar mapa">
+            <iconify-icon icon="mynaui:minus" class="text-xl" aria-hidden="true"></iconify-icon>
+          </button>
+          <button type="button" id="btn-map-reset" class="touch-target w-11 h-11 rounded-2xl bg-white/95 dark:bg-slate-800/95 text-emerald-700 dark:text-emerald-400 shadow-md border border-slate-200 dark:border-slate-700 flex items-center justify-center hover:bg-emerald-50 dark:hover:bg-slate-700 cursor-pointer" aria-label="Centrar en mi ubicación">
+            <iconify-icon icon="mynaui:compass" class="text-xl" aria-hidden="true"></iconify-icon>
+          </button>
+        </div>
+
+        <!-- Card Inferior Flotante Interactiva de Punto Seleccionado -->
+        <article id="map-nearby-card" class="absolute bottom-20 left-3 right-3 z-20 bg-white dark:bg-slate-900 rounded-2xl p-3.5 shadow-xl border border-slate-200/90 dark:border-emerald-900/60 transition-all duration-200">
+          <div class="flex items-start justify-between gap-2">
+            <div class="flex items-start gap-3 min-w-0">
+              <div id="nearby-card-icon-wrap" class="w-11 h-11 rounded-xl bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-300 flex items-center justify-center shrink-0 mt-0.5" aria-hidden="true">
+                <iconify-icon id="nearby-card-icon" icon="mynaui:location" class="text-2xl" aria-hidden="true"></iconify-icon>
+              </div>
+              <div class="min-w-0">
+                <div class="flex items-center gap-1.5 flex-wrap">
+                  <span id="nearby-card-status-badge" class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-200">25% ocupado</span>
+                  <span id="nearby-card-materials" class="text-[11px] font-medium text-slate-600 dark:text-slate-400 truncate">Recibe: PET 1, Cartón, Latas</span>
+                </div>
+                <h3 id="nearby-card-title" class="font-bold text-slate-900 dark:text-white text-base truncate mt-0.5">Campana Verde - B° Alberdi</h3>
+                <p id="nearby-card-subtitle" class="text-xs text-slate-600 dark:text-slate-400">A solo 350m • 4 min a pie</p>
+              </div>
+            </div>
+            <button type="button" id="btn-nearby-action" class="touch-target px-3.5 py-2 rounded-xl bg-emerald-800 hover:bg-emerald-700 text-white text-xs font-bold flex items-center gap-1 shadow-md shrink-0 cursor-pointer transition-all" aria-label="Escanear en este punto de reciclaje">
+              <span id="btn-nearby-action-label">Escanear</span>
+              <iconify-icon icon="mynaui:chevron-right" class="text-base" aria-hidden="true"></iconify-icon>
+            </button>
+          </div>
         </article>
       </div>
 
@@ -609,11 +649,27 @@
 
       <!-- Sección Historial de Reciclaje -->
       <section class="space-y-3" aria-labelledby="historial-heading">
-        <h2 id="historial-heading" class="font-bold text-slate-900 dark:text-white text-2xl">Historial de Reciclaje</h2>
+        <div class="flex items-center justify-between">
+          <h2 id="historial-heading" class="font-bold text-slate-900 dark:text-white text-2xl">Historial de Reciclaje</h2>
+          <span id="history-total-badge" class="text-xs font-semibold text-slate-600 dark:text-slate-400"></span>
+        </div>
 
-        <!-- Lista de Cards 80% ancho -->
+        <!-- Lista de Cards 80% ancho (paginada de a 3 ítems) -->
         <div id="history-list" class="space-y-2.5 flex flex-col items-center">
           <!-- Rellenado dinámicamente desde app.js -->
+        </div>
+
+        <!-- Controles de Paginación del Historial -->
+        <div id="history-pagination" class="w-4/5 mx-auto pt-1 flex items-center justify-between gap-2 hidden" role="navigation" aria-label="Paginación del historial de reciclaje">
+          <button type="button" id="btn-history-prev" class="touch-target px-3 py-1.5 rounded-xl text-xs font-bold border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-1 cursor-pointer">
+            <iconify-icon icon="mynaui:chevron-left" class="text-base" aria-hidden="true"></iconify-icon>
+            <span>Anterior</span>
+          </button>
+          <span id="history-page-indicator" class="text-xs font-bold text-slate-700 dark:text-slate-300" aria-live="polite">Página 1 de 1</span>
+          <button type="button" id="btn-history-next" class="touch-target px-3 py-1.5 rounded-xl text-xs font-bold border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-1 cursor-pointer">
+            <span>Siguiente</span>
+            <iconify-icon icon="mynaui:chevron-right" class="text-base" aria-hidden="true"></iconify-icon>
+          </button>
         </div>
       </section>
 
@@ -722,7 +778,7 @@
         <section aria-labelledby="cfg-apariencia-title" class="space-y-2">
           <h2 id="cfg-apariencia-title" class="section-kicker px-1 text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400">Apariencia y accesibilidad</h2>
           <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm divide-y divide-slate-100 dark:divide-slate-800 overflow-hidden">
-            <label for="cfg-dark-toggle" class="flex items-center justify-between gap-4 px-4 py-3 min-h-[56px] cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/60">
+            <label for="cfg-dark-toggle" class="relative flex items-center justify-between gap-4 px-4 py-3 min-h-[56px] cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/60">
               <span class="flex items-start gap-3">
                 <iconify-icon icon="mynaui:moon" class="text-xl text-emerald-700 dark:text-emerald-400 mt-0.5" aria-hidden="true"></iconify-icon>
                 <span>
@@ -734,7 +790,7 @@
               <span class="relative shrink-0 w-11 h-6 rounded-full bg-slate-200 dark:bg-slate-700 peer-checked:bg-emerald-600 peer-focus-visible:ring-4 peer-focus-visible:ring-emerald-400 after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:w-5 after:h-5 after:rounded-full after:bg-white after:border after:border-slate-300 after:transition-all peer-checked:after:translate-x-full peer-checked:after:border-white" aria-hidden="true"></span>
             </label>
 
-            <label for="cfg-contrast-toggle" class="flex items-center justify-between gap-4 px-4 py-3 min-h-[56px] cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/60">
+            <label for="cfg-contrast-toggle" class="relative flex items-center justify-between gap-4 px-4 py-3 min-h-[56px] cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/60">
               <span class="flex items-start gap-3">
                 <iconify-icon icon="mynaui:circle-half" class="text-xl text-emerald-700 dark:text-emerald-400 mt-0.5" aria-hidden="true"></iconify-icon>
                 <span>
@@ -756,21 +812,21 @@
                 </span>
               </div>
               <div class="mt-3 grid grid-cols-3 gap-2">
-                <label for="cfg-text-normal" class="cursor-pointer">
+                <label for="cfg-text-normal" class="relative cursor-pointer">
                   <input type="radio" id="cfg-text-normal" name="text-size" value="normal" class="text-size-option sr-only peer">
                   <span class="flex flex-col items-center justify-center gap-0.5 min-h-[56px] rounded-xl border-2 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:border-emerald-400 peer-checked:border-emerald-600 peer-checked:bg-emerald-50 dark:peer-checked:bg-emerald-900/40 peer-checked:text-emerald-800 dark:peer-checked:text-emerald-200 peer-focus-visible:ring-4 peer-focus-visible:ring-emerald-400 transition-all">
                     <span class="text-sm font-bold" aria-hidden="true">Aa</span>
                     <span class="text-xs">Normal</span>
                   </span>
                 </label>
-                <label for="cfg-text-large" class="cursor-pointer">
+                <label for="cfg-text-large" class="relative cursor-pointer">
                   <input type="radio" id="cfg-text-large" name="text-size" value="large" class="text-size-option sr-only peer">
                   <span class="flex flex-col items-center justify-center gap-0.5 min-h-[56px] rounded-xl border-2 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:border-emerald-400 peer-checked:border-emerald-600 peer-checked:bg-emerald-50 dark:peer-checked:bg-emerald-900/40 peer-checked:text-emerald-800 dark:peer-checked:text-emerald-200 peer-focus-visible:ring-4 peer-focus-visible:ring-emerald-400 transition-all">
                     <span class="text-base font-bold" aria-hidden="true">Aa</span>
                     <span class="text-xs">Grande</span>
                   </span>
                 </label>
-                <label for="cfg-text-xlarge" class="cursor-pointer">
+                <label for="cfg-text-xlarge" class="relative cursor-pointer">
                   <input type="radio" id="cfg-text-xlarge" name="text-size" value="xlarge" class="text-size-option sr-only peer">
                   <span class="flex flex-col items-center justify-center gap-0.5 min-h-[56px] rounded-xl border-2 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:border-emerald-400 peer-checked:border-emerald-600 peer-checked:bg-emerald-50 dark:peer-checked:bg-emerald-900/40 peer-checked:text-emerald-800 dark:peer-checked:text-emerald-200 peer-focus-visible:ring-4 peer-focus-visible:ring-emerald-400 transition-all">
                     <span class="text-lg font-bold" aria-hidden="true">Aa</span>
@@ -780,7 +836,7 @@
               </div>
             </fieldset>
 
-            <label for="reduce-motion-toggle" class="flex items-center justify-between gap-4 px-4 py-3 min-h-[56px] cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/60">
+            <label for="reduce-motion-toggle" class="relative flex items-center justify-between gap-4 px-4 py-3 min-h-[56px] cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/60">
               <span class="flex items-start gap-3">
                 <iconify-icon icon="mynaui:pause-circle" class="text-xl text-emerald-700 dark:text-emerald-400 mt-0.5" aria-hidden="true"></iconify-icon>
                 <span>
@@ -798,7 +854,7 @@
         <section aria-labelledby="cfg-notif-title" class="space-y-2">
           <h2 id="cfg-notif-title" class="section-kicker px-1 text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400">Notificaciones</h2>
           <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm divide-y divide-slate-100 dark:divide-slate-800 overflow-hidden">
-            <label for="notif-campana-cercana" class="flex items-center justify-between gap-4 px-4 py-3 min-h-[56px] cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/60">
+            <label for="notif-campana-cercana" class="relative flex items-center justify-between gap-4 px-4 py-3 min-h-[56px] cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/60">
               <span class="flex items-start gap-3">
                 <iconify-icon icon="mynaui:location" class="text-xl text-emerald-700 dark:text-emerald-400 mt-0.5" aria-hidden="true"></iconify-icon>
                 <span>
@@ -810,7 +866,7 @@
               <span class="relative shrink-0 w-11 h-6 rounded-full bg-slate-200 dark:bg-slate-700 peer-checked:bg-emerald-600 peer-focus-visible:ring-4 peer-focus-visible:ring-emerald-400 after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:w-5 after:h-5 after:rounded-full after:bg-white after:border after:border-slate-300 after:transition-all peer-checked:after:translate-x-full peer-checked:after:border-white" aria-hidden="true"></span>
             </label>
 
-            <label for="notif-campana-llena" class="flex items-center justify-between gap-4 px-4 py-3 min-h-[56px] cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/60">
+            <label for="notif-campana-llena" class="relative flex items-center justify-between gap-4 px-4 py-3 min-h-[56px] cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/60">
               <span class="flex items-start gap-3">
                 <iconify-icon icon="mynaui:bell" class="text-xl text-emerald-700 dark:text-emerald-400 mt-0.5" aria-hidden="true"></iconify-icon>
                 <span>
@@ -822,7 +878,7 @@
               <span class="relative shrink-0 w-11 h-6 rounded-full bg-slate-200 dark:bg-slate-700 peer-checked:bg-emerald-600 peer-focus-visible:ring-4 peer-focus-visible:ring-emerald-400 after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:w-5 after:h-5 after:rounded-full after:bg-white after:border after:border-slate-300 after:transition-all peer-checked:after:translate-x-full peer-checked:after:border-white" aria-hidden="true"></span>
             </label>
 
-            <label for="notif-beneficios" class="flex items-center justify-between gap-4 px-4 py-3 min-h-[56px] cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/60">
+            <label for="notif-beneficios" class="relative flex items-center justify-between gap-4 px-4 py-3 min-h-[56px] cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/60">
               <span class="flex items-start gap-3">
                 <iconify-icon icon="mynaui:gift" class="text-xl text-emerald-700 dark:text-emerald-400 mt-0.5" aria-hidden="true"></iconify-icon>
                 <span>
@@ -1030,7 +1086,7 @@
         <div class="pt-3 pb-1 border-t border-slate-100 dark:border-slate-800 my-2"></div>
 
         <!-- Toggle Modo Oscuro -->
-        <label for="drawer-dark-toggle" class="flex items-center justify-between gap-3 px-3 py-2.5 min-h-[44px] rounded-xl text-slate-700 dark:text-slate-200 text-xs cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800">
+        <label for="drawer-dark-toggle" class="relative flex items-center justify-between gap-3 px-3 py-2.5 min-h-[44px] rounded-xl text-slate-700 dark:text-slate-200 text-xs cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800">
           <span class="flex items-center gap-3">
             <iconify-icon icon="mynaui:moon" class="text-xl text-slate-500 dark:text-slate-400" aria-hidden="true"></iconify-icon>
             <span id="lbl-drawer-dark" class="font-medium">Modo Oscuro</span>
@@ -1040,7 +1096,7 @@
         </label>
 
         <!-- Toggle Modo Alto Contraste -->
-        <label for="drawer-contrast-toggle" class="flex items-center justify-between gap-3 px-3 py-2.5 min-h-[44px] rounded-xl text-slate-700 dark:text-slate-200 text-xs cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800">
+        <label for="drawer-contrast-toggle" class="relative flex items-center justify-between gap-3 px-3 py-2.5 min-h-[44px] rounded-xl text-slate-700 dark:text-slate-200 text-xs cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800">
           <span class="flex items-center gap-3">
             <iconify-icon icon="mynaui:circle-half" class="text-xl text-slate-500 dark:text-slate-400" aria-hidden="true"></iconify-icon>
             <span id="lbl-drawer-contrast" class="font-medium">Modo Alto Contraste</span>
@@ -1065,44 +1121,143 @@
       </div>
     </aside>
 
-    <!-- Diálogo informativo: Guía y Cronograma de Reciclaje de Río Cuarto (Adaptable con max-h y scroll interno para tipografía grande/muy grande) -->
-    <dialog id="guide-dialog" aria-labelledby="guide-dialog-title" aria-describedby="guide-dialog-desc" class="w-[calc(100%-2rem)] max-w-sm max-h-[85vh] my-auto rounded-3xl p-5 bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-2xl backdrop:bg-slate-950/70 backdrop:backdrop-blur-sm overflow-hidden">
-      <div class="flex flex-col max-h-[calc(85vh-2.5rem)] h-full">
-      <!-- Header fijo del modal -->
-      <div class="flex items-start justify-between gap-2 shrink-0 pb-3 border-b border-slate-100 dark:border-slate-800">
-        <div>
-          <h2 id="guide-dialog-title" class="text-2xl font-bold text-slate-900 dark:text-white">Guía y Cronograma</h2>
-          <p id="guide-dialog-desc" class="text-xs text-slate-600 dark:text-slate-400">Separación en origen y recolección diferenciada en Río Cuarto</p>
+    <!-- Diálogo informativo: Guía y Cronograma de Reciclaje organizado por Pestañas (Progressive Disclosure) -->
+    <dialog id="guide-dialog" aria-labelledby="guide-dialog-title" aria-describedby="guide-dialog-desc" class="w-[calc(100%-2rem)] max-w-sm rounded-3xl p-4 bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-2xl backdrop:bg-slate-950/70 backdrop:backdrop-blur-sm overflow-hidden">
+      <div class="flex flex-col">
+        <!-- Header compacto -->
+        <div class="flex items-center justify-between gap-2 pb-2.5 border-b border-slate-100 dark:border-slate-800">
+          <div>
+            <h2 id="guide-dialog-title" class="text-xl font-bold text-slate-900 dark:text-white">Guía y Cronograma</h2>
+            <p id="guide-dialog-desc" class="text-xs text-slate-600 dark:text-slate-400">Recolección diferenciada en Río Cuarto</p>
+          </div>
+          <button type="button" id="btn-close-guide-top" class="touch-target rounded-full text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-center shrink-0" aria-label="Cerrar guía">
+            <iconify-icon icon="mynaui:x" class="text-xl" aria-hidden="true"></iconify-icon>
+          </button>
         </div>
-        <button type="button" id="btn-close-guide-top" class="touch-target rounded-full text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-center shrink-0" aria-label="Cerrar guía">
-          <iconify-icon icon="mynaui:x" class="text-2xl" aria-hidden="true"></iconify-icon>
-        </button>
-      </div>
 
-      <!-- Contenedor scrollable de las tarjetas de información -->
-      <div class="flex-1 overflow-y-auto space-y-2.5 py-3 pr-1 text-xs">
-        <article class="p-3 rounded-2xl bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800">
-          <h3 class="font-bold text-emerald-900 dark:text-emerald-200 text-lg">Campanas Verdes (Secos)</h3>
-          <p class="text-slate-700 dark:text-slate-300 mt-0.5">Botellas PET limpias y aplastadas, papel y cartón seco, envases Tetra Pak y latas de aluminio.</p>
-        </article>
+        <!-- Selector de Pestañas (Segmented Control) -->
+        <div class="grid grid-cols-2 gap-1.5 p-1 mt-2.5 rounded-2xl bg-slate-100 dark:bg-slate-800" role="tablist" aria-label="Secciones de la guía">
+          <button type="button" class="guide-tab-btn min-h-[40px] px-3 py-1.5 rounded-xl text-xs font-bold bg-emerald-800 text-white shadow-sm transition-all cursor-pointer" role="tab" data-guide-tab="horarios" aria-selected="true" aria-pressed="true">
+            Días por Barrio
+          </button>
+          <button type="button" class="guide-tab-btn min-h-[40px] px-3 py-1.5 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-300 hover:bg-white/60 dark:hover:bg-slate-700 transition-all cursor-pointer" role="tab" data-guide-tab="separacion" aria-selected="false" aria-pressed="false">
+            ¿Qué separar?
+          </button>
+        </div>
 
-        <article class="p-3 rounded-2xl bg-amber-50 dark:bg-slate-800 border border-amber-200 dark:border-slate-700">
-          <h3 class="font-bold text-slate-900 dark:text-white text-lg">Puntos Limpios Municipales</h3>
-          <p class="text-slate-700 dark:text-slate-300 mt-0.5">Frascos y botellas de vidrio sanos, pequeños aparatos electrónicos (RAEE), pilas y aceite vegetal usado.</p>
-        </article>
+        <!-- Panel 1: Cronograma por Barrio (con filtro rápido y resaltado del barrio del vecino) -->
+        <div id="guide-panel-horarios" class="py-3 space-y-2 text-xs" role="tabpanel">
+          <div class="flex items-center justify-between px-1">
+            <span class="font-semibold text-slate-600 dark:text-slate-400">Elegí tu zona:</span>
+            <span id="guide-user-barrio-pill" class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-200">Tu barrio: Alberdi</span>
+          </div>
 
-        <article class="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 space-y-1">
-          <h3 class="font-bold text-slate-900 dark:text-white text-lg">Cronograma Barrial (Secos)</h3>
-          <p class="text-slate-700 dark:text-slate-300"><strong>Centro y Macrocentro:</strong> Martes y Jueves (14:00 a 18:00 hs)</p>
-          <p class="text-slate-700 dark:text-slate-300"><strong>Alberdi y Bimaco:</strong> Miércoles y Viernes (08:00 a 13:00 hs)</p>
-          <p class="text-slate-700 dark:text-slate-300"><strong>Banda Norte y Golf:</strong> Lunes y Jueves (08:00 a 13:00 hs)</p>
-        </article>
-      </div>
+          <div class="space-y-1.5">
+            <div class="schedule-zone-card p-2.5 rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/70 flex items-center justify-between gap-2" data-zones="alberdi,bimaco">
+              <div>
+                <p class="font-bold text-slate-900 dark:text-white text-sm">Alberdi y Bimaco</p>
+                <p class="text-slate-600 dark:text-slate-400">Miércoles y Viernes</p>
+              </div>
+              <span class="px-2.5 py-1 rounded-xl bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-200 font-bold shrink-0">08 a 13 hs</span>
+            </div>
 
-        <!-- Footer fijo del modal -->
-        <form method="dialog" class="shrink-0 pt-3 border-t border-slate-100 dark:border-slate-800">
-          <button type="submit" id="btn-close-guide" class="btn-primary w-full min-h-[44px]">Entendido</button>
+            <div class="schedule-zone-card p-2.5 rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/70 flex items-center justify-between gap-2" data-zones="centro">
+              <div>
+                <p class="font-bold text-slate-900 dark:text-white text-sm">Centro y Macrocentro</p>
+                <p class="text-slate-600 dark:text-slate-400">Martes y Jueves</p>
+              </div>
+              <span class="px-2.5 py-1 rounded-xl bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-200 font-bold shrink-0">14 a 18 hs</span>
+            </div>
+
+            <div class="schedule-zone-card p-2.5 rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/70 flex items-center justify-between gap-2" data-zones="banda norte,golf,barrio jardín,las quintas">
+              <div>
+                <p class="font-bold text-slate-900 dark:text-white text-sm">Banda Norte y Golf</p>
+                <p class="text-slate-600 dark:text-slate-400">Lunes y Jueves</p>
+              </div>
+              <span class="px-2.5 py-1 rounded-xl bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-200 font-bold shrink-0">08 a 13 hs</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Panel 2: ¿Qué separar en cada contenedor? (Chips visuales compactos) -->
+        <div id="guide-panel-separacion" class="hidden py-3 space-y-2.5 text-xs" role="tabpanel">
+          <div class="p-3 rounded-2xl bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 space-y-1.5">
+            <div class="flex items-center justify-between">
+              <p class="font-bold text-emerald-900 dark:text-emerald-200 text-sm">Campanas Verdes</p>
+              <span class="text-[11px] font-bold text-emerald-700 dark:text-emerald-300">24 hs en vía pública</span>
+            </div>
+            <div class="flex flex-wrap gap-1.5 pt-0.5">
+              <span class="px-2 py-0.5 rounded-lg bg-white dark:bg-slate-900 border border-emerald-200 dark:border-emerald-800 font-semibold">Plástico PET (+10)</span>
+              <span class="px-2 py-0.5 rounded-lg bg-white dark:bg-slate-900 border border-emerald-200 dark:border-emerald-800 font-semibold">Cartón y Papel (+15)</span>
+              <span class="px-2 py-0.5 rounded-lg bg-white dark:bg-slate-900 border border-emerald-200 dark:border-emerald-800 font-semibold">Latas Aluminio (+15)</span>
+            </div>
+          </div>
+
+          <div class="p-3 rounded-2xl bg-amber-50 dark:bg-slate-800 border border-amber-200 dark:border-slate-700 space-y-1.5">
+            <div class="flex items-center justify-between">
+              <p class="font-bold text-slate-900 dark:text-white text-sm">Puntos Limpios</p>
+              <span class="text-[11px] font-bold text-amber-800 dark:text-amber-300">Con atención municipal</span>
+            </div>
+            <div class="flex flex-wrap gap-1.5 pt-0.5">
+              <span class="px-2 py-0.5 rounded-lg bg-white dark:bg-slate-900 border border-amber-300 dark:border-slate-600 font-semibold">Vidrio sano (+20)</span>
+              <span class="px-2 py-0.5 rounded-lg bg-white dark:bg-slate-900 border border-amber-300 dark:border-slate-600 font-semibold">Electrónicos (RAEE)</span>
+              <span class="px-2 py-0.5 rounded-lg bg-white dark:bg-slate-900 border border-amber-300 dark:border-slate-600 font-semibold">Pilas y Aceite</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Footer compacto -->
+        <form method="dialog" class="pt-2 border-t border-slate-100 dark:border-slate-800">
+          <button type="submit" id="btn-close-guide" class="btn-primary w-full min-h-[44px] py-2 text-sm">Listo</button>
         </form>
+      </div>
+    </dialog>
+
+    <!-- Diálogo compacto de Ayuda Rápida / FAQ (Invocado desde el enlace "Ayuda" en Perfil) -->
+    <dialog id="help-dialog" aria-labelledby="help-dialog-title" class="w-[calc(100%-2rem)] max-w-sm rounded-3xl p-4 bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-2xl backdrop:bg-slate-950/70 backdrop:backdrop-blur-sm overflow-hidden">
+      <div class="flex flex-col space-y-3">
+        <div class="flex items-center justify-between gap-2 pb-2 border-b border-slate-100 dark:border-slate-800">
+          <div>
+            <h2 id="help-dialog-title" class="text-xl font-bold text-slate-900 dark:text-white">Centro de Ayuda</h2>
+            <p class="text-xs text-slate-600 dark:text-slate-400">Tocá una pregunta para ver la respuesta</p>
+          </div>
+          <button type="button" id="btn-close-help-top" class="touch-target rounded-full text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-center shrink-0" aria-label="Cerrar ayuda">
+            <iconify-icon icon="mynaui:x" class="text-xl" aria-hidden="true"></iconify-icon>
+          </button>
+        </div>
+
+        <div class="space-y-2 text-xs">
+          <details class="group rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/70 px-3 py-2.5">
+            <summary class="font-bold text-slate-900 dark:text-white cursor-pointer list-none flex items-center justify-between">
+              <span>¿Cómo sumo EcoPuntos?</span>
+              <iconify-icon icon="mynaui:chevron-down" class="text-base transition-transform group-open:rotate-180" aria-hidden="true"></iconify-icon>
+            </summary>
+            <p class="mt-1.5 text-slate-600 dark:text-slate-300">Acercate a una Campana Verde o Punto Limpio disponible en el mapa, abrí el Escáner QR, elegí el material y tocá "Registrar Depósito".</p>
+          </details>
+
+          <details class="group rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/70 px-3 py-2.5">
+            <summary class="font-bold text-slate-900 dark:text-white cursor-pointer list-none flex items-center justify-between">
+              <span>¿Cómo canjeo mis descuentos?</span>
+              <iconify-icon icon="mynaui:chevron-down" class="text-base transition-transform group-open:rotate-180" aria-hidden="true"></iconify-icon>
+            </summary>
+            <p class="mt-1.5 text-slate-600 dark:text-slate-300">En la pestaña "Puntos", elegí un Comercio Adherido, tocá "Canjear cupón" y presentá el código generado (ej. ECO-PAN-2026) en el local.</p>
+          </details>
+
+          <details class="group rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/70 px-3 py-2.5">
+            <summary class="font-bold text-slate-900 dark:text-white cursor-pointer list-none flex items-center justify-between">
+              <span>¿Dónde veo los horarios de mi barrio?</span>
+              <iconify-icon icon="mynaui:chevron-down" class="text-base transition-transform group-open:rotate-180" aria-hidden="true"></iconify-icon>
+            </summary>
+            <p class="mt-1.5 text-slate-600 dark:text-slate-300">Desde el menú lateral (hamburguesa) podés abrir "Guía y Cronograma" o tocar el botón de abajo.</p>
+          </details>
+        </div>
+
+        <div class="flex gap-2 pt-1">
+          <button type="button" id="btn-help-to-guide" class="btn-secondary flex-1 py-2 text-xs min-h-[44px]">Ver Cronograma</button>
+          <form method="dialog" class="flex-1">
+            <button type="submit" class="btn-primary w-full py-2 text-xs min-h-[44px]">Cerrar</button>
+          </form>
+        </div>
       </div>
     </dialog>
 

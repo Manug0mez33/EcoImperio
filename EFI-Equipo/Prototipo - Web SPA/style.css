@@ -792,3 +792,161 @@ html.dark.high-contrast .bottom-nav-item[aria-current="page"] *,
 html.dark body.high-contrast .bottom-nav-item[aria-current="page"] * {
   color: #000000 !important;
 }
+
+
+/* --------------------------------------------------------------------------
+   4. BLOQUEO DE OVERFLOW EN PANTALLAS CON NAVBAR FIJO Y MICROINTERACCIONES DE MAPA
+   Impide que el foco en inputs .sr-only desplace la sección raíz y levante el Bottom Nav
+   -------------------------------------------------------------------------- */
+#screen-mapa,
+#screen-escaner,
+#screen-puntos,
+#screen-config {
+  overflow: hidden !important;
+}
+
+/* Marcador seleccionado en el mapa: realce fluido y halo pulsante */
+.map-marker {
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.2s ease;
+}
+
+.map-marker.is-selected {
+  z-index: 15 !important;
+  transform: translate(-50%, -50%) scale(1.16) !important;
+}
+
+.map-marker.is-selected .marker-pin {
+  box-shadow: 0 0 0 5px rgba(16, 185, 129, 0.38), 0 10px 20px rgba(0, 0, 0, 0.28) !important;
+}
+
+.map-marker.is-selected .marker-badge {
+  background-color: #064e3b !important;
+  color: #ffffff !important;
+  outline: 2px solid #34d399;
+}
+
+/* Animación de flujo en la ruta peatonal sugerida del mapa */
+.map-route-animated {
+  animation: routeDashFlow 1.4s linear infinite;
+}
+
+@keyframes routeDashFlow {
+  to {
+    stroke-dashoffset: -28;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   5. MENÚ HAMBURGUESA (DRAWER) Y PESTAÑAS DE GUÍA EN MODO ALTO CONTRASTE
+   Garantiza bordes visibles, inversión de ítem activo y switches AAA
+   -------------------------------------------------------------------------- */
+html:not(.dark).high-contrast .drawer-menu,
+html:not(.dark) body.high-contrast .drawer-menu {
+  border-right: 4px solid #000000 !important;
+}
+
+html:not(.dark).high-contrast .drawer-menu .nav-item,
+html:not(.dark) body.high-contrast .drawer-menu .nav-item,
+html:not(.dark).high-contrast .drawer-menu #btn-open-guide,
+html:not(.dark) body.high-contrast .drawer-menu #btn-open-guide,
+html:not(.dark).high-contrast .drawer-menu label,
+html:not(.dark) body.high-contrast .drawer-menu label,
+html:not(.dark).high-contrast .drawer-menu .btn-logout,
+html:not(.dark) body.high-contrast .drawer-menu .btn-logout {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  border: 2px solid #000000 !important;
+  font-weight: 800 !important;
+  margin-bottom: 4px;
+}
+
+html:not(.dark).high-contrast .drawer-menu .nav-item *,
+html:not(.dark) body.high-contrast .drawer-menu .nav-item *,
+html:not(.dark).high-contrast .drawer-menu #btn-open-guide *,
+html:not(.dark) body.high-contrast .drawer-menu #btn-open-guide *,
+html:not(.dark).high-contrast .drawer-menu label *,
+html:not(.dark) body.high-contrast .drawer-menu label *,
+html:not(.dark).high-contrast .drawer-menu .btn-logout *,
+html:not(.dark) body.high-contrast .drawer-menu .btn-logout * {
+  color: #000000 !important;
+}
+
+html:not(.dark).high-contrast .drawer-menu .nav-item[aria-current="page"],
+html:not(.dark) body.high-contrast .drawer-menu .nav-item[aria-current="page"],
+html:not(.dark).high-contrast .guide-tab-btn[aria-selected="true"],
+html:not(.dark) body.high-contrast .guide-tab-btn[aria-selected="true"] {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border: 3px solid #000000 !important;
+  font-weight: 900 !important;
+}
+
+html:not(.dark).high-contrast .drawer-menu .nav-item[aria-current="page"] *,
+html:not(.dark) body.high-contrast .drawer-menu .nav-item[aria-current="page"] *,
+html:not(.dark).high-contrast .guide-tab-btn[aria-selected="true"] *,
+html:not(.dark) body.high-contrast .guide-tab-btn[aria-selected="true"] * {
+  color: #ffffff !important;
+}
+
+html:not(.dark).high-contrast .guide-tab-btn[aria-selected="false"],
+html:not(.dark) body.high-contrast .guide-tab-btn[aria-selected="false"] {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  border: 2px dashed #000000 !important;
+}
+
+/* Alto Contraste Oscuro en el Menú Hamburguesa (Drawer) y Pestañas */
+html.dark.high-contrast .drawer-menu,
+html.dark body.high-contrast .drawer-menu {
+  border-right: 4px solid #ffff00 !important;
+}
+
+html.dark.high-contrast .drawer-menu .nav-item,
+html.dark body.high-contrast .drawer-menu .nav-item,
+html.dark.high-contrast .drawer-menu #btn-open-guide,
+html.dark body.high-contrast .drawer-menu #btn-open-guide,
+html.dark.high-contrast .drawer-menu label,
+html.dark body.high-contrast .drawer-menu label,
+html.dark.high-contrast .drawer-menu .btn-logout,
+html.dark body.high-contrast .drawer-menu .btn-logout {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border: 2px solid #ffffff !important;
+  font-weight: 800 !important;
+  margin-bottom: 4px;
+}
+
+html.dark.high-contrast .drawer-menu .nav-item *,
+html.dark body.high-contrast .drawer-menu .nav-item *,
+html.dark.high-contrast .drawer-menu #btn-open-guide *,
+html.dark body.high-contrast .drawer-menu #btn-open-guide *,
+html.dark.high-contrast .drawer-menu label *,
+html.dark body.high-contrast .drawer-menu label *,
+html.dark.high-contrast .drawer-menu .btn-logout *,
+html.dark body.high-contrast .drawer-menu .btn-logout * {
+  color: #ffffff !important;
+}
+
+html.dark.high-contrast .drawer-menu .nav-item[aria-current="page"],
+html.dark body.high-contrast .drawer-menu .nav-item[aria-current="page"],
+html.dark.high-contrast .guide-tab-btn[aria-selected="true"],
+html.dark body.high-contrast .guide-tab-btn[aria-selected="true"] {
+  background-color: #ffff00 !important;
+  color: #000000 !important;
+  border: 3px solid #ffffff !important;
+  font-weight: 900 !important;
+}
+
+html.dark.high-contrast .drawer-menu .nav-item[aria-current="page"] *,
+html.dark body.high-contrast .drawer-menu .nav-item[aria-current="page"] *,
+html.dark.high-contrast .guide-tab-btn[aria-selected="true"] *,
+html.dark body.high-contrast .guide-tab-btn[aria-selected="true"] * {
+  color: #000000 !important;
+}
+
+html.dark.high-contrast .guide-tab-btn[aria-selected="false"],
+html.dark body.high-contrast .guide-tab-btn[aria-selected="false"] {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border: 2px dashed #ffffff !important;
+}

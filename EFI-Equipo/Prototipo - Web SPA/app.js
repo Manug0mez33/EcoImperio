@@ -29,9 +29,12 @@ document.addEventListener('DOMContentLoaded', () => {
     history: [
       { id: 1, title: 'Botellas Plásticas PET', location: 'Campana Verde Alberdi', time: 'Hoy, 14:32', points: 15 },
       { id: 2, title: 'Cartón y Papel Seco', location: 'Punto Limpio Banda Norte', time: '24 Ene, 11:15', points: 45 },
-      { id: 3, title: 'Envases de Vidrio', location: 'Punto Limpio Plaza Roca', time: '18 Ene, 17:40', points: 30 }
+      { id: 3, title: 'Envases de Vidrio', location: 'Punto Limpio Plaza Roca', time: '18 Ene, 17:40', points: 30 },
+      { id: 4, title: 'Latas de Aluminio', location: 'Campana Verde Bimaco', time: '12 Ene, 10:20', points: 15 },
+      { id: 5, title: 'Botellas Plásticas PET', location: 'Campana Verde Alberdi', time: '05 Ene, 18:05', points: 20 }
     ]
   };
+  const HISTORY_PAGE_SIZE = 3;
 
   // Catálogo de materiales reciclables en el Escáner QR
   const MATERIALS = {
@@ -125,7 +128,8 @@ document.addEventListener('DOMContentLoaded', () => {
     scannerFlash: false,
     selectedMaterial: 'pet',
     selectedPoint: 'Campana Verde Alberdi',
-     selectedPointStatus: 'available',
+    selectedPointStatus: 'available',
+    historyPage: 1,
     history: initialDemoWallet.history
   };
 
@@ -155,6 +159,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Sin sesión no se entra a las vistas protegidas: se redirige al inicio de sesión
     if (PROTECTED_SCREENS.includes(screenId) && !state.user) {
       screenId = 'login';
+    } else if ((screenId === 'login' || screenId === 'registro') && state.user) {
+      // Si ya inició sesión, no volver al formulario de login a menos que cierre sesión explícitamente
+      screenId = 'mapa';
     }
 
     const screens = document.querySelectorAll('.screen-view');
@@ -385,7 +392,21 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  function syncSplashCTA() {
+    const splashBtn = document.getElementById('btn-splash-start');
+    const splashLabel = document.getElementById('btn-splash-start-label');
+    if (!splashBtn || !splashLabel) return;
+    if (state.user) {
+      splashBtn.setAttribute('data-navigate', 'mapa');
+      splashLabel.textContent = `Ir al Mapa (${state.user.nombre})`;
+    } else {
+      splashBtn.setAttribute('data-navigate', 'login');
+      splashLabel.textContent = 'Comenzar';
+    }
+  }
+
   function updateUserUI() {
+    syncSplashCTA();
     if (!state.user) return;
     const { nombre, apellido, barrio } = state.user;
     document.querySelectorAll('.user-initials').forEach(el => {
@@ -413,6 +434,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     state.ecoPuntos = wallet.ecoPuntos;
     state.history = wallet.history.slice();
+    state.historyPage = 1;
     try {
       localStorage.setItem(SESSION_EMAIL_KEY, account.email);
     } catch (e) {}
@@ -669,6 +691,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Cerrar sesión (conservando los puntos e historial guardados de la cuenta)
   function logout(message) {
     state.user = null;
+    syncSplashCTA();
     try {
       localStorage.removeItem(SESSION_EMAIL_KEY);
     } catch (e) {}
@@ -681,29 +704,145 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // ==========================================================================
-  // MAPA INTERACTIVO: Buscador en tiempo real, Filtros de Categoría y Selección
+  // MAPA INTERACTIVO: Buscador, Filtros, Zoom/Pan Fluido y Selección en 2 Pasos
   // ==========================================================================
   const mapSearchInput = document.getElementById('map-search-input');
   const mapFilterPills = document.querySelectorAll('.map-filter-pill');
   const mapMarkers = document.querySelectorAll('.map-marker');
   const mapRoutePath = document.getElementById('map-route-path');
+  const mapCanvas = document.getElementById('map-canvas');
+  const mapViewportArea = document.getElementById('map-viewport-area');
+  const btnMapZoomIn = document.getElementById('btn-map-zoom-in');
+  const btnMapZoomOut = document.getElementById('btn-map-zoom-out');
+  const btnMapReset = document.getElementById('btn-map-reset');
   const nearbyCardTitle = document.getElementById('nearby-card-title');
   const nearbyCardSubtitle = document.getElementById('nearby-card-subtitle');
+  const nearbyCardStatusBadge = document.getElementById('nearby-card-status-badge');
+  const nearbyCardMaterials = document.getElementById('nearby-card-materials');
+  const nearbyCardIcon = document.getElementById('nearby-card-icon');
+  const nearbyCardIconWrap = document.getElementById('nearby-card-icon-wrap');
   const nearbyActionBtn = document.getElementById('btn-nearby-action');
+  const nearbyActionLabel = document.getElementById('btn-nearby-action-label');
+
+  let mapScale = 1;
+  let mapPanX = 0;
+  let mapPanY = 0;
+  let isDraggingMap = false;
+  let dragStartX = 0;
+  let dragStartY = 0;
+
+  function applyMapTransform(animate = true) {
+    if (!mapCanvas) return;
+    mapCanvas.style.transition = animate ? 'transform 0.28s cubic-bezier(0.22, 1, 0.36, 1)' : 'none';
+    const maxOffset = (mapScale - 1) * 140 + 40;
+    mapPanX = Math.max(-maxOffset, Math.min(maxOffset, mapPanX));
+    mapPanY = Math.max(-maxOffset, Math.min(maxOffset, mapPanY));
+    mapCanvas.style.transform = `translate(${mapPanX}px, ${mapPanY}px) scale(${mapScale})`;
+  }
+
+  if (btnMapZoomIn) {
+    btnMapZoomIn.addEventListener('click', () => {
+      mapScale = Math.min(1.8, +(mapScale + 0.25).toFixed(2));
+      applyMapTransform(true);
+    });
+  }
+
+  if (btnMapZoomOut) {
+    btnMapZoomOut.addEventListener('click', () => {
+      mapScale = Math.max(1, +(mapScale - 0.25).toFixed(2));
+      if (mapScale === 1) {
+        mapPanX = 0;
+        mapPanY = 0;
+      }
+      applyMapTransform(true);
+    });
+  }
+
+  if (btnMapReset) {
+    btnMapReset.addEventListener('click', () => {
+      mapScale = 1;
+      mapPanX = 0;
+      mapPanY = 0;
+      applyMapTransform(true);
+      const alberdiMarker = document.querySelector('.map-marker[data-point-id="alberdi"]');
+      if (alberdiMarker) selectMapMarker(alberdiMarker);
+      showToast('Mapa centrado en tu ubicación actual.');
+    });
+  }
+
+  if (mapViewportArea && mapCanvas) {
+    mapViewportArea.addEventListener('pointerdown', (e) => {
+      if (e.target.closest('button, input, article, header, nav')) return;
+      isDraggingMap = true;
+      dragStartX = e.clientX - mapPanX;
+      dragStartY = e.clientY - mapPanY;
+      mapViewportArea.setPointerCapture(e.pointerId);
+    });
+
+    mapViewportArea.addEventListener('pointermove', (e) => {
+      if (!isDraggingMap) return;
+      mapPanX = e.clientX - dragStartX;
+      mapPanY = e.clientY - dragStartY;
+      applyMapTransform(false);
+    });
+
+    const stopMapDrag = () => {
+      if (!isDraggingMap) return;
+      isDraggingMap = false;
+      applyMapTransform(true);
+    };
+    mapViewportArea.addEventListener('pointerup', stopMapDrag);
+    mapViewportArea.addEventListener('pointercancel', stopMapDrag);
+  }
 
   function selectMapMarker(marker) {
     if (!marker) return;
+    mapMarkers.forEach(m => {
+      const active = m === marker;
+      m.classList.toggle('is-selected', active);
+      m.setAttribute('aria-pressed', String(active));
+    });
+
     const title = marker.dataset.title || 'Campana Verde - B° Alberdi';
-    const subtitle = marker.dataset.subtitle || 'A solo 350m • Ruta peatonal: 4 min a pie';
+    const subtitle = marker.dataset.subtitle || 'A solo 350m • 4 min a pie';
     const status = marker.dataset.status || 'available';
+    const capacity = marker.dataset.capacity || (status === 'full' ? '98% • Lleno' : '25% ocupado');
+    const materials = marker.dataset.materials || 'PET 1, Cartón, Latas';
     const route = marker.dataset.route;
+    const isFull = status === 'full';
 
     state.selectedPoint = title.replace(/\s*\(Lleno\)/i, '');
     state.selectedPointStatus = status;
 
     if (nearbyCardTitle) nearbyCardTitle.textContent = title;
     if (nearbyCardSubtitle) nearbyCardSubtitle.textContent = subtitle;
-    if (mapRoutePath && route) mapRoutePath.setAttribute('d', route);
+    if (nearbyCardMaterials) nearbyCardMaterials.textContent = isFull ? 'Sin capacidad disponible' : `Recibe: ${materials}`;
+
+    if (nearbyCardStatusBadge) {
+      nearbyCardStatusBadge.textContent = capacity;
+      nearbyCardStatusBadge.className = isFull
+        ? 'text-[11px] font-bold px-2 py-0.5 rounded-full bg-red-100 dark:bg-red-950/70 text-red-700 dark:text-red-300'
+        : 'text-[11px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-200';
+    }
+
+    if (nearbyCardIcon && nearbyCardIconWrap) {
+      nearbyCardIcon.setAttribute('icon', isFull ? 'mynaui:ban' : (marker.dataset.category === 'punto-limpio' ? 'mynaui:sparkles' : 'mynaui:location'));
+      nearbyCardIconWrap.className = isFull
+        ? 'w-11 h-11 rounded-xl bg-red-100 dark:bg-red-950/60 text-red-600 dark:text-red-400 flex items-center justify-center shrink-0 mt-0.5'
+        : 'w-11 h-11 rounded-xl bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-300 flex items-center justify-center shrink-0 mt-0.5';
+    }
+
+    if (nearbyActionLabel && nearbyActionBtn) {
+      nearbyActionLabel.textContent = isFull ? 'Ver cercano' : 'Escanear';
+      nearbyActionBtn.className = isFull
+        ? 'touch-target px-3 py-2 rounded-xl bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold flex items-center gap-1 shadow-md shrink-0 cursor-pointer transition-all'
+        : 'touch-target px-3.5 py-2 rounded-xl bg-emerald-800 hover:bg-emerald-700 text-white text-xs font-bold flex items-center gap-1 shadow-md shrink-0 cursor-pointer transition-all';
+    }
+
+    if (mapRoutePath && route) {
+      mapRoutePath.setAttribute('d', route);
+      mapRoutePath.setAttribute('stroke', isFull ? '#dc2626' : '#059669');
+    }
   }
 
   function filterMapMarkers() {
@@ -753,10 +892,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   mapMarkers.forEach(marker => {
     marker.addEventListener('click', () => {
+      const wasSelected = marker.classList.contains('is-selected');
       selectMapMarker(marker);
       if (marker.dataset.status === 'full') {
-        showToast('Esta campana está llena. Te sugerimos Campana Verde - B° Alberdi (a 350m).');
-      } else {
+        showToast('Punto lleno (98%). Tocá "Ver cercano" abajo para ir al punto disponible más próximo.');
+      } else if (wasSelected) {
         navigateTo('escaner');
       }
     });
@@ -765,7 +905,13 @@ document.addEventListener('DOMContentLoaded', () => {
   if (nearbyActionBtn) {
     nearbyActionBtn.addEventListener('click', () => {
       if (state.selectedPointStatus === 'full') {
-        showToast('Este punto está lleno. Seleccioná un contenedor vacío en el mapa.');
+        const availableMarker = [...mapMarkers].find(m => !m.classList.contains('hidden') && m.dataset.status === 'available');
+        if (availableMarker) {
+          selectMapMarker(availableMarker);
+          showToast(`Redirigido a ${availableMarker.dataset.title} (disponible).`);
+        } else {
+          showToast('Activá los filtros superiores para ver puntos con lugar disponible.');
+        }
         return;
       }
       navigateTo('escaner');
@@ -864,6 +1010,7 @@ document.addEventListener('DOMContentLoaded', () => {
         points: mat.points
       };
       state.history.unshift(newItem);
+      state.historyPage = 1;
 
       saveUserWallet();
       updatePointsUI();
@@ -877,10 +1024,31 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ==========================================================================
-  // MIS ECOPUNTOS: Progreso Dinámico, Comercios Adheridos e Historial (80% + h4)
+  // MIS ECOPUNTOS: Progreso Dinámico, Comercios Adheridos e Historial Paginado
   // ==========================================================================
   const toggleComerciosBtn = document.getElementById('btn-toggle-comercios');
   const extraComercioCard = document.getElementById('comercio-extra-card');
+  const btnHistoryPrev = document.getElementById('btn-history-prev');
+  const btnHistoryNext = document.getElementById('btn-history-next');
+
+  if (btnHistoryPrev) {
+    btnHistoryPrev.addEventListener('click', () => {
+      if (state.historyPage > 1) {
+        state.historyPage -= 1;
+        updatePointsUI();
+      }
+    });
+  }
+
+  if (btnHistoryNext) {
+    btnHistoryNext.addEventListener('click', () => {
+      const totalPages = Math.max(1, Math.ceil(state.history.length / HISTORY_PAGE_SIZE));
+      if (state.historyPage < totalPages) {
+        state.historyPage += 1;
+        updatePointsUI();
+      }
+    });
+  }
 
   if (toggleComerciosBtn && extraComercioCard) {
     toggleComerciosBtn.addEventListener('click', () => {
@@ -940,6 +1108,7 @@ document.addEventListener('DOMContentLoaded', () => {
       time: 'Recién',
       points: -cost
     });
+    state.historyPage = 1;
 
     saveUserWallet();
     updatePointsUI();
@@ -975,9 +1144,23 @@ document.addEventListener('DOMContentLoaded', () => {
     if (progressFillEl) progressFillEl.style.width = `${pct}%`;
     if (progressBarEl) progressBarEl.setAttribute('aria-valuenow', String(Math.min(GOAL_POINTS, state.ecoPuntos)));
 
-    // Renderizar lista de historial al 80% de ancho (w-4/5) con puntos en <h4> a la derecha
+    // Renderizar lista de historial paginada al 80% de ancho (w-4/5) con puntos en <h4> a la derecha
     const historyListContainer = document.getElementById('history-list');
-    if (historyListContainer && state.history.length === 0) {
+    const historyPagination = document.getElementById('history-pagination');
+    const historyPageIndicator = document.getElementById('history-page-indicator');
+    const historyTotalBadge = document.getElementById('history-total-badge');
+
+    const totalItems = state.history.length;
+    const totalPages = Math.max(1, Math.ceil(totalItems / HISTORY_PAGE_SIZE));
+    if (state.historyPage > totalPages) state.historyPage = totalPages;
+    if (state.historyPage < 1) state.historyPage = 1;
+
+    if (historyTotalBadge) {
+      historyTotalBadge.textContent = totalItems > 0 ? `${totalItems} registros` : '';
+    }
+
+    if (historyListContainer && totalItems === 0) {
+      if (historyPagination) historyPagination.classList.add('hidden');
       historyListContainer.innerHTML = `
         <div class="w-4/5 mx-auto p-5 rounded-2xl border border-dashed border-slate-300 dark:border-slate-700 bg-white/70 dark:bg-slate-900/70 text-center space-y-3">
           <div class="w-12 h-12 mx-auto rounded-full bg-emerald-100 dark:bg-emerald-900/60 text-emerald-700 dark:text-emerald-300 flex items-center justify-center" aria-hidden="true">
@@ -992,7 +1175,10 @@ document.addEventListener('DOMContentLoaded', () => {
           </button>
         </div>`;
     } else if (historyListContainer) {
-      historyListContainer.innerHTML = state.history.map(item => {
+      const startIdx = (state.historyPage - 1) * HISTORY_PAGE_SIZE;
+      const pageItems = state.history.slice(startIdx, startIdx + HISTORY_PAGE_SIZE);
+
+      historyListContainer.innerHTML = pageItems.map(item => {
         const isRedeem = item.type === 'redeem' || item.points < 0;
         const iconName = isRedeem ? 'mynaui:gift' : 'keyline-icons:recycle-duotone';
         const iconWrapClass = isRedeem
@@ -1018,20 +1204,85 @@ document.addEventListener('DOMContentLoaded', () => {
         </article>
       `;
       }).join('');
+
+      if (historyPagination) {
+        historyPagination.classList.toggle('hidden', totalPages <= 1);
+      }
+      if (historyPageIndicator) {
+        historyPageIndicator.textContent = `Página ${state.historyPage} de ${totalPages}`;
+      }
+      if (btnHistoryPrev) {
+        btnHistoryPrev.disabled = state.historyPage <= 1;
+      }
+      if (btnHistoryNext) {
+        btnHistoryNext.disabled = state.historyPage >= totalPages;
+      }
     }
   }
 
   // ==========================================================================
-  // GUÍA Y CRONOGRAMA DE RECICLAJE (Modal <dialog>)
+  // GUÍA Y CRONOGRAMA CON PESTAÑAS + CENTRO DE AYUDA RÁPIDA (Modales <dialog>)
   // ==========================================================================
   const guideDialog = document.getElementById('guide-dialog');
   const openGuideBtn = document.getElementById('btn-open-guide');
   const closeGuideTopBtn = document.getElementById('btn-close-guide-top');
+  const guideTabBtns = document.querySelectorAll('.guide-tab-btn');
+  const guidePanelHorarios = document.getElementById('guide-panel-horarios');
+  const guidePanelSeparacion = document.getElementById('guide-panel-separacion');
+  const guideUserBarrioPill = document.getElementById('guide-user-barrio-pill');
+  const helpDialog = document.getElementById('help-dialog');
+  const closeHelpTopBtn = document.getElementById('btn-close-help-top');
+  const btnHelpToGuide = document.getElementById('btn-help-to-guide');
+
+  function setGuideTab(tabName) {
+    const isHorarios = tabName !== 'separacion';
+    guideTabBtns.forEach(btn => {
+      const active = btn.dataset.guideTab === (isHorarios ? 'horarios' : 'separacion');
+      btn.setAttribute('aria-selected', String(active));
+      btn.setAttribute('aria-pressed', String(active));
+      btn.classList.toggle('bg-emerald-800', active);
+      btn.classList.toggle('text-white', active);
+      btn.classList.toggle('shadow-sm', active);
+      btn.classList.toggle('text-slate-700', !active);
+      btn.classList.toggle('dark:text-slate-300', !active);
+    });
+    if (guidePanelHorarios) guidePanelHorarios.classList.toggle('hidden', !isHorarios);
+    if (guidePanelSeparacion) guidePanelSeparacion.classList.toggle('hidden', isHorarios);
+  }
+
+  guideTabBtns.forEach(btn => {
+    btn.addEventListener('click', () => setGuideTab(btn.dataset.guideTab));
+  });
+
+  function highlightUserZoneInGuide() {
+    const userBarrio = (state.user && state.user.barrio ? state.user.barrio : 'Alberdi').toLowerCase();
+    if (guideUserBarrioPill) {
+      guideUserBarrioPill.textContent = `Tu barrio: ${state.user && state.user.barrio ? state.user.barrio : 'Alberdi'}`;
+    }
+    document.querySelectorAll('.schedule-zone-card').forEach(card => {
+      const zones = (card.dataset.zones || '').toLowerCase();
+      const isUserZone = zones.includes(userBarrio);
+      card.classList.toggle('border-emerald-500', isUserZone);
+      card.classList.toggle('ring-2', isUserZone);
+      card.classList.toggle('ring-emerald-500/30', isUserZone);
+    });
+  }
 
   function openGuideModal() {
     closeDrawer();
+    highlightUserZoneInGuide();
+    setGuideTab('horarios');
     if (guideDialog && typeof guideDialog.showModal === 'function') {
       guideDialog.showModal();
+    }
+  }
+
+  function openHelpModal() {
+    closeDrawer();
+    if (helpDialog && typeof helpDialog.showModal === 'function') {
+      helpDialog.showModal();
+    } else {
+      openGuideModal();
     }
   }
 
@@ -1039,10 +1290,19 @@ document.addEventListener('DOMContentLoaded', () => {
   if (closeGuideTopBtn && guideDialog) {
     closeGuideTopBtn.addEventListener('click', () => guideDialog.close());
   }
+  if (closeHelpTopBtn && helpDialog) {
+    closeHelpTopBtn.addEventListener('click', () => helpDialog.close());
+  }
+  if (btnHelpToGuide) {
+    btnHelpToGuide.addEventListener('click', () => {
+      if (helpDialog && helpDialog.open) helpDialog.close();
+      openGuideModal();
+    });
+  }
   document.querySelectorAll('.link-help').forEach(link => {
     link.addEventListener('click', (e) => {
       e.preventDefault();
-      openGuideModal();
+      openHelpModal();
     });
   });
 
@@ -1093,9 +1353,10 @@ document.addEventListener('DOMContentLoaded', () => {
     resetDemoBtn.addEventListener('click', () => {
       state.ecoPuntos = DEMO_WALLET.ecoPuntos;
       state.history = DEMO_WALLET.history.slice();
+      state.historyPage = 1;
       saveUserWallet();
       updatePointsUI();
-      showToast('Datos de demostración restablecidos (1.250 EcoPuntos y 3 depósitos).');
+      showToast('Datos de demostración restablecidos (1.250 EcoPuntos y 5 depósitos).');
     });
   }
 
@@ -1137,6 +1398,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.text-size-option').forEach(option => {
       option.checked = option.value === size;
     });
+    document.querySelectorAll('.screen-view').forEach(s => { s.scrollTop = 0; });
   }
 
   applyTextSize(localStorage.getItem('ecoimperio_text_size') || 'normal');
@@ -1155,6 +1417,7 @@ document.addEventListener('DOMContentLoaded', () => {
     reduceMotionToggle.checked = document.documentElement.classList.contains('reduce-motion');
     reduceMotionToggle.addEventListener('change', (e) => {
       document.documentElement.classList.toggle('reduce-motion', e.target.checked);
+      document.querySelectorAll('.screen-view').forEach(s => { s.scrollTop = 0; });
       try {
         localStorage.setItem('ecoimperio_reduce_motion', String(e.target.checked));
       } catch (e) {}
