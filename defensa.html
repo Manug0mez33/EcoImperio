@@ -740,19 +740,17 @@
         </div>
 
         <!-- Carrusel / Galería Horizontal con Acumulación de Ejemplos -->
-        <div id="wireframe-carousel" class="flex gap-6 overflow-x-auto pb-6 pt-2 snap-x snap-mandatory scroll-smooth no-scrollbar">
+        <div id="wireframe-carousel" class="flex gap-6 overflow-x-auto pb-6 pt-2 snap-x snap-mandatory scroll-smooth no-scrollbar select-none cursor-grab active:cursor-grabbing">
           
           <!-- Card 1: Mutación de Inicio en 4 Estadios -->
-          <div onclick="openWireframeModal(0)" class="min-w-[340px] sm:min-w-[420px] max-w-[450px] flex-shrink-0 snap-start p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 card-academic space-y-4 cursor-pointer group hover:border-emerald-500 transition-all">
+          <div onclick="handleCardClick(0)" class="min-w-[340px] sm:min-w-[420px] max-w-[450px] flex-shrink-0 snap-start p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 card-academic space-y-4 cursor-pointer group hover:border-emerald-500 transition-all">
             <div class="flex items-center justify-between">
               <span class="text-xs font-extrabold uppercase px-2.5 py-1 rounded bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300">
                 1. Inicio en 4 Estadios
               </span>
-              <span class="text-[11px] font-mono text-emerald-700 dark:text-emerald-400 font-bold flex items-center gap-1 group-hover:underline">
-                <iconify-icon icon="mynaui:search"></iconify-icon> Ampliar
-              </span>
+              <span class="text-xs font-mono text-slate-400">v1.0 &rarr; v2.0</span>
             </div>
-            <div class="rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800/80 p-2 flex items-center justify-center h-64 relative">
+            <div class="rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800/80 p-2 flex items-center justify-center h-64 pointer-events-none">
               <img src="docs/assets/figma/mutacion_pantalla_inicio_estadios.svg" alt="Mutación de pantalla de inicio en 4 estadios evolutivos" class="w-full h-full object-contain rounded-xl group-hover:scale-102 transition-transform">
             </div>
             <div class="space-y-1">
@@ -764,16 +762,14 @@
           </div>
 
           <!-- Card 2: Matriz Comparativa Lo-Fi vs Hi-Fi -->
-          <div onclick="openWireframeModal(1)" class="min-w-[340px] sm:min-w-[420px] max-w-[450px] flex-shrink-0 snap-start p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 card-academic space-y-4 cursor-pointer group hover:border-emerald-500 transition-all">
+          <div onclick="handleCardClick(1)" class="min-w-[340px] sm:min-w-[420px] max-w-[450px] flex-shrink-0 snap-start p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 card-academic space-y-4 cursor-pointer group hover:border-emerald-500 transition-all">
             <div class="flex items-center justify-between">
               <span class="text-xs font-extrabold uppercase px-2.5 py-1 rounded bg-teal-100 dark:bg-teal-950 text-teal-800 dark:text-teal-300">
                 2. Lo-Fi vs Hi-Fi Matrix
               </span>
-              <span class="text-[11px] font-mono text-emerald-700 dark:text-emerald-400 font-bold flex items-center gap-1 group-hover:underline">
-                <iconify-icon icon="mynaui:search"></iconify-icon> Ampliar
-              </span>
+              <span class="text-xs font-mono text-slate-400">Auto-Layout</span>
             </div>
-            <div class="rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800/80 p-2 flex items-center justify-center h-64 relative">
+            <div class="rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800/80 p-2 flex items-center justify-center h-64 pointer-events-none">
               <img src="docs/assets/figma/panel_transiciones_lofi_vs_hifi.svg" alt="Panel de transiciones Lo-Fi versus Hi-Fi en Figma" class="w-full h-full object-contain rounded-xl group-hover:scale-102 transition-transform">
             </div>
             <div class="space-y-1">
@@ -785,16 +781,14 @@
           </div>
 
           <!-- Card 3: Prototipo Base de 12 Pantallas (Lo-Fi) -->
-          <div onclick="openWireframeModal(2)" class="min-w-[340px] sm:min-w-[420px] max-w-[450px] flex-shrink-0 snap-start p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 card-academic space-y-4 cursor-pointer group hover:border-emerald-500 transition-all">
+          <div onclick="handleCardClick(2)" class="min-w-[340px] sm:min-w-[420px] max-w-[450px] flex-shrink-0 snap-start p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 card-academic space-y-4 cursor-pointer group hover:border-emerald-500 transition-all">
             <div class="flex items-center justify-between">
               <span class="text-xs font-extrabold uppercase px-2.5 py-1 rounded bg-slate-200 dark:bg-slate-800 text-slate-800 dark:text-slate-200">
                 3. Esqueleto Lo-Fi Inicial
               </span>
-              <span class="text-[11px] font-mono text-emerald-700 dark:text-emerald-400 font-bold flex items-center gap-1 group-hover:underline">
-                <iconify-icon icon="mynaui:search"></iconify-icon> Ampliar
-              </span>
+              <span class="text-xs font-mono text-slate-400">12 Pantallas</span>
             </div>
-            <div class="rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800/80 p-2 flex items-center justify-center h-64 relative">
+            <div class="rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800/80 p-2 flex items-center justify-center h-64 pointer-events-none">
               <img src="docs/assets/figma/v1_prototipo_baja_calidad_12_pantallas.svg" alt="Prototipo baja calidad 12 pantallas en Figma" class="w-full h-full object-contain rounded-xl group-hover:scale-102 transition-transform">
             </div>
             <div class="space-y-1">
@@ -806,16 +800,14 @@
           </div>
 
           <!-- Card 4: Actualización e Integración de Pantallas Nuevas -->
-          <div onclick="openWireframeModal(3)" class="min-w-[340px] sm:min-w-[420px] max-w-[450px] flex-shrink-0 snap-start p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 card-academic space-y-4 cursor-pointer group hover:border-emerald-500 transition-all">
+          <div onclick="handleCardClick(3)" class="min-w-[340px] sm:min-w-[420px] max-w-[450px] flex-shrink-0 snap-start p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 card-academic space-y-4 cursor-pointer group hover:border-emerald-500 transition-all">
             <div class="flex items-center justify-between">
               <span class="text-xs font-extrabold uppercase px-2.5 py-1 rounded bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300">
                 4. Incorporación de Vistas
               </span>
-              <span class="text-[11px] font-mono text-emerald-700 dark:text-emerald-400 font-bold flex items-center gap-1 group-hover:underline">
-                <iconify-icon icon="mynaui:search"></iconify-icon> Ampliar
-              </span>
+              <span class="text-xs font-mono text-slate-400">v1.5 Mid-Fi</span>
             </div>
-            <div class="rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800/80 p-2 flex items-center justify-center h-64 relative">
+            <div class="rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800/80 p-2 flex items-center justify-center h-64 pointer-events-none">
               <img src="docs/assets/figma/v1_actualizacion_main_nuevas_pantallas.svg" alt="Actualización de nuevas pantallas en Figma" class="w-full h-full object-contain rounded-xl group-hover:scale-102 transition-transform">
             </div>
             <div class="space-y-1">
@@ -827,16 +819,14 @@
           </div>
 
           <!-- Card 5: Complemento de Modales y Estados AAA -->
-          <div onclick="openWireframeModal(4)" class="min-w-[340px] sm:min-w-[420px] max-w-[450px] flex-shrink-0 snap-start p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 card-academic space-y-4 cursor-pointer group hover:border-emerald-500 transition-all">
+          <div onclick="handleCardClick(4)" class="min-w-[340px] sm:min-w-[420px] max-w-[450px] flex-shrink-0 snap-start p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 card-academic space-y-4 cursor-pointer group hover:border-emerald-500 transition-all">
             <div class="flex items-center justify-between">
               <span class="text-xs font-extrabold uppercase px-2.5 py-1 rounded bg-yellow-100 dark:bg-yellow-950 text-yellow-900 dark:text-yellow-200">
                 5. Diálogos y Modos Visuales
               </span>
-              <span class="text-[11px] font-mono text-emerald-700 dark:text-emerald-400 font-bold flex items-center gap-1 group-hover:underline">
-                <iconify-icon icon="mynaui:search"></iconify-icon> Ampliar
-              </span>
+              <span class="text-xs font-mono text-slate-400">v2.0 Modales</span>
             </div>
-            <div class="rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800/80 p-2 flex items-center justify-center h-64 relative">
+            <div class="rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800/80 p-2 flex items-center justify-center h-64 pointer-events-none">
               <img src="docs/assets/figma/v2_complemento_modales_estados_aaa.svg" alt="Complemento de modales y estados AAA en Figma" class="w-full h-full object-contain rounded-xl group-hover:scale-102 transition-transform">
             </div>
             <div class="space-y-1">
@@ -848,16 +838,14 @@
           </div>
 
           <!-- Card 6: Prototipo Hi-Fi Software Vivo -->
-          <div onclick="openWireframeModal(5)" class="min-w-[340px] sm:min-w-[420px] max-w-[450px] flex-shrink-0 snap-start p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 card-academic space-y-4 cursor-pointer group hover:border-emerald-500 transition-all">
+          <div onclick="handleCardClick(5)" class="min-w-[340px] sm:min-w-[420px] max-w-[450px] flex-shrink-0 snap-start p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 card-academic space-y-4 cursor-pointer group hover:border-emerald-500 transition-all">
             <div class="flex items-center justify-between">
               <span class="text-xs font-extrabold uppercase px-2.5 py-1 rounded bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300">
                 6. Hi-Fi Software Vivo
               </span>
-              <span class="text-[11px] font-mono text-emerald-700 dark:text-emerald-400 font-bold flex items-center gap-1 group-hover:underline">
-                <iconify-icon icon="mynaui:search"></iconify-icon> Ampliar
-              </span>
+              <span class="text-xs font-mono text-slate-400">SPA Final</span>
             </div>
-            <div class="rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800/80 p-2 flex items-center justify-center h-64 relative">
+            <div class="rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800/80 p-2 flex items-center justify-center h-64 pointer-events-none">
               <img src="docs/assets/figma/v2_pantalla_hifi_software_vivo.svg" alt="Captura del prototipo Hi-Fi interactivo" class="w-full h-full object-contain rounded-xl group-hover:scale-102 transition-transform">
             </div>
             <div class="space-y-1">
@@ -869,16 +857,14 @@
           </div>
 
           <!-- Card 7: Mapa Barrial con Semáforo IoT -->
-          <div onclick="openWireframeModal(6)" class="min-w-[340px] sm:min-w-[420px] max-w-[450px] flex-shrink-0 snap-start p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 card-academic space-y-4 cursor-pointer group hover:border-emerald-500 transition-all">
+          <div onclick="handleCardClick(6)" class="min-w-[340px] sm:min-w-[420px] max-w-[450px] flex-shrink-0 snap-start p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 card-academic space-y-4 cursor-pointer group hover:border-emerald-500 transition-all">
             <div class="flex items-center justify-between">
               <span class="text-xs font-extrabold uppercase px-2.5 py-1 rounded bg-teal-100 dark:bg-teal-950 text-teal-800 dark:text-teal-300">
                 7. Mapa IoT Interactivo
               </span>
-              <span class="text-[11px] font-mono text-emerald-700 dark:text-emerald-400 font-bold flex items-center gap-1 group-hover:underline">
-                <iconify-icon icon="mynaui:search"></iconify-icon> Ampliar
-              </span>
+              <span class="text-xs font-mono text-slate-400">Puntos Verdes</span>
             </div>
-            <div class="rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800/80 p-2 flex items-center justify-center h-64 relative">
+            <div class="rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800/80 p-2 flex items-center justify-center h-64 pointer-events-none">
               <img src="docs/assets/figma/v2_mapa_iot_semaforo_campanas.svg" alt="Mapa buscador y filtros en tiempo real" class="w-full h-full object-contain rounded-xl group-hover:scale-102 transition-transform">
             </div>
             <div class="space-y-1">
@@ -890,16 +876,14 @@
           </div>
 
           <!-- Card 8: Sistema de Diseño del Escáner QR -->
-          <div onclick="openWireframeModal(7)" class="min-w-[340px] sm:min-w-[420px] max-w-[450px] flex-shrink-0 snap-start p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 card-academic space-y-4 cursor-pointer group hover:border-emerald-500 transition-all">
+          <div onclick="handleCardClick(7)" class="min-w-[340px] sm:min-w-[420px] max-w-[450px] flex-shrink-0 snap-start p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 card-academic space-y-4 cursor-pointer group hover:border-emerald-500 transition-all">
             <div class="flex items-center justify-between">
               <span class="text-xs font-extrabold uppercase px-2.5 py-1 rounded bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300">
                 8. Escáner de Depósito
               </span>
-              <span class="text-[11px] font-mono text-emerald-700 dark:text-emerald-400 font-bold flex items-center gap-1 group-hover:underline">
-                <iconify-icon icon="mynaui:search"></iconify-icon> Ampliar
-              </span>
+              <span class="text-xs font-mono text-slate-400">Fallback 2x2</span>
             </div>
-            <div class="rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800/80 p-2 flex items-center justify-center h-64 relative">
+            <div class="rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800/80 p-2 flex items-center justify-center h-64 pointer-events-none">
               <img src="docs/assets/figma/v2_sistema_escaner_qr_fallback.svg" alt="Sistema de diseño del escáner QR" class="w-full h-full object-contain rounded-xl group-hover:scale-102 transition-transform">
             </div>
             <div class="space-y-1">
@@ -911,16 +895,14 @@
           </div>
 
           <!-- Card 9: Validación de los 5 Estados UI -->
-          <div onclick="openWireframeModal(8)" class="min-w-[340px] sm:min-w-[420px] max-w-[450px] flex-shrink-0 snap-start p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 card-academic space-y-4 cursor-pointer group hover:border-emerald-500 transition-all">
+          <div onclick="handleCardClick(8)" class="min-w-[340px] sm:min-w-[420px] max-w-[450px] flex-shrink-0 snap-start p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 card-academic space-y-4 cursor-pointer group hover:border-emerald-500 transition-all">
             <div class="flex items-center justify-between">
               <span class="text-xs font-extrabold uppercase px-2.5 py-1 rounded bg-indigo-100 dark:bg-indigo-950 text-indigo-800 dark:text-indigo-300">
                 9. Los 5 Estados UI
               </span>
-              <span class="text-[11px] font-mono text-emerald-700 dark:text-emerald-400 font-bold flex items-center gap-1 group-hover:underline">
-                <iconify-icon icon="mynaui:search"></iconify-icon> Ampliar
-              </span>
+              <span class="text-xs font-mono text-slate-400">Matriz en Código</span>
             </div>
-            <div class="rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800/80 p-2 flex items-center justify-center h-64 relative">
+            <div class="rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800/80 p-2 flex items-center justify-center h-64 pointer-events-none">
               <img src="docs/assets/figma/v2_matriz_cinco_estados_ui.svg" alt="Captura de los cinco estados de componentes UI" class="w-full h-full object-contain rounded-xl group-hover:scale-102 transition-transform">
             </div>
             <div class="space-y-1">
@@ -930,575 +912,6 @@
               </p>
             </div>
           </div>        </div>
-
-      </div>
-    </section>
-
-    <!-- ========================================================================
-         ETAPA 01: PROCESO DCU & METODOLOGÍA DEL DOBLE DIAMANTE
-         ======================================================================== -->
-    <section id="proceso" class="py-20 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800">
-      <div class="max-w-7xl mx-auto px-6">
-        
-        <div class="space-y-3 mb-14">
-          <div class="flex items-center gap-2">
-            <span class="px-3.5 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 text-xs font-black uppercase tracking-wider">
-              Etapa 01
-            </span>
-            <span class="text-xs font-mono text-slate-500">• Metodología DCU & Doble Diamante</span>
-          </div>
-          <h2 class="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white tracking-tight">
-            El Proceso de Diseño Centrado en el Usuario (DCU)
-          </h2>
-          <p class="text-base text-slate-600 dark:text-slate-300 max-w-3xl leading-relaxed">
-            Cómo transformamos una problemática urbana de residuos en Río Cuarto en una solución digital validada, aplicando el marco de trabajo del <em>British Design Council</em>:
-          </p>
-        </div>
-
-        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-          
-          <!-- Diamante 1: Descubrimiento -->
-          <div class="p-6 rounded-3xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 card-academic space-y-4">
-            <div class="w-12 h-12 rounded-2xl bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-400 flex items-center justify-center text-2xl font-black">
-              1
-            </div>
-            <div>
-              <span class="text-xs font-bold text-emerald-700 dark:text-emerald-400 uppercase tracking-wider block">Divergir</span>
-              <h3 class="text-lg font-black text-slate-900 dark:text-white">Empatizar (Investigación)</h3>
-            </div>
-            <ul class="text-xs text-slate-600 dark:text-slate-300 space-y-2 leading-relaxed">
-              <li>• Entrevistas a vecinos en barrios Alberdi, Centro y Banda Norte.</li>
-              <li>• Detección del <strong>punto de dolor crítico</strong>: caminar 4 cuadras con reciclables y encontrar la campana colapsada.</li>
-              <li>• Relevamiento de 42 campanas municipales con alta dispersión geográfica.</li>
-            </ul>
-          </div>
-
-          <!-- Diamante 1: Definición -->
-          <div class="p-6 rounded-3xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 card-academic space-y-4">
-            <div class="w-12 h-12 rounded-2xl bg-teal-100 dark:bg-teal-950 text-teal-800 dark:text-teal-400 flex items-center justify-center text-2xl font-black">
-              2
-            </div>
-            <div>
-              <span class="text-xs font-bold text-teal-700 dark:text-teal-400 uppercase tracking-wider block">Converger</span>
-              <h3 class="text-lg font-black text-slate-900 dark:text-white">Definir (Problem Statement)</h3>
-            </div>
-            <ul class="text-xs text-slate-600 dark:text-slate-300 space-y-2 leading-relaxed">
-              <li>• <strong>Insight</strong>: "El vecino quiere reciclar pero no tiene certeza del estado del contenedor ni incentivo tangible".</li>
-              <li>• Creación de los arquetipos <em>Oscar</em> (pragmatismo urbano) y <em>Marta</em> (accesibilidad e inclusión).</li>
-              <li>• Declaración de propuesta de valor de economía circular local.</li>
-            </ul>
-          </div>
-
-          <!-- Diamante 2: Ideación -->
-          <div class="p-6 rounded-3xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 card-academic space-y-4">
-            <div class="w-12 h-12 rounded-2xl bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-400 flex items-center justify-center text-2xl font-black">
-              3
-            </div>
-            <div>
-              <span class="text-xs font-bold text-amber-700 dark:text-amber-400 uppercase tracking-wider block">Divergir</span>
-              <h3 class="text-lg font-black text-slate-900 dark:text-white">Idear (Arquitectura)</h3>
-            </div>
-            <ul class="text-xs text-slate-600 dark:text-slate-300 space-y-2 leading-relaxed">
-              <li>• Card sorting para estructurar las 5 vistas nodales.</li>
-              <li>• Gamificación inspirada en la flora nativa cordobesa (Semilla a Bosque).</li>
-              <li>• Integración de red de comercios riocuartenses con compensación de tasas municipales.</li>
-            </ul>
-          </div>
-
-          <!-- Diamante 2: Entrega -->
-          <div class="p-6 rounded-3xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 card-academic space-y-4">
-            <div class="w-12 h-12 rounded-2xl bg-emerald-800 text-white flex items-center justify-center text-2xl font-black shadow-md shadow-emerald-800/25">
-              4
-            </div>
-            <div>
-              <span class="text-xs font-bold text-emerald-700 dark:text-emerald-400 uppercase tracking-wider block">Converger</span>
-              <h3 class="text-lg font-black text-slate-900 dark:text-white">Prototipar & Validar</h3>
-            </div>
-            <ul class="text-xs text-slate-600 dark:text-slate-300 space-y-2 leading-relaxed">
-              <li>• De Wireframes Lo-Fi en Figma a Web SPA funcional en Vanilla JS.</li>
-              <li>• Validación de los 5 estados UI y contraste WCAG AAA $ge 7:1$.</li>
-              <li>• Pruebas de campo con "la mano atada" (operabilidad con un solo pulgar).</li>
-            </ul>
-          </div>
-
-        </div>
-
-      </div>
-    </section>
-
-    <!-- ========================================================================
-         ETAPA 02: ARQUETIPOS (USER PERSONAS) & USER JOURNEY MAP
-         ======================================================================== -->
-    <section id="arquetipos" class="py-20 bg-slate-100/70 dark:bg-slate-950 border-b border-slate-200 dark:border-slate-800">
-      <div class="max-w-7xl mx-auto px-6">
-        
-        <div class="space-y-3 mb-14">
-          <div class="flex items-center gap-2">
-            <span class="px-3.5 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 text-xs font-black uppercase tracking-wider">
-              Etapa 02
-            </span>
-            <span class="text-xs font-mono text-slate-500">• Arquetipos (Personas) & User Journey Map</span>
-          </div>
-          <h2 class="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white tracking-tight">
-            User Personas & User Journey Map
-          </h2>
-          <p class="text-base text-slate-600 dark:text-slate-300 max-w-3xl leading-relaxed">
-            Diseñamos bajo la <strong>Regla de los 5 Puntos</strong> (Objetivos, Motivaciones, Frustraciones, Contexto de Uso y Habilidades Tecnológicas), definiendo dos arquetipos complementarios de Río Cuarto:
-          </p>
-        </div>
-
-        <!-- Fichas de Personas -->
-        <div class="grid lg:grid-cols-2 gap-8 mb-16">
-          
-          <!-- Persona 1: Oscar -->
-          <div class="p-8 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 card-academic space-y-6">
-            <div class="flex items-start justify-between gap-4">
-              <div class="flex items-center gap-4">
-                <div class="w-16 h-16 rounded-2xl bg-emerald-800 text-white flex items-center justify-center font-black text-2xl shadow-md">
-                  OR
-                </div>
-                <div>
-                  <h3 class="text-xl font-extrabold text-slate-900 dark:text-white">Oscar Rodríguez</h3>
-                  <span class="text-xs text-slate-500 dark:text-slate-400 block">34 años • Empleado de comercio • B° Alberdi</span>
-                  <span class="text-[11px] font-bold text-emerald-700 dark:text-emerald-400">Arquetipo: Operación Rápida y Movilidad</span>
-                </div>
-              </div>
-              <span class="px-2.5 py-1 rounded-lg bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 text-xs font-bold">Pulgar Diestro</span>
-            </div>
-
-            <div class="grid sm:grid-cols-2 gap-4 text-xs pt-2">
-              <div class="space-y-1">
-                <span class="font-extrabold text-slate-800 dark:text-slate-200 block">Contexto de Uso:</span>
-                <p class="text-slate-600 dark:text-slate-400 leading-relaxed">Camina apurado a la parada del colectivo con una bolsa de PET en una mano y el teléfono en la otra. Exige uso 100% monomanual.</p>
-              </div>
-              <div class="space-y-1">
-                <span class="font-extrabold text-slate-800 dark:text-slate-200 block">Frustración Principal:</span>
-                <p class="text-slate-600 dark:text-slate-400 leading-relaxed">Llegar a la campana y que esté desbordada, teniendo que cargar la bolsa todo el día.</p>
-              </div>
-            </div>
-
-            <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 text-xs space-y-2">
-              <span class="font-bold text-slate-900 dark:text-white block">Solución UX implementada para Oscar:</span>
-              <p class="text-slate-600 dark:text-slate-300">
-                Bottom Navbar anclada al pulgar de 56px (Ley de Fitts), estado en tiempo real <code>(Vacío) / (Lleno)</code> en el mapa sin tener que tocar ningún pin, y escaneo QR en 1 solo toque.
-              </p>
-            </div>
-          </div>
-
-          <!-- Persona 2: Marta -->
-          <div class="p-8 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 card-academic space-y-6">
-            <div class="flex items-start justify-between gap-4">
-              <div class="flex items-center gap-4">
-                <div class="w-16 h-16 rounded-2xl bg-amber-700 text-white flex items-center justify-center font-black text-2xl shadow-md">
-                  MQ
-                </div>
-                <div>
-                  <h3 class="text-xl font-extrabold text-slate-900 dark:text-white">Marta Quiroga</h3>
-                  <span class="text-xs text-slate-500 dark:text-slate-400 block">64 años • Docente jubilada • B° Centro</span>
-                  <span class="text-[11px] font-bold text-amber-700 dark:text-amber-400">Arquetipo: Accesibilidad e Inclusión Visual</span>
-                </div>
-              </div>
-              <span class="px-2.5 py-1 rounded-lg bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300 text-xs font-bold">Baja Visión</span>
-            </div>
-
-            <div class="grid sm:grid-cols-2 gap-4 text-xs pt-2">
-              <div class="space-y-1">
-                <span class="font-extrabold text-slate-800 dark:text-slate-200 block">Contexto de Uso:</span>
-                <p class="text-slate-600 dark:text-slate-400 leading-relaxed">Separa minuciosamente en su casa. En la calle sufre encandilamiento solar por cataratas tempranas y dificultad con tipografías condensadas.</p>
-              </div>
-              <div class="space-y-1">
-                <span class="font-extrabold text-slate-800 dark:text-slate-200 block">Frustración Principal:</span>
-                <p class="text-slate-600 dark:text-slate-400 leading-relaxed">No poder leer la pantalla bajo el sol del mediodía y temer cometer errores al presionar botones chicos.</p>
-              </div>
-            </div>
-
-            <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 text-xs space-y-2">
-              <span class="font-bold text-slate-900 dark:text-white block">Solución UX implementada para Marta:</span>
-              <p class="text-slate-600 dark:text-slate-300">
-                Modo Alto Contraste con ratio 19.56:1 (amarillo puro sobre negro), escalado de tipografía al 125%, íconos complementarios siempre acompañados de texto legible, y confirmaciones modales nativas con trampas de foco.
-              </p>
-            </div>
-          </div>
-
-        </div>
-
-        <!-- Matriz del User Journey Map -->
-        <div class="space-y-4">
-          <h3 class="text-xl font-extrabold text-slate-900 dark:text-white">
-            Matriz de Experiencia (User Journey Map): Del Desecho al Beneficio Barrial
-          </h3>
-
-          <div class="overflow-x-auto">
-            <table class="w-full text-left border-collapse text-xs bg-white dark:bg-slate-900 rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-md">
-              <thead class="bg-slate-100 dark:bg-slate-800/80 text-slate-800 dark:text-slate-200 uppercase font-extrabold tracking-wider border-b border-slate-200 dark:border-slate-800">
-                <tr>
-                  <th class="p-4">Fase</th>
-                  <th class="p-4">1. Separación</th>
-                  <th class="p-4">2. Búsqueda de Punto</th>
-                  <th class="p-4">3. Depósito & Escaneo</th>
-                  <th class="p-4">4. Recompensa</th>
-                  <th class="p-4">5. Canje Local</th>
-                </tr>
-              </thead>
-              <tbody class="divide-y divide-slate-200 dark:divide-slate-800 font-body">
-                <tr>
-                  <td class="p-4 font-extrabold text-slate-900 dark:text-white bg-slate-50/50 dark:bg-slate-800/40">Acción del Vecino</td>
-                  <td class="p-4">Limpia botellas y las guarda en su cocina.</td>
-                  <td class="p-4">Abre EcoImperio para ver campanas cercanas.</td>
-                  <td class="p-4">Llega al contenedor y escanea el código QR.</td>
-                  <td class="p-4">Verifica la acreditación de EcoPuntos en su saldo.</td>
-                  <td class="p-4">Presenta el cupón en Panadería La Unión o TecnoRío.</td>
-                </tr>
-                <tr>
-                  <td class="p-4 font-extrabold text-slate-900 dark:text-white bg-slate-50/50 dark:bg-slate-800/40">Punto de Dolor Potencial</td>
-                  <td class="p-4">Dudas sobre si el cartón plastificado va o no.</td>
-                  <td class="p-4">Temor a caminar y encontrar la campana llena.</td>
-                  <td class="p-4">Falla en la cámara por sol directo o QR gastado.</td>
-                  <td class="p-4">Incertidumbre de si la transacción se guardó.</td>
-                  <td class="p-4">Comercio que no sabe cómo validar el descuento.</td>
-                </tr>
-                <tr class="bg-emerald-50/60 dark:bg-emerald-950/30">
-                  <td class="p-4 font-extrabold text-emerald-900 dark:text-emerald-300">Respuesta de Diseño EcoImperio</td>
-                  <td class="p-4 font-semibold text-emerald-800 dark:text-emerald-300">Guía de Clasificación interactiva con buscador rápido.</td>
-                  <td class="p-4 font-semibold text-emerald-800 dark:text-emerald-300">Semáforo IoT en tiempo real: (Vacío) vs (Lleno) a la vista.</td>
-                  <td class="p-4 font-semibold text-emerald-800 dark:text-emerald-300">Fallback manual 2x2 para registrar material sin cámara.</td>
-                  <td class="p-4 font-semibold text-emerald-800 dark:text-emerald-300">Feedback háptico + badge de nivel actualizado y Toast.</td>
-                  <td class="p-4 font-semibold text-emerald-800 dark:text-emerald-300">Código alfanumérico legible con compensación fiscal municipal.</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- ========================================================================
-         ETAPA 03: CARD SORTING & ARQUITECTURA DE INFORMACIÓN
-         ======================================================================== -->
-    <section id="card-sorting" class="py-20 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800">
-      <div class="max-w-7xl mx-auto px-6">
-        
-        <div class="space-y-3 mb-14">
-          <div class="flex items-center gap-2">
-            <span class="px-3.5 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 text-xs font-black uppercase tracking-wider">
-              Etapa 03
-            </span>
-            <span class="text-xs font-mono text-slate-500">• Arquitectura de Información, Card Sorting & Rotulado</span>
-          </div>
-          <h2 class="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white tracking-tight">
-            Card Sorting & Rotulado Libre de Jerga
-          </h2>
-          <p class="text-base text-slate-600 dark:text-slate-300 max-w-3xl leading-relaxed">
-            Sometimos 25 tarjetas funcionales a pruebas de <strong>Card Sorting Abierto y Cerrado</strong> con 12 usuarios riocuartenses para descubrir su modelo mental natural y eliminar términos técnicos de base de datos:
-          </p>
-        </div>
-
-        <div class="grid lg:grid-cols-12 gap-8 items-start mb-14">
-          
-          <!-- Matriz de Rotulado -->
-          <div class="lg:col-span-7 bg-slate-50 dark:bg-slate-800/60 p-6 sm:p-8 rounded-3xl border border-slate-200 dark:border-slate-700 space-y-4">
-            <h3 class="text-lg font-black text-slate-900 dark:text-white flex items-center gap-2">
-              <iconify-icon icon="mynaui:tag" class="text-emerald-700 dark:text-emerald-400 text-xl"></iconify-icon>
-              <span>Matriz de Rotulado (Labeling): Antes vs. Después</span>
-            </h3>
-            <p class="text-xs text-slate-600 dark:text-slate-300">
-              Descartamos la terminología municipal y de ingeniería en favor del lenguaje cotidiano del vecino:
-            </p>
-
-            <div class="space-y-2.5 pt-2">
-              
-              <div class="p-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700/80 flex items-center justify-between text-xs">
-                <div>
-                  <span class="line-through text-rose-500 font-mono block">"Geolocalización Nodos RSU"</span>
-                  <span class="text-slate-400 text-[11px]">Término técnico de base de datos</span>
-                </div>
-                <iconify-icon icon="mynaui:arrow-right" class="text-slate-400 text-base"></iconify-icon>
-                <div class="text-right">
-                  <span class="font-extrabold text-emerald-700 dark:text-emerald-400 block">"Mapa de Puntos Verdes"</span>
-                  <span class="text-slate-500 text-[11px]">Modelo mental del vecino</span>
-                </div>
-              </div>
-
-              <div class="p-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700/80 flex items-center justify-between text-xs">
-                <div>
-                  <span class="line-through text-rose-500 font-mono block">"Capacidad volumétrica &lt; 80%"</span>
-                  <span class="text-slate-400 text-[11px]">Lectura de sensor ultrasónico</span>
-                </div>
-                <iconify-icon icon="mynaui:arrow-right" class="text-slate-400 text-base"></iconify-icon>
-                <div class="text-right">
-                  <span class="font-extrabold text-emerald-700 dark:text-emerald-400 block">"(Disponible / Vacío)"</span>
-                  <span class="text-slate-500 text-[11px]">Estado directo comprensible</span>
-                </div>
-              </div>
-
-              <div class="p-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700/80 flex items-center justify-between text-xs">
-                <div>
-                  <span class="line-through text-rose-500 font-mono block">"Token de pesaje de carga NIR"</span>
-                  <span class="text-slate-400 text-[11px]">Protocolo IoT interno</span>
-                </div>
-                <iconify-icon icon="mynaui:arrow-right" class="text-slate-400 text-base"></iconify-icon>
-                <div class="text-right">
-                  <span class="font-extrabold text-emerald-700 dark:text-emerald-400 block">"Sumar EcoPuntos"</span>
-                  <span class="text-slate-500 text-[11px]">Acción afirmativa deseada</span>
-                </div>
-              </div>
-
-              <div class="p-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700/80 flex items-center justify-between text-xs">
-                <div>
-                  <span class="line-through text-rose-500 font-mono block">"Redención de beneficios arancelarios"</span>
-                  <span class="text-slate-400 text-[11px]">Jerga fiscal municipal</span>
-                </div>
-                <iconify-icon icon="mynaui:arrow-right" class="text-slate-400 text-base"></iconify-icon>
-                <div class="text-right">
-                  <span class="font-extrabold text-emerald-700 dark:text-emerald-400 block">"Canjear Descuentos"</span>
-                  <span class="text-slate-500 text-[11px]">Recompensa inmediata</span>
-                </div>
-              </div>
-
-            </div>
-          </div>
-
-          <!-- Sitemap / Árbol de Navegación -->
-          <div class="lg:col-span-5 bg-white dark:bg-slate-900 p-6 sm:p-8 rounded-3xl border border-slate-200 dark:border-slate-800 space-y-4 shadow-sm">
-            <h3 class="text-lg font-black text-slate-900 dark:text-white flex items-center gap-2">
-              <iconify-icon icon="mynaui:layers" class="text-emerald-700 dark:text-emerald-400 text-xl"></iconify-icon>
-              <span>Sitemap: Profundidad Plana (&le; 2 clics)</span>
-            </h3>
-            <p class="text-xs text-slate-600 dark:text-slate-300">
-              Ninguna acción esencial está escondida tras submenús o callejones sin salida (<em>cero dead-ends</em>):
-            </p>
-
-            <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 font-mono text-xs space-y-2 text-slate-700 dark:text-slate-300">
-              <div class="font-bold text-emerald-800 dark:text-emerald-400">📱 EcoImperio Root (Bottom Nav):</div>
-              <div class="pl-4 border-l-2 border-emerald-500/40 space-y-1">
-                <div>├── 🗺️ <strong>Mapa</strong> (Puntos, Filtros y Ocupación en vivo)</div>
-                <div>├── 📷 <strong>Escáner QR</strong> (Botón central elevado de 56px)</div>
-                <div>├── 💰 <strong>EcoPuntos</strong> (Balance, Niveles y Canje en Comercios)</div>
-                <div>├── 💬 <strong>Comunidad</strong> (Muro barrial y EcoEventos)</div>
-                <div>└── ⚙️ <strong>Más Opciones</strong> (Accesibilidad, Historial y Soporte)</div>
-              </div>
-            </div>
-
-            <div class="text-[11px] text-slate-500 dark:text-slate-400 flex items-center gap-2">
-              <iconify-icon icon="mynaui:check-circle" class="text-emerald-600 text-base"></iconify-icon>
-              <span>Probado en Card Sorting con 100% de éxito en categorización</span>
-            </div>
-          </div>
-
-        </div>
-
-      </div>
-    </section>
-
-    <!-- ========================================================================
-         ETAPA 04: MUTACIONES DEL WIREFRAME (GALERÍA HORIZONTAL DE FIGMA A HI-FI)
-         ======================================================================== -->
-    <section id="mutaciones" class="py-20 bg-slate-100/70 dark:bg-slate-950 border-b border-slate-200 dark:border-slate-800">
-      <div class="max-w-7xl mx-auto px-6">
-        
-        <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
-          <div class="space-y-3">
-            <div class="flex items-center gap-2">
-              <span class="px-3.5 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 text-xs font-black uppercase tracking-wider">
-                Etapa 04
-              </span>
-              <span class="text-xs font-mono text-slate-500">• Mutaciones del Wireframe: Lo-Fi a Hi-Fi Software Vivo</span>
-            </div>
-            <h2 class="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white tracking-tight">
-              Evolución Iterativa de Wireframes
-            </h2>
-            <p class="text-base text-slate-600 dark:text-slate-300 max-w-3xl leading-relaxed">
-              En el diseño centrado en el usuario, <strong>el software no surge mágicamente terminado</strong>. Deslizá horizontalmente para recorrer los 9 estadios documentados en Figma y código:
-            </p>
-          </div>
-
-          <!-- Controles de Desplazamiento Horizontal -->
-          <div class="flex items-center gap-2 shrink-0">
-            <button type="button" onclick="scrollWireframes(-420)" class="w-11 h-11 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-center text-slate-700 dark:text-slate-300 shadow-sm transition-transform active:scale-95" aria-label="Desplazar hacia la izquierda">
-              <iconify-icon icon="mynaui:arrow-left" class="text-xl"></iconify-icon>
-            </button>
-            <button type="button" onclick="scrollWireframes(420)" class="w-11 h-11 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-center text-slate-700 dark:text-slate-300 shadow-sm transition-transform active:scale-95" aria-label="Desplazar hacia la derecha">
-              <iconify-icon icon="mynaui:arrow-right" class="text-xl"></iconify-icon>
-            </button>
-          </div>
-        </div>
-
-        <!-- Carrusel / Galería Horizontal con Acumulación de Ejemplos -->
-        <div id="wireframe-carousel" class="flex gap-6 overflow-x-auto pb-6 pt-2 snap-x snap-mandatory scroll-smooth no-scrollbar">
-          
-          <!-- Card 1: Mutación de Inicio en 4 Estadios -->
-          <div class="min-w-[340px] sm:min-w-[420px] max-w-[450px] flex-shrink-0 snap-start p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 card-academic space-y-4">
-            <div class="flex items-center justify-between">
-              <span class="text-xs font-extrabold uppercase px-2.5 py-1 rounded bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300">
-                1. Inicio en 4 Estadios
-              </span>
-              <span class="text-xs font-mono text-slate-400">v1.0 &rarr; v2.0</span>
-            </div>
-            <div class="rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800/80 p-2 flex items-center justify-center h-64">
-              <img src="docs/assets/figma/mutacion_pantalla_inicio_estadios.svg" alt="Mutación de pantalla de inicio en 4 estadios evolutivos" class="w-full h-full object-contain rounded-xl">
-            </div>
-            <div class="space-y-1">
-              <h4 class="font-extrabold text-sm text-slate-900 dark:text-white">Bienvenida & Onboarding Pedagógico</h4>
-              <p class="text-xs text-slate-600 dark:text-slate-300 font-body leading-relaxed">
-                De una caja cuadrada vacía con [X] a un desglose pedagógico en 3 pasos con silueta urbana de Río Cuarto y enlace para explorar sin crear cuenta.
-              </p>
-            </div>
-          </div>
-
-          <!-- Card 2: Matriz Comparativa Lo-Fi vs Hi-Fi -->
-          <div class="min-w-[340px] sm:min-w-[420px] max-w-[450px] flex-shrink-0 snap-start p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 card-academic space-y-4">
-            <div class="flex items-center justify-between">
-              <span class="text-xs font-extrabold uppercase px-2.5 py-1 rounded bg-teal-100 dark:bg-teal-950 text-teal-800 dark:text-teal-300">
-                2. Lo-Fi vs Hi-Fi Matrix
-              </span>
-              <span class="text-xs font-mono text-slate-400">Auto-Layout</span>
-            </div>
-            <div class="rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800/80 p-2 flex items-center justify-center h-64">
-              <img src="docs/assets/figma/panel_transiciones_lofi_vs_hifi.svg" alt="Panel de transiciones Lo-Fi versus Hi-Fi en Figma" class="w-full h-full object-contain rounded-xl">
-            </div>
-            <div class="space-y-1">
-              <h4 class="font-extrabold text-sm text-slate-900 dark:text-white">Transición Estructural de Componentes</h4>
-              <p class="text-xs text-slate-600 dark:text-slate-300 font-body leading-relaxed">
-                Constraints fijos en cabecera y pie de página en Figma para garantizar que la maquetación en código respete la proporción ergonómica.
-              </p>
-            </div>
-          </div>
-
-          <!-- Card 3: Prototipo Base de 12 Pantallas (Lo-Fi) -->
-          <div class="min-w-[340px] sm:min-w-[420px] max-w-[450px] flex-shrink-0 snap-start p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 card-academic space-y-4">
-            <div class="flex items-center justify-between">
-              <span class="text-xs font-extrabold uppercase px-2.5 py-1 rounded bg-slate-200 dark:bg-slate-800 text-slate-800 dark:text-slate-200">
-                3. Esqueleto Lo-Fi Inicial
-              </span>
-              <span class="text-xs font-mono text-slate-400">12 Pantallas</span>
-            </div>
-            <div class="rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800/80 p-2 flex items-center justify-center h-64">
-              <img src="docs/assets/figma/v1_prototipo_baja_calidad_12_pantallas.svg" alt="Prototipo baja calidad 12 pantallas en Figma" class="w-full h-full object-contain rounded-xl">
-            </div>
-            <div class="space-y-1">
-              <h4 class="font-extrabold text-sm text-slate-900 dark:text-white">Mapeo de Flujos en Escala de Grises</h4>
-              <p class="text-xs text-slate-600 dark:text-slate-300 font-body leading-relaxed">
-                Primer wireframe neutro para validar la coherencia de navegación entre mapa, canje y perfil antes de aplicar decisiones de color y tipografía.
-              </p>
-            </div>
-          </div>
-
-          <!-- Card 4: Actualización e Integración de Pantallas Nuevas -->
-          <div class="min-w-[340px] sm:min-w-[420px] max-w-[450px] flex-shrink-0 snap-start p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 card-academic space-y-4">
-            <div class="flex items-center justify-between">
-              <span class="text-xs font-extrabold uppercase px-2.5 py-1 rounded bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300">
-                4. Incorporación de Vistas
-              </span>
-              <span class="text-xs font-mono text-slate-400">v1.5 Mid-Fi</span>
-            </div>
-            <div class="rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800/80 p-2 flex items-center justify-center h-64">
-              <img src="docs/assets/figma/v1_actualizacion_main_nuevas_pantallas.svg" alt="Actualización de nuevas pantallas en Figma" class="w-full h-full object-contain rounded-xl">
-            </div>
-            <div class="space-y-1">
-              <h4 class="font-extrabold text-sm text-slate-900 dark:text-white">Catálogo de Comercios e Historial</h4>
-              <p class="text-xs text-slate-600 dark:text-slate-300 font-body leading-relaxed">
-                Adición de la red de beneficios locales y desglose de movimientos ambientales con tarjetas delimitadas bajo la Ley de Región Común.
-              </p>
-            </div>
-          </div>
-
-          <!-- Card 5: Complemento de Modales y Estados AAA -->
-          <div class="min-w-[340px] sm:min-w-[420px] max-w-[450px] flex-shrink-0 snap-start p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 card-academic space-y-4">
-            <div class="flex items-center justify-between">
-              <span class="text-xs font-extrabold uppercase px-2.5 py-1 rounded bg-yellow-100 dark:bg-yellow-950 text-yellow-900 dark:text-yellow-200">
-                5. Diálogos y Modos Visuales
-              </span>
-              <span class="text-xs font-mono text-slate-400">v2.0 Modales</span>
-            </div>
-            <div class="rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800/80 p-2 flex items-center justify-center h-64">
-              <img src="docs/assets/figma/v2_complemento_modales_estados_aaa.svg" alt="Complemento de modales y estados AAA en Figma" class="w-full h-full object-contain rounded-xl">
-            </div>
-            <div class="space-y-1">
-              <h4 class="font-extrabold text-sm text-slate-900 dark:text-white">Modales Nativos &lt;dialog&gt; y Alto Contraste</h4>
-              <p class="text-xs text-slate-600 dark:text-slate-300 font-body leading-relaxed">
-                Diseño de ventanas modales accesibles con trampas de foco de teclado, confirmaciones no destructivas y especificaciones para alto contraste.
-              </p>
-            </div>
-          </div>
-
-          <!-- Card 6: Prototipo Hi-Fi Software Vivo -->
-          <div class="min-w-[340px] sm:min-w-[420px] max-w-[450px] flex-shrink-0 snap-start p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 card-academic space-y-4">
-            <div class="flex items-center justify-between">
-              <span class="text-xs font-extrabold uppercase px-2.5 py-1 rounded bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300">
-                6. Hi-Fi Software Vivo
-              </span>
-              <span class="text-xs font-mono text-slate-400">SPA Final</span>
-            </div>
-            <div class="rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800/80 p-2 flex items-center justify-center h-64">
-              <img src="docs/assets/figma/v2_pantalla_hifi_software_vivo.svg" alt="Captura del prototipo Hi-Fi interactivo" class="w-full h-full object-contain rounded-xl">
-            </div>
-            <div class="space-y-1">
-              <h4 class="font-extrabold text-sm text-slate-900 dark:text-white">Prototipo Navegable en Vivo</h4>
-              <p class="text-xs text-slate-600 dark:text-slate-300 font-body leading-relaxed">
-                Resultado final del software en ejecución real: persistencia de saldo en LocalStorage, cambio dinámico de tema y respuesta háptica.
-              </p>
-            </div>
-          </div>
-
-          <!-- Card 7: Mapa Barrial con Semáforo IoT -->
-          <div class="min-w-[340px] sm:min-w-[420px] max-w-[450px] flex-shrink-0 snap-start p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 card-academic space-y-4">
-            <div class="flex items-center justify-between">
-              <span class="text-xs font-extrabold uppercase px-2.5 py-1 rounded bg-teal-100 dark:bg-teal-950 text-teal-800 dark:text-teal-300">
-                7. Mapa IoT Interactivo
-              </span>
-              <span class="text-xs font-mono text-slate-400">Puntos Verdes</span>
-            </div>
-            <div class="rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800/80 p-2 flex items-center justify-center h-64">
-              <img src="docs/assets/figma/v2_mapa_iot_semaforo_campanas.svg" alt="Captura del mapa buscador y filtros" class="w-full h-full object-contain rounded-xl">
-            </div>
-            <div class="space-y-1">
-              <h4 class="font-extrabold text-sm text-slate-900 dark:text-white">Semáforo IoT y Codificación Triple</h4>
-              <p class="text-xs text-slate-600 dark:text-slate-300 font-body leading-relaxed">
-                Filtros por material (Plásticos, Papel, Vidrio) y estado en tiempo real sin obligar al usuario a hacer clics innecesarios para saber si una campana está disponible.
-              </p>
-            </div>
-          </div>
-
-          <!-- Card 8: Sistema de Diseño del Escáner QR -->
-          <div class="min-w-[340px] sm:min-w-[420px] max-w-[450px] flex-shrink-0 snap-start p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 card-academic space-y-4">
-            <div class="flex items-center justify-between">
-              <span class="text-xs font-extrabold uppercase px-2.5 py-1 rounded bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300">
-                8. Escáner de Depósito
-              </span>
-              <span class="text-xs font-mono text-slate-400">Fallback 2x2</span>
-            </div>
-            <div class="rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800/80 p-2 flex items-center justify-center h-64">
-              <img src="docs/assets/figma/v2_sistema_escaner_qr_fallback.svg" alt="Sistema de diseño del escáner QR" class="w-full h-full object-contain rounded-xl">
-            </div>
-            <div class="space-y-1">
-              <h4 class="font-extrabold text-sm text-slate-900 dark:text-white">Tolerancia a Errores y Visor Adaptativo</h4>
-              <p class="text-xs text-slate-600 dark:text-slate-300 font-body leading-relaxed">
-                Láser animado con linterna y selector manual por si las condiciones de luz o deterioro del QR impiden la lectura óptica.
-              </p>
-            </div>
-          </div>
-
-          <!-- Card 9: Validación de los 5 Estados UI -->
-          <div class="min-w-[340px] sm:min-w-[420px] max-w-[450px] flex-shrink-0 snap-start p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 card-academic space-y-4">
-            <div class="flex items-center justify-between">
-              <span class="text-xs font-extrabold uppercase px-2.5 py-1 rounded bg-indigo-100 dark:bg-indigo-950 text-indigo-800 dark:text-indigo-300">
-                9. Los 5 Estados UI
-              </span>
-              <span class="text-xs font-mono text-slate-400">Matriz en Código</span>
-            </div>
-            <div class="rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800/80 p-2 flex items-center justify-center h-64">
-              <img src="docs/assets/figma/v2_matriz_cinco_estados_ui.svg" alt="Captura de los cinco estados de componentes UI" class="w-full h-full object-contain rounded-xl">
-            </div>
-            <div class="space-y-1">
-              <h4 class="font-extrabold text-sm text-slate-900 dark:text-white">Feedback Visual Inequívoco</h4>
-              <p class="text-xs text-slate-600 dark:text-slate-300 font-body leading-relaxed">
-                Garantía técnica de que cada botón, switch y campo de entrada provee retroalimentación en reposo, interacción, foco accesible y desactivación.
-              </p>
-            </div>
-          </div>
-
-        </div>
 
       </div>
     </section>
@@ -1958,34 +1371,6 @@
 
   </main>
 
-  <!-- Script de tema y carrusel de wireframes -->
-  <script>
-    // 1. Toggle Claro / Oscuro con persistencia en localStorage (Idéntico a landing)
-    const themeToggleBtn = document.getElementById('theme-toggle');
-    const isDarkMode = localStorage.getItem('ecoimperio_dark_mode') === 'true' ||
-      (!('ecoimperio_dark_mode' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches);
-
-    if (isDarkMode) {
-      document.documentElement.classList.add('dark');
-    }
-
-    if (themeToggleBtn) {
-      themeToggleBtn.addEventListener('click', () => {
-        const isDark = document.documentElement.classList.toggle('dark');
-        localStorage.setItem('ecoimperio_dark_mode', String(isDark));
-      });
-    }
-
-    // 2. Control de scroll horizontal del carrusel de wireframes
-    function scrollWireframes(distance) {
-      const carousel = document.getElementById('wireframe-carousel');
-      if (carousel) {
-        carousel.scrollBy({ left: distance, behavior: 'smooth' });
-      }
-    }
-  </script>
-
-
   <!-- ========================================================================
        MODAL LIGHTBOX PARA AMPLIAR Y EXPLORAR WIREFRAMES
        ======================================================================== -->
@@ -2029,6 +1414,194 @@
 
     </div>
   </dialog>
+
+
+  <!-- Script de tema, drag-to-scroll y modal lightbox -->
+  <script>
+    // 1. Toggle Claro / Oscuro con persistencia en localStorage (Idéntico a landing)
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const isDarkMode = localStorage.getItem('ecoimperio_dark_mode') === 'true' ||
+      (!('ecoimperio_dark_mode' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches);
+
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark');
+    }
+
+    if (themeToggleBtn) {
+      themeToggleBtn.addEventListener('click', () => {
+        const isDark = document.documentElement.classList.toggle('dark');
+        localStorage.setItem('ecoimperio_dark_mode', String(isDark));
+      });
+    }
+
+    // 2. Control de scroll horizontal por botones
+    function scrollWireframes(distance) {
+      const carousel = document.getElementById('wireframe-carousel');
+      if (carousel) {
+        carousel.scrollBy({ left: distance, behavior: 'smooth' });
+      }
+    }
+
+    // 3. Arrastre horizontal con el mouse (Drag-to-Scroll)
+    const carouselEl = document.getElementById('wireframe-carousel');
+    let isDown = false;
+    let startX = 0;
+    let scrollLeftPos = 0;
+    let isDragging = false;
+
+    if (carouselEl) {
+      carouselEl.addEventListener('mousedown', (e) => {
+        isDown = true;
+        isDragging = false;
+        startX = e.pageX - carouselEl.offsetLeft;
+        scrollLeftPos = carouselEl.scrollLeft;
+      });
+
+      carouselEl.addEventListener('mouseleave', () => {
+        isDown = false;
+      });
+
+      carouselEl.addEventListener('mouseup', () => {
+        isDown = false;
+        setTimeout(() => {
+          isDragging = false;
+        }, 60);
+      });
+
+      carouselEl.addEventListener('mousemove', (e) => {
+        if (!isDown) return;
+        e.preventDefault();
+        const x = e.pageX - carouselEl.offsetLeft;
+        const walk = (x - startX);
+        if (Math.abs(walk) > 6) {
+          isDragging = true;
+        }
+        carouselEl.scrollLeft = scrollLeftPos - walk;
+      });
+    }
+
+    // 4. Datos del Modal Lightbox de Wireframes
+    const wireframeData = [
+      {
+        tag: "1. Inicio en 4 Estadios",
+        num: "Estadio v1.0 a v2.0",
+        title: "Bienvenida & Onboarding Pedagógico",
+        src: "docs/assets/figma/mutacion_pantalla_inicio_estadios.svg",
+        desc: "De una caja cuadrada vacía con [X] a un desglose pedagógico en 3 pasos con silueta urbana de Río Cuarto y enlace para explorar sin crear cuenta."
+      },
+      {
+        tag: "2. Lo-Fi vs Hi-Fi Matrix",
+        num: "Auto-Layout & Constraints",
+        title: "Transición Estructural de Componentes",
+        src: "docs/assets/figma/panel_transiciones_lofi_vs_hifi.svg",
+        desc: "Constraints fijos en cabecera y pie de página en Figma para garantizar que la maquetación en código respete la proporción ergonómica."
+      },
+      {
+        tag: "3. Esqueleto Lo-Fi Inicial",
+        num: "12 Pantallas en Escala de Grises",
+        title: "Mapeo de Flujos en Escala de Grises",
+        src: "docs/assets/figma/v1_prototipo_baja_calidad_12_pantallas.svg",
+        desc: "Primer wireframe neutro para validar la coherencia de navegación entre mapa, canje y perfil antes de aplicar decisiones de color y tipografía."
+      },
+      {
+        tag: "4. Incorporación de Vistas",
+        num: "v1.5 Mid-Fi Comunitario",
+        title: "Catálogo de Comercios e Historial",
+        src: "docs/assets/figma/v1_actualizacion_main_nuevas_pantallas.svg",
+        desc: "Adición de la red de beneficios locales y desglose de movimientos ambientales con tarjetas delimitadas bajo la Ley de Región Común."
+      },
+      {
+        tag: "5. Diálogos y Modos Visuales",
+        num: "v2.0 Modales Nativos & AAA",
+        title: "Modales Nativos <dialog> y Alto Contraste",
+        src: "docs/assets/figma/v2_complemento_modales_estados_aaa.svg",
+        desc: "Diseño de ventanas modales accesibles con trampas de foco de teclado, confirmaciones no destructivas y especificaciones para alto contraste."
+      },
+      {
+        tag: "6. Hi-Fi Software Vivo",
+        num: "SPA Final en Producción",
+        title: "Prototipo Navegable en Vivo",
+        src: "docs/assets/figma/v2_pantalla_hifi_software_vivo.svg",
+        desc: "Resultado final del software en ejecución real: persistencia de saldo en LocalStorage, cambio dinámico de tema y respuesta háptica."
+      },
+      {
+        tag: "7. Mapa IoT Interactivo",
+        num: "Puntos Verdes & Geocerca",
+        title: "Semáforo IoT y Codificación Triple",
+        src: "docs/assets/figma/v2_mapa_iot_semaforo_campanas.svg",
+        desc: "Filtros por material (Plásticos, Papel, Vidrio) y estado en tiempo real sin obligar al usuario a hacer clics innecesarios para saber si una campana está disponible."
+      },
+      {
+        tag: "8. Escáner de Depósito",
+        num: "Fallback 2x2 & Prevención",
+        title: "Tolerancia a Errores y Visor Adaptativo",
+        src: "docs/assets/figma/v2_sistema_escaner_qr_fallback.svg",
+        desc: "Láser animado con linterna y selector manual por si las condiciones de luz o deterioro del QR impiden la lectura óptica."
+      },
+      {
+        tag: "9. Los 5 Estados UI",
+        num: "Matriz Atómica de Componentes",
+        title: "Feedback Visual Inequívoco",
+        src: "docs/assets/figma/v2_matriz_cinco_estados_ui.svg",
+        desc: "Garantía técnica de que cada botón, switch y campo de entrada provee retroalimentación en reposo, interacción, foco accesible y desactivación."
+      }
+    ];
+
+    let currentWfIndex = 0;
+    const wfModal = document.getElementById('modal-wireframe-lightbox');
+
+    function handleCardClick(index) {
+      if (isDragging) return;
+      openWireframeModal(index);
+    }
+
+    function openWireframeModal(index) {
+      currentWfIndex = index;
+      renderWireframeModal();
+      if (wfModal) {
+        wfModal.showModal();
+      }
+    }
+
+    function closeWireframeModal() {
+      if (wfModal) {
+        wfModal.close();
+      }
+    }
+
+    function navigateWireframeModal(step) {
+      currentWfIndex = (currentWfIndex + step + wireframeData.length) % wireframeData.length;
+      renderWireframeModal();
+    }
+
+    function renderWireframeModal() {
+      const data = wireframeData[currentWfIndex];
+      if (!data) return;
+      const tagEl = document.getElementById('modal-wf-tag');
+      const numEl = document.getElementById('modal-wf-num');
+      const titleEl = document.getElementById('modal-wf-title');
+      const imgEl = document.getElementById('modal-wf-img');
+      const descEl = document.getElementById('modal-wf-desc');
+
+      if (tagEl) tagEl.textContent = data.tag;
+      if (numEl) numEl.textContent = data.num;
+      if (titleEl) titleEl.textContent = data.title;
+      if (imgEl) {
+        imgEl.src = data.src;
+        imgEl.alt = data.title;
+      }
+      if (descEl) descEl.textContent = data.desc;
+    }
+
+    if (wfModal) {
+      wfModal.addEventListener('click', (e) => {
+        const rect = wfModal.getBoundingClientRect();
+        const isInDialog = (rect.top <= e.clientY && e.clientY <= rect.top + rect.height &&
+          rect.left <= e.clientX && e.clientX <= rect.left + rect.width);
+        if (!isInDialog) wfModal.close();
+      });
+    }
+  </script>
 
 </body>
 </html>
