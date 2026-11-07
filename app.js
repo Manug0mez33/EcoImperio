@@ -472,7 +472,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (mapScannerBtn && (mapScannerBtn.classList.contains('is-disabled') || mapScannerBtn.getAttribute('aria-disabled') === 'true')) {
       e.preventDefault();
       e.stopPropagation();
-      showToast('Escáner inactivo: acercate a menos de 20 m de la campana.');
+      showToast('Escáner inactivo: acercate a menos de 20 m de la campana.', 'warning');
       return;
     }
 
@@ -486,6 +486,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Notificación Toast (reemplaza alert() para no bloquear la interfaz, con botón 'X' para cerrar)
   const toast = document.getElementById('toast');
   const toastMessage = document.getElementById('toast-message');
+  const toastIcon = document.getElementById('toast-icon');
   const closeToastBtn = document.getElementById('btn-close-toast');
   let toastTimer;
 
@@ -495,9 +496,25 @@ document.addEventListener('DOMContentLoaded', () => {
     toast.classList.remove('show');
   }
 
-  function showToast(message) {
+  function showToast(message, type = 'info') {
     if (!toast || !toastMessage) return;
+    const isWarning = type === 'warning';
     toastMessage.textContent = message;
+
+    if (isWarning) {
+      toast.classList.add('toast-warning');
+      if (toastIcon) {
+        toastIcon.setAttribute('icon', 'mynaui:danger-triangle');
+        toastIcon.className = 'text-2xl text-amber-950 dark:text-white shrink-0';
+      }
+    } else {
+      toast.classList.remove('toast-warning');
+      if (toastIcon) {
+        toastIcon.setAttribute('icon', 'mynaui:check-circle');
+        toastIcon.className = 'text-2xl text-amber-400 shrink-0';
+      }
+    }
+
     toast.classList.add('show');
     clearTimeout(toastTimer);
     toastTimer = setTimeout(hideToast, 4000);

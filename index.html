@@ -878,7 +878,7 @@
         </div>
 
         <div class="flex items-center justify-between px-1">
-          <h2 id="historial-heading" class="section-kicker text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400">Tus depósitos y canjes</h2>
+          <h2 id="historial-heading" class="section-kicker text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400">Movimientos registrados</h2>
           <span id="history-total-badge" class="text-xs font-semibold text-emerald-700 dark:text-emerald-400"></span>
         </div>
 
@@ -1687,7 +1687,7 @@
          COMPONENTE 7: NOTIFICACIÓN TOAST (CON BOTÓN 'X' PARA CERRAR)
          ========================================================================== -->
     <div id="toast" class="toast" role="status" aria-live="polite">
-      <iconify-icon icon="mynaui:check-circle" class="text-2xl text-amber-400 shrink-0" aria-hidden="true"></iconify-icon>
+      <iconify-icon id="toast-icon" icon="mynaui:check-circle" class="text-2xl text-amber-400 shrink-0" aria-hidden="true"></iconify-icon>
       <p id="toast-message" class="text-sm font-medium flex-1 leading-snug"></p>
       <button type="button" id="btn-close-toast" class="w-8 h-8 rounded-full hover:bg-white/15 active:bg-white/25 flex items-center justify-center shrink-0 cursor-pointer transition-colors" aria-label="Cerrar notificación">
         <iconify-icon icon="mynaui:x" class="text-lg text-white" aria-hidden="true"></iconify-icon>

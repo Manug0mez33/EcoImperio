@@ -458,6 +458,29 @@ html.reduce-motion *::after {
   pointer-events: auto;
 }
 
+.toast.toast-warning {
+  background-color: #f59e0b;
+  color: #1c1917;
+  border: 1px solid #d97706;
+  box-shadow: 0 10px 25px rgba(217, 119, 6, 0.4);
+}
+
+.toast.toast-warning #toast-message {
+  color: #1c1917;
+}
+
+.toast.toast-warning #btn-close-toast iconify-icon {
+  color: #1c1917;
+}
+
+.toast.toast-warning #btn-close-toast:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.toast.toast-warning #btn-close-toast:active {
+  background-color: rgba(0, 0, 0, 0.18);
+}
+
 #comercios-grid {
   scroll-padding-inline: 1rem;
 }
@@ -505,6 +528,22 @@ html.dark .drawer-overlay {
 
 html.dark .toast {
   border: 1px solid var(--color-primary-active);
+}
+
+html.dark .toast.toast-warning {
+  background-color: #d97706;
+  color: #ffffff;
+  border: 1px solid #f59e0b;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+}
+
+html.dark .toast.toast-warning #toast-message,
+html.dark .toast.toast-warning #btn-close-toast iconify-icon {
+  color: #ffffff;
+}
+
+html.dark .toast.toast-warning #btn-close-toast:hover {
+  background-color: rgba(255, 255, 255, 0.15);
 }
 
 /* ==========================================================================
@@ -640,6 +679,13 @@ html:not(.dark) body.high-contrast .toast {
   border: 3px solid #000000 !important;
 }
 
+html:not(.dark).high-contrast .toast #toast-message,
+html:not(.dark).high-contrast .toast iconify-icon,
+html:not(.dark) body.high-contrast .toast #toast-message,
+html:not(.dark) body.high-contrast .toast iconify-icon {
+  color: #000000 !important;
+}
+
 /* --------------------------------------------------------------------------
    2. ALTO CONTRASTE OSCURO (Con Modo Noche: html.dark.high-contrast)
    Fondo negro puro #000000, texto blanco puro #ffffff, acento amarillo #ffff00
@@ -754,6 +800,13 @@ html.dark body.high-contrast .toast {
   background-color: #000000 !important;
   color: #ffff00 !important;
   border: 3px solid #ffff00 !important;
+}
+
+html.dark.high-contrast .toast #toast-message,
+html.dark.high-contrast .toast iconify-icon,
+html.dark body.high-contrast .toast #toast-message,
+html.dark body.high-contrast .toast iconify-icon {
+  color: #ffff00 !important;
 }
 
 
