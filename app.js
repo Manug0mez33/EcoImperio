@@ -234,7 +234,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function updateNavbars(activeScreen) {
-    const normalizedActive = activeScreen === 'comunidad' ? 'splash' : activeScreen;
+    const normalizedActive = activeScreen === 'splash' ? 'comunidad' : activeScreen;
     const navItems = document.querySelectorAll('.nav-item');
     navItems.forEach(item => {
       const itemTarget = item.getAttribute('data-target');
@@ -301,7 +301,13 @@ document.addEventListener('DOMContentLoaded', () => {
   if (drawerOverlay) drawerOverlay.addEventListener('click', closeDrawer);
 
   document.querySelectorAll('.btn-trigger-drawer').forEach(btn => {
-    btn.addEventListener('click', openDrawer);
+    btn.addEventListener('click', (e) => {
+      if (drawerMenu && drawerMenu.classList.contains('open')) {
+        closeDrawer();
+      } else {
+        openDrawer(e);
+      }
+    });
   });
 
   document.addEventListener('keydown', (e) => {
@@ -788,10 +794,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function applyMapTransform(animate = true) {
     if (!mapCanvas) return;
-    mapCanvas.style.transition = animate ? 'transform 0.36s cubic-bezier(0.22, 1, 0.36, 1)' : 'none';
-    const maxOffset = (mapScale - 1) * 165 + 75;
-    mapPanX = Math.max(-maxOffset, Math.min(maxOffset, mapPanX));
-    mapPanY = Math.max(-maxOffset, Math.min(maxOffset, mapPanY));
+    mapCanvas.style.transition = animate ? 'transform 0.16s cubic-bezier(0.22, 1, 0.36, 1)' : 'none';
+    const rect = mapViewportArea ? mapViewportArea.getBoundingClientRect() : { width: 412, height: 680 };
+    const width = rect.width || 412;
+    const height = rect.height || 680;
+    // El lienzo #map-canvas mide 170% x 170% (-left-[35%] -top-[35%]), por lo que su borde dibujado
+    // llega hasta (0.85 * mapScale - 0.5) del viewport en cada eje. Clampeamos a 0.84 para no mostrar área vacía jamás.
+    const maxPanX = Math.max(0, Math.floor((0.84 * mapScale - 0.5) * width));
+    const maxPanY = Math.max(0, Math.floor((0.84 * mapScale - 0.5) * height));
+    mapPanX = Math.max(-maxPanX, Math.min(maxPanX, mapPanX));
+    mapPanY = Math.max(-maxPanY, Math.min(maxPanY, mapPanY));
     mapCanvas.style.transform = `translate(${mapPanX}px, ${mapPanY}px) scale(${mapScale})`;
   }
 
@@ -799,17 +811,16 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!marker || !mapCanvas) return;
     const targetX = Number(marker.dataset.x) || 50;
     const targetY = Number(marker.dataset.y) || 50;
-    const rect = mapViewportArea ? mapViewportArea.getBoundingClientRect() : { width: 412, height: 800 };
+    const rect = mapViewportArea ? mapViewportArea.getBoundingClientRect() : { width: 412, height: 680 };
     const width = rect.width || 412;
-    const height = rect.height || 800;
+    const height = rect.height || 680;
 
-    // Encuadrar el punto medio entre "Vos" (50, 54) y el marcador seleccionado con un zoom suave de foco
-    const focusX = (targetX * 0.72) + (50 * 0.28);
-    const focusY = (targetY * 0.72) + (54 * 0.28);
+    // Encuadrar el punto medio entre "Vos" (50, 54) y el marcador seleccionado
+    const focusX = (targetX * 0.65) + (50 * 0.35);
+    const focusY = (targetY * 0.65) + (54 * 0.35);
 
-    mapScale = Math.max(mapScale, 1.18);
-    mapPanX = Math.round(((50 - focusX) / 100) * width * 0.85);
-    mapPanY = Math.round(((48 - focusY) / 100) * height * 0.7);
+    mapPanX = Math.round(((50 - focusX) / 100) * width * 1.35 * mapScale);
+    mapPanY = Math.round(((50 - focusY) / 100) * height * 1.15 * mapScale);
     applyMapTransform(true);
   }
 
@@ -940,8 +951,8 @@ document.addEventListener('DOMContentLoaded', () => {
       mapRouteChip.style.top = `${chipY}%`;
       mapRouteChip.textContent = distanceChip;
       mapRouteChip.className = isFull
-        ? 'absolute -translate-x-1/2 -translate-y-1/2 z-[8] pointer-events-none px-2 py-0.5 rounded-full bg-red-700/95 text-white text-[10px] font-extrabold shadow-md border border-red-300 whitespace-nowrap transition-all duration-300'
-        : 'absolute -translate-x-1/2 -translate-y-1/2 z-[8] pointer-events-none px-2 py-0.5 rounded-full bg-emerald-900/95 text-white text-[10px] font-extrabold shadow-md border border-emerald-400/80 whitespace-nowrap transition-all duration-300';
+        ? 'absolute -translate-x-1/2 -translate-y-1/2 z-[8] pointer-events-none px-2 py-0.5 rounded-full bg-red-700/95 text-white text-[10px] font-extrabold shadow-md border border-red-300 whitespace-nowrap'
+        : 'absolute -translate-x-1/2 -translate-y-1/2 z-[8] pointer-events-none px-2 py-0.5 rounded-full bg-emerald-900/95 text-white text-[10px] font-extrabold shadow-md border border-emerald-400/80 whitespace-nowrap';
     }
 
     if (focusCamera) {
@@ -1143,10 +1154,9 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ==========================================================================
-  // MIS ECOPUNTOS: Progreso Dinámico, Comercios Adheridos e Historial Paginado
+  // MIS ECOPUNTOS: Progreso Dinámico, Carrusel Horizontal de Comercios e Historial
   // ==========================================================================
-  const toggleComerciosBtn = document.getElementById('btn-toggle-comercios');
-  const extraComercioCard = document.getElementById('comercio-extra-card');
+  const comerciosGrid = document.getElementById('comercios-grid');
   const btnHistoryPrev = document.getElementById('btn-history-prev');
   const btnHistoryNext = document.getElementById('btn-history-next');
 
@@ -1169,13 +1179,41 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  if (toggleComerciosBtn && extraComercioCard) {
-    toggleComerciosBtn.addEventListener('click', () => {
-      const isHidden = extraComercioCard.classList.contains('hidden');
-      extraComercioCard.classList.toggle('hidden', !isHidden);
-      toggleComerciosBtn.setAttribute('aria-expanded', String(isHidden));
-      toggleComerciosBtn.textContent = isHidden ? 'Ver menos' : 'Ver todos (4)';
+  // Soporte de desplazamiento horizontal intuitivo con rueda del mouse y drag en Comercios Adheridos
+  if (comerciosGrid) {
+    let isDraggingComercios = false;
+    let startScrollX = 0;
+    let initialScrollLeft = 0;
+
+    comerciosGrid.addEventListener('wheel', (e) => {
+      if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+        e.preventDefault();
+        comerciosGrid.scrollBy({ left: e.deltaY * 1.15, behavior: 'smooth' });
+      }
+    }, { passive: false });
+
+    comerciosGrid.addEventListener('pointerdown', (e) => {
+      if (e.pointerType === 'touch' || e.target.closest('button')) return;
+      isDraggingComercios = true;
+      startScrollX = e.clientX;
+      initialScrollLeft = comerciosGrid.scrollLeft;
+      comerciosGrid.style.scrollSnapType = 'none';
+      comerciosGrid.setPointerCapture(e.pointerId);
     });
+
+    comerciosGrid.addEventListener('pointermove', (e) => {
+      if (!isDraggingComercios) return;
+      const dx = e.clientX - startScrollX;
+      comerciosGrid.scrollLeft = initialScrollLeft - dx;
+    });
+
+    const endComerciosDrag = () => {
+      if (!isDraggingComercios) return;
+      isDraggingComercios = false;
+      comerciosGrid.style.scrollSnapType = '';
+    };
+    comerciosGrid.addEventListener('pointerup', endComerciosDrag);
+    comerciosGrid.addEventListener('pointercancel', endComerciosDrag);
   }
 
   const redeemDialog = document.getElementById('redeem-dialog');
@@ -1342,8 +1380,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 <iconify-icon icon="${iconName}" class="text-xl" aria-hidden="true"></iconify-icon>
               </div>
               <div class="min-w-0">
-                <h3 class="font-bold text-slate-900 dark:text-white text-sm truncate">${item.location}</h3>
-                <p class="text-[11px] text-slate-500 dark:text-slate-400 truncate">Tocá para ver detalle del registro</p>
+                <h3 class="font-bold text-slate-900 dark:text-white text-sm leading-snug">${item.location}</h3>
+                <p class="text-[11px] text-slate-500 dark:text-slate-400">Tocá para ver detalle del registro</p>
               </div>
             </div>
             <div class="flex items-center gap-2 shrink-0">
@@ -1455,7 +1493,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  const btnDrawerHelp = document.getElementById('btn-drawer-help');
   if (openGuideBtn) openGuideBtn.addEventListener('click', openGuideModal);
+  if (btnDrawerHelp) btnDrawerHelp.addEventListener('click', openHelpModal);
   if (closeGuideTopBtn && guideDialog) {
     closeGuideTopBtn.addEventListener('click', () => guideDialog.close());
   }
@@ -1475,7 +1515,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Acordeón exclusivo para Centro de Ayuda (.help-faq-item) e Historial de Reciclaje (.history-card-item):
+  // Acordeón exclusivo para Centro de Ayuda (.help-faq-item), Historial (.history-card-item) y Menú Más (.mas-accordion-item):
   // Al desplegar un ítem <details>, cualquier otro ítem abierto del mismo grupo se cierra automáticamente.
   document.addEventListener('toggle', (e) => {
     const target = e.target;
@@ -1486,6 +1526,10 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     } else if (target.classList.contains('history-card-item')) {
       document.querySelectorAll('.history-card-item').forEach(other => {
+        if (other !== target && other.open) other.open = false;
+      });
+    } else if (target.classList.contains('mas-accordion-item')) {
+      document.querySelectorAll('.mas-accordion-item').forEach(other => {
         if (other !== target && other.open) other.open = false;
       });
     }
@@ -1687,8 +1731,8 @@ document.addEventListener('DOMContentLoaded', () => {
               <span>${post.initials || 'VC'}</span>
             </div>
             <div class="min-w-0">
-              <h2 class="font-bold text-slate-900 dark:text-white text-sm truncate">${post.author}</h2>
-              <p class="text-[11px] text-slate-500 dark:text-slate-400 truncate">${post.barrio} • ${post.time}</p>
+              <h2 class="font-bold text-slate-900 dark:text-white text-sm leading-tight">${post.author}</h2>
+              <p class="text-[11px] text-slate-500 dark:text-slate-400">${post.barrio} • ${post.time}</p>
             </div>
           </div>
           <span class="px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-200 text-[11px] font-bold shrink-0">${post.pointsBadge || '+15 EcoPuntos'}</span>
@@ -1943,13 +1987,17 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   const notificationPrefs = loadNotificationPrefs();
-  document.querySelectorAll('.notification-toggle').forEach(toggle => {
-    toggle.checked = Boolean(notificationPrefs[toggle.dataset.pref]);
+  document.querySelectorAll('.notification-toggle, .notif-toggle').forEach(toggle => {
+    const prefKey = toggle.dataset.pref || toggle.dataset.setting;
+    if (!prefKey) return;
+    if (prefKey in notificationPrefs) {
+      toggle.checked = Boolean(notificationPrefs[prefKey]);
+    }
     toggle.addEventListener('change', (e) => {
-      notificationPrefs[toggle.dataset.pref] = e.target.checked;
+      notificationPrefs[prefKey] = e.target.checked;
       try {
         localStorage.setItem(NOTIFICATIONS_KEY, JSON.stringify(notificationPrefs));
-      } catch (e) {}
+      } catch (err) {}
     });
   });
 
