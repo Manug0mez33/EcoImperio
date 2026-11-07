@@ -906,12 +906,13 @@ document.addEventListener('DOMContentLoaded', () => {
       m.setAttribute('aria-pressed', String(active));
     });
 
-    const title = marker.dataset.title || 'Campana Verde - B° Alberdi (25%)';
-    const subtitle = marker.dataset.subtitle || 'A solo 350m • 4 min a pie';
+    const rawTitle = marker.dataset.title || 'Campana Verde - B° Alberdi';
+    const cleanTitle = rawTitle.replace(/\s*\((Lleno|\d+%)\)/i, '');
+    const subtitle = marker.dataset.subtitle || 'A 350m (4 min)';
     const status = marker.dataset.status || 'available';
     const capacity = marker.dataset.capacity || (status === 'full' ? '98% ocupado' : (status === 'warning' ? '75% ocupado' : '25% ocupado'));
     const bonus = Number(marker.dataset.bonus) || 0;
-    const materials = marker.dataset.materials || 'PET 1, Cartón, Latas';
+    const materials = marker.dataset.materials || '';
     const route = marker.dataset.route;
     const targetX = marker.dataset.x || '41';
     const targetY = marker.dataset.y || '43';
@@ -921,50 +922,49 @@ document.addEventListener('DOMContentLoaded', () => {
     const isFull = status === 'full';
     const isWarning = status === 'warning';
 
-    state.selectedPoint = title.replace(/\s*\((Lleno|\d+%)\)/i, '');
+    state.selectedPoint = cleanTitle;
     state.selectedPointStatus = status;
     state.selectedPointBonus = bonus;
 
-    if (nearbyCardTitle) nearbyCardTitle.textContent = title;
-    if (nearbyCardSubtitle) nearbyCardSubtitle.textContent = subtitle;
-    if (nearbyCardMaterials) nearbyCardMaterials.textContent = isFull ? 'Sin capacidad disponible' : `Recibe: ${materials}`;
+    if (nearbyCardTitle) nearbyCardTitle.textContent = cleanTitle;
+    if (nearbyCardSubtitle) {
+      nearbyCardSubtitle.textContent = isFull
+        ? subtitle
+        : (materials ? `${subtitle} • ${materials}` : subtitle);
+    }
 
     if (nearbyCardStatusBadge) {
       nearbyCardStatusBadge.textContent = capacity;
       nearbyCardStatusBadge.className = isFull
-        ? 'text-[11px] font-bold px-2 py-0.5 rounded-full bg-red-100 dark:bg-red-950/70 text-red-700 dark:text-red-300'
+        ? 'text-[10px] font-bold px-2 py-0.5 rounded-full bg-red-100 dark:bg-red-950/70 text-red-700 dark:text-red-300'
         : isWarning
-          ? 'text-[11px] font-bold px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-950/70 text-amber-800 dark:text-amber-300'
-          : 'text-[11px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-200';
+          ? 'text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-950/70 text-amber-800 dark:text-amber-300'
+          : 'text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-200';
     }
 
     if (nearbyCardBonusBadge) {
-      if (isFull) {
-        nearbyCardBonusBadge.textContent = 'Sin bonus (98%)';
-        nearbyCardBonusBadge.className = 'text-[11px] font-bold px-2 py-0.5 rounded-full bg-red-50 dark:bg-red-950/50 text-red-600 dark:text-red-300';
-      } else if (bonus > 0) {
-        nearbyCardBonusBadge.textContent = `+${bonus} pts Bonus baja carga`;
-        nearbyCardBonusBadge.className = 'text-[11px] font-extrabold px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-950/70 text-amber-800 dark:text-amber-300';
+      if (!isFull && bonus > 0) {
+        nearbyCardBonusBadge.textContent = `+${bonus} pts Bonus`;
+        nearbyCardBonusBadge.className = 'text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-950/70 text-amber-800 dark:text-amber-300';
       } else {
-        nearbyCardBonusBadge.textContent = 'Sin bonus (75%)';
-        nearbyCardBonusBadge.className = 'text-[11px] font-bold px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300';
+        nearbyCardBonusBadge.className = 'hidden';
       }
     }
 
     if (nearbyCardIcon && nearbyCardIconWrap) {
       nearbyCardIcon.setAttribute('icon', isFull ? 'mynaui:ban' : (marker.dataset.category === 'punto-limpio' ? 'mynaui:sparkles' : 'mynaui:location'));
       nearbyCardIconWrap.className = isFull
-        ? 'w-11 h-11 rounded-xl bg-red-100 dark:bg-red-950/60 text-red-600 dark:text-red-400 flex items-center justify-center shrink-0 mt-0.5'
+        ? 'w-9 h-9 rounded-xl bg-red-100 dark:bg-red-950/60 text-red-600 dark:text-red-400 flex items-center justify-center shrink-0'
         : isWarning
-          ? 'w-11 h-11 rounded-xl bg-amber-100 dark:bg-amber-950/60 text-amber-700 dark:text-amber-400 flex items-center justify-center shrink-0 mt-0.5'
-          : 'w-11 h-11 rounded-xl bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-300 flex items-center justify-center shrink-0 mt-0.5';
+          ? 'w-9 h-9 rounded-xl bg-amber-100 dark:bg-amber-950/60 text-amber-700 dark:text-amber-400 flex items-center justify-center shrink-0'
+          : 'w-9 h-9 rounded-xl bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-300 flex items-center justify-center shrink-0';
     }
 
     if (nearbyActionLabel && nearbyActionBtn) {
       nearbyActionLabel.textContent = isFull ? 'Ver cercano' : 'Escanear';
       nearbyActionBtn.className = isFull
-        ? 'touch-target px-3 py-2 rounded-xl bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold flex items-center gap-1 shadow-md shrink-0 cursor-pointer transition-all'
-        : 'touch-target px-3.5 py-2 rounded-xl bg-emerald-800 hover:bg-emerald-700 text-white text-xs font-bold flex items-center gap-1 shadow-md shrink-0 cursor-pointer transition-all';
+        ? 'touch-target px-3 py-1.5 rounded-xl bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold flex items-center gap-1 shadow-md shrink-0 cursor-pointer transition-all'
+        : 'touch-target px-3 py-1.5 rounded-xl bg-emerald-800 hover:bg-emerald-700 text-white text-xs font-bold flex items-center gap-1 shadow-md shrink-0 cursor-pointer transition-all';
     }
 
     if (route) {
@@ -1036,7 +1036,6 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!nextPressed) {
         const activeCount = [...mapFilterPills].filter(p => p.getAttribute('aria-pressed') === 'true').length;
         if (activeCount <= 1) {
-          showToast('Siempre debe haber al menos un filtro activo en el mapa.');
           return;
         }
       }
@@ -1066,11 +1065,9 @@ document.addEventListener('DOMContentLoaded', () => {
     selectMapMarker(marker, { focusCamera: true, focusElement: true });
     if (!isDuplicate) {
       if (marker.dataset.status === 'full') {
-        showToast('Punto lleno (98%). Tocá "Ver cercano" en la tarjeta inferior para ir al punto disponible más próximo.');
-      } else if (marker.dataset.status === 'warning') {
-        showToast(`${marker.dataset.title}: capacidad al 75% (Media-Alta). Todavía podés depositar.`);
+        showToast('Punto sin lugar. Tocá "Ver cercano" abajo.');
       } else {
-        showToast(`Recorrido trazado hacia ${marker.dataset.title}.`);
+        showToast(`Ruta trazada a ${marker.dataset.title}.`);
       }
     }
   }
