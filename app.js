@@ -797,14 +797,66 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  const redeemDialog = document.getElementById('redeem-dialog');
+  const redeemDialogDesc = document.getElementById('redeem-dialog-desc');
+  const confirmRedeemBtn = document.getElementById('btn-confirm-redeem');
+  const cancelRedeemBtn = document.getElementById('btn-cancel-redeem');
+  let pendingRedemption = null;
+
   document.querySelectorAll('.btn-redeem-comercio').forEach(btn => {
     btn.addEventListener('click', () => {
       const comercio = btn.dataset.comercio || 'Comercio Adherido';
       const discount = btn.dataset.discount || 'descuento';
-      const code = `ECO-${comercio.slice(0, 3).toUpperCase()}-2026`;
-      showToast(`¡Cupón ${discount} en ${comercio}! Presentá el código ${code}.`);
+      const cost = Number(btn.dataset.cost) || 150;
+
+      if (state.ecoPuntos < cost) {
+        const missing = cost - state.ecoPuntos;
+        showToast(`Te faltan ${missing.toLocaleString('es-AR')} EcoPuntos para canjear en ${comercio}. ¡Escaneá reciclables para sumarlos!`);
+        return;
+      }
+
+      pendingRedemption = { comercio, discount, cost, triggerBtn: btn };
+      if (redeemDialog && redeemDialogDesc && typeof redeemDialog.showModal === 'function') {
+        redeemDialogDesc.textContent = `Vas a canjear ${cost} EcoPuntos por un cupón de ${discount} en ${comercio}. Tu saldo quedará en ${(state.ecoPuntos - cost).toLocaleString('es-AR')} EcoPuntos.`;
+        if (confirmRedeemBtn) confirmRedeemBtn.textContent = `Confirmar canje (-${cost} pts)`;
+        redeemDialog.showModal();
+        if (cancelRedeemBtn) cancelRedeemBtn.focus();
+      } else {
+        executeRedemption();
+      }
     });
   });
+
+  function executeRedemption() {
+    if (!pendingRedemption) return;
+    const { comercio, discount, cost, triggerBtn } = pendingRedemption;
+    pendingRedemption = null;
+
+    if (state.ecoPuntos < cost) return;
+    state.ecoPuntos -= cost;
+
+    const cleanPrefix = comercio.replace(/[^A-Za-z]/g, '').slice(0, 3).toUpperCase() || 'ECO';
+    const code = `ECO-${cleanPrefix}-2026`;
+
+    state.history.unshift({
+      id: Date.now(),
+      type: 'redeem',
+      title: `Canje: ${discount}`,
+      location: `${comercio} • Cupón ${code}`,
+      time: 'Recién',
+      points: -cost
+    });
+
+    saveUserWallet();
+    updatePointsUI();
+    if (redeemDialog && redeemDialog.open) redeemDialog.close();
+    if (triggerBtn) triggerBtn.focus();
+    showToast(`¡Cupón ${discount} en ${comercio}! Código: ${code} (-${cost} EcoPuntos).`);
+  }
+
+  if (confirmRedeemBtn) {
+    confirmRedeemBtn.addEventListener('click', executeRedemption);
+  }
 
   function updatePointsUI() {
     const balanceElements = document.querySelectorAll('.user-ecopuntos-val');
@@ -846,20 +898,32 @@ document.addEventListener('DOMContentLoaded', () => {
           </button>
         </div>`;
     } else if (historyListContainer) {
-      historyListContainer.innerHTML = state.history.map(item => `
+      historyListContainer.innerHTML = state.history.map(item => {
+        const isRedeem = item.type === 'redeem' || item.points < 0;
+        const iconName = isRedeem ? 'mynaui:gift' : 'keyline-icons:recycle-duotone';
+        const iconWrapClass = isRedeem
+          ? 'bg-amber-100 dark:bg-amber-900/50 text-amber-800 dark:text-amber-300'
+          : 'bg-emerald-100 dark:bg-emerald-900/60 text-emerald-700 dark:text-emerald-300';
+        const pointsClass = isRedeem
+          ? 'text-amber-700 dark:text-amber-400'
+          : 'text-emerald-700 dark:text-emerald-400';
+        const pointsLabel = item.points > 0 ? `+${item.points} pts` : `${item.points} pts`;
+
+        return `
         <article class="w-4/5 mx-auto p-3.5 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm flex items-center justify-between gap-2 transition-all hover:shadow-md hover:border-emerald-300 dark:hover:border-emerald-700">
           <div class="flex items-center gap-3 min-w-0">
-            <div class="w-10 h-10 rounded-full bg-emerald-100 dark:bg-emerald-900/60 text-emerald-700 dark:text-emerald-300 flex items-center justify-center shrink-0" aria-hidden="true">
-              <iconify-icon icon="keyline-icons:recycle-duotone" class="text-2xl" aria-hidden="true"></iconify-icon>
+            <div class="w-10 h-10 rounded-full ${iconWrapClass} flex items-center justify-center shrink-0" aria-hidden="true">
+              <iconify-icon icon="${iconName}" class="text-2xl" aria-hidden="true"></iconify-icon>
             </div>
             <div class="min-w-0">
               <h3 class="font-bold text-slate-800 dark:text-slate-100 text-lg truncate">${item.title}</h3>
               <p class="text-xs text-slate-600 dark:text-slate-400 truncate">${item.location} • ${item.time}</p>
             </div>
           </div>
-          <h4 class="font-bold text-emerald-700 dark:text-emerald-400 text-base text-right shrink-0">+${item.points} pts</h4>
+          <h4 class="font-bold ${pointsClass} text-base text-right shrink-0">${pointsLabel}</h4>
         </article>
-      `).join('');
+      `;
+      }).join('');
     }
   }
 

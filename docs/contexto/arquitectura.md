@@ -52,14 +52,14 @@ flowchart TD
 
 ### B. Cards de Comercios Adheridos (50% / 50%)
 - Mitad superior/izquierda (50%): Imagen representativa del comercio local con atributo `alt` descriptivo obligatorio.
-- Mitad inferior/derecha (50%): Título del comercio en `<h3>`, rubro y dirección en `<p>`, badge de descuento destacado en verde semántico y botón de acción para canje o detalle de puntos.
+- Mitad inferior/derecha (50%): Título del comercio en `<h3>`, rubro y dirección en `<p>`, badge de descuento en verde semántico, costo del cupón en EcoPuntos (`150 pts`, `200 pts`, `250 pts`) y botón `"Canjear cupón"` con confirmación mediante `<dialog>` nativo accesible (`#redeem-dialog`), descuento automático de saldo y registro del canje en el historial.
 
-### C. Cards de Historial de Reciclaje (Ancho 80%)
+### C. Cards de Historial de Reciclaje y Canjes (Ancho 80%)
 - Ancho del 80% del contenedor (`w-4/5` centrado/alineado para diferenciación jerárquica respecto de las tarjetas de ancho completo, evitando desborde horizontal).
-- Ícono identificador del material reciclado (`aria-hidden="true"`).
-- Título en `<h3>`: Material reciclado (ej. *Plástico PET*, *Vidrio*, *Cartón y Papel*).
-- Párrafo en `<p>`: Ubicación de la campana o punto limpio y marca temporal (fecha y hora).
-- Etiqueta `<h4>` alineada a la derecha: Cantidad de EcoPuntos sumados en la operación (`+10 pts`, `+15 pts`, `+45 pts`).
+- Ícono identificador del movimiento (`keyline-icons:recycle-duotone` para depósitos o `mynaui:gift` para canjes, con `aria-hidden="true"`).
+- Título en `<h3>`: Material reciclado (ej. *Plástico PET*, *Vidrio*, *Cartón y Papel*) o beneficio canjeado (ej. *Canje: 15% de descuento*).
+- Párrafo en `<p>`: Ubicación de la campana/comercio, código de cupón y marca temporal (fecha y hora).
+- Etiqueta `<h4>` alineada a la derecha: Cantidad de EcoPuntos sumados o canjeados en la operación (`+10 pts`, `+15 pts`, `-200 pts`).
 
 ### D. Registro e Inicio de Sesión (ver ADR-004)
 - Flujo: `Splash → Login ⇄ Registro → Mapa`. Las pantallas internas (`mapa`, `escaner`, `puntos`, `config`) requieren sesión activa; sin sesión, `navigateTo()` redirige automáticamente al Login.
