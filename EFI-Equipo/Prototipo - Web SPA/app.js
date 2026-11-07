@@ -4,11 +4,12 @@
 
 document.addEventListener('DOMContentLoaded', () => {
   // Pantallas que requieren una sesión iniciada
-  const PROTECTED_SCREENS = ['mapa', 'escaner', 'puntos', 'historial', 'config'];
+  const PROTECTED_SCREENS = ['comunidad', 'mapa', 'escaner', 'puntos', 'historial', 'config'];
   const ACCOUNTS_KEY = 'ecoimperio_accounts';
   const USER_DATA_KEY = 'ecoimperio_user_data';
   const SESSION_EMAIL_KEY = 'ecoimperio_session_email';
   const NOTIFICATIONS_KEY = 'ecoimperio_notifications';
+  const COMMUNITY_POSTS_KEY = 'ecoimperio_community_posts';
   const GOAL_POINTS = 1500;
   const DEFAULT_NOTIFICATIONS = { campanaCercana: true, campanaLlena: true, beneficios: false };
   const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
@@ -201,12 +202,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Router de Navegación de Pantallas
   function navigateTo(screenId) {
-    // Sin sesión no se entra a las vistas protegidas: se redirige al inicio de sesión
-    if (PROTECTED_SCREENS.includes(screenId) && !state.user) {
+    // Si el vecino ya inició sesión, tocar "Inicio" abre el Muro Comunitario (Red Social Barrial)
+    if (screenId === 'splash' && state.user) {
+      screenId = 'comunidad';
+    } else if (PROTECTED_SCREENS.includes(screenId) && !state.user) {
+      // Sin sesión no se entra a las vistas protegidas: se redirige al inicio de sesión
       screenId = 'login';
     } else if ((screenId === 'login' || screenId === 'registro') && state.user) {
       // Si ya inició sesión, no volver al formulario de login a menos que cierre sesión explícitamente
-      screenId = 'mapa';
+      screenId = 'comunidad';
     }
 
     const screens = document.querySelectorAll('.screen-view');
@@ -222,6 +226,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if (screenId === 'config') fillSettings();
     if (screenId === 'escaner') updateScannerMaterialUI();
+    if (screenId === 'comunidad') renderCommunityFeed();
 
     // Actualizar navbars activos
     updateNavbars(screenId);
@@ -229,9 +234,11 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function updateNavbars(activeScreen) {
+    const normalizedActive = activeScreen === 'comunidad' ? 'splash' : activeScreen;
     const navItems = document.querySelectorAll('.nav-item');
     navItems.forEach(item => {
-      if (item.getAttribute('data-target') === activeScreen) {
+      const itemTarget = item.getAttribute('data-target');
+      if (itemTarget === activeScreen || itemTarget === normalizedActive) {
         item.setAttribute('aria-current', 'page');
       } else {
         item.removeAttribute('aria-current');
@@ -749,12 +756,15 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // ==========================================================================
-  // MAPA INTERACTIVO: Buscador, Filtros, Zoom/Pan Fluido y Selección en 2 Pasos
+  // MAPA INTERACTIVO: Buscador, Filtros, Zoom/Pan Fluido y Auto-Focus con Ruta Dinámica
   // ==========================================================================
   const mapSearchInput = document.getElementById('map-search-input');
   const mapFilterPills = document.querySelectorAll('.map-filter-pill');
   const mapMarkers = document.querySelectorAll('.map-marker');
   const mapRoutePath = document.getElementById('map-route-path');
+  const mapRouteGlow = document.getElementById('map-route-glow');
+  const mapRouteTargetRing = document.getElementById('map-route-target-ring');
+  const mapRouteChip = document.getElementById('map-route-chip');
   const mapCanvas = document.getElementById('map-canvas');
   const mapViewportArea = document.getElementById('map-viewport-area');
   const btnMapZoomIn = document.getElementById('btn-map-zoom-in');
@@ -778,16 +788,34 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function applyMapTransform(animate = true) {
     if (!mapCanvas) return;
-    mapCanvas.style.transition = animate ? 'transform 0.28s cubic-bezier(0.22, 1, 0.36, 1)' : 'none';
-    const maxOffset = (mapScale - 1) * 140 + 40;
+    mapCanvas.style.transition = animate ? 'transform 0.36s cubic-bezier(0.22, 1, 0.36, 1)' : 'none';
+    const maxOffset = (mapScale - 1) * 165 + 75;
     mapPanX = Math.max(-maxOffset, Math.min(maxOffset, mapPanX));
     mapPanY = Math.max(-maxOffset, Math.min(maxOffset, mapPanY));
     mapCanvas.style.transform = `translate(${mapPanX}px, ${mapPanY}px) scale(${mapScale})`;
   }
 
+  function focusMapOnMarker(marker) {
+    if (!marker || !mapCanvas) return;
+    const targetX = Number(marker.dataset.x) || 50;
+    const targetY = Number(marker.dataset.y) || 50;
+    const rect = mapViewportArea ? mapViewportArea.getBoundingClientRect() : { width: 412, height: 800 };
+    const width = rect.width || 412;
+    const height = rect.height || 800;
+
+    // Encuadrar el punto medio entre "Vos" (50, 54) y el marcador seleccionado con un zoom suave de foco
+    const focusX = (targetX * 0.72) + (50 * 0.28);
+    const focusY = (targetY * 0.72) + (54 * 0.28);
+
+    mapScale = Math.max(mapScale, 1.18);
+    mapPanX = Math.round(((50 - focusX) / 100) * width * 0.85);
+    mapPanY = Math.round(((48 - focusY) / 100) * height * 0.7);
+    applyMapTransform(true);
+  }
+
   if (btnMapZoomIn) {
     btnMapZoomIn.addEventListener('click', () => {
-      mapScale = Math.min(1.8, +(mapScale + 0.25).toFixed(2));
+      mapScale = Math.min(1.85, +(mapScale + 0.25).toFixed(2));
       applyMapTransform(true);
     });
   }
@@ -810,7 +838,7 @@ document.addEventListener('DOMContentLoaded', () => {
       mapPanY = 0;
       applyMapTransform(true);
       const alberdiMarker = document.querySelector('.map-marker[data-point-id="alberdi"]');
-      if (alberdiMarker) selectMapMarker(alberdiMarker);
+      if (alberdiMarker) selectMapMarker(alberdiMarker, { focusCamera: false, focusElement: false });
       showToast('Mapa centrado en tu ubicación actual.');
     });
   }
@@ -840,8 +868,10 @@ document.addEventListener('DOMContentLoaded', () => {
     mapViewportArea.addEventListener('pointercancel', stopMapDrag);
   }
 
-  function selectMapMarker(marker) {
+  function selectMapMarker(marker, options = {}) {
     if (!marker) return;
+    const { focusCamera = false, focusElement = false } = options;
+
     mapMarkers.forEach(m => {
       const active = m === marker;
       m.classList.toggle('is-selected', active);
@@ -854,6 +884,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const capacity = marker.dataset.capacity || (status === 'full' ? '98% • Lleno' : '25% ocupado');
     const materials = marker.dataset.materials || 'PET 1, Cartón, Latas';
     const route = marker.dataset.route;
+    const targetX = marker.dataset.x || '26';
+    const targetY = marker.dataset.y || '34';
+    const chipX = marker.dataset.chipX || '38';
+    const chipY = marker.dataset.chipY || '44';
+    const distanceChip = marker.dataset.distanceChip || '350m • 4 min';
     const isFull = status === 'full';
 
     state.selectedPoint = title.replace(/\s*\(Lleno\)/i, '');
@@ -884,9 +919,38 @@ document.addEventListener('DOMContentLoaded', () => {
         : 'touch-target px-3.5 py-2 rounded-xl bg-emerald-800 hover:bg-emerald-700 text-white text-xs font-bold flex items-center gap-1 shadow-md shrink-0 cursor-pointer transition-all';
     }
 
-    if (mapRoutePath && route) {
-      mapRoutePath.setAttribute('d', route);
-      mapRoutePath.setAttribute('stroke', isFull ? '#dc2626' : '#059669');
+    if (route) {
+      if (mapRoutePath) {
+        mapRoutePath.setAttribute('d', route);
+        mapRoutePath.setAttribute('stroke', isFull ? '#dc2626' : '#059669');
+      }
+      if (mapRouteGlow) {
+        mapRouteGlow.setAttribute('d', route);
+      }
+    }
+
+    if (mapRouteTargetRing) {
+      mapRouteTargetRing.setAttribute('cx', targetX);
+      mapRouteTargetRing.setAttribute('cy', targetY);
+      mapRouteTargetRing.setAttribute('fill', isFull ? '#ef4444' : '#10b981');
+    }
+
+    if (mapRouteChip) {
+      mapRouteChip.style.left = `${chipX}%`;
+      mapRouteChip.style.top = `${chipY}%`;
+      mapRouteChip.textContent = distanceChip;
+      mapRouteChip.className = isFull
+        ? 'absolute -translate-x-1/2 -translate-y-1/2 z-[8] pointer-events-none px-2 py-0.5 rounded-full bg-red-700/95 text-white text-[10px] font-extrabold shadow-md border border-red-300 whitespace-nowrap transition-all duration-300'
+        : 'absolute -translate-x-1/2 -translate-y-1/2 z-[8] pointer-events-none px-2 py-0.5 rounded-full bg-emerald-900/95 text-white text-[10px] font-extrabold shadow-md border border-emerald-400/80 whitespace-nowrap transition-all duration-300';
+    }
+
+    if (focusCamera) {
+      focusMapOnMarker(marker);
+    }
+    if (focusElement) {
+      try {
+        marker.focus({ preventScroll: true });
+      } catch (e) {}
     }
   }
 
@@ -907,7 +971,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     if (firstVisible) {
-      selectMapMarker(firstVisible);
+      selectMapMarker(firstVisible, { focusCamera: Boolean(query), focusElement: false });
       if (nearbyActionBtn) nearbyActionBtn.disabled = false;
     } else {
       if (nearbyCardTitle) nearbyCardTitle.textContent = 'Sin puntos encontrados';
@@ -936,13 +1000,13 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   mapMarkers.forEach(marker => {
-    marker.addEventListener('click', () => {
-      const wasSelected = marker.classList.contains('is-selected');
-      selectMapMarker(marker);
+    marker.addEventListener('click', (e) => {
+      e.stopPropagation();
+      selectMapMarker(marker, { focusCamera: true, focusElement: true });
       if (marker.dataset.status === 'full') {
-        showToast('Punto lleno (98%). Tocá "Ver cercano" abajo para ir al punto disponible más próximo.');
-      } else if (wasSelected) {
-        navigateTo('escaner');
+        showToast('Punto lleno (98%). Tocá "Ver cercano" en la tarjeta inferior para ir al punto disponible más próximo.');
+      } else {
+        showToast(`Recorrido trazado hacia ${marker.dataset.title}.`);
       }
     });
   });
@@ -952,7 +1016,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (state.selectedPointStatus === 'full') {
         const availableMarker = [...mapMarkers].find(m => !m.classList.contains('hidden') && m.dataset.status === 'available');
         if (availableMarker) {
-          selectMapMarker(availableMarker);
+          selectMapMarker(availableMarker, { focusCamera: true, focusElement: true });
           showToast(`Redirigido a ${availableMarker.dataset.title} (disponible).`);
         } else {
           showToast('Activá los filtros superiores para ver puntos con lugar disponible.');
@@ -1475,11 +1539,336 @@ document.addEventListener('DOMContentLoaded', () => {
       state.ecoPuntos = DEMO_WALLET.ecoPuntos;
       state.history = DEMO_WALLET.history.slice();
       state.historyPage = 1;
+      communityPosts = INITIAL_COMMUNITY_POSTS.map(post => ({ ...post }));
+      saveCommunityPosts(communityPosts);
       saveUserWallet();
       updatePointsUI();
-      showToast('Datos de demostración restablecidos (1.250 EcoPuntos y 5 depósitos).');
+      renderCommunityFeed();
+      showToast('Datos de demostración restablecidos (1.250 EcoPuntos, historial y muro comunitario).');
     });
   }
+
+  // ==========================================================================
+  // COMUNIDAD VERDE (MURO SOCIAL BARRIAL EN "INICIO"): Publicaciones y EcoEventos
+  // ==========================================================================
+  const INITIAL_COMMUNITY_POSTS = [
+    {
+      id: 'evt-plaza-roca',
+      type: 'evento',
+      badge: 'ECOEVENTO MUNICIPAL • SÁB 15 NOV, 10:00 HS',
+      title: 'Feria Circular y EcoCanje en Plaza Roca',
+      location: 'Plaza Roca (Centro)',
+      caption: 'Acercate con tus reciclables limpios y secos: canjeamos por plantines nativos, compost municipal y +50 EcoPuntos extra en tu billetera.',
+      image: 'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&w=600&q=80',
+      attendees: 42,
+      attending: false
+    },
+    {
+      id: 'post-lucia-alberdi',
+      type: 'deposito',
+      author: 'Lucía Fernández',
+      initials: 'LF',
+      barrio: 'B° Alberdi',
+      time: 'Hace 25 min',
+      location: 'Campana Verde - B° Alberdi',
+      pointsBadge: '+15 EcoPuntos',
+      caption: '¡Dejando las botellas PET aplastadas de la semana! La campana de Alberdi estaba impecable y con mucho lugar (25% ocupada).',
+      image: 'https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?auto=format&fit=crop&w=600&q=80',
+      likes: 18,
+      liked: false
+    },
+    {
+      id: 'post-martin-norte',
+      type: 'deposito',
+      author: 'Martín Sosa',
+      initials: 'MS',
+      barrio: 'B° Banda Norte',
+      time: 'Hace 2 horas',
+      location: 'Punto Limpio - Banda Norte',
+      pointsBadge: '+45 EcoPuntos',
+      caption: 'Hoy llevamos todas las cajas de cartón plegadas y frascos de vidrio sano al Punto Limpio. ¡Sumando para el descuento en la panadería!',
+      image: 'https://images.unsplash.com/photo-1604187351574-c75ca79f5807?auto=format&fit=crop&w=600&q=80',
+      likes: 24,
+      liked: false
+    },
+    {
+      id: 'evt-raee-sarmiento',
+      type: 'evento',
+      badge: 'JORNADA BARRIAL • DOM 23 NOV, 16:00 HS',
+      title: 'Recolección de Electrónicos (RAEE) en Parque Sarmiento',
+      location: 'Anfiteatro Parque Sarmiento (Banda Norte)',
+      caption: 'Recibimos celulares, cables, teclados y pequeños electrodomésticos en desuso para recuperación segura de componentes.',
+      image: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=600&q=80',
+      attendees: 31,
+      attending: false
+    }
+  ];
+
+  function loadCommunityPosts() {
+    try {
+      const raw = JSON.parse(localStorage.getItem(COMMUNITY_POSTS_KEY));
+      if (Array.isArray(raw) && raw.length > 0) return raw;
+    } catch (e) {}
+    return INITIAL_COMMUNITY_POSTS.map(post => ({ ...post }));
+  }
+
+  function saveCommunityPosts(posts) {
+    try {
+      localStorage.setItem(COMMUNITY_POSTS_KEY, JSON.stringify(posts));
+    } catch (e) {}
+  }
+
+  let communityPosts = loadCommunityPosts();
+  let activeCommunityFilter = 'all';
+  let selectedPostImage = 'https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?auto=format&fit=crop&w=600&q=80';
+
+  const communityFeedList = document.getElementById('community-feed-list');
+  const communityFilterBtns = document.querySelectorAll('.community-filter-btn');
+  const postDialog = document.getElementById('post-dialog');
+  const openPostDialogBtn = document.getElementById('btn-open-post-dialog');
+  const composerCardBtn = document.getElementById('btn-composer-card');
+  const closePostTopBtn = document.getElementById('btn-close-post-top');
+  const cancelPostBtn = document.getElementById('btn-cancel-post');
+  const communityPostForm = document.getElementById('community-post-form');
+  const postPreviewImg = document.getElementById('post-preview-img');
+  const postFileInput = document.getElementById('post-file-input');
+  const postPresetImgBtns = document.querySelectorAll('.post-preset-img-btn');
+
+  function renderCommunityFeed() {
+    if (!communityFeedList) return;
+    const visiblePosts = communityPosts.filter(post => (
+      activeCommunityFilter === 'all' ? true : post.type === activeCommunityFilter
+    ));
+
+    communityFeedList.innerHTML = visiblePosts.map(post => {
+      if (post.type === 'evento') {
+        const rsvpClass = post.attending
+          ? 'bg-emerald-800 text-white border-emerald-700'
+          : 'bg-amber-50 dark:bg-slate-800 text-amber-900 dark:text-amber-300 border-amber-300 dark:border-amber-700 hover:bg-amber-100';
+        const rsvpLabel = post.attending
+          ? `Confirmado (${post.attendees} vecinos)`
+          : `Me sumo al evento (${post.attendees} vecinos)`;
+
+        return `
+        <article class="bg-white dark:bg-slate-900 rounded-2xl border-2 border-amber-300/90 dark:border-amber-700/80 shadow-sm overflow-hidden">
+          <div class="px-3.5 py-2 bg-amber-100/80 dark:bg-amber-950/60 flex items-center justify-between gap-2">
+            <span class="text-[11px] font-black uppercase tracking-wider text-amber-900 dark:text-amber-300 flex items-center gap-1">
+              <iconify-icon icon="mynaui:calendar" class="text-sm" aria-hidden="true"></iconify-icon>
+              <span>${post.badge}</span>
+            </span>
+          </div>
+          <img src="${post.image}" alt="${post.title}" class="w-full h-36 object-cover">
+          <div class="p-3.5 space-y-2.5">
+            <div>
+              <h2 class="font-bold text-slate-900 dark:text-white text-base leading-snug">${post.title}</h2>
+              <p class="text-xs font-semibold text-emerald-700 dark:text-emerald-400 mt-0.5 flex items-center gap-1">
+                <iconify-icon icon="mynaui:location" class="text-sm" aria-hidden="true"></iconify-icon>
+                <span>${post.location}</span>
+              </p>
+            </div>
+            <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">${post.caption}</p>
+            <button type="button" class="btn-event-rsvp touch-target w-full px-3 py-2 rounded-xl border text-xs font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer ${rsvpClass}" data-post-id="${post.id}" aria-pressed="${String(Boolean(post.attending))}">
+              <iconify-icon icon="${post.attending ? 'mynaui:check-circle' : 'mynaui:calendar'}" class="text-base" aria-hidden="true"></iconify-icon>
+              <span>${rsvpLabel}</span>
+            </button>
+          </div>
+        </article>`;
+      }
+
+      const likeClass = post.liked
+        ? 'bg-emerald-800 text-white border-emerald-700'
+        : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 border-slate-200 dark:border-slate-700 hover:bg-emerald-50 dark:hover:bg-slate-700';
+
+      return `
+      <article class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/90 dark:border-slate-800 shadow-sm overflow-hidden">
+        <div class="p-3.5 flex items-center justify-between gap-2">
+          <div class="flex items-center gap-2.5 min-w-0">
+            <div class="w-9 h-9 rounded-full bg-emerald-800 text-white font-bold text-xs flex items-center justify-center shrink-0" aria-hidden="true">
+              <span>${post.initials || 'VC'}</span>
+            </div>
+            <div class="min-w-0">
+              <h2 class="font-bold text-slate-900 dark:text-white text-sm truncate">${post.author}</h2>
+              <p class="text-[11px] text-slate-500 dark:text-slate-400 truncate">${post.barrio} • ${post.time}</p>
+            </div>
+          </div>
+          <span class="px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-200 text-[11px] font-bold shrink-0">${post.pointsBadge || '+15 EcoPuntos'}</span>
+        </div>
+
+        <img src="${post.image}" alt="Depósito de reciclaje de ${post.author} en ${post.location}" class="w-full h-40 object-cover border-y border-slate-100 dark:border-slate-800">
+
+        <div class="p-3.5 space-y-2.5">
+          <div class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-emerald-800 dark:text-emerald-300 text-[11px] font-bold">
+            <iconify-icon icon="mynaui:location" class="text-sm" aria-hidden="true"></iconify-icon>
+            <span>${post.location}</span>
+          </div>
+          <p class="text-xs text-slate-700 dark:text-slate-200 leading-relaxed">${post.caption}</p>
+          <div class="pt-1 flex items-center justify-between gap-2">
+            <button type="button" class="btn-post-like touch-target px-3 py-1.5 rounded-xl border text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer ${likeClass}" data-post-id="${post.id}" aria-pressed="${String(Boolean(post.liked))}">
+              <iconify-icon icon="mynaui:heart" class="text-base" aria-hidden="true"></iconify-icon>
+              <span>Aplaudir (${post.likes || 0})</span>
+            </button>
+            <button type="button" data-navigate="mapa" class="touch-target px-2.5 py-1.5 rounded-xl text-[11px] font-bold text-emerald-700 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-slate-800 flex items-center gap-1 cursor-pointer">
+              <span>Ver punto en mapa</span>
+              <iconify-icon icon="mynaui:chevron-right" class="text-sm" aria-hidden="true"></iconify-icon>
+            </button>
+          </div>
+        </div>
+      </article>`;
+    }).join('');
+  }
+
+  communityFilterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      activeCommunityFilter = btn.dataset.feedFilter || 'all';
+      communityFilterBtns.forEach(b => {
+        const active = (b.dataset.feedFilter || 'all') === activeCommunityFilter;
+        b.setAttribute('aria-selected', String(active));
+        b.setAttribute('aria-pressed', String(active));
+        b.classList.toggle('bg-emerald-800', active);
+        b.classList.toggle('text-white', active);
+        b.classList.toggle('shadow-sm', active);
+        b.classList.toggle('text-slate-700', !active);
+        b.classList.toggle('dark:text-slate-300', !active);
+      });
+      renderCommunityFeed();
+    });
+  });
+
+  if (communityFeedList) {
+    communityFeedList.addEventListener('click', (e) => {
+      const likeBtn = e.target.closest('.btn-post-like');
+      if (likeBtn) {
+        const post = communityPosts.find(p => p.id === likeBtn.dataset.postId);
+        if (post) {
+          post.liked = !post.liked;
+          post.likes = Math.max(0, (post.likes || 0) + (post.liked ? 1 : -1));
+          saveCommunityPosts(communityPosts);
+          renderCommunityFeed();
+        }
+        return;
+      }
+      const rsvpBtn = e.target.closest('.btn-event-rsvp');
+      if (rsvpBtn) {
+        const evt = communityPosts.find(p => p.id === rsvpBtn.dataset.postId);
+        if (evt) {
+          evt.attending = !evt.attending;
+          evt.attendees = Math.max(0, (evt.attendees || 0) + (evt.attending ? 1 : -1));
+          saveCommunityPosts(communityPosts);
+          renderCommunityFeed();
+          showToast(evt.attending ? `¡Te sumaste a "${evt.title}"!` : 'Cancelaste tu asistencia al evento.');
+        }
+      }
+    });
+  }
+
+  function openPostModal() {
+    if (!postDialog || typeof postDialog.showModal !== 'function') return;
+    const captionEl = document.getElementById('post-caption');
+    if (captionEl) setFieldError(captionEl, '');
+    postDialog.showModal();
+  }
+
+  if (openPostDialogBtn) openPostDialogBtn.addEventListener('click', openPostModal);
+  if (composerCardBtn) composerCardBtn.addEventListener('click', openPostModal);
+  if (closePostTopBtn && postDialog) closePostTopBtn.addEventListener('click', () => postDialog.close());
+  if (cancelPostBtn && postDialog) cancelPostBtn.addEventListener('click', () => postDialog.close());
+
+  postPresetImgBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      selectedPostImage = btn.dataset.img || selectedPostImage;
+      if (postPreviewImg) postPreviewImg.src = selectedPostImage;
+      postPresetImgBtns.forEach(b => {
+        const active = b === btn;
+        b.setAttribute('aria-pressed', String(active));
+        b.classList.toggle('border-emerald-500', active);
+        b.classList.toggle('bg-emerald-50', active);
+        b.classList.toggle('dark:bg-emerald-950/60', active);
+        b.classList.toggle('text-emerald-800', active);
+        b.classList.toggle('dark:text-emerald-200', active);
+      });
+    });
+  });
+
+  if (postFileInput) {
+    postFileInput.addEventListener('change', (e) => {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        if (typeof reader.result === 'string') {
+          selectedPostImage = reader.result;
+          if (postPreviewImg) postPreviewImg.src = selectedPostImage;
+        }
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  if (communityPostForm) {
+    communityPostForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const captionField = document.getElementById('post-caption');
+      const locationField = document.getElementById('post-location');
+      const caption = (captionField ? captionField.value : '').trim();
+
+      if (caption.length < 4) {
+        if (captionField) {
+          setFieldError(captionField, 'Escribí un mensaje breve contando qué depositaste.');
+          captionField.focus();
+        }
+        return;
+      }
+      if (captionField) setFieldError(captionField, '');
+
+      const userName = state.user ? `${state.user.nombre} ${state.user.apellido}` : 'Oscar Rodríguez';
+      const initials = state.user ? `${state.user.nombre[0]}${state.user.apellido[0]}`.toUpperCase() : 'OR';
+      const barrio = state.user && state.user.barrio ? `B° ${state.user.barrio}` : 'B° Alberdi';
+      const location = locationField ? locationField.value : 'Campana Verde - B° Alberdi';
+
+      const newPost = {
+        id: `post-${Date.now()}`,
+        type: 'deposito',
+        author: userName,
+        initials,
+        barrio,
+        time: 'Recién',
+        location,
+        pointsBadge: '+5 pts Comunidad',
+        caption,
+        image: selectedPostImage,
+        likes: 1,
+        liked: true
+      };
+
+      communityPosts.unshift(newPost);
+      saveCommunityPosts(communityPosts);
+
+      // Otorgar +5 EcoPuntos por publicar en la comunidad y registrar en el historial
+      state.ecoPuntos += 5;
+      const nowStr = new Date().toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' });
+      state.history.unshift({
+        id: Date.now(),
+        title: 'Publicación en Comunidad Verde (Foto de depósito)',
+        location,
+        time: `Hoy, ${nowStr} hs`,
+        points: 5,
+        containerStatus: 'Depósito compartido con vecinos del barrio',
+        impact: 'Incentivo comunitario • +5 EcoPuntos bonus',
+        ticketCode: `#COM-${String(Date.now()).slice(-4)}`
+      });
+      state.historyPage = 1;
+      saveUserWallet();
+      updatePointsUI();
+
+      activeCommunityFilter = 'all';
+      renderCommunityFeed();
+      communityPostForm.reset();
+      if (postDialog && postDialog.open) postDialog.close();
+      showToast('¡Publicación compartida en el muro! Sumaste +5 EcoPuntos.');
+    });
+  }
+
+  renderCommunityFeed();
 
   if (profileForm) {
     const profileSubmit = profileForm.querySelector('[type="submit"]');

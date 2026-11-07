@@ -298,6 +298,90 @@
     </section>
 
     <!-- ==========================================================================
+         PANTALLA 2C: INICIO / COMUNIDAD VERDE (MURO SOCIAL BARRIAL Y ECOEVENTOS)
+         ========================================================================== -->
+    <section id="screen-comunidad" class="screen-view bg-slate-50 dark:bg-slate-950 h-full flex-col overflow-hidden relative">
+      <!-- Header fijo con acción de Publicar y Menú Hamburguesa -->
+      <header class="shrink-0 z-20 px-4 pt-3 pb-2.5 bg-white/95 dark:bg-slate-900/95 backdrop-blur border-b border-slate-200 dark:border-slate-800 space-y-2.5">
+        <div class="flex items-center justify-between gap-2">
+          <div class="min-w-0">
+            <span class="text-[11px] font-extrabold uppercase tracking-wider text-emerald-700 dark:text-emerald-400 block">Red Vecinal • Río Cuarto</span>
+            <h1 class="text-2xl font-black text-slate-900 dark:text-white truncate">Comunidad Verde</h1>
+          </div>
+          <div class="flex items-center gap-2 shrink-0">
+            <button type="button" id="btn-open-post-dialog" class="touch-target px-3.5 py-2 rounded-2xl bg-emerald-800 hover:bg-emerald-700 active:scale-95 text-white text-xs font-bold shadow-sm flex items-center gap-1.5 cursor-pointer transition-all">
+              <iconify-icon icon="mynaui:camera" class="text-lg" aria-hidden="true"></iconify-icon>
+              <span>Publicar</span>
+            </button>
+            <button type="button" class="btn-trigger-drawer touch-target w-11 h-11 rounded-2xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center text-slate-800 dark:text-slate-100 hover:bg-slate-200 dark:hover:bg-slate-700" aria-label="Abrir Menú Hamburguesa" aria-expanded="false" aria-controls="drawer-menu">
+              <iconify-icon icon="mynaui:menu" class="text-2xl" aria-hidden="true"></iconify-icon>
+            </button>
+          </div>
+        </div>
+
+        <!-- Filtros rápidos del Muro Social (Segmented Pills) -->
+        <div class="grid grid-cols-3 gap-1.5 p-1 rounded-2xl bg-slate-100 dark:bg-slate-800" role="tablist" aria-label="Filtrar publicaciones de la comunidad">
+          <button type="button" class="community-filter-btn min-h-[38px] px-2 py-1 rounded-xl text-xs font-bold bg-emerald-800 text-white shadow-sm transition-all cursor-pointer" role="tab" data-feed-filter="all" aria-selected="true" aria-pressed="true">
+            Todo el Muro
+          </button>
+          <button type="button" class="community-filter-btn min-h-[38px] px-2 py-1 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-300 hover:bg-white/60 dark:hover:bg-slate-700 transition-all cursor-pointer" role="tab" data-feed-filter="deposito" aria-selected="false" aria-pressed="false">
+            Depósitos
+          </button>
+          <button type="button" class="community-filter-btn min-h-[38px] px-2 py-1 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-300 hover:bg-white/60 dark:hover:bg-slate-700 transition-all cursor-pointer" role="tab" data-feed-filter="evento" aria-selected="false" aria-pressed="false">
+            EcoEventos
+          </button>
+        </div>
+      </header>
+
+      <!-- Cuerpo scrollable del Muro Social -->
+      <div class="flex-1 overflow-y-auto p-4 space-y-4">
+        <!-- Caja rápida para compartir depósito del vecino -->
+        <button type="button" id="btn-composer-card" class="w-full p-3.5 rounded-2xl bg-white dark:bg-slate-900 border border-emerald-200 dark:border-emerald-800/80 shadow-sm hover:border-emerald-500 transition-all flex items-center justify-between gap-3 text-left cursor-pointer group">
+          <span class="flex items-center gap-3 min-w-0">
+            <span class="w-10 h-10 rounded-full bg-emerald-800 text-white font-bold text-xs flex items-center justify-center border-2 border-emerald-400 shrink-0" aria-hidden="true">
+              <span class="user-initials">OR</span>
+            </span>
+            <span class="min-w-0">
+              <span class="block text-xs font-bold text-slate-900 dark:text-white truncate">¿Depositaste reciclables hoy?</span>
+              <span class="block text-[11px] text-emerald-700 dark:text-emerald-400 font-semibold truncate">Subí tu foto en la campana y sumá +5 EcoPuntos</span>
+            </span>
+          </span>
+          <span class="w-9 h-9 rounded-xl bg-emerald-50 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-300 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform" aria-hidden="true">
+            <iconify-icon icon="mynaui:plus" class="text-xl" aria-hidden="true"></iconify-icon>
+          </span>
+        </button>
+
+        <!-- Lista dinámica de Publicaciones de Vecinos y Eventos -->
+        <div id="community-feed-list" class="space-y-4" aria-live="polite">
+          <!-- Renderizado dinámicamente desde app.js -->
+        </div>
+      </div>
+
+      <!-- Barra de Navegación Inferior Fija -->
+      <nav aria-label="Navegación principal en Comunidad" class="shrink-0 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 px-3 py-1.5 flex justify-between items-center z-30">
+        <button type="button" data-navigate="splash" class="nav-item px-2 py-1 rounded-xl flex flex-col items-center justify-center text-xs text-slate-600 dark:text-slate-400 hover:text-emerald-700 dark:hover:text-emerald-400 aria-[current=page]:font-bold aria-[current=page]:text-emerald-700 dark:aria-[current=page]:text-emerald-400" data-target="splash" aria-current="page">
+          <iconify-icon icon="mynaui:home" class="text-2xl" aria-hidden="true"></iconify-icon>
+          <span>Inicio</span>
+        </button>
+        <button type="button" data-navigate="mapa" class="nav-item px-2 py-1 rounded-xl flex flex-col items-center justify-center text-xs text-slate-600 dark:text-slate-400 hover:text-emerald-700 dark:hover:text-emerald-400 aria-[current=page]:font-bold aria-[current=page]:text-emerald-700 dark:aria-[current=page]:text-emerald-400" data-target="mapa">
+          <iconify-icon icon="mynaui:location" class="text-2xl" aria-hidden="true"></iconify-icon>
+          <span>Mapa</span>
+        </button>
+        <button type="button" data-navigate="escaner" class="w-14 h-14 -mt-7 rounded-full bg-emerald-900 hover:bg-emerald-800 text-white flex items-center justify-center shadow-xl border-4 border-white dark:border-slate-900 hover:scale-105 active:scale-95 transition-transform" aria-label="Abrir Escáner QR">
+          <iconify-icon icon="iconamoon:scanner-thin" class="text-3xl" aria-hidden="true"></iconify-icon>
+        </button>
+        <button type="button" data-navigate="puntos" class="nav-item px-2 py-1 rounded-xl flex flex-col items-center justify-center text-xs text-slate-600 dark:text-slate-400 hover:text-emerald-700 dark:hover:text-emerald-400 aria-[current=page]:font-bold aria-[current=page]:text-emerald-700 dark:aria-[current=page]:text-emerald-400" data-target="puntos">
+          <iconify-icon icon="mynaui:gift" class="text-2xl" aria-hidden="true"></iconify-icon>
+          <span>Puntos</span>
+        </button>
+        <button type="button" data-navigate="config" class="nav-item px-2 py-1 rounded-xl flex flex-col items-center justify-center text-xs text-slate-600 dark:text-slate-400 hover:text-emerald-700 dark:hover:text-emerald-400 aria-[current=page]:font-bold aria-[current=page]:text-emerald-700 dark:aria-[current=page]:text-emerald-400" data-target="config">
+          <iconify-icon icon="mynaui:user" class="text-2xl" aria-hidden="true"></iconify-icon>
+          <span>Perfil</span>
+        </button>
+      </nav>
+    </section>
+
+    <!-- ==========================================================================
          PANTALLA 3: HOME MAPA INTERACTIVO
          ========================================================================== -->
     <section id="screen-mapa" class="screen-view relative bg-slate-100 dark:bg-slate-950">
@@ -319,33 +403,61 @@
         </button>
       </header>
 
-      <!-- Vista de Mapa Simulado con Canvas/SVG Interactivo (Pan & Zoom) -->
+      <!-- Vista de Mapa Simulado con Canvas/SVG Interactivo (Pan, Zoom y Focus Automático) -->
       <div id="map-viewport-area" class="w-full h-full relative bg-emerald-50 dark:bg-slate-900 flex items-center justify-center overflow-hidden select-none">
-        <!-- Contenedor transformable del mapa (soporta zoom y arrastre suave) -->
-        <div id="map-canvas" class="absolute inset-0 w-full h-full transition-transform duration-300 ease-out cursor-grab active:cursor-grabbing">
-          <!-- Calles de fondo del mapa + río Cuarto + ruta peatonal sugerida -->
-          <svg class="absolute inset-0 w-full h-full opacity-55 text-slate-300 dark:text-slate-700" viewBox="0 0 400 700" aria-hidden="true">
+        <!-- Contenedor transformable del mapa (soporta zoom, arrastre suave y auto-focus en marcadores) -->
+        <div id="map-canvas" class="absolute inset-0 w-full h-full transition-transform duration-300 ease-out cursor-grab active:cursor-grabbing origin-center">
+          <!-- Capa 1: Calles de fondo del mapa + Río Cuarto (coordenadas porcentuales 0..100 para alineación 1:1 con pines HTML) -->
+          <svg class="absolute inset-0 w-full h-full opacity-60 text-slate-300 dark:text-slate-700 pointer-events-none" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
             <!-- Manzanas y espacios verdes barriales -->
-            <rect x="30" y="90" width="75" height="90" rx="12" fill="currentColor" fill-opacity="0.25"/>
-            <rect x="145" y="85" width="120" height="95" rx="14" fill="currentColor" fill-opacity="0.2"/>
-            <rect x="140" y="380" width="115" height="105" rx="16" fill="#10b981" fill-opacity="0.18"/>
+            <rect x="8" y="18" width="22" height="16" rx="3" fill="currentColor" fill-opacity="0.28"/>
+            <rect x="38" y="16" width="26" height="16" rx="3" fill="currentColor" fill-opacity="0.22"/>
+            <rect x="68" y="18" width="24" height="15" rx="3" fill="currentColor" fill-opacity="0.24"/>
+            <rect x="10" y="42" width="20" height="18" rx="3" fill="#10b981" fill-opacity="0.16"/>
+            <rect x="36" y="56" width="24" height="14" rx="3" fill="#10b981" fill-opacity="0.22"/>
+            <rect x="66" y="56" width="24" height="18" rx="3" fill="currentColor" fill-opacity="0.22"/>
             <!-- Río Chocancharava (Río Cuarto) -->
-            <path d="M-40 275 Q 140 245 240 285 T 440 265" stroke="#38bdf8" stroke-opacity="0.35" stroke-width="28" fill="none"/>
-            <!-- Avenidas y calles principales -->
-            <path d="M-50 150 Q 150 120 450 200" stroke="currentColor" stroke-width="20" fill="none"/>
-            <path d="M100 -50 L 120 750" stroke="currentColor" stroke-width="16" fill="none"/>
-            <path d="M300 -50 L 280 750" stroke="currentColor" stroke-width="12" fill="none"/>
-            <path d="M-50 450 L 450 400" stroke="currentColor" stroke-width="24" fill="none"/>
-            <path d="M-40 550 L 440 520" stroke="currentColor" stroke-width="10" fill="none"/>
-            <!-- Ruta peatonal sugerida animada desde ubicación actual (200,430) hasta el punto seleccionado -->
-            <path id="map-route-path" class="map-route-animated" d="M200 430 Q 140 350 105 240" stroke="#059669" stroke-width="5" stroke-dasharray="8 6" stroke-linecap="round" fill="none"/>
-            <!-- Marcador de ubicación actual del vecino ("Vos estás acá") -->
-            <circle cx="200" cy="430" r="16" fill="#2563eb" fill-opacity="0.22"/>
-            <circle cx="200" cy="430" r="8" fill="#2563eb" stroke="#ffffff" stroke-width="3"/>
+            <path d="M -5 39 Q 35 35 60 40 T 105 37" stroke="#38bdf8" stroke-opacity="0.45" stroke-width="4.5" fill="none"/>
+            <!-- Avenidas y calles principales ortogonales -->
+            <path d="M -5 24 L 105 24" stroke="currentColor" stroke-width="2.6" fill="none"/>
+            <path d="M -5 44 L 105 44" stroke="currentColor" stroke-width="2.8" fill="none"/>
+            <path d="M -5 54 L 105 54" stroke="currentColor" stroke-width="3.4" fill="none"/>
+            <path d="M -5 64 L 105 64" stroke="currentColor" stroke-width="2.8" fill="none"/>
+            <path d="M -5 74 L 105 74" stroke="currentColor" stroke-width="2.2" fill="none"/>
+            <path d="M 26 -5 L 26 105" stroke="currentColor" stroke-width="3" fill="none"/>
+            <path d="M 36 -5 L 36 105" stroke="currentColor" stroke-width="2.4" fill="none"/>
+            <path d="M 50 -5 L 50 105" stroke="currentColor" stroke-width="3.4" fill="none"/>
+            <path d="M 70 -5 L 70 105" stroke="currentColor" stroke-width="2.8" fill="none"/>
+            <path d="M 74 -5 L 74 105" stroke="currentColor" stroke-width="2.2" fill="none"/>
           </svg>
 
-          <!-- Marcador 1: Campana Alberdi (Verde - Vacío) -->
-          <button type="button" class="map-marker is-selected absolute top-[34%] left-[26%] transform -translate-x-1/2 -translate-y-1/2 group z-10 flex flex-col items-center min-w-[44px] min-h-[44px] cursor-pointer" data-point-id="alberdi" data-category="campana" data-status="available" data-capacity="25% ocupado" data-materials="PET 1, Cartón, Latas" data-title="Campana Verde - B° Alberdi" data-subtitle="A solo 350m • 4 min a pie" data-route="M200 430 Q 140 350 105 240" data-search="campana verde alberdi vacio disponible" aria-label="Campana Verde B° Alberdi — Disponible (Vacío)" aria-pressed="true">
+          <!-- Capa 2: Ruta Peatonal Activa (100% opaca, viewBox 0..100 alineado exactamente con los porcentajes top/left de cada Campana) -->
+          <svg id="map-route-svg" class="absolute inset-0 w-full h-full pointer-events-none z-[5]" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+            <!-- Halo de contraste debajo del recorrido -->
+            <path id="map-route-glow" d="M 50 54 L 50 44 L 26 44 L 26 34" stroke="#ffffff" stroke-opacity="0.85" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            <!-- Línea animada del recorrido peatonal -->
+            <path id="map-route-path" class="map-route-animated" d="M 50 54 L 50 44 L 26 44 L 26 34" stroke="#059669" stroke-width="1.35" stroke-dasharray="2.2 1.6" stroke-linecap="round" stroke-linejoin="round" fill="none" vector-effect="non-scaling-stroke" style="stroke-width: 5px;"/>
+            <!-- Punto de destino resaltado sobre el recorrido -->
+            <circle id="map-route-target-ring" cx="26" cy="34" r="3.2" fill="#10b981" fill-opacity="0.28"/>
+          </svg>
+
+          <!-- Etiqueta flotante dinámica sobre el recorrido (distancia y tiempo a pie) -->
+          <div id="map-route-chip" class="absolute left-[38%] top-[44%] -translate-x-1/2 -translate-y-1/2 z-[8] pointer-events-none px-2 py-0.5 rounded-full bg-emerald-900/95 text-white text-[10px] font-extrabold shadow-md border border-emerald-400/80 whitespace-nowrap transition-all duration-300">
+            350m • 4 min
+          </div>
+
+          <!-- Marcador de Ubicación Actual del Vecino ("Vos estás acá" en 50%, 54%) -->
+          <div class="
+            absolute top-[54%] left-[50%] -translate-x-1/2 -translate-y-1/2 z-[9] pointer-events-none flex flex-col items-center
+          " aria-hidden="true">
+            <div class="w-8 h-8 rounded-full bg-blue-600/25 flex items-center justify-center animate-pulse">
+              <div class="w-4 h-4 rounded-full bg-blue-600 border-2 border-white shadow-md"></div>
+            </div>
+            <span class="mt-0.5 px-1.5 py-0.2 rounded bg-blue-700 text-white text-[10px] font-extrabold shadow">Vos</span>
+          </div>
+
+          <!-- Marcador 1: Campana Alberdi (Verde - Disponible) -->
+          <button type="button" class="map-marker is-selected absolute top-[34%] left-[26%] transform -translate-x-1/2 -translate-y-1/2 group z-10 flex flex-col items-center min-w-[44px] min-h-[44px] cursor-pointer" data-point-id="alberdi" data-category="campana" data-status="available" data-x="26" data-y="34" data-chip-x="38" data-chip-y="44" data-distance-chip="350m • 4 min" data-capacity="25% ocupado" data-materials="PET 1, Cartón, Latas" data-title="Campana Verde - B° Alberdi" data-subtitle="A solo 350m • 4 min a pie por Av. Sabattini" data-route="M 50 54 L 50 44 L 26 44 L 26 34" data-search="campana verde alberdi vacio disponible" aria-label="Campana Verde B° Alberdi — Disponible (Vacío)" aria-pressed="true">
             <div class="marker-pin w-12 h-12 rounded-full bg-emerald-600 text-white flex items-center justify-center shadow-lg border-2 border-white dark:border-slate-900 group-hover:scale-110 transition-transform relative">
               <iconify-icon icon="mynaui:location" class="text-2xl" aria-hidden="true"></iconify-icon>
             </div>
@@ -353,23 +465,23 @@
           </button>
 
           <!-- Marcador 2: Banda Norte (Rojo - Lleno) -->
-          <button type="button" class="map-marker absolute top-[48%] left-[74%] transform -translate-x-1/2 -translate-y-1/2 group z-10 flex flex-col items-center min-w-[44px] min-h-[44px] cursor-pointer" data-point-id="banda-norte" data-category="campana" data-status="full" data-capacity="98% • Lleno" data-materials="Sin capacidad temporal" data-title="Campana Verde - B° Norte (Lleno)" data-subtitle="A 820m • Sin lugar (sugerido: Alberdi)" data-route="M200 430 Q 260 390 295 335" data-search="campana verde banda norte lleno" aria-label="Campana Verde B° Banda Norte — Sin capacidad (Lleno)" aria-pressed="false">
+          <button type="button" class="map-marker absolute top-[44%] left-[74%] transform -translate-x-1/2 -translate-y-1/2 group z-10 flex flex-col items-center min-w-[44px] min-h-[44px] cursor-pointer" data-point-id="banda-norte" data-category="campana" data-status="full" data-x="74" data-y="44" data-chip-x="62" data-chip-y="49" data-distance-chip="820m • Lleno" data-capacity="98% • Lleno" data-materials="Sin capacidad temporal" data-title="Campana Verde - B° Norte (Lleno)" data-subtitle="A 820m • Sin lugar (sugerido: Alberdi o Bimaco)" data-route="M 50 54 L 50 44 L 74 44" data-search="campana verde banda norte lleno" aria-label="Campana Verde B° Banda Norte — Sin capacidad (Lleno)" aria-pressed="false">
             <div class="marker-pin w-11 h-11 rounded-full bg-red-600 text-white flex items-center justify-center shadow-lg border-2 border-white dark:border-slate-900 group-hover:scale-110 transition-transform relative">
               <iconify-icon icon="mynaui:ban" class="text-xl" aria-hidden="true"></iconify-icon>
             </div>
             <span class="marker-badge bg-slate-900 dark:bg-slate-700 text-white text-xs font-bold px-2.5 py-0.5 rounded-full mt-1 inline-block shadow">B° Norte (Lleno)</span>
           </button>
 
-          <!-- Marcador 3: Punto Limpio Centro (Verde - Vacío) -->
-          <button type="button" class="map-marker absolute top-[62%] left-[36%] transform -translate-x-1/2 -translate-y-1/2 group z-10 flex flex-col items-center min-w-[44px] min-h-[44px] cursor-pointer" data-point-id="centro" data-category="punto-limpio" data-status="available" data-capacity="15% ocupado" data-materials="Vidrio, PET, Cartón, RAEE" data-title="Punto Limpio - Plaza Roca (Centro)" data-subtitle="A 540m • 6 min a pie" data-route="M200 430 Q 175 435 145 435" data-search="punto limpio centro plaza roca vacio disponible vidrio" aria-label="Punto Limpio Centro Plaza Roca — Disponible (Vacío)" aria-pressed="false">
+          <!-- Marcador 3: Punto Limpio Centro (Verde - Disponible) -->
+          <button type="button" class="map-marker absolute top-[64%] left-[36%] transform -translate-x-1/2 -translate-y-1/2 group z-10 flex flex-col items-center min-w-[44px] min-h-[44px] cursor-pointer" data-point-id="centro" data-category="punto-limpio" data-status="available" data-x="36" data-y="64" data-chip-x="42" data-chip-y="59" data-distance-chip="540m • 6 min" data-capacity="15% ocupado" data-materials="Vidrio, PET, Cartón, RAEE" data-title="Punto Limpio - Plaza Roca (Centro)" data-subtitle="A 540m • 6 min a pie hacia Plaza Roca" data-route="M 50 54 L 36 54 L 36 64" data-search="punto limpio centro plaza roca vacio disponible vidrio" aria-label="Punto Limpio Centro Plaza Roca — Disponible (Vacío)" aria-pressed="false">
             <div class="marker-pin w-11 h-11 rounded-full bg-emerald-700 text-white flex items-center justify-center shadow-lg border-2 border-amber-300 dark:border-amber-400 group-hover:scale-110 transition-transform relative">
               <iconify-icon icon="mynaui:sparkles" class="text-xl text-amber-300" aria-hidden="true"></iconify-icon>
             </div>
             <span class="marker-badge bg-slate-900 dark:bg-slate-700 text-white text-xs font-bold px-2.5 py-0.5 rounded-full mt-1 inline-block shadow">Centro (Vacío)</span>
           </button>
 
-          <!-- Marcador 4: Campana Bimaco (Verde - Vacío) -->
-          <button type="button" class="map-marker absolute top-[72%] left-[70%] transform -translate-x-1/2 -translate-y-1/2 group z-10 flex flex-col items-center min-w-[44px] min-h-[44px] cursor-pointer" data-point-id="bimaco" data-category="campana" data-status="available" data-capacity="40% ocupado" data-materials="PET 1, Cartón, Latas" data-title="Campana Verde - B° Bimaco" data-subtitle="A 690m • 8 min a pie" data-route="M200 430 Q 245 470 280 505" data-search="campana verde bimaco sur vacio disponible" aria-label="Campana Verde B° Bimaco — Disponible (Vacío)" aria-pressed="false">
+          <!-- Marcador 4: Campana Bimaco (Verde - Disponible) -->
+          <button type="button" class="map-marker absolute top-[70%] left-[70%] transform -translate-x-1/2 -translate-y-1/2 group z-10 flex flex-col items-center min-w-[44px] min-h-[44px] cursor-pointer" data-point-id="bimaco" data-category="campana" data-status="available" data-x="70" data-y="70" data-chip-x="60" data-chip-y="64" data-distance-chip="690m • 8 min" data-capacity="40% ocupado" data-materials="PET 1, Cartón, Latas" data-title="Campana Verde - B° Bimaco" data-subtitle="A 690m • 8 min a pie hacia el Sur" data-route="M 50 54 L 50 64 L 70 64 L 70 70" data-search="campana verde bimaco sur vacio disponible" aria-label="Campana Verde B° Bimaco — Disponible (Vacío)" aria-pressed="false">
             <div class="marker-pin w-11 h-11 rounded-full bg-emerald-600 text-white flex items-center justify-center shadow-lg border-2 border-white dark:border-slate-900 group-hover:scale-110 transition-transform relative">
               <iconify-icon icon="mynaui:location" class="text-xl" aria-hidden="true"></iconify-icon>
             </div>
@@ -1340,6 +1452,60 @@
           </form>
         </div>
       </div>
+    </dialog>
+
+    <!-- Diálogo compacto para Publicar Depósito en el Muro Comunitario -->
+    <dialog id="post-dialog" aria-labelledby="post-dialog-title" class="w-[85%] max-w-[320px] rounded-3xl p-4 bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-2xl backdrop:bg-slate-950/70 backdrop:backdrop-blur-sm overflow-hidden">
+      <form id="community-post-form" class="flex flex-col space-y-3" novalidate>
+        <div class="flex items-center justify-between gap-2 pb-2 border-b border-slate-100 dark:border-slate-800">
+          <div>
+            <h2 id="post-dialog-title" class="text-lg font-bold text-slate-900 dark:text-white">Publicar mi depósito</h2>
+            <p class="text-[11px] text-emerald-700 dark:text-emerald-400 font-semibold">Compartí con tu barrio y sumá +5 EcoPuntos</p>
+          </div>
+          <button type="button" id="btn-close-post-top" class="touch-target rounded-full text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-center shrink-0" aria-label="Cerrar publicación">
+            <iconify-icon icon="mynaui:x" class="text-xl" aria-hidden="true"></iconify-icon>
+          </button>
+        </div>
+
+        <!-- Vista previa de imagen seleccionada + selector de fotos rápidas o subida desde dispositivo -->
+        <div class="space-y-1.5">
+          <span class="block text-[11px] font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">Foto del depósito</span>
+          <div class="relative rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 h-28 bg-slate-100 dark:bg-slate-800">
+            <img id="post-preview-img" src="https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?auto=format&fit=crop&w=600&q=80" alt="Vista previa de reciclables a publicar" class="w-full h-full object-cover">
+            <label for="post-file-input" class="absolute bottom-2 right-2 px-2.5 py-1 rounded-xl bg-slate-900/85 hover:bg-slate-900 text-white text-[11px] font-bold flex items-center gap-1 cursor-pointer shadow">
+              <iconify-icon icon="mynaui:camera" class="text-sm" aria-hidden="true"></iconify-icon>
+              <span>Subir mi foto</span>
+            </label>
+            <input type="file" id="post-file-input" accept="image/*" class="sr-only">
+          </div>
+          <div class="grid grid-cols-3 gap-1.5 pt-0.5" role="group" aria-label="Fotos de muestra rápidas">
+            <button type="button" class="post-preset-img-btn min-h-[34px] px-2 py-1 rounded-xl text-[11px] font-bold border border-emerald-500 bg-emerald-50 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-200 cursor-pointer" data-img="https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?auto=format&fit=crop&w=600&q=80" data-material="Botellas PET (+15 pts)" aria-pressed="true">Botellas PET</button>
+            <button type="button" class="post-preset-img-btn min-h-[34px] px-2 py-1 rounded-xl text-[11px] font-bold border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-300 cursor-pointer" data-img="https://images.unsplash.com/photo-1604187351574-c75ca79f5807?auto=format&fit=crop&w=600&q=80" data-material="Cartón y Papel (+15 pts)" aria-pressed="false">Cartón</button>
+            <button type="button" class="post-preset-img-btn min-h-[34px] px-2 py-1 rounded-xl text-[11px] font-bold border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-300 cursor-pointer" data-img="https://images.unsplash.com/photo-1611284446314-60a58ac0deb9?auto=format&fit=crop&w=600&q=80" data-material="Vidrio y Latas (+20 pts)" aria-pressed="false">Vidrio/Latas</button>
+          </div>
+        </div>
+
+        <div>
+          <label for="post-location" class="block text-[11px] font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1">Dónde depositaste</label>
+          <select id="post-location" name="location" class="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-xs font-semibold text-slate-800 dark:text-slate-100 cursor-pointer">
+            <option value="Campana Verde - B° Alberdi">Campana Verde - B° Alberdi</option>
+            <option value="Punto Limpio - Plaza Roca (Centro)">Punto Limpio - Plaza Roca (Centro)</option>
+            <option value="Campana Verde - B° Bimaco">Campana Verde - B° Bimaco</option>
+            <option value="Punto Limpio - Banda Norte">Punto Limpio - Banda Norte</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="post-caption" class="block text-[11px] font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1">Mensaje para tus vecinos</label>
+          <textarea id="post-caption" name="caption" rows="2" required aria-describedby="post-caption-error" class="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-xs text-slate-800 dark:text-slate-100 placeholder-slate-400" placeholder="Ej: Separando las botellas PET de la semana en la campana del barrio..."></textarea>
+          <p id="post-caption-error" class="field-error hidden mt-1 text-[11px] font-medium text-red-600 dark:text-red-400"></p>
+        </div>
+
+        <div class="flex gap-2 pt-1">
+          <button type="button" id="btn-cancel-post" class="btn-secondary flex-1 py-2 text-xs min-h-[44px]">Cancelar</button>
+          <button type="submit" class="btn-primary flex-1 py-2 text-xs min-h-[44px]">Publicar (+5 pts)</button>
+        </div>
+      </form>
     </dialog>
 
     <!-- ==========================================================================
