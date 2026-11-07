@@ -457,7 +457,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const email = data.email.trim().toLowerCase();
-    if (!EMAIL_PATTERN.test(email)) {
+    if ( !EMAIL_PATTERN.test(email)) {
       errors['reg-email'] = 'Ingresá un correo electrónico válido.';
     } else if (email === DEMO_ACCOUNT.email || accounts.some(account => account.email === email)) {
       errors['reg-email'] = 'Ya existe una cuenta con este correo. Iniciá sesión.';
@@ -469,6 +469,81 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!data.terminos) errors['reg-terminos'] = 'Tenés que aceptar los términos para crear la cuenta.';
     return errors;
   }
+
+  // Validación instantánea en tiempo real en el evento onBlur / onChange (Concepto 02)
+  function validateSingleField(field) {
+    if (!field || !field.id) return;
+    const val = field.value || '';
+    switch (field.id) {
+      case 'email':
+        setFieldError(field, EMAIL_PATTERN.test(val.trim().toLowerCase()) ? '' : 'Ingresá un correo electrónico válido.');
+        break;
+      case 'password':
+        setFieldError(field, val ? '' : 'Ingresá tu contraseña.');
+        break;
+      case 'reg-nombre':
+      case 'cfg-nombre':
+        setFieldError(field, validators.nombre(val));
+        break;
+      case 'reg-apellido':
+      case 'cfg-apellido':
+        setFieldError(field, validators.apellido(val));
+        break;
+      case 'reg-email': {
+        const email = val.trim().toLowerCase();
+        const accounts = loadAccounts();
+        if (!EMAIL_PATTERN.test(email)) {
+          setFieldError(field, 'Ingresá un correo electrónico válido.');
+        } else if (email === DEMO_ACCOUNT.email || accounts.some(acc => acc.email === email)) {
+          setFieldError(field, 'Ya existe una cuenta con este correo. Iniciá sesión.');
+        } else {
+          setFieldError(field, '');
+        }
+        break;
+      }
+      case 'reg-telefono':
+      case 'cfg-telefono':
+        setFieldError(field, validators.telefono(val));
+        break;
+      case 'reg-barrio':
+      case 'cfg-barrio':
+        setFieldError(field, validators.barrio(val));
+        break;
+      case 'reg-password':
+        setFieldError(field, validators.password(val));
+        break;
+      case 'reg-password-confirm': {
+        const passEl = document.getElementById('reg-password');
+        setFieldError(field, passEl && val === passEl.value ? '' : 'Las contraseñas no coinciden.');
+        break;
+      }
+      case 'cfg-pass-actual':
+        setFieldError(field, val ? '' : 'Ingresá tu contraseña actual.');
+        break;
+      case 'cfg-pass-nueva': {
+        const actualEl = document.getElementById('cfg-pass-actual');
+        const msg = validators.password(val) || (actualEl && val === actualEl.value ? 'La nueva contraseña tiene que ser distinta de la actual.' : '');
+        setFieldError(field, msg);
+        break;
+      }
+      case 'cfg-pass-confirm': {
+        const nuevaEl = document.getElementById('cfg-pass-nueva');
+        setFieldError(field, nuevaEl && val === nuevaEl.value ? '' : 'Las contraseñas no coinciden.');
+        break;
+      }
+      default:
+        break;
+    }
+  }
+
+  document.querySelectorAll('#login-form, #register-form, #profile-form, #password-form').forEach(form => {
+    form.querySelectorAll('input:not([type="checkbox"]), select').forEach(field => {
+      field.addEventListener('blur', () => validateSingleField(field));
+      if (field.tagName === 'SELECT') {
+        field.addEventListener('change', () => validateSingleField(field));
+      }
+    });
+  });
 
   // Registro: la cuenta se crea con billetera propia persistida en localStorage
   const registerForm = document.getElementById('register-form');
@@ -720,18 +795,36 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  function getTargetDepositLocation(materialKey) {
+    const mat = MATERIALS[materialKey] || MATERIALS.pet;
+    const currentPoint = state.selectedPoint || 'Campana Verde Alberdi';
+    if (mat.container === 'Punto Limpio' && !/punto limpio/i.test(currentPoint)) {
+      return {
+        targetPoint: 'Punto Limpio - Plaza Roca (Centro)',
+        redirected: true
+      };
+    }
+    return {
+      targetPoint: currentPoint,
+      redirected: false
+    };
+  }
+
   function updateScannerMaterialUI() {
     const mat = MATERIALS[state.selectedMaterial] || MATERIALS.pet;
     const codeEl = document.getElementById('scanner-material-code');
     const pointsEl = document.getElementById('scanner-material-points');
     const titleEl = document.getElementById('scanner-material-title');
     const descEl = document.getElementById('scanner-material-desc');
+    const { targetPoint, redirected } = getTargetDepositLocation(state.selectedMaterial);
 
     if (codeEl) codeEl.textContent = mat.code;
     if (pointsEl) pointsEl.textContent = `+${mat.points} EcoPuntos`;
     if (titleEl) titleEl.textContent = mat.title;
     if (descEl) {
-      descEl.innerHTML = `Depositá en <strong>${state.selectedPoint}</strong> para sumar <strong>+${mat.points} EcoPuntos</strong>.`;
+      descEl.innerHTML = redirected
+        ? `El vidrio se recibe únicamente en <strong>${targetPoint}</strong>. Depositá ahí para sumar <strong>+${mat.points} EcoPuntos</strong>.`
+        : `Depositá en <strong>${targetPoint}</strong> para sumar <strong>+${mat.points} EcoPuntos</strong>.`;
     }
 
     materialBtns.forEach(btn => {
@@ -760,12 +853,13 @@ document.addEventListener('DOMContentLoaded', () => {
       btnRegisterDeposit.disabled = true;
 
       const mat = MATERIALS[state.selectedMaterial] || MATERIALS.pet;
+      const { targetPoint } = getTargetDepositLocation(state.selectedMaterial);
       state.ecoPuntos += mat.points;
 
       const newItem = {
         id: Date.now(),
         title: mat.title,
-        location: state.selectedPoint || 'Campana Verde Alberdi',
+        location: targetPoint,
         time: 'Recién',
         points: mat.points
       };
