@@ -173,8 +173,9 @@ document.addEventListener('DOMContentLoaded', () => {
     darkMode: document.documentElement.classList.contains('dark'),
     scannerFlash: false,
     selectedMaterial: 'pet',
-    selectedPoint: 'Campana Verde Alberdi',
+    selectedPoint: 'Campana Verde - B° Alberdi',
     selectedPointStatus: 'available',
+    selectedPointBonus: 10,
     historyPage: 1,
     history: initialDemoWallet.history
   };
@@ -405,17 +406,31 @@ document.addEventListener('DOMContentLoaded', () => {
     navigateTo(target);
   });
 
-  // Notificación Toast (reemplaza alert() para no bloquear la interfaz)
+  // Notificación Toast (reemplaza alert() para no bloquear la interfaz, con botón 'X' para cerrar)
   const toast = document.getElementById('toast');
   const toastMessage = document.getElementById('toast-message');
+  const closeToastBtn = document.getElementById('btn-close-toast');
   let toastTimer;
+
+  function hideToast() {
+    if (!toast) return;
+    clearTimeout(toastTimer);
+    toast.classList.remove('show');
+  }
 
   function showToast(message) {
     if (!toast || !toastMessage) return;
     toastMessage.textContent = message;
     toast.classList.add('show');
     clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => toast.classList.remove('show'), 3500);
+    toastTimer = setTimeout(hideToast, 4000);
+  }
+
+  if (closeToastBtn) {
+    closeToastBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      hideToast();
+    });
   }
 
   // ==========================================================================
@@ -780,6 +795,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const nearbyCardTitle = document.getElementById('nearby-card-title');
   const nearbyCardSubtitle = document.getElementById('nearby-card-subtitle');
   const nearbyCardStatusBadge = document.getElementById('nearby-card-status-badge');
+  const nearbyCardBonusBadge = document.getElementById('nearby-card-bonus-badge');
   const nearbyCardMaterials = document.getElementById('nearby-card-materials');
   const nearbyCardIcon = document.getElementById('nearby-card-icon');
   const nearbyCardIconWrap = document.getElementById('nearby-card-icon-wrap');
@@ -890,22 +906,24 @@ document.addEventListener('DOMContentLoaded', () => {
       m.setAttribute('aria-pressed', String(active));
     });
 
-    const title = marker.dataset.title || 'Campana Verde - B° Alberdi';
+    const title = marker.dataset.title || 'Campana Verde - B° Alberdi (25%)';
     const subtitle = marker.dataset.subtitle || 'A solo 350m • 4 min a pie';
     const status = marker.dataset.status || 'available';
-    const capacity = marker.dataset.capacity || (status === 'full' ? '98% • Lleno' : (status === 'warning' ? '75% • Media-Alta' : '25% ocupado'));
+    const capacity = marker.dataset.capacity || (status === 'full' ? '98% ocupado' : (status === 'warning' ? '75% ocupado' : '25% ocupado'));
+    const bonus = Number(marker.dataset.bonus) || 0;
     const materials = marker.dataset.materials || 'PET 1, Cartón, Latas';
     const route = marker.dataset.route;
-    const targetX = marker.dataset.x || '26';
-    const targetY = marker.dataset.y || '34';
-    const chipX = marker.dataset.chipX || '38';
-    const chipY = marker.dataset.chipY || '44';
+    const targetX = marker.dataset.x || '41';
+    const targetY = marker.dataset.y || '43';
+    const chipX = marker.dataset.chipX || '44';
+    const chipY = marker.dataset.chipY || '48';
     const distanceChip = marker.dataset.distanceChip || '350m • 4 min';
     const isFull = status === 'full';
     const isWarning = status === 'warning';
 
     state.selectedPoint = title.replace(/\s*\((Lleno|\d+%)\)/i, '');
     state.selectedPointStatus = status;
+    state.selectedPointBonus = bonus;
 
     if (nearbyCardTitle) nearbyCardTitle.textContent = title;
     if (nearbyCardSubtitle) nearbyCardSubtitle.textContent = subtitle;
@@ -918,6 +936,19 @@ document.addEventListener('DOMContentLoaded', () => {
         : isWarning
           ? 'text-[11px] font-bold px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-950/70 text-amber-800 dark:text-amber-300'
           : 'text-[11px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-200';
+    }
+
+    if (nearbyCardBonusBadge) {
+      if (isFull) {
+        nearbyCardBonusBadge.textContent = 'Sin bonus (98%)';
+        nearbyCardBonusBadge.className = 'text-[11px] font-bold px-2 py-0.5 rounded-full bg-red-50 dark:bg-red-950/50 text-red-600 dark:text-red-300';
+      } else if (bonus > 0) {
+        nearbyCardBonusBadge.textContent = `+${bonus} pts Bonus baja carga`;
+        nearbyCardBonusBadge.className = 'text-[11px] font-extrabold px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-950/70 text-amber-800 dark:text-amber-300';
+      } else {
+        nearbyCardBonusBadge.textContent = 'Sin bonus (75%)';
+        nearbyCardBonusBadge.className = 'text-[11px] font-bold px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300';
+      }
     }
 
     if (nearbyCardIcon && nearbyCardIconWrap) {
@@ -1002,6 +1033,13 @@ document.addEventListener('DOMContentLoaded', () => {
   mapFilterPills.forEach(pill => {
     pill.addEventListener('click', () => {
       const nextPressed = pill.getAttribute('aria-pressed') !== 'true';
+      if (!nextPressed) {
+        const activeCount = [...mapFilterPills].filter(p => p.getAttribute('aria-pressed') === 'true').length;
+        if (activeCount <= 1) {
+          showToast('Siempre debe haber al menos un filtro activo en el mapa.');
+          return;
+        }
+      }
       pill.setAttribute('aria-pressed', String(nextPressed));
       pill.classList.toggle('bg-emerald-800', nextPressed);
       pill.classList.toggle('text-white', nextPressed);
@@ -1086,18 +1124,27 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  function getPointBonus(pointTitle) {
+    if (/alberdi|plaza roca|centro/i.test(pointTitle || '')) {
+      return 10;
+    }
+    return 0;
+  }
+
   function getTargetDepositLocation(materialKey) {
     const mat = MATERIALS[materialKey] || MATERIALS.pet;
-    const currentPoint = state.selectedPoint || 'Campana Verde Alberdi';
+    const currentPoint = state.selectedPoint || 'Campana Verde - B° Alberdi';
     if (mat.container === 'Punto Limpio' && !/punto limpio/i.test(currentPoint)) {
       return {
-        targetPoint: 'Punto Limpio - Plaza Roca (Centro)',
-        redirected: true
+        targetPoint: 'Punto Limpio - Plaza Roca',
+        redirected: true,
+        bonusPoints: 10
       };
     }
     return {
       targetPoint: currentPoint,
-      redirected: false
+      redirected: false,
+      bonusPoints: getPointBonus(currentPoint)
     };
   }
 
@@ -1107,15 +1154,24 @@ document.addEventListener('DOMContentLoaded', () => {
     const pointsEl = document.getElementById('scanner-material-points');
     const titleEl = document.getElementById('scanner-material-title');
     const descEl = document.getElementById('scanner-material-desc');
-    const { targetPoint, redirected } = getTargetDepositLocation(state.selectedMaterial);
+    const { targetPoint, redirected, bonusPoints } = getTargetDepositLocation(state.selectedMaterial);
+    const totalPoints = mat.points + bonusPoints;
 
     if (codeEl) codeEl.textContent = mat.code;
-    if (pointsEl) pointsEl.textContent = `+${mat.points} EcoPuntos`;
+    if (pointsEl) {
+      pointsEl.textContent = bonusPoints > 0
+        ? `+${totalPoints} pts (${mat.points} + ${bonusPoints} Bonus)`
+        : `+${mat.points} EcoPuntos`;
+    }
     if (titleEl) titleEl.textContent = mat.title;
     if (descEl) {
-      descEl.innerHTML = redirected
-        ? `El vidrio se recibe únicamente en <strong>${targetPoint}</strong>. Depositá ahí para sumar <strong>+${mat.points} EcoPuntos</strong>.`
-        : `Depositá en <strong>${targetPoint}</strong> para sumar <strong>+${mat.points} EcoPuntos</strong>.`;
+      if (redirected) {
+        descEl.innerHTML = `El vidrio se recibe en <strong>${targetPoint} (15%)</strong>. Sumás <strong>+${mat.points} pts</strong> + <strong>${bonusPoints} pts Bonus</strong> por baja ocupación (Total: <strong>+${totalPoints} EcoPuntos</strong>).`;
+      } else if (bonusPoints > 0) {
+        descEl.innerHTML = `Depositá en <strong>${targetPoint}</strong> (baja ocupación) y sumá <strong>+${mat.points} pts</strong> + <strong>${bonusPoints} pts Bonus</strong> para equilibrar el llenado (Total: <strong>+${totalPoints} EcoPuntos</strong>).`;
+      } else {
+        descEl.innerHTML = `Depositá en <strong>${targetPoint} (75%)</strong> para sumar <strong>+${mat.points} EcoPuntos</strong>. <em>Tip: las campanas más vacías otorgan +10 pts bonus.</em>`;
+      }
     }
 
     materialBtns.forEach(btn => {
@@ -1144,22 +1200,23 @@ document.addEventListener('DOMContentLoaded', () => {
       btnRegisterDeposit.disabled = true;
 
       const mat = MATERIALS[state.selectedMaterial] || MATERIALS.pet;
-      const { targetPoint } = getTargetDepositLocation(state.selectedMaterial);
-      state.ecoPuntos += mat.points;
+      const { targetPoint, bonusPoints } = getTargetDepositLocation(state.selectedMaterial);
+      const totalPoints = mat.points + bonusPoints;
+      state.ecoPuntos += totalPoints;
 
       const nowStr = new Date().toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' });
-      const selectedMarkerEl = [...document.querySelectorAll('.map-marker')].find(m => m.dataset.title === targetPoint);
+      const selectedMarkerEl = [...document.querySelectorAll('.map-marker')].find(m => (m.dataset.title || '').includes(targetPoint));
       const capacityStr = selectedMarkerEl && selectedMarkerEl.dataset.capacity
-        ? `Con capacidad (${selectedMarkerEl.dataset.capacity})`
-        : (/punto limpio/i.test(targetPoint) ? 'Operativo con atención municipal (30% ocupado)' : 'Con capacidad (25% ocupado)');
-      const co2Saved = (mat.points * 0.04).toFixed(1).replace('.', ',');
+        ? (bonusPoints > 0 ? `Baja ocupación (${selectedMarkerEl.dataset.capacity}) • +${bonusPoints} pts Bonus` : `Ocupación media-alta (${selectedMarkerEl.dataset.capacity})`)
+        : (bonusPoints > 0 ? `Baja ocupación (25% ocupado) • +${bonusPoints} pts Bonus` : 'Ocupación media-alta (75% ocupado)');
+      const co2Saved = (totalPoints * 0.04).toFixed(1).replace('.', ',');
 
       const newItem = {
         id: Date.now(),
-        title: `${mat.title} (${mat.code})`,
+        title: bonusPoints > 0 ? `${mat.title} (+${bonusPoints} pts Bonus vaciado parejo)` : `${mat.title} (${mat.code})`,
         location: targetPoint,
         time: `Hoy, ${nowStr} hs`,
-        points: mat.points,
+        points: totalPoints,
         containerStatus: capacityStr,
         impact: `Material limpio verificado • ${co2Saved} kg CO₂ evitado`,
         ticketCode: `#ECO-${String(Date.now()).slice(-4)}`
@@ -1169,7 +1226,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
       saveUserWallet();
       updatePointsUI();
-      showToast(`¡Depósito registrado! Sumaste +${mat.points} EcoPuntos a tu billetera.`);
+      showToast(
+        bonusPoints > 0
+          ? `¡Depósito registrado! Sumaste +${totalPoints} EcoPuntos (${mat.points} base + ${bonusPoints} bonus por campana con baja ocupación).`
+          : `¡Depósito registrado! Sumaste +${totalPoints} EcoPuntos a tu billetera.`
+      );
       navigateTo('puntos');
 
       setTimeout(() => {
@@ -1519,6 +1580,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   const btnDrawerHelp = document.getElementById('btn-drawer-help');
+  const btnGuideToHelp = document.getElementById('btn-guide-to-help');
   if (openGuideBtn) openGuideBtn.addEventListener('click', openGuideModal);
   if (btnDrawerHelp) btnDrawerHelp.addEventListener('click', openHelpModal);
   if (closeGuideTopBtn && guideDialog) {
@@ -1531,6 +1593,12 @@ document.addEventListener('DOMContentLoaded', () => {
     btnHelpToGuide.addEventListener('click', () => {
       if (helpDialog && helpDialog.open) helpDialog.close();
       openGuideModal();
+    });
+  }
+  if (btnGuideToHelp) {
+    btnGuideToHelp.addEventListener('click', () => {
+      if (guideDialog && guideDialog.open) guideDialog.close();
+      openHelpModal();
     });
   }
   document.querySelectorAll('.link-help').forEach(link => {
@@ -1651,8 +1719,9 @@ document.addEventListener('DOMContentLoaded', () => {
       barrio: 'B° Alberdi',
       time: 'Hace 25 min',
       location: 'Campana Verde - B° Alberdi',
-      pointsBadge: '+15 EcoPuntos',
-      caption: '¡Dejando las botellas PET aplastadas de la semana! La campana de Alberdi estaba impecable y con mucho lugar (25% ocupada).',
+      pointId: 'alberdi',
+      pointsBadge: '+20 EcoPuntos (+10 Bonus)',
+      caption: '¡Dejando las botellas PET aplastadas de la semana! La campana de Alberdi estaba al 25% y me sumó +10 pts bonus por baja ocupación.',
       image: 'https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?auto=format&fit=crop&w=600&q=80',
       likes: 18,
       liked: false
@@ -1662,11 +1731,12 @@ document.addEventListener('DOMContentLoaded', () => {
       type: 'deposito',
       author: 'Martín Sosa',
       initials: 'MS',
-      barrio: 'B° Banda Norte',
+      barrio: 'B° Centro',
       time: 'Hace 2 horas',
-      location: 'Punto Limpio - Banda Norte',
-      pointsBadge: '+45 EcoPuntos',
-      caption: 'Hoy llevamos todas las cajas de cartón plegadas y frascos de vidrio sano al Punto Limpio. ¡Sumando para el descuento en la panadería!',
+      location: 'Punto Limpio - Plaza Roca (Centro)',
+      pointId: 'centro',
+      pointsBadge: '+30 EcoPuntos (+10 Bonus)',
+      caption: 'Hoy llevamos todas las cajas de cartón plegadas y frascos de vidrio sano al Punto Limpio de Plaza Roca (15% ocupado). ¡Sumando para la panadería!',
       image: 'https://images.unsplash.com/photo-1604187351574-c75ca79f5807?auto=format&fit=crop&w=600&q=80',
       likes: 24,
       liked: false
@@ -1703,9 +1773,19 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   ];
 
+  function resolvePointIdFromLocation(location) {
+    const loc = (location || '').toLowerCase();
+    if (loc.includes('alberdi')) return 'alberdi';
+    if (loc.includes('plaza roca') || loc.includes('centro')) return 'centro';
+    if (loc.includes('bimaco')) return 'bimaco';
+    if (loc.includes('norte') || loc.includes('sarmiento')) return 'banda-norte';
+    return 'alberdi';
+  }
+
   function cloneCommunityPost(post) {
     return {
       ...post,
+      pointId: post.pointId || resolvePointIdFromLocation(post.location),
       checklist: Array.isArray(post.checklist)
         ? post.checklist.map(item => ({ ...item }))
         : (post.type === 'evento' ? DEFAULT_EVENT_CHECKLIST.map(item => ({ ...item })) : undefined)
@@ -1727,7 +1807,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   let communityPosts = loadCommunityPosts();
-  let activeCommunityFilter = 'all';
+  let activeCommunityFilter = 'deposito';
   let selectedPostImage = 'https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?auto=format&fit=crop&w=600&q=80';
 
   const communityFeedList = document.getElementById('community-feed-list');
@@ -1900,9 +1980,7 @@ document.addEventListener('DOMContentLoaded', () => {
       communityMyEventsBtn.classList.toggle('hidden', activeCommunityFilter !== 'evento');
     }
     if (!communityFeedList) return;
-    const visiblePosts = communityPosts.filter(post => (
-      activeCommunityFilter === 'all' ? true : post.type === activeCommunityFilter
-    ));
+    const visiblePosts = communityPosts.filter(post => post.type === activeCommunityFilter);
 
     communityFeedList.innerHTML = visiblePosts.map(post => {
       if (post.type === 'evento') {
@@ -1971,7 +2049,7 @@ document.addEventListener('DOMContentLoaded', () => {
               <iconify-icon icon="mynaui:heart" class="text-base" aria-hidden="true"></iconify-icon>
               <span>Aplaudir (${post.likes || 0})</span>
             </button>
-            <button type="button" data-navigate="mapa" class="touch-target px-2.5 py-1.5 rounded-xl text-[11px] font-bold text-emerald-700 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-slate-800 flex items-center gap-1 cursor-pointer">
+            <button type="button" class="btn-post-map touch-target px-2.5 py-1.5 rounded-xl text-[11px] font-bold text-emerald-700 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-slate-800 flex items-center gap-1 cursor-pointer" data-point-id="${post.pointId || resolvePointIdFromLocation(post.location)}">
               <span>Ver punto en mapa</span>
               <iconify-icon icon="mynaui:chevron-right" class="text-sm" aria-hidden="true"></iconify-icon>
             </button>
@@ -1981,11 +2059,32 @@ document.addEventListener('DOMContentLoaded', () => {
     }).join('');
   }
 
+  function navigateAndFocusMapPoint(pointId, toastPrefix = 'Ubicación en el mapa') {
+    const targetMarker = [...mapMarkers].find(m => m.dataset.pointId === pointId) || mapMarkers[0];
+    if (targetMarker) {
+      const cat = targetMarker.dataset.category;
+      const catPill = [...mapFilterPills].find(p => p.dataset.filter === cat);
+      if (catPill && catPill.getAttribute('aria-pressed') !== 'true') {
+        catPill.setAttribute('aria-pressed', 'true');
+        catPill.classList.add('bg-emerald-800', 'text-white', 'border-emerald-600');
+        catPill.classList.remove('bg-white/95', 'dark:bg-slate-800/95', 'text-slate-700', 'dark:text-slate-200');
+        targetMarker.classList.remove('hidden');
+      }
+    }
+    navigateTo('mapa');
+    if (targetMarker) {
+      requestAnimationFrame(() => {
+        selectMapMarker(targetMarker, { focusCamera: true, focusElement: true });
+        showToast(`${toastPrefix}: ${targetMarker.dataset.title}`);
+      });
+    }
+  }
+
   communityFilterBtns.forEach(btn => {
     btn.addEventListener('click', () => {
-      activeCommunityFilter = btn.dataset.feedFilter || 'all';
+      activeCommunityFilter = btn.dataset.feedFilter || 'deposito';
       communityFilterBtns.forEach(b => {
-        const active = (b.dataset.feedFilter || 'all') === activeCommunityFilter;
+        const active = (b.dataset.feedFilter || 'deposito') === activeCommunityFilter;
         b.setAttribute('aria-selected', String(active));
         b.setAttribute('aria-pressed', String(active));
         b.classList.toggle('bg-emerald-800', active);
@@ -1995,12 +2094,19 @@ document.addEventListener('DOMContentLoaded', () => {
         b.classList.toggle('dark:text-slate-300', !active);
       });
       renderCommunityFeed();
-  renderMyEvents();
+      renderMyEvents();
     });
   });
 
   if (communityFeedList) {
     communityFeedList.addEventListener('click', (e) => {
+      const mapBtn = e.target.closest('.btn-post-map');
+      if (mapBtn) {
+        e.preventDefault();
+        e.stopPropagation();
+        navigateAndFocusMapPoint(mapBtn.dataset.pointId || 'alberdi', 'Punto de la publicación');
+        return;
+      }
       const likeBtn = e.target.closest('.btn-post-like');
       if (likeBtn) {
         const post = communityPosts.find(p => p.id === likeBtn.dataset.postId);
@@ -2009,7 +2115,7 @@ document.addEventListener('DOMContentLoaded', () => {
           post.likes = Math.max(0, (post.likes || 0) + (post.liked ? 1 : -1));
           saveCommunityPosts(communityPosts);
           renderCommunityFeed();
-  renderMyEvents();
+          renderMyEvents();
         }
         return;
       }
@@ -2021,7 +2127,6 @@ document.addEventListener('DOMContentLoaded', () => {
           evt.attendees = Math.max(0, (evt.attendees || 0) + (evt.attending ? 1 : -1));
           saveCommunityPosts(communityPosts);
           renderCommunityFeed();
-  renderMyEvents();
           renderMyEvents();
           showToast(evt.attending ? `¡Agendado en Mis Eventos: "${evt.title}"!` : 'Cancelaste tu asistencia al evento.');
         }
@@ -2064,15 +2169,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const mapBtn = e.target.closest('.btn-event-map');
       if (mapBtn) {
-        const pointId = mapBtn.dataset.pointId || 'centro';
-        navigateTo('mapa');
-        const targetMarker = [...mapMarkers].find(m => m.dataset.pointId === pointId);
-        if (targetMarker) {
-          requestAnimationFrame(() => {
-            selectMapMarker(targetMarker, { focusCamera: true, focusElement: true });
-            showToast(`Ubicación del evento: ${targetMarker.dataset.title}`);
-          });
-        }
+        navigateAndFocusMapPoint(mapBtn.dataset.pointId || 'centro', 'Ubicación del evento');
       }
     });
 
@@ -2197,6 +2294,7 @@ document.addEventListener('DOMContentLoaded', () => {
         barrio,
         time: 'Recién',
         location,
+        pointId: resolvePointIdFromLocation(location),
         pointsBadge: '+5 pts Comunidad',
         caption,
         image: selectedPostImage,
@@ -2224,9 +2322,19 @@ document.addEventListener('DOMContentLoaded', () => {
       saveUserWallet();
       updatePointsUI();
 
-      activeCommunityFilter = 'all';
+      activeCommunityFilter = 'deposito';
+      communityFilterBtns.forEach(b => {
+        const active = (b.dataset.feedFilter || 'deposito') === 'deposito';
+        b.setAttribute('aria-selected', String(active));
+        b.setAttribute('aria-pressed', String(active));
+        b.classList.toggle('bg-emerald-800', active);
+        b.classList.toggle('text-white', active);
+        b.classList.toggle('shadow-sm', active);
+        b.classList.toggle('text-slate-700', !active);
+        b.classList.toggle('dark:text-slate-300', !active);
+      });
       renderCommunityFeed();
-  renderMyEvents();
+      renderMyEvents();
       communityPostForm.reset();
       if (postDialog && postDialog.open) postDialog.close();
       showToast('¡Publicación compartida en el muro! Sumaste +5 EcoPuntos.');
