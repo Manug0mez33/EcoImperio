@@ -693,7 +693,7 @@
               <span class="text-xs font-bold tracking-widest text-emerald-300 uppercase">Balance Disponible</span>
               <span class="px-2.5 py-0.5 rounded-full bg-amber-400/20 text-amber-300 border border-amber-400/40 text-[11px] font-extrabold flex items-center gap-1 shrink-0">
                 <iconify-icon icon="ph:medal-fill" class="text-xs text-amber-300" aria-hidden="true"></iconify-icon>
-                <span id="balance-level-tag">Nivel 3 • EcoVecino</span>
+                <span id="balance-level-tag">Nivel 3 • Planta</span>
               </span>
             </div>
             <div class="flex items-baseline gap-2 mt-1">
@@ -704,7 +704,7 @@
             <!-- Barra de Progreso de Experiencia XP acumulada hacia el próximo Nivel (los canjes no restan XP) -->
             <div class="mt-4 pt-3 border-t border-emerald-800/80">
               <div class="flex justify-between text-xs text-emerald-200 mb-1">
-                <span id="balance-goal-text">Progreso a Nivel 4 (Guardián Verde)</span>
+                <span id="balance-goal-text">Progreso a Nivel 4 (Árbol)</span>
                 <span id="balance-progress-pct" class="font-bold text-amber-400">63%</span>
               </div>
               <div class="w-full bg-emerald-950 h-2.5 rounded-full overflow-hidden" role="progressbar" id="balance-progressbar" aria-label="Progreso de experiencia para subir de nivel" aria-valuemin="0" aria-valuemax="2000" aria-valuenow="1250">
@@ -731,9 +731,17 @@
 
         <!-- Fila horizontal de Comercios: scroll-px-4 alinea la card activa exactamente con el margen de los demás bloques -->
         <div id="comercios-grid" class="flex flex-nowrap gap-3 overflow-x-auto snap-x snap-mandatory scroll-pl-4 scroll-pr-4 -mx-4 px-4 pb-1 cursor-grab active:cursor-grabbing select-none">
-          <!-- Card 1 -->
+          <!-- Card 1: Nivel 1 (Semilla) -->
           <article class="w-[67%] min-w-[242px] max-w-[260px] shrink-0 snap-start bg-white dark:bg-slate-900 rounded-2xl overflow-hidden border border-slate-200/80 dark:border-slate-800 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
-            <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=400&q=80" alt="Mostrador de Panadería El Imperio con panes artesanales" class="w-full h-28 object-cover pointer-events-none">
+            <div class="relative">
+              <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=400&q=80" alt="Mostrador de Panadería El Imperio con panes artesanales" class="w-full h-28 object-cover pointer-events-none">
+              <div class="absolute top-2 left-2">
+                <span class="badge-level-req text-[10px] font-bold bg-emerald-50/95 dark:bg-emerald-950/90 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 px-2 py-0.5 rounded-md inline-flex items-center gap-1 backdrop-blur-xs shadow-xs">
+                  <iconify-icon icon="ph:plant-bold" class="text-xs text-emerald-600"></iconify-icon>
+                  <span>Req. Nivel 1 • Semilla</span>
+                </span>
+              </div>
+            </div>
             <div class="p-3.5 flex-1 flex flex-col justify-between gap-2.5">
               <div>
                 <h3 class="font-bold text-slate-800 dark:text-slate-100">Panadería El Imperio</h3>
@@ -744,14 +752,22 @@
                   <span class="text-xs font-bold bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-200 px-2.5 py-0.5 rounded-full">15% Dto.</span>
                   <span class="text-xs font-bold text-amber-700 dark:text-amber-400">200 pts</span>
                 </div>
-                <button type="button" class="btn-redeem-comercio touch-target w-full px-3 py-2 rounded-xl text-xs font-bold bg-emerald-50 dark:bg-emerald-900/40 text-emerald-800 dark:text-emerald-200 border border-emerald-200 dark:border-emerald-800 hover:bg-emerald-100 dark:hover:bg-emerald-900/70 transition-all cursor-pointer" data-comercio="Panadería El Imperio" data-discount="15% de descuento" data-cost="200">Canjear cupón</button>
+                <button type="button" class="btn-redeem-comercio touch-target w-full px-3 py-2 rounded-xl text-xs font-bold bg-emerald-50 dark:bg-emerald-900/40 text-emerald-800 dark:text-emerald-200 border border-emerald-200 dark:border-emerald-800 hover:bg-emerald-100 dark:hover:bg-emerald-900/70 transition-all cursor-pointer" data-comercio="Panadería El Imperio" data-discount="15% de descuento" data-cost="200" data-min-level="1">Canjear cupón</button>
               </div>
             </div>
           </article>
 
-          <!-- Card 2 -->
+          <!-- Card 2: Nivel 2 (Brote) -->
           <article class="w-[67%] min-w-[242px] max-w-[260px] shrink-0 snap-start bg-white dark:bg-slate-900 rounded-2xl overflow-hidden border border-slate-200/80 dark:border-slate-800 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
-            <img src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=400&q=80" alt="Estanterías de libros en Librería La Biblioteca" class="w-full h-28 object-cover pointer-events-none">
+            <div class="relative">
+              <img src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=400&q=80" alt="Estanterías de libros en Librería La Biblioteca" class="w-full h-28 object-cover pointer-events-none">
+              <div class="absolute top-2 left-2">
+                <span class="badge-level-req text-[10px] font-bold bg-emerald-50/95 dark:bg-emerald-950/90 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 px-2 py-0.5 rounded-md inline-flex items-center gap-1 backdrop-blur-xs shadow-xs">
+                  <iconify-icon icon="ph:plant-bold" class="text-xs text-emerald-600"></iconify-icon>
+                  <span>Req. Nivel 2 • Brote</span>
+                </span>
+              </div>
+            </div>
             <div class="p-3.5 flex-1 flex flex-col justify-between gap-2.5">
               <div>
                 <h3 class="font-bold text-slate-800 dark:text-slate-100">Librería La Biblioteca</h3>
@@ -762,14 +778,22 @@
                   <span class="text-xs font-bold bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-200 px-2.5 py-0.5 rounded-full">10% Dto.</span>
                   <span class="text-xs font-bold text-amber-700 dark:text-amber-400">150 pts</span>
                 </div>
-                <button type="button" class="btn-redeem-comercio touch-target w-full px-3 py-2 rounded-xl text-xs font-bold bg-emerald-50 dark:bg-emerald-900/40 text-emerald-800 dark:text-emerald-200 border border-emerald-200 dark:border-emerald-800 hover:bg-emerald-100 dark:hover:bg-emerald-900/70 transition-all cursor-pointer" data-comercio="Librería La Biblioteca" data-discount="10% de descuento" data-cost="150">Canjear cupón</button>
+                <button type="button" class="btn-redeem-comercio touch-target w-full px-3 py-2 rounded-xl text-xs font-bold bg-emerald-50 dark:bg-emerald-900/40 text-emerald-800 dark:text-emerald-200 border border-emerald-200 dark:border-emerald-800 hover:bg-emerald-100 dark:hover:bg-emerald-900/70 transition-all cursor-pointer" data-comercio="Librería La Biblioteca" data-discount="10% de descuento" data-cost="150" data-min-level="2">Canjear cupón</button>
               </div>
             </div>
           </article>
 
-          <!-- Card 3: Café de la Plaza -->
+          <!-- Card 3: Nivel 3 (Planta) -->
           <article class="w-[67%] min-w-[242px] max-w-[260px] shrink-0 snap-start bg-white dark:bg-slate-900 rounded-2xl overflow-hidden border border-slate-200/80 dark:border-slate-800 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
-            <img src="https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&w=400&q=80" alt="Taza de café de especialidad en Café de la Plaza" class="w-full h-28 object-cover pointer-events-none">
+            <div class="relative">
+              <img src="https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&w=400&q=80" alt="Taza de café de especialidad en Café de la Plaza" class="w-full h-28 object-cover pointer-events-none">
+              <div class="absolute top-2 left-2">
+                <span class="badge-level-req text-[10px] font-bold bg-emerald-50/95 dark:bg-emerald-950/90 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 px-2 py-0.5 rounded-md inline-flex items-center gap-1 backdrop-blur-xs shadow-xs">
+                  <iconify-icon icon="ph:plant-bold" class="text-xs text-emerald-600"></iconify-icon>
+                  <span>Req. Nivel 3 • Planta</span>
+                </span>
+              </div>
+            </div>
             <div class="p-3.5 flex-1 flex flex-col justify-between gap-2.5">
               <div>
                 <h3 class="font-bold text-slate-800 dark:text-slate-100">Café de la Plaza</h3>
@@ -780,14 +804,22 @@
                   <span class="text-xs font-bold bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-200 px-2.5 py-0.5 rounded-full">20% Dto.</span>
                   <span class="text-xs font-bold text-amber-700 dark:text-amber-400">250 pts</span>
                 </div>
-                <button type="button" class="btn-redeem-comercio touch-target w-full px-3 py-2 rounded-xl text-xs font-bold bg-emerald-50 dark:bg-emerald-900/40 text-emerald-800 dark:text-emerald-200 border border-emerald-200 dark:border-emerald-800 hover:bg-emerald-100 dark:hover:bg-emerald-900/70 transition-all cursor-pointer" data-comercio="Café de la Plaza" data-discount="20% de descuento" data-cost="250">Canjear cupón</button>
+                <button type="button" class="btn-redeem-comercio touch-target w-full px-3 py-2 rounded-xl text-xs font-bold bg-emerald-50 dark:bg-emerald-900/40 text-emerald-800 dark:text-emerald-200 border border-emerald-200 dark:border-emerald-800 hover:bg-emerald-100 dark:hover:bg-emerald-900/70 transition-all cursor-pointer" data-comercio="Café de la Plaza" data-discount="20% de descuento" data-cost="250" data-min-level="3">Canjear cupón</button>
               </div>
             </div>
           </article>
 
-          <!-- Card 4: Almacén Natural Río -->
+          <!-- Card 4: Nivel 4 (Árbol) -->
           <article id="comercio-extra-card" class="w-[67%] min-w-[242px] max-w-[260px] shrink-0 snap-start bg-white dark:bg-slate-900 rounded-2xl overflow-hidden border border-slate-200/80 dark:border-slate-800 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
-            <img src="https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=400&q=80" alt="Productos orgánicos y regionales en Almacén Natural Río" class="w-full h-28 object-cover pointer-events-none">
+            <div class="relative">
+              <img src="https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=400&q=80" alt="Productos orgánicos y regionales en Almacén Natural Río" class="w-full h-28 object-cover pointer-events-none">
+              <div class="absolute top-2 left-2">
+                <span class="badge-level-req text-[10px] font-bold bg-slate-100/95 dark:bg-slate-800/90 text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-slate-700 px-2 py-0.5 rounded-md inline-flex items-center gap-1 backdrop-blur-xs shadow-xs">
+                  <iconify-icon icon="mynaui:lock" class="text-xs text-amber-600 dark:text-amber-400"></iconify-icon>
+                  <span>Req. Nivel 4 • Árbol</span>
+                </span>
+              </div>
+            </div>
             <div class="p-3.5 flex-1 flex flex-col justify-between gap-2.5">
               <div>
                 <h3 class="font-bold text-slate-800 dark:text-slate-100">Almacén Natural Río</h3>
@@ -798,7 +830,36 @@
                   <span class="text-xs font-bold bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-200 px-2.5 py-0.5 rounded-full">15% Dto.</span>
                   <span class="text-xs font-bold text-amber-700 dark:text-amber-400">200 pts</span>
                 </div>
-                <button type="button" class="btn-redeem-comercio touch-target w-full px-3 py-2 rounded-xl text-xs font-bold bg-emerald-50 dark:bg-emerald-900/40 text-emerald-800 dark:text-emerald-200 border border-emerald-200 dark:border-emerald-800 hover:bg-emerald-100 dark:hover:bg-emerald-900/70 transition-all cursor-pointer" data-comercio="Almacén Natural Río" data-discount="15% de descuento" data-cost="200">Canjear cupón</button>
+                <button type="button" class="btn-redeem-comercio touch-target w-full px-3 py-2 rounded-xl text-xs font-bold bg-emerald-50 dark:bg-emerald-900/40 text-emerald-800 dark:text-emerald-200 border border-emerald-200 dark:border-emerald-800 hover:bg-emerald-100 dark:hover:bg-emerald-900/70 transition-all cursor-pointer" data-comercio="Almacén Natural Río" data-discount="15% de descuento" data-cost="200" data-min-level="4">Canjear cupón</button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 5: NUEVA - Electrónica & Celulares (Req. Nivel 5: Bosque) -->
+          <article class="w-[67%] min-w-[242px] max-w-[260px] shrink-0 snap-start bg-white dark:bg-slate-900 rounded-2xl overflow-hidden border-2 border-amber-300/80 dark:border-amber-700/80 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
+            <div class="relative">
+              <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=400&q=80" alt="Smartphones y accesorios en TecnoRío Celulares" class="w-full h-28 object-cover pointer-events-none">
+              <div class="absolute top-2 left-2">
+                <span class="badge-level-req text-[10px] font-black bg-amber-100/95 dark:bg-amber-950/90 text-amber-900 dark:text-amber-200 border border-amber-400 dark:border-amber-600 px-2 py-0.5 rounded-md inline-flex items-center gap-1 backdrop-blur-xs shadow-xs">
+                  <iconify-icon icon="akar-icons:crown" class="text-xs text-amber-600 dark:text-amber-400"></iconify-icon>
+                  <span>Req. Nivel 5 • Bosque</span>
+                </span>
+              </div>
+            </div>
+            <div class="p-3.5 flex-1 flex flex-col justify-between gap-2.5">
+              <div>
+                <h3 class="font-bold text-slate-800 dark:text-slate-100 flex items-center justify-between gap-1">
+                  <span>TecnoRío Celulares</span>
+                  <span class="text-[10px] font-extrabold uppercase px-1.5 py-0.5 rounded bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300">VIP</span>
+                </h3>
+                <p class="text-xs text-slate-600 dark:text-slate-400">Electrónica & Celulares • Centro</p>
+              </div>
+              <div class="space-y-2 pt-1">
+                <div class="flex items-center justify-between gap-1 flex-wrap">
+                  <span class="text-xs font-black bg-amber-100 dark:bg-amber-900/60 text-amber-900 dark:text-amber-200 px-2.5 py-0.5 rounded-full border border-amber-300/60">25% Dto.</span>
+                  <span class="text-xs font-bold text-amber-700 dark:text-amber-400">500 pts</span>
+                </div>
+                <button type="button" class="btn-redeem-comercio touch-target w-full px-3 py-2 rounded-xl text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border border-slate-300 dark:border-slate-700 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all cursor-pointer" data-comercio="TecnoRío Celulares" data-discount="25% de descuento en accesorios y servicio técnico" data-cost="500" data-min-level="5">Canjear cupón</button>
               </div>
             </div>
           </article>
@@ -1648,6 +1709,20 @@
           <button type="button" id="btn-close-post-top" class="touch-target rounded-full text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-center shrink-0" aria-label="Cerrar publicación">
             <iconify-icon icon="mynaui:x" class="text-xl" aria-hidden="true"></iconify-icon>
           </button>
+        </div>
+
+        <!-- Identidad del vecino que publica (Avatar + Nombre + Nivel actual) -->
+        <div class="flex items-center gap-2.5 p-2 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/80">
+          <div id="composer-user-avatar" class="w-8 h-8 rounded-full bg-emerald-800 text-white font-bold text-xs flex items-center justify-center shrink-0">
+            <span class="user-initials">OR</span>
+          </div>
+          <div class="min-w-0">
+            <span class="user-fullname block font-bold text-xs text-slate-900 dark:text-white leading-tight truncate">Oscar Rodríguez</span>
+            <span id="composer-user-level" class="inline-flex items-center gap-1 text-[10px] font-semibold text-emerald-700 dark:text-emerald-400">
+              <iconify-icon icon="ph:plant-bold" class="text-xs"></iconify-icon>
+              <span>Nivel 3 • Planta</span>
+            </span>
+          </div>
         </div>
 
         <!-- Vista previa de imagen seleccionada + selector de fotos rápidas o subida desde dispositivo -->

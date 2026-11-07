@@ -44,12 +44,14 @@ Alineados con `decisiones.md` (ADR-002) y `docs/conceptos/06_DCU_Personas_y_Jour
 - **Perfil**: Pantalla accesible directamente desde la barra inferior (esquina inferior derecha). Muestra avatar personalizable, sello de vecino verificado, métricas de impacto ambiental, credencial QR, edición de datos personales y seguridad.
 - **EcoPuntos canjeables**: Saldo disponible para canjear por descuentos en Comercios Adheridos. Disminuye con cada canje realizado.
 - **Puntos de Experiencia (XP acumulados)**: Total histórico acumulado de puntos ganados por reciclajes y participación comunitaria. **Nunca disminuye al canjear cupones**; funciona como barra de progreso continuo hacia el siguiente nivel.
-- **Escala de Niveles Vecinales**:
-  - *Nivel 1: Semilla* (0 a 499 XP)
-  - *Nivel 2: Brote* (500 a 999 XP)
-  - *Nivel 3: EcoVecino* (1.000 a 1.999 XP)
-  - *Nivel 4: Guardián Verde* (2.000 a 3.499 XP)
-  - *Nivel 5: Héroe Ambiental* (≥ 3.500 XP)
+- **Escala de Niveles Vecinales (Metáfora Botánica y Propósito)**:
+  - *Nivel 1: Semilla* (0 a 499 XP) • Desbloquea canjes básicos en comercios esenciales (panaderías y alimentos).
+  - *Nivel 2: Brote* (500 a 999 XP) • Desbloquea canjes en librerías y papelerías barriales.
+  - *Nivel 3: Planta* (1.000 a 1.999 XP) • Desbloquea cafeterías y espacios gastronómicos.
+  - *Nivel 4: Árbol* (2.000 a 3.499 XP) • Desbloquea tiendas naturales, dietéticas y viveros.
+  - *Nivel 5: Bosque* (≥ 3.500 XP) • Máximo nivel de ciudadanía ambiental; desbloquea beneficios exclusivos en electrónica, celulares y tecnología de alta gama (TecnoRío Celulares).
+- **Utilidad de los Niveles en el Comercio**: Cada tarjeta de comercio exhibe un badge con el nivel requerido (`Req. Nivel X • Nombre`). Si el vecino aún no alcanzó dicho nivel, el canje permanece bloqueado y la app le informa mediante toast de advertencia cuánto le falta para desbloquearlo.
+- **Identidad en Comunidad**: Las publicaciones en el muro vecinal muestran el avatar elegido por el usuario y su insignia de nivel, reconociendo el prestigio y trayectoria ecológica del vecino ante su barrio.
 - **Impacto acumulado**: kg reciclados (peso medido por la celda de carga de la campana), cantidad de depósitos verificados y nivel de experiencia.
 - **Credencial QR del vecino**: Código identificador personal (`#RC-XXXX`) para identificarse presencialmente en Puntos Limpios atendidos y EcoEventos sin dictar datos personales.
 - **Avatar personalizable**: Permite elegir entre las iniciales del vecino o 4 íconos ecológicos (planta, gota de agua, sol, reciclaje), persistidos en `localStorage` (`ecoimperio_avatars`).

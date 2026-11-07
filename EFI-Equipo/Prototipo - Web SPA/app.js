@@ -667,13 +667,24 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  function getLevelName(n) {
+    const names = {
+      1: 'Semilla',
+      2: 'Brote',
+      3: 'Planta',
+      4: 'Árbol',
+      5: 'Bosque'
+    };
+    return names[n] || 'Semilla';
+  }
+
   function getLevelInfo(lifetimeXp) {
     const levels = [
       { n: 1, name: 'Semilla', min: 0, next: 500 },
       { n: 2, name: 'Brote', min: 500, next: 1000 },
-      { n: 3, name: 'EcoVecino', min: 1000, next: 2000 },
-      { n: 4, name: 'Guardián Verde', min: 2000, next: 3500 },
-      { n: 5, name: 'Héroe Ambiental', min: 3500, next: null }
+      { n: 3, name: 'Planta', min: 1000, next: 2000 },
+      { n: 4, name: 'Árbol', min: 2000, next: 3500 },
+      { n: 5, name: 'Bosque', min: 3500, next: null }
     ];
 
     let current = levels[0];
@@ -1552,6 +1563,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.querySelectorAll('.btn-redeem-comercio').forEach(btn => {
     btn.addEventListener('click', () => {
+      const minLevel = Number(btn.dataset.minLevel) || 1;
+      const history = Array.isArray(state.history) ? state.history : [];
+      const redeemed = history.reduce((acc, it) => acc + (it.points < 0 ? -it.points : 0), 0);
+      const lifetimeXp = (state.ecoPuntos || 0) + redeemed;
+      const userLevelInfo = getLevelInfo(lifetimeXp);
+
+      if (userLevelInfo.level < minLevel) {
+        showToast(`Este beneficio requiere Nivel ${minLevel} (${getLevelName(minLevel)}). Tu nivel actual es Nivel ${userLevelInfo.level} (${userLevelInfo.name}).`, 'warning');
+        return;
+      }
+
       const comercio = btn.dataset.comercio || 'Comercio Adherido';
       const discount = btn.dataset.discount || 'descuento';
       const cost = Number(btn.dataset.cost) || 150;
@@ -1654,6 +1676,34 @@ document.addEventListener('DOMContentLoaded', () => {
         ? '¡Meta máxima de nivel alcanzada!'
         : `Faltan ${levelInfo.remainingXp.toLocaleString('es-AR')} XP para subir de nivel`;
     }
+
+    // Actualizar disponibilidad y bloqueo de beneficios en Comercios según el Nivel del vecino
+    const userLevel = levelInfo.level;
+    document.querySelectorAll('.btn-redeem-comercio').forEach(btn => {
+      const minLevel = Number(btn.dataset.minLevel) || 1;
+      const isLocked = userLevel < minLevel;
+      const cost = Number(btn.dataset.cost) || 150;
+      const card = btn.closest('article');
+      const badge = card ? card.querySelector('.badge-level-req') : null;
+
+      btn.classList.toggle('is-locked', isLocked);
+      btn.setAttribute('aria-disabled', String(isLocked));
+
+      if (isLocked) {
+        btn.innerHTML = `<iconify-icon icon="mynaui:lock" class="text-xs shrink-0" aria-hidden="true"></iconify-icon><span>Req. Nivel ${minLevel} (${getLevelName(minLevel)})</span>`;
+        btn.className = 'btn-redeem-comercio touch-target w-full px-3 py-2 rounded-xl text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border border-slate-300 dark:border-slate-700 flex items-center justify-center gap-1.5 transition-all cursor-pointer opacity-90';
+        if (badge) {
+          badge.className = 'badge-level-req text-[10px] font-bold bg-amber-50/95 dark:bg-amber-950/90 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-700 px-2 py-0.5 rounded-md inline-flex items-center gap-1 backdrop-blur-xs shadow-xs';
+        }
+      } else {
+        const canAfford = state.ecoPuntos >= cost;
+        btn.innerHTML = canAfford ? 'Canjear cupón' : `Te faltan ${(cost - state.ecoPuntos).toLocaleString('es-AR')} pts`;
+        btn.className = 'btn-redeem-comercio touch-target w-full px-3 py-2 rounded-xl text-xs font-bold bg-emerald-50 dark:bg-emerald-900/40 text-emerald-800 dark:text-emerald-200 border border-emerald-200 dark:border-emerald-800 hover:bg-emerald-100 dark:hover:bg-emerald-900/70 transition-all cursor-pointer';
+        if (badge) {
+          badge.className = 'badge-level-req text-[10px] font-bold bg-emerald-50/95 dark:bg-emerald-950/90 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 px-2 py-0.5 rounded-md inline-flex items-center gap-1 backdrop-blur-xs shadow-xs';
+        }
+      }
+    });
 
     // Actualizar tarjeta de resumen hacia Historial en Mis EcoPuntos y KPIs en #screen-historial
     const historyListContainer = document.getElementById('history-list');
@@ -1986,6 +2036,9 @@ document.addEventListener('DOMContentLoaded', () => {
       type: 'deposito',
       author: 'Lucía Fernández',
       initials: 'LF',
+      avatar: 'ph:plant-bold',
+      level: 2,
+      levelName: 'Brote',
       barrio: 'B° Alberdi',
       time: 'Hace 25 min',
       location: 'Campana Verde - B° Alberdi',
@@ -2001,6 +2054,9 @@ document.addEventListener('DOMContentLoaded', () => {
       type: 'deposito',
       author: 'Martín Sosa',
       initials: 'MS',
+      avatar: 'ph:sun-bold',
+      level: 4,
+      levelName: 'Árbol',
       barrio: 'B° Centro',
       time: 'Hace 2 horas',
       location: 'Punto Limpio - Plaza Roca (Centro)',
@@ -2301,15 +2357,29 @@ document.addEventListener('DOMContentLoaded', () => {
         ? 'bg-emerald-800 text-white border-emerald-700'
         : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 border-slate-200 dark:border-slate-700 hover:bg-emerald-50 dark:hover:bg-slate-700';
 
+      const authorLevel = post.level || 1;
+      const authorLevelName = post.levelName || getLevelName(authorLevel);
+      const authorAvatar = post.avatar || 'initials';
+      const isAvatarIcon = authorAvatar && authorAvatar !== 'initials';
+      const avatarHtml = isAvatarIcon
+        ? `<iconify-icon icon="${authorAvatar}" class="text-xl text-emerald-300" aria-hidden="true"></iconify-icon>`
+        : `<span>${post.initials || 'VC'}</span>`;
+
       return `
       <article class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/90 dark:border-slate-800 shadow-sm overflow-hidden">
         <div class="p-3.5 flex items-center justify-between gap-2">
           <div class="flex items-center gap-2.5 min-w-0">
-            <div class="w-9 h-9 rounded-full bg-emerald-800 text-white font-bold text-xs flex items-center justify-center shrink-0" aria-hidden="true">
-              <span>${post.initials || 'VC'}</span>
+            <div class="w-9 h-9 rounded-full bg-emerald-800 text-white font-bold text-xs flex items-center justify-center shrink-0 border border-emerald-500/40 shadow-xs" aria-hidden="true">
+              ${avatarHtml}
             </div>
             <div class="min-w-0">
-              <h2 class="font-bold text-slate-900 dark:text-white text-sm leading-tight">${post.author}</h2>
+              <div class="flex items-center gap-1.5 flex-wrap">
+                <h2 class="font-bold text-slate-900 dark:text-white text-sm leading-tight">${post.author}</h2>
+                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 text-[10px] font-bold border border-emerald-200 dark:border-emerald-800">
+                  <iconify-icon icon="ph:plant-bold" class="text-xs text-emerald-600 dark:text-emerald-400"></iconify-icon>
+                  <span>Nivel ${authorLevel} • ${authorLevelName}</span>
+                </span>
+              </div>
               <p class="text-[11px] text-slate-500 dark:text-slate-400">${post.barrio} • ${post.time}</p>
             </div>
           </div>
@@ -2526,6 +2596,28 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!postDialog || typeof postDialog.showModal !== 'function') return;
     const captionEl = document.getElementById('post-caption');
     if (captionEl) setFieldError(captionEl, '');
+
+    // Actualizar avatar y nivel en el encabezado del compositor de publicaciones
+    const composerLevelEl = document.getElementById('composer-user-level');
+    const composerAvatarEl = document.getElementById('composer-user-avatar');
+    const history = Array.isArray(state.history) ? state.history : [];
+    const redeemed = history.reduce((acc, it) => acc + (it.points < 0 ? -it.points : 0), 0);
+    const lifetimeXp = (state.ecoPuntos || 0) + redeemed;
+    const userLevelInfo = getLevelInfo(lifetimeXp);
+    const avatar = getUserAvatar();
+
+    if (composerLevelEl) {
+      composerLevelEl.innerHTML = `<iconify-icon icon="ph:plant-bold" class="text-xs"></iconify-icon><span>Nivel ${userLevelInfo.level} • ${userLevelInfo.name}</span>`;
+    }
+    if (composerAvatarEl) {
+      if (avatar && avatar !== 'initials') {
+        composerAvatarEl.innerHTML = `<iconify-icon icon="${avatar}" class="text-lg text-emerald-300"></iconify-icon>`;
+      } else {
+        const initials = state.user ? `${state.user.nombre[0]}${state.user.apellido[0]}`.toUpperCase() : 'OR';
+        composerAvatarEl.innerHTML = `<span>${initials}</span>`;
+      }
+    }
+
     postDialog.showModal();
   }
 
@@ -2586,11 +2678,19 @@ document.addEventListener('DOMContentLoaded', () => {
       const barrio = state.user && state.user.barrio ? `B° ${state.user.barrio}` : 'B° Alberdi';
       const location = locationField ? locationField.value : 'Campana Verde - B° Alberdi';
 
+      const history = Array.isArray(state.history) ? state.history : [];
+      const redeemed = history.reduce((acc, it) => acc + (it.points < 0 ? -it.points : 0), 0);
+      const lifetimeXp = (state.ecoPuntos || 0) + redeemed;
+      const userLevelInfo = getLevelInfo(lifetimeXp);
+
       const newPost = {
         id: `post-${Date.now()}`,
         type: 'deposito',
         author: userName,
         initials,
+        avatar: getUserAvatar(),
+        level: userLevelInfo.level,
+        levelName: userLevelInfo.name,
         barrio,
         time: 'Recién',
         location,
