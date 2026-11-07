@@ -107,18 +107,29 @@ A continuación se detalla cómo se implementó técnicamente cada uno de los **
 ### 5.5. Concepto 05 — Estética Funcional: Color, Tipografía y los 5 Estados UI
 - **Fundamento teórico**: El color comunica estados semánticos (límite de ~5 colores activos), la tipografía establece una escala modular legible y todo elemento interactivo debe responder a **5 estados obligatorios**.
 - **Implementación en EcoImperio**:
-  - **Paleta Semántica**:
-    - *Primario (Acción y Éxito ambiental)*: Esmeralda (`#047857` / `#10b981`).
-    - *Secundario (Recompensa y Progreso)*: Ámbar/Oro (`#f59e0b` / `#fbbf24`).
-    - *Peligro / Contenedor Lleno / Error*: Rojo (`#dc2626` / `#ef4444`).
-    - *Superficies Neutras*: `Slate-50`/`White` en Claro y `Slate-950`/`Slate-900` en Oscuro.
+  - **Paleta Semántica y Matriz de Contraste Verificado (WCAG AA / AAA)**:
+
+    | Rol Semántico | Token / Color de Texto | Color de Fondo | Ratio Calculado | Nivel WCAG | Aplicación en EcoImperio |
+    | :--- | :--- | :--- | :---: | :---: | :--- |
+    | **Primario (Botón CTA)** | `#ffffff` (Blanco) | `#047857` (`emerald-700`) | **5.48 : 1** | **AA** | Botones `.btn-primary` (`Comenzar`, `Registrar Depósito`, `Canjear`) |
+    | **Texto Principal (Claro)** | `#0f172a` (`slate-900`) | `#f8fafc` (`slate-50`) | **17.40 : 1** | **AAA** | Títulos `h1`–`h4`, saldos y etiquetas de formulario |
+    | **Texto Secundario (Claro)** | `#475569` (`slate-600`) | `#ffffff` (`white`) | **7.58 : 1** | **AAA** | Subtítulos, horarios, distancias y ayudas contextuales |
+    | **Texto Principal (Oscuro)** | `#f8fafc` (`slate-50`) | `#0f172a` (`slate-900`) | **17.40 : 1** | **AAA** | Cuerpo principal y tarjetas en Modo Oscuro (`html.dark`) |
+    | **Peligro / Contenedor Lleno** | `#ffffff` (Blanco) | `#dc2626` (`red-600`) | **4.83 : 1** | **AA** | Marcadores `B° Norte (Lleno)` y botón `Eliminar cuenta` |
+    | **Alto Contraste Oscuro** | `#ffff00` (Amarillo puro) | `#000000` (Negro puro) | **19.56 : 1** | **AAA** | Botones activos, enlaces y píldoras `aria-pressed="true"` en HC |
+    | **Alto Contraste Claro** | `#000000` (Negro puro) | `#ffffff` (Blanco puro) | **21.00 : 1** | **AAA** | Superficies, textos, bordes de `3px` y estados activos invertidos |
+
   - **Escala Tipográfica Modular**: Fuentes `Roboto` (cuerpo y lectura) e `Inter` (botones y navegación), con escala `h1: 32px (2rem)`, `h2: 24px (1.5rem)`, `h3: 18px (1.125rem)`, `h4: 16px (1rem)`, `body & inputs: 16px (1rem)` y `captions/badges: 12px–14px`.
-  - **Los 5 Estados UI en todos los controles**:
-    1. `Default`: Sombra suave y borde definido.
-    2. `Hover`: Elevación (`translateY(-1px)` / `scale-105`) y cambio de luminosidad.
-    3. `Active`: Hundimiento físico (`scale(0.98)` / `active:scale-95`).
-    4. `Focus`: Anillo de alto contraste `:focus-visible` (`4px solid rgba(52, 211, 153, 0.4)`).
-    5. `Disabled`: Opacidad reducida (`opacity: 0.55`), `cursor: not-allowed` y bloqueo de envío duplicado.
+  - **Matriz de los 5 Estados UI en todos los controles**:
+
+    | Estado UI | Regla CSS / Tailwind Implementada | Comportamiento Visual y Sensorial |
+    | :--- | :--- | :--- |
+    | **1. Default** | `.btn-primary`, bordes `border-slate-200`, sombra suave | Apariencia tridimensional clara que invita a la acción (*Affordance*). |
+    | **2. Hover** | `hover:bg-emerald-800`, `transform: translateY(-1px)` | Elevación sutil de `1px` y oscurecimiento cromático al pasar el puntero. |
+    | **3. Active** | `active:scale-95`, `transform: scale(0.98)` | Hundimiento físico inmediato al presionar con el pulgar o clic. |
+    | **4. Focus** | `:focus-visible { outline: 3px solid #34d399; box-shadow: var(--focus-ring); }` | Anillo de foco de alto contraste para navegación 100% por teclado (`Tab`). |
+    | **5. Disabled** | `:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }` | Bloqueo visual y funcional durante envíos asíncronos para evitar doble clic. |
+
 - **Evidencia visual (Captura)**:
 
   ![Captura 05: Matriz de los 5 Estados Interactivos y Escala Tipográfica](assets/screenshots/captura_05_cinco_estados_ui.png)
@@ -126,13 +137,29 @@ A continuación se detalla cómo se implementó técnicamente cada uno de los **
 ### 5.6. Concepto 06 — Diseño Centrado en el Usuario (DCU), Personas y Journey Map
 - **Fundamento teórico**: Diseñar para arquetipos realistas documentando sus metas, frustraciones y el mapa de experiencia (User Journey Map) en contexto real de uso.
 - **Implementación en EcoImperio**:
-  - **User Persona 1 — Tomás / Oscar Rodríguez (Vecino Activo, 28–42 años, B° Alberdi)**: Camina hacia el trabajo llevando una bolsa con botellas PET en una mano y el celular en la otra. *Frustración*: llegar a la campana y encontrarla llena, o perder sus puntos al cerrar la app. *Solución en código*: navegación con una sola mano (Bottom Navbar al alcance del pulgar), filtro rápido de campanas vacías y persistencia automática de su saldo e historial en `localStorage`.
-  - **User Persona 2 — Marta (Vecina con Visión Reducida, 64 años, B° Centro)**: Quiere participar del reciclaje barrial pero le cuestan los textos pequeños y el bajo contraste bajo el sol. *Solución en código*: selector de Tamaño de Texto (`Grande 112.5%` / `Extra grande 125%`), Modo Alto Contraste AAA y áreas táctiles mínimas de `44×44px` a `56×56px` (Ley de Fitts).
-  - **User Journey Map cubierto de punta a punta**:
-    1. *Descubrimiento*: Abre la app y entiende el propósito en el Splash.
-    2. *Búsqueda*: Filtra `"Campanas Verdes"` en el Mapa y verifica cuál está `(Vacío)` a 350m con ruta peatonal sugerida.
-    3. *Acción en calle*: Escanea el QR en la campana, verifica que su material (`PET 1`) es aceptado y presiona `"Registrar Depósito"`.
-    4. *Recompensa*: Recibe confirmación instantánea (`+10 EcoPuntos`), ve avanzar su barra de progreso hacia el próximo beneficio y consulta sus descuentos en comercios del barrio.
+  - **Fichas de User Personas (Regla de los 5 Puntos)**:
+
+    | Atributo DCU | Persona 1: **Oscar Rodríguez / Tomás** (Vecino Activo) | Persona 2: **Marta Quiroga** (Vecina con Baja Visión) |
+    | :--- | :--- | :--- |
+    | **1. Perfil y Contexto** | 34 años, empleado administrativo en B° Alberdi (Río Cuarto). Camina 6 cuadras hacia el centro cargando la bolsa de reciclables en una mano y el celular en la otra. | 64 años, docente jubilada en B° Centro. Utiliza anteojos multifocales y sufre encandilamiento bajo luz solar directa en la vereda. |
+    | **2. Metas** | Saber rápido qué campana tiene lugar disponible de camino al trabajo y acumular puntos para canjear descuentos en comercios de su barrio. | Consultar el cronograma de recolección de su barrio, identificar qué material acepta cada contenedor y usar sus EcoPuntos sin depender de terceros. |
+    | **3. Frustraciones (Pain Points)** | Caminar hasta una campana verde y encontrarla desbordada; interfaces con botones diminutos imposibles de tocar con una sola mano; perder el saldo al cerrar el navegador. | Textos grises pequeños (`< 14px`), mapas que solo usan colores sin texto para indicar estados, y animaciones bruscas que le generan mareo visual. |
+    | **4. Habilidades Digitales** | Media-Alta (uso diario de WhatsApp, billeteras virtuales y mapas en Android). | Básica-Media (prefiere flujos lineales, botones grandes con texto explícito y confirmaciones claras). |
+    | **5. Solución en EcoImperio** | Barra inferior fija al alcance del pulgar (`56px`), filtro `"Campanas Verdes"` con etiqueta `(Vacío)` / `(Lleno)` y persistencia en `localStorage`. | Escala tipográfica hasta `125%` (`Extra grande`), Modo Alto Contraste WCAG AAA (`21:1`), switch `"Reducir animaciones"` y validación constructiva. |
+
+  - **Matriz Completa del User Journey Map (Recorrido de Punta a Punta)**:
+
+    | Etapa | 1. Descubrimiento | 2. Búsqueda Barrial | 3. Traslado y Verificación | 4. Depósito y Escaneo QR | 5. Recompensa y Canje |
+    | :--- | :--- | :--- | :--- | :--- | :--- |
+    | **Acción del Vecino** | Abre **EcoImperio** e inicia sesión con su cuenta o acceso rápido demo. | Busca su barrio en el Mapa y filtra por `"Campanas Verdes"`. | Camina hacia la campana sugerida verificando la ruta peatonal. | Selecciona el material (`PET 1`, `Cartón`, `Vidrio`) y escanea el código QR del punto. | Suma `+10 EcoPuntos`, revisa su progreso y canjea un cupón en un comercio local. |
+    | **Pantalla / Canal** | `#screen-splash` → `#screen-login` | `#screen-mapa` (Buscador + Píldoras `aria-pressed`) | `#screen-mapa` (Card flotante con ruta y distancia) | `#screen-escaner` (Selector de material + visor QR) | `#screen-puntos` + `<dialog id="redeem-dialog">` |
+    | **Pensamiento** | *"Quiero entrar rápido sin llenar formularios eternos en la vereda."* | *"¿La campana de B° Norte tendrá lugar o estará rebalsada?"* | *"Veo que B° Norte está llena; mejor voy a Plaza Roca o Alberdi que figuran vacías."* | *"Tengo envases de vidrio, ¿este contenedor los recibe?"* | *"¡Genial! Ya llegué a 200 puntos para el 15% OFF en Almacén Natural."* |
+    | **Curva Emocional** | 😐 Neutral / Expectante | 🤔 Crítico / Atento | 😌 Aliviado (evitó un viaje en vano) | 😊 Confiado y guiado | 🤩 Entusiasmado / Recompensado |
+    | **Oportunidad Técnica Implementada** | Botón de autocompletado de cuenta demo + validación `onBlur` sin `alert()`. | Codificación redundante: Color + Ícono + Texto `(Vacío)` / `(Lleno)`. | Redirección automática al punto disponible más cercano con cálculo de cuadras. | Ruteo inteligente: al elegir `Vidrio (GL 70)`, el sistema asigna `Punto Limpio - Plaza Roca`. | Modal de confirmación de canje con descuento real de saldo y cupón `ECO-XXXX` en Historial. |
+
+  - **Evidencia de Iteración del Ciclo DCU**:
+    - *Hallazgo en prueba de usabilidad*: En la primera versión del prototipo, los botones de `"Canjear"` en Comercios Adheridos solo mostraban un aviso informativo sin descontar puntos ni validar el saldo, y el selector de `Vidrio (GL 70)` en el escáner acreditaba el depósito en una Campana Verde que solo admite Plástico y Cartón.
+    - *Rediseño iterado en código*: Se incorporó el costo explícito en cada comercio (`150` a `250 EcoPuntos`), un diálogo `<dialog>` de confirmación con validación de saldo en tiempo real, el registro del cupón canjeado en el Historial y el ruteo automático de `Vidrio` hacia el `Punto Limpio - Plaza Roca`.
 - **Evidencia visual (Captura)**:
 
   ![Captura 06: Flujo del User Journey Map y Controles de Accesibilidad para Baja Visión](assets/screenshots/captura_06_accesibilidad_config.png)
@@ -140,9 +167,41 @@ A continuación se detalla cómo se implementó técnicamente cada uno de los **
 ### 5.7. Concepto 07 — Arquitectura de la Información (AI) y Rotulado
 - **Fundamento teórico**: Los 4 pilares de Morville y Rosenfeld: **Organización, Etiquetado (Labeling) libre de jerga técnica, Navegación con profundidad máxima de 2–3 clics y Búsqueda/Filtrado**.
 - **Implementación en EcoImperio**:
-  - **Profundidad plana (máximo 2 clics)**: Cualquier pantalla principal (`Mapa`, `Escáner QR`, `Mis EcoPuntos`, `Configuración`) está a **1 clic** desde la barra de navegación inferior o el menú lateral.
-  - **Consistencia de rotulado**: El botón `"Configuración"` lleva a la pantalla titulada `"Configuración"`; el tab `"Puntos"` lleva a `"Mis EcoPuntos"`; el botón `"Registrar Depósito"` ejecuta exactamente el alta del depósito.
-  - **Búsqueda y Filtrado Facetado en el Mapa**: El buscador superior permite filtrar por nombre/barrio en vivo, y las píldoras superiores (`Campanas Verdes`, `Puntos Limpios`) filtran los marcadores visibles en el mapa con estado `aria-pressed`.
+  - **Diagrama Sitemap / Árbol de Contenidos (Profundidad Plana $\le 2$ clics)**:
+
+    ```mermaid
+    flowchart TD
+      Splash["1. Portada (Splash Screen)"] --> Login["2. Iniciar Sesión"]
+      Splash --> Registro["3. Crear Cuenta"]
+      Login --> Mapa["4. Mapa de Puntos Verdes (Hub Principal)"]
+      Registro --> Mapa
+      Mapa <--> Escaner["5. Escáner QR y Clasificador de Materiales"]
+      Mapa <--> Puntos["6. Mis EcoPuntos (Balance, Comercios e Historial)"]
+      Mapa <--> Config["7. Configuración (Perfil, Accesibilidad y Seguridad)"]
+      Mapa -.-> GuiaDialog["Modal: Guía de Separación y Cronograma Barrial"]
+      Puntos -.-> RedeemDialog["Modal: Confirmación de Canje en Comercio"]
+      Config -.-> DeleteDialog["Modal: Zona de Peligro (Eliminar Cuenta)"]
+    ```
+
+  - **Matriz de Card Sorting (Consolidación de Categorías Mentales)**:
+
+    | Categoría Consolidada (Destino UI) | Tarjetas / Acciones Evaluadas por los Usuarios | Ubicación en la Interfaz |
+    | :--- | :--- | :--- |
+    | **Mapa Barrial (`Mapa`)** | *Buscar campana por barrio*, *Ver si el contenedor está lleno o vacío*, *Filtrar Puntos Limpios vs. Campanas*, *Consultar horarios y guía de separación*. | Tab `Mapa` (Barra inferior) + Buscador y píldoras superiores |
+    | **Registrar Reciclaje (`Escáner`)** | *Escanear código QR del contenedor*, *Elegir tipo de residuo (Plástico, Cartón, Vidrio)*, *Acreditar depósito en el punto*. | Botón central destacado `Escáner` en Barra Inferior |
+    | **Billetera y Beneficios (`Puntos`)** | *Ver mi saldo de EcoPuntos*, *Ver cuánto falta para el próximo beneficio*, *Canjear descuento en panadería/almacén*, *Revisar historial de reciclaje*. | Tab `Puntos` (Barra inferior) + Ítem `Mis EcoPuntos` en Drawer |
+    | **Ajustes y Cuenta (`Perfil / Configuración`)** | *Cambiar teléfono o nombre*, *Activar Modo Oscuro o Alto Contraste*, *Agrandar letra*, *Restablecer demo*, *Cerrar sesión o eliminar cuenta*. | Tab `Perfil` (Barra inferior) + Ítem `Configuración` en Drawer |
+
+  - **Tabla Comparativa de Rotulado (Labeling — Modelo del Desarrollador vs. Modelo del Vecino)**:
+
+    | Etiqueta Técnica Descartada (Jerga de BD / Dev) | Etiqueta Implementada en **EcoImperio** | Justificación de Usabilidad y Modelo Mental |
+    | :--- | :--- | :--- |
+    | ❌ `Geolocalización de Nodos RSU` | ✅ **Mapa de Puntos Verdes** | El vecino de Río Cuarto busca *"Puntos Verdes"* o *"Campanas"*, no siglas técnicas de residuos sólidos. |
+    | ❌ `Capacidad < 80%` / `Overflow_True` | ✅ **`(Vacío)` / `(Lleno)`** | Lenguaje directo y binario que responde en 1 segundo si conviene caminar hasta ese contenedor. |
+    | ❌ `Ejecutar Transacción Token QR` | ✅ **Registrar Depósito (+10 EcoPuntos)** | Comunica exactamente la acción física que realiza el vecino y el beneficio inmediato que obtiene. |
+    | ❌ `Parámetros de Renderizado DOM / A11y` | ✅ **Accesibilidad y Pantalla** | Agrupa de forma comprensible el Modo Oscuro, Alto Contraste, Tamaño de texto y Reducción de animaciones. |
+    | ❌ `Confirmar: Sí / No` (en baja de cuenta) | ✅ **`Cancelar` / `Sí, eliminar`** | Verbos de acción específicos que previenen errores catastróficos por lectura rápida. |
+
 - **Evidencia visual (Captura)**:
 
   ![Captura 07: Buscador y Filtros Facetados en el Mapa Interactivo](assets/screenshots/captura_07_mapa_buscador_filtros.png)
@@ -150,9 +209,16 @@ A continuación se detalla cómo se implementó técnicamente cada uno de los **
 ### 5.8. Concepto 08 — Wireframing y Buenas Prácticas en Figma (Auto-Layout y Restricciones)
 - **Fundamento teórico**: Evolución desde el wireframe de baja fidelidad (Lo-Fi) en escala de grises hacia el prototipo de alta fidelidad (Hi-Fi) aplicando Auto-Layout, Constraints y cero pantallas callejón sin salida (*dead-ends*).
 - **Implementación en EcoImperio**:
-  - **Evolución documentada en Figma**: El archivo cuenta con la página `Prototipo (Baja Calidad)` (wireframes estructurales con componentes maestros) y las páginas de alta fidelidad en Modo Claro y Modo Oscuro.
-  - **Traducción a CSS Flexbox/Grid**: El contenedor `.mobile-viewport` implementa un layout vertical flexible (`display: flex; flex-direction: column`) donde el header y el bottom-nav permanecen fijos y el área central (`flex-1 overflow-y-auto`) absorbe el scroll vertical sin desborde horizontal (`overflow: clip`).
-  - **Cero pantallas sin salida**: Todas las vistas secundarias (`Login`, `Registro`, `Escáner QR`, `Configuración`) cuentan con botón `"← Volver"` en la esquina superior izquierda, además de navegación inferior o lateral en las vistas internas.
+  - **Tabla Comparativa de Evolución: Wireframe Lo-Fi vs. Prototipo Hi-Fi / SPA**:
+
+    | Dimensión de Diseño | Etapa 1: Wireframe Lo-Fi (Baja Fidelidad en Figma) | Etapa 2: Prototipo Hi-Fi y SPA Final (`index.html` + `style.css`) |
+    | :--- | :--- | :--- |
+    | **Paleta y Superficies** | Escala de grises neutra (`#E5E7EB`, `#9CA3AF`, `#1F2937`) para validar jerarquía sin sesgo cromático. | Sistema tricolor accesible:Modo Claro (`Slate-50`/`Emerald-700`), Modo Oscuro (`Slate-950`) y Modo Alto Contraste (`#000000`/`#ffff00`). |
+    | **Contenido y Copy** | Etiquetas estructurales preliminares y marcadores de posición para tarjetas de comercios e historial. | Datos reales de **Río Cuarto** (*B° Alberdi*, *Banda Norte*, *Plaza Roca*, *Panadería El Imperio*) y microcopy validado. |
+    | **Auto-Layout y Resizing** | Frames verticales con `Gap: 12px/16px`, `Padding: 16px/24px` y tarjetas con `Fill container`. | Flexbox y CSS Grid (`flex-col`, `space-y-4`, `grid-cols-2`, `w-[80%] mx-auto`) con adaptación fluida al escalar texto al `125%`. |
+    | **Restricciones (Constraints)** | `Top & Left/Right` para el Header y `Bottom` fijo para la Barra de Navegación Inferior. | Contenedor `.mobile-viewport` con `<header>` fijo arriba, `<main class="flex-1 overflow-y-auto">` central y `<nav>` fijo abajo. |
+    | **Prevención de Dead-Ends** | Conexiones básicas entre pantallas principales. | Cero callejones sin salida: todas las vistas poseen botón `"← Volver"`, Barra Inferior de 5 destinos y Menú Lateral (`Drawer`). |
+
 - **Evidencia visual (Captura)**:
 
   ![Captura 08: Implementación Hi-Fi del Escáner y Navegación sin Callejones sin Salida](assets/screenshots/captura_08_hifi_prototype.png)
@@ -165,7 +231,15 @@ A continuación se detalla cómo se implementó técnicamente cada uno de los **
     - *Átomos*: Botones (`.btn-primary`, `.btn-secondary`), badges de descuento, íconos con `aria-hidden="true"`, inputs con tamaño base `16px`.
     - *Moléculas*: Campo de formulario con label + input + mensaje de error accesible; fila de switch de configuración; card de historial de reciclaje (al `80%` de ancho con `<h3>`, `<p>` y `<h4>`).
     - *Organismos*: Card de Balance con barra de progreso dinámica, grilla de Comercios Adheridos (50% imagen / 50% información), Barra de Navegación Inferior y Menú Lateral (`Drawer`).
-  - **Microinteracciones**: Animación de láser de escaneo (`@keyframes scan`) que se desactiva automáticamente si el usuario activa `"Reducir animaciones"`, y transición suave del Toast y del Drawer (`cubic-bezier(0.4, 0, 0.2, 1)`).
+  - **Matriz de Microinteracciones (Disparador → Regla → Respuesta Visual y Accesibilidad)**:
+
+    | Microinteracción | Disparador (Trigger) | Regla / Lógica de Negocio | Respuesta Visual y Auditiva (Feedback) | Adaptación en `reduce-motion` |
+    | :--- | :--- | :--- | :--- | :--- |
+    | **1. Láser del Escáner QR** | Ingresar a `#screen-escaner` o seleccionar un material reciclable. | Guía el encuadre del código QR de la campana y adapta el contenedor destino según el residuo (`Vidrio` → `Punto Limpio`). | Línea esmeralda luminosa con `@keyframes scan` vertical (`2.5s infinite ease-in-out`) y actualización del badge de puntos. | Se detiene la animación continua (`animation: none !important`) dejando la guía estática. |
+    | **2. Píldoras de Filtro y Material** | Clic / Tap o tecla `Enter`/`Espacio` sobre `.map-filter-pill` o `.scanner-material-btn`. | Conmuta el atributo `aria-pressed="true/false"` y filtra en vivo los marcadores del mapa o el residuo activo. | Cambio instantáneo de relleno, borde e ícono, más notificación en región `aria-live="polite"`. | Transición instantánea (`0ms`) sin desplazamiento espacial. |
+    | **3. Acreditación y Canje de EcoPuntos** | Confirmar depósito en Escáner (`+10/12/15 pts`) o confirmar canje en Comercio (`-150 a -250 pts`). | Actualiza `state.ecoPoints`, recalcula el porcentaje hacia la meta (`1.500 pts`), persiste en `localStorage` e inserta ítem en `#history-list`. | La barra `#points-progress-bar` anima su ancho (`transition-all duration-500`), el botón muestra spinner temporal y emerge un Toast accesible. | El ancho de la barra y el Toast cambian sin interpolación de movimiento. |
+    | **4. Validación `onBlur` en Formularios** | Perder el foco (`blur`) o modificar (`change`) un campo inválido en Login, Registro o Perfil. | Evalúa formato de correo, teléfono de 10 dígitos (`358...`) o longitud de contraseña (`>= 8`). | Borde rojo (`border-red-500`), activación de `aria-invalid="true"` y aparición del texto constructivo debajo del campo. | Aparición inmediata sin sacudidas bruscas (*shake*). |
+
 - **Evidencia visual (Captura)**:
 
   ![Captura 09: Átomos, Moléculas y Organismos del Sistema de Diseño de EcoImperio](assets/screenshots/captura_09_sistema_disenio_escaner.png)
@@ -175,8 +249,16 @@ A continuación se detalla cómo se implementó técnicamente cada uno de los **
 - **Implementación en EcoImperio**:
   - **Áreas táctiles $\ge 44\times44\text{px}$**: Todos los botones de navegación, botones de volver, toggles de mostrar/ocultar contraseña, filtros del mapa y cierre de menú cumplen el área mínima de `44×44px`.
   - **Inputs móviles a `16px` (`1rem`)**: Evita el zoom forzado en navegadores móviles y garantiza lectura cómoda.
-  - **Empty State accionable**: Cuando una cuenta recién creada ingresa a `"Mis EcoPuntos"`, en lugar de una lista vacía en blanco ve un estado informativo con ícono y llamado a la acción para escanear su primera campana verde.
-  - **UX Writing en confirmaciones**: El diálogo de eliminación de cuenta evita el ambiguo *"Sí / No"* y utiliza *"Cancelar"* y *"Sí, eliminar"*.
+  - **Matriz de Auditoría de UX Writing y Accesibilidad WCAG (5 Columnas Obligatorias)**:
+
+    | Elemento Original / Problema Detectado | Copy Mejorado (UX Writing en **EcoImperio**) | Patrón de Interacción Implementado | Criterio WCAG 2.1 / 2.2 Cumplido | Sugerencia UI / Visual Implementada |
+    | :--- | :--- | :--- | :--- | :--- |
+    | **1. Error genérico en Teléfono** (*"Input inválido"*) | *"Ingresá los 10 dígitos sin el 0 ni el 15 (ej: 3584123456)."* | Validación en tiempo real (`onBlur` y `onInput`) vinculada con `aria-describedby="reg-phone-error"`. | **WCAG 3.3.1** (Identificación de errores) y **3.3.3** (Sugerencia ante errores - Nivel AA). | Texto en rojo accesible (`#dc2626` / `#f87171` en oscuro) ubicado a `4px` debajo del input con borde resaltado. |
+    | **2. Marcadores de mapa solo por color** (Verde vs. Rojo) | **`Alberdi (Vacío)`** vs. **`B° Norte (Lleno)`** + aviso *"Contenedor al límite de capacidad. Te sugerimos ir a..."* | Codificación redundante triple: Color semántico + Ícono diferenciado (`location` vs. `ban`) + Etiqueta textual. | **WCAG 1.4.1** (Uso del color - Nivel A) y **1.4.3 / 1.4.6** (Contraste AA/AAA). | Píldora de alto contraste debajo de cada pin del mapa y bloqueo preventivo del botón de ruta en puntos llenos. |
+    | **3. Historial vacío en cuentas nuevas** (*Lista en blanco sin explicación*) | *"Todavía no registraste depósitos. ¡Acercate a una Campana Verde y escaneá tu primer QR para sumar EcoPuntos!"* + CTA **`Ir al Escáner QR`**. | **Empty State accionable** que educa al vecino recién registrado y le ofrece el siguiente paso lógico. | **WCAG 2.4.6** (Encabezados y etiquetas descriptivas) y **3.2.4** (Identificación coherente). | Contenedor con borde punteado, ícono ilustrativo de reciclaje y botón secundario de `>= 44px` de alto. |
+    | **4. Confirmación ambigua en acción destructiva** (*"¿Está seguro? Sí / No"*) | Título: *"¿Eliminar cuenta permanentemente?"* — Botones: **`Cancelar`** (foco inicial) y **`Sí, eliminar`**. | Modal nativo `<dialog>` con bloqueo de fondo (`backdrop`) y retorno de foco al cerrar con `Escape`. | **WCAG 3.3.4** (Prevención de errores en acciones críticas) y **2.1.1 / 2.1.2** (Teclado sin trampas). | Separación previa en card `"Zona de peligro"` con borde rojo y foco seguro por defecto en la opción no destructiva. |
+    | **5. Botones de Canje sin confirmación de costo** (*"Canjear"*) | Botón **`Canjear (150 pts)`** → Modal: *"¿Confirmás el canje de 15% OFF en Almacén Natural por 150 EcoPuntos?"* → **`Confirmar canje`**. | Verificación previa de saldo (`state.ecoPoints >= cost`), confirmación explícita y generación de cupón único `ECO-XXXX`. | **WCAG 3.3.4** (Prevención de errores en transacciones) y **4.1.3** (Mensajes de estado vía `role="status"`). | Badge de costo visible en cada tarjeta de comercio y registro inmediato del descuento en el Historial con signo negativo (`-150 pts`). |
+
 - **Evidencia visual (Captura)**:
 
   ![Captura 10: Guía barrial, diálogo modal informativo y áreas táctiles mayores a 44x44px](assets/screenshots/captura_10_guia_cronograma_dialog.png)
