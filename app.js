@@ -50,6 +50,17 @@ document.addEventListener('DOMContentLoaded', () => {
         ticketCode: '#COM-1044'
       },
       {
+        id: 7,
+        type: 'event',
+        title: 'Asistencia confirmada a EcoEvento (Feria Circular y Canje Verde)',
+        location: 'Plaza Roca (Centro)',
+        time: '28 Ene, 16:30 hs',
+        points: 50,
+        containerStatus: 'EcoEvento barrial completado • Asistencia acreditada',
+        impact: 'Compromiso ciudadano • +50 EcoPuntos bonus',
+        ticketCode: '#EVT-2041'
+      },
+      {
         id: 2,
         title: 'Cartón y Papel Seco (Cajas plegadas)',
         location: 'Punto Limpio Banda Norte',
@@ -159,17 +170,29 @@ document.addEventListener('DOMContentLoaded', () => {
   function loadUserWallet(email, fallbackWallet) {
     const normalizedEmail = (email || '').trim().toLowerCase();
     const allData = loadAllUserData();
+    const demoEventItem = fallbackWallet && Array.isArray(fallbackWallet.history)
+      ? fallbackWallet.history.find(it => it.type === 'event')
+      : null;
+
     if (allData[normalizedEmail] && typeof allData[normalizedEmail].ecoPuntos === 'number') {
+      const history = Array.isArray(allData[normalizedEmail].history) ? allData[normalizedEmail].history.slice() : [];
+      if (normalizedEmail === DEMO_ACCOUNT.email && demoEventItem && !history.some(it => it.type === 'event' || it.id === demoEventItem.id)) {
+        history.splice(2, 0, demoEventItem);
+      }
       return {
         ecoPuntos: allData[normalizedEmail].ecoPuntos,
-        history: Array.isArray(allData[normalizedEmail].history) ? allData[normalizedEmail].history.slice() : []
+        history
       };
     }
     const account = loadAccounts().find(acc => acc.email === normalizedEmail);
     if (account && typeof account.ecoPuntos === 'number') {
+      const history = Array.isArray(account.history) ? account.history.slice() : [];
+      if (normalizedEmail === DEMO_ACCOUNT.email && demoEventItem && !history.some(it => it.type === 'event' || it.id === demoEventItem.id)) {
+        history.splice(2, 0, demoEventItem);
+      }
       return {
         ecoPuntos: account.ecoPuntos,
-        history: Array.isArray(account.history) ? account.history.slice() : []
+        history
       };
     }
     return {
@@ -216,10 +239,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Router de Navegación de Pantallas
+  // Router de Navegación de Pantallas con Historial de Retroceso
   let lastMainScreen = 'mapa';
+  const navigationHistory = [];
 
-  function navigateTo(screenId) {
+  function navigateTo(screenId, options = {}) {
+    const { isBack = false } = options;
+
     // Si el vecino ya inició sesión, tocar "Inicio" abre el Muro Comunitario (Red Social Barrial)
     if (screenId === 'splash' && state.user) {
       screenId = 'comunidad';
@@ -229,6 +255,11 @@ document.addEventListener('DOMContentLoaded', () => {
     } else if ((screenId === 'login' || screenId === 'registro') && state.user) {
       // Si ya inició sesión, no volver al formulario de login a menos que cierre sesión explícitamente
       screenId = 'comunidad';
+    }
+
+    // Registrar historial si no es navegación hacia atrás
+    if (!isBack && state.currentScreen && state.currentScreen !== screenId && state.currentScreen !== 'splash') {
+      navigationHistory.push(state.currentScreen);
     }
 
     if (['comunidad', 'mapa', 'puntos', 'config'].includes(screenId)) {
@@ -255,6 +286,15 @@ document.addEventListener('DOMContentLoaded', () => {
     // Actualizar navbars activos
     updateNavbars(screenId);
     closeDrawer();
+  }
+
+  function goBack() {
+    if (navigationHistory.length > 0) {
+      const prev = navigationHistory.pop();
+      navigateTo(prev, { isBack: true });
+    } else {
+      navigateTo(lastMainScreen || 'mapa', { isBack: true });
+    }
   }
 
   function updateNavbars(activeScreen) {
@@ -418,8 +458,24 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Delegación global para botones [data-navigate] (incluye elementos dinámicos como Empty State)
+  // Delegación global para botones [data-action="back"] y [data-navigate] (incluye elementos dinámicos)
   document.addEventListener('click', (e) => {
+    const backBtn = e.target.closest('[data-action="back"], .btn-back');
+    if (backBtn) {
+      e.preventDefault();
+      goBack();
+      return;
+    }
+
+    // Botón de escáner en el mapa cuando está fuera de rango GPS: aviso conciso sin efecto visual
+    const mapScannerBtn = e.target.closest('#screen-mapa button[data-navigate="escaner"]');
+    if (mapScannerBtn && (mapScannerBtn.classList.contains('is-disabled') || mapScannerBtn.getAttribute('aria-disabled') === 'true')) {
+      e.preventDefault();
+      e.stopPropagation();
+      showToast('Escáner inactivo: acercate a menos de 20 m de la campana.');
+      return;
+    }
+
     const navTrigger = e.target.closest('[data-navigate]');
     if (!navTrigger) return;
     e.preventDefault();
@@ -644,7 +700,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function renderProfileSummary() {
     const history = Array.isArray(state.history) ? state.history : [];
-    const deposits = history.filter(it => it.points > 0 && it.type !== 'community' && !String(it.ticketCode || '').startsWith('#COM'));
+    const deposits = history.filter(it => it.points > 0 && it.type !== 'community' && it.type !== 'event' && !String(it.ticketCode || '').startsWith('#COM') && !String(it.ticketCode || '').startsWith('#EVT'));
     const kg = deposits.reduce((acc, it) => {
       const match = /(\d+(?:,\d+)?)\s*kg recuperados/.exec(it.impact || '');
       return acc + (match ? parseFloat(match[1].replace(',', '.')) : 0);
@@ -1178,10 +1234,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Escáner central del mapa: habilitado solo si el punto seleccionado está en rango GPS del QR
     document.querySelectorAll('#screen-mapa button[data-navigate="escaner"]').forEach(btn => {
-      btn.disabled = !inRange;
+      btn.classList.toggle('is-disabled', !inRange);
+      btn.setAttribute('aria-disabled', String(!inRange));
       btn.setAttribute('aria-label', inRange
         ? 'Abrir Escáner QR'
-        : 'Escáner QR no disponible: acercate a menos de 20 m de la campana');
+        : 'Escáner QR inactivo: punto fuera de rango GPS');
+      btn.disabled = false;
     });
 
     if (route) {
@@ -1632,23 +1690,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
       historyListContainer.innerHTML = pageItems.map((item, idx) => {
         const isRedeem = item.type === 'redeem' || item.points < 0;
+        const isEvent = item.type === 'event' || String(item.ticketCode || '').startsWith('#EVT');
         const isCommunity = item.type === 'community' || String(item.ticketCode || '').startsWith('#COM');
         const isPuntoLimpio = /punto limpio/i.test(item.location || '');
         const iconName = isRedeem
           ? 'mynaui:gift'
-          : isCommunity
-            ? 'mynaui:users'
-            : isPuntoLimpio ? 'mynaui:sparkles' : 'mynaui:location';
+          : isEvent
+            ? 'mynaui:calendar'
+            : isCommunity
+              ? 'mynaui:users'
+              : isPuntoLimpio ? 'mynaui:sparkles' : 'mynaui:location';
         const iconWrapClass = isRedeem
           ? 'bg-amber-100 dark:bg-amber-900/50 text-amber-800 dark:text-amber-300'
-          : isCommunity
-            ? 'bg-sky-100 dark:bg-sky-900/50 text-sky-800 dark:text-sky-300'
-            : isPuntoLimpio
-              ? 'bg-teal-100 dark:bg-teal-900/50 text-teal-800 dark:text-teal-300'
-              : 'bg-emerald-100 dark:bg-emerald-900/60 text-emerald-700 dark:text-emerald-300';
+          : isEvent
+            ? 'bg-purple-100 dark:bg-purple-900/50 text-purple-800 dark:text-purple-300'
+            : isCommunity
+              ? 'bg-sky-100 dark:bg-sky-900/50 text-sky-800 dark:text-sky-300'
+              : isPuntoLimpio
+                ? 'bg-teal-100 dark:bg-teal-900/50 text-teal-800 dark:text-teal-300'
+                : 'bg-emerald-100 dark:bg-emerald-900/60 text-emerald-700 dark:text-emerald-300';
         const pointsClass = isRedeem
           ? 'text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/60 border-amber-200 dark:border-amber-800'
-          : 'text-emerald-800 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/60 border-emerald-200 dark:border-emerald-800';
+          : isEvent
+            ? 'text-purple-700 dark:text-purple-300 bg-purple-50 dark:bg-purple-950/60 border-purple-200 dark:border-purple-800'
+            : 'text-emerald-800 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/60 border-emerald-200 dark:border-emerald-800';
         const pointsLabel = item.points > 0 ? `+${item.points} pts` : `${item.points} pts`;
 
         const materialText = item.title || 'Material reciclable separado en origen';
@@ -1844,8 +1909,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const deleteAccountBtn = document.getElementById('btn-delete-account');
   const deleteAccountHint = document.getElementById('delete-account-hint');
   const deleteDialog = document.getElementById('delete-dialog');
-  const resetDemoWrap = document.getElementById('reset-demo-wrap');
-  const resetDemoBtn = document.getElementById('btn-reset-demo');
 
   const isDemoUser = () => Boolean(state.user) && state.user.email === DEMO_ACCOUNT.email;
 
@@ -1874,22 +1937,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const demo = isDemoUser();
     deleteAccountBtn.disabled = demo;
     deleteAccountHint.classList.toggle('hidden', !demo);
-    if (resetDemoWrap) resetDemoWrap.classList.toggle('hidden', !demo);
-  }
-
-  if (resetDemoBtn) {
-    resetDemoBtn.addEventListener('click', () => {
-      state.ecoPuntos = DEMO_WALLET.ecoPuntos;
-      state.history = DEMO_WALLET.history.slice();
-      state.historyPage = 1;
-      communityPosts = INITIAL_COMMUNITY_POSTS.map(cloneCommunityPost);
-      saveCommunityPosts(communityPosts);
-      saveUserWallet();
-      updatePointsUI();
-      renderCommunityFeed();
-      renderMyEvents();
-      showToast('Datos de demostración restablecidos (1.250 EcoPuntos, historial y muro comunitario).');
-    });
   }
 
   // ==========================================================================

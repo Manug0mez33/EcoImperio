@@ -253,9 +253,25 @@ textarea:disabled {
   box-shadow: none !important;
 }
 
-/* Escáner central del mapa fuera de rango GPS: gris inequívoco (no depende solo de la opacidad) */
+/* Escáner central del mapa fuera de rango GPS: gris inequívoco sin efecto táctil ni salto de escala */
+#screen-mapa button[data-navigate="escaner"].is-disabled,
 #screen-mapa button[data-navigate="escaner"]:disabled {
   background-color: #64748b !important;
+  opacity: 0.55 !important;
+  cursor: not-allowed !important;
+  pointer-events: auto !important;
+  transform: none !important;
+  box-shadow: none !important;
+  transition: none !important;
+}
+
+#screen-mapa button[data-navigate="escaner"].is-disabled:hover,
+#screen-mapa button[data-navigate="escaner"].is-disabled:active,
+#screen-mapa button[data-navigate="escaner"]:disabled:hover,
+#screen-mapa button[data-navigate="escaner"]:disabled:active {
+  transform: none !important;
+  background-color: #64748b !important;
+  box-shadow: none !important;
 }
 
 /* ==========================================================================
