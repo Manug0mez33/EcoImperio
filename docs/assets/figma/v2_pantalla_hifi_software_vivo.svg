@@ -1,0 +1,109 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="900" viewBox="0 0 1400 900" fill="none">
+  <rect width="100%" height="100%" fill="#0F172A"/>
+  
+  <!-- Header del tablero Figma -->
+  <text x="60" y="60" font-family="'Plus Jakarta Sans', Inter, sans-serif" font-weight="900" font-size="28" fill="#F8FAFC">SOFTWARE VIVO HI-FI: ECOSISTEMA NAVEGABLE</text>
+  <text x="60" y="92" font-family="'Plus Jakarta Sans', Inter, sans-serif" font-size="15" fill="#94A3B8">Fase final de implementación en Vanilla JS + Tailwind CSS: 3 vistas nodales en ejecución real</text>
+
+  <!-- Tag de Estado -->
+  <rect x="1160" y="45" width="180" height="32" rx="8" fill="#065F46"/>
+  <text x="1250" y="66" font-family="monospace" font-weight="700" font-size="13" fill="#6EE7B7" text-anchor="middle">v2.0 PRODUCTION</text>
+
+  <!-- PANTALLA 1: DASHBOARD DE INICIO -->
+  <g transform="translate(60, 130)">
+    <rect width="380" height="710" rx="36" fill="#020617" stroke="#334155" stroke-width="4"/>
+    <!-- Isla dinámica -->
+    <rect x="135" y="14" width="110" height="20" rx="10" fill="#000000"/>
+    <circle cx="225" cy="24" r="4" fill="#10B981"/>
+    <!-- Cabecera -->
+    <rect x="20" y="48" width="340" height="60" rx="16" fill="#064E3B"/>
+    <text x="36" y="74" font-family="sans-serif" font-weight="800" font-size="14" fill="#FFFFFF">EcoImperio Río Cuarto</text>
+    <text x="36" y="92" font-family="sans-serif" font-size="11" fill="#A7F3D0">Bienvenido, Oscar Rodríguez</text>
+    <!-- Card Balance -->
+    <rect x="20" y="120" width="340" height="130" rx="20" fill="#1E293B" stroke="#047857" stroke-width="2"/>
+    <text x="40" y="152" font-family="sans-serif" font-weight="700" font-size="12" fill="#94A3B8">BALANCE DISPONIBLE</text>
+    <text x="40" y="196" font-family="sans-serif" font-weight="900" font-size="36" fill="#34D399">1.250 <tspan font-size="18" fill="#6EE7B7">pts</tspan></text>
+    <rect x="40" y="215" width="300" height="8" rx="4" fill="#334155"/>
+    <rect x="40" y="215" width="230" height="8" rx="4" fill="#10B981"/>
+    <text x="40" y="238" font-family="sans-serif" font-size="10" fill="#CBD5E1">Nivel 4: Árbol Joven • 76% para Nivel 5: Bosque</text>
+    <!-- Acciones Rápidas -->
+    <rect x="20" y="265" width="160" height="90" rx="16" fill="#065F46"/>
+    <text x="40" y="305" font-family="sans-serif" font-weight="800" font-size="14" fill="#FFFFFF">Ver Mapa</text>
+    <text x="40" y="325" font-family="sans-serif" font-size="11" fill="#D1FAE5">42 Campanas</text>
+    <rect x="200" y="265" width="160" height="90" rx="16" fill="#0F766E"/>
+    <text x="220" y="305" font-family="sans-serif" font-weight="800" font-size="14" fill="#FFFFFF">Canjear</text>
+    <text x="220" y="325" font-family="sans-serif" font-size="11" fill="#CCFBF1">7 Comercios</text>
+    <!-- Comercios Preview -->
+    <rect x="20" y="370" width="340" height="180" rx="20" fill="#1E293B"/>
+    <text x="36" y="398" font-family="sans-serif" font-weight="800" font-size="13" fill="#F8FAFC">Comercio VIP Destacado</text>
+    <rect x="36" y="415" width="308" height="60" rx="12" fill="#334155"/>
+    <text x="50" y="440" font-family="sans-serif" font-weight="800" font-size="12" fill="#FCD34D">TecnoRío Celulares • 25% OFF</text>
+    <text x="50" y="458" font-family="sans-serif" font-size="10" fill="#CBD5E1">Req. Nivel 5: Bosque • 500 EcoPuntos</text>
+    <!-- Bottom Nav -->
+    <rect x="0" y="630" width="380" height="80" rx="0" fill="#0B132B"/>
+    <circle cx="190" cy="650" r="28" fill="#065F46" stroke="#10B981" stroke-width="3"/>
+    <text x="190" y="656" font-family="sans-serif" font-weight="900" font-size="16" fill="#FFFFFF" text-anchor="middle">QR</text>
+    <text x="60" y="680" font-family="sans-serif" font-size="10" fill="#94A3B8" text-anchor="middle">Mapa</text>
+    <text x="320" y="680" font-family="sans-serif" font-size="10" fill="#94A3B8" text-anchor="middle">Puntos</text>
+  </g>
+
+  <!-- PANTALLA 2: MAPA BARRIAL IOT -->
+  <g transform="translate(510, 130)">
+    <rect width="380" height="710" rx="36" fill="#020617" stroke="#334155" stroke-width="4"/>
+    <rect x="135" y="14" width="110" height="20" rx="10" fill="#000000"/>
+    <circle cx="225" cy="24" r="4" fill="#10B981"/>
+    <!-- Barra de Filtros -->
+    <rect x="20" y="50" width="340" height="42" rx="14" fill="#1E293B"/>
+    <text x="40" y="76" font-family="sans-serif" font-size="12" fill="#94A3B8">🔍 Buscar campana o plaza...</text>
+    <!-- Mapa Visual -->
+    <rect x="20" y="105" width="340" height="430" rx="20" fill="#1E293B"/>
+    <path d="M 40 260 Q 180 180 340 300" stroke="#0284C7" stroke-width="12" fill="none" opacity="0.6"/>
+    <!-- Pines con codificación triple -->
+    <circle cx="120" cy="200" r="16" fill="#059669" stroke="#FFFFFF" stroke-width="3"/>
+    <text x="120" y="235" font-family="sans-serif" font-weight="800" font-size="10" fill="#34D399" text-anchor="middle">Plaza Roca (Vacío)</text>
+    <circle cx="260" cy="180" r="16" fill="#E11D48" stroke="#FFFFFF" stroke-width="3"/>
+    <text x="260" y="215" font-family="sans-serif" font-weight="800" font-size="10" fill="#F87171" text-anchor="middle">B° Norte (Lleno)</text>
+    <circle cx="190" cy="340" r="16" fill="#059669" stroke="#FFFFFF" stroke-width="3"/>
+    <text x="190" y="375" font-family="sans-serif" font-weight="800" font-size="10" fill="#34D399" text-anchor="middle">Plaza Olmos (Vacío)</text>
+    <!-- Tarjeta Inferior de Punto Seleccionado -->
+    <rect x="20" y="470" width="340" height="145" rx="20" fill="#0F172A" stroke="#047857" stroke-width="2"/>
+    <rect x="36" y="485" width="80" height="20" rx="6" fill="#065F46"/>
+    <text x="76" y="499" font-family="sans-serif" font-weight="800" font-size="10" fill="#A7F3D0" text-anchor="middle">DISPONIBLE</text>
+    <text x="36" y="525" font-family="sans-serif" font-weight="800" font-size="14" fill="#F8FAFC">Campana Verde - Plaza Olmos</text>
+    <text x="36" y="545" font-family="sans-serif" font-size="11" fill="#94A3B8">Ocupación IoT: 35% • A 120 metros de tu posición</text>
+    <rect x="36" y="560" width="308" height="36" rx="10" fill="#059669"/>
+    <text x="190" y="583" font-family="sans-serif" font-weight="800" font-size="12" fill="#FFFFFF" text-anchor="middle">Iniciar Depósito en Esta Campana</text>
+    <!-- Bottom Nav -->
+    <rect x="0" y="630" width="380" height="80" rx="0" fill="#0B132B"/>
+    <circle cx="190" cy="650" r="28" fill="#065F46" stroke="#10B981" stroke-width="3"/>
+    <text x="190" y="656" font-family="sans-serif" font-weight="900" font-size="16" fill="#FFFFFF" text-anchor="middle">QR</text>
+  </g>
+
+  <!-- PANTALLA 3: ESCÁNER QR CON RETÍCULA LÁSER -->
+  <g transform="translate(960, 130)">
+    <rect width="380" height="710" rx="36" fill="#020617" stroke="#334155" stroke-width="4"/>
+    <rect x="135" y="14" width="110" height="20" rx="10" fill="#000000"/>
+    <circle cx="225" cy="24" r="4" fill="#10B981"/>
+    <!-- Visor de Cámara -->
+    <rect x="20" y="60" width="340" height="420" rx="24" fill="#0F172A"/>
+    <!-- Retícula QR -->
+    <rect x="65" y="130" width="250" height="250" rx="24" fill="none" stroke="#10B981" stroke-width="3" stroke-dasharray="16,8"/>
+    <line x1="80" y1="255" x2="300" y2="255" stroke="#34D399" stroke-width="4" opacity="0.8"/>
+    <text x="190" y="415" font-family="sans-serif" font-weight="700" font-size="12" fill="#E2E8F0" text-anchor="middle">Apuntá al código QR de la campana</text>
+    <text x="190" y="435" font-family="sans-serif" font-size="10" fill="#94A3B8" text-anchor="middle">Geofence verificado: dentro de los 20 m</text>
+    <!-- Selector Fallback 2x2 -->
+    <text x="36" y="515" font-family="sans-serif" font-weight="800" font-size="12" fill="#F8FAFC">O elegí el material manualmente:</text>
+    <rect x="20" y="530" width="165" height="42" rx="12" fill="#1E293B" stroke="#334155"/>
+    <text x="102" y="556" font-family="sans-serif" font-weight="700" font-size="11" fill="#E2E8F0" text-anchor="middle">Plástico PET</text>
+    <rect x="195" y="530" width="165" height="42" rx="12" fill="#1E293B" stroke="#334155"/>
+    <text x="277" y="556" font-family="sans-serif" font-weight="700" font-size="11" fill="#E2E8F0" text-anchor="middle">Papel y Cartón</text>
+    <rect x="20" y="580" width="165" height="42" rx="12" fill="#1E293B" stroke="#334155"/>
+    <text x="102" y="606" font-family="sans-serif" font-weight="700" font-size="11" fill="#E2E8F0" text-anchor="middle">Latas Aluminio</text>
+    <rect x="195" y="580" width="165" height="42" rx="12" fill="#334155" stroke="#B45309"/>
+    <text x="277" y="606" font-family="sans-serif" font-weight="700" font-size="11" fill="#FCD34D" text-anchor="middle">Vidrio (Punto Limpio)</text>
+    <!-- Bottom Nav -->
+    <rect x="0" y="630" width="380" height="80" rx="0" fill="#0B132B"/>
+    <circle cx="190" cy="650" r="28" fill="#10B981" stroke="#34D399" stroke-width="3"/>
+    <text x="190" y="656" font-family="sans-serif" font-weight="900" font-size="16" fill="#FFFFFF" text-anchor="middle">QR</text>
+  </g>
+</svg>

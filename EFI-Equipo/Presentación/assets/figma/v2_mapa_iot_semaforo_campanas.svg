@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="900" viewBox="0 0 1400 900" fill="none">
+  <rect width="100%" height="100%" fill="#042F2E"/>
+  
+  <text x="60" y="60" font-family="'Plus Jakarta Sans', Inter, sans-serif" font-weight="900" font-size="28" fill="#F0FDFA">ARQUITECTURA DEL MAPA IOT & SEMÁFORO DE CAMPANAS</text>
+  <text x="60" y="92" font-family="'Plus Jakarta Sans', Inter, sans-serif" font-size="15" fill="#99F6E4">Sistema de telemetría en tiempo real: codificación triple para daltonismo y visualización solar en Río Cuarto</text>
+
+  <!-- Tag de Estado -->
+  <rect x="1140" y="45" width="200" height="32" rx="8" fill="#0F766E"/>
+  <text x="1240" y="66" font-family="monospace" font-weight="700" font-size="13" fill="#CCFBF1" text-anchor="middle">WCAG 2.2 TRIPLE CODE</text>
+
+  <!-- MAPA CENTRAL EXPANDIDO -->
+  <g transform="translate(60, 130)">
+    <rect width="820" height="710" rx="32" fill="#0F172A" stroke="#134E4A" stroke-width="4"/>
+    <!-- Cuadrícula Urbana Río Cuarto -->
+    <path d="M 40 100 L 780 100 M 40 200 L 780 200 M 40 300 L 780 300 M 40 400 L 780 400 M 40 500 L 780 500 M 40 600 L 780 600" stroke="#1E293B" stroke-width="2"/>
+    <path d="M 150 40 L 150 670 M 300 40 L 300 670 M 450 40 L 450 670 M 600 40 L 600 670 M 750 40 L 750 670" stroke="#1E293B" stroke-width="2"/>
+    
+    <!-- Río Chocancharagua representativo -->
+    <path d="M 40 460 Q 300 320 780 440" stroke="#0284C7" stroke-width="24" fill="none" opacity="0.4" stroke-linecap="round"/>
+    <text x="500" y="370" font-family="sans-serif" font-weight="700" font-size="14" fill="#38BDF8" opacity="0.8">Río Cuarto (Chocancharagua)</text>
+
+    <!-- Puntos Verdes con radio Geofence -->
+    <!-- Punto 1: Plaza Olmos (Vacío) -->
+    <circle cx="280" cy="240" r="60" fill="#059669" fill-opacity="0.15" stroke="#10B981" stroke-width="2" stroke-dasharray="6,4"/>
+    <circle cx="280" cy="240" r="18" fill="#059669" stroke="#FFFFFF" stroke-width="4"/>
+    <rect x="210" y="160" width="140" height="32" rx="8" fill="#064E3B" stroke="#059669" stroke-width="1.5"/>
+    <text x="280" y="181" font-family="sans-serif" font-weight="800" font-size="11" fill="#FFFFFF" text-anchor="middle">Plaza Olmos (Vacío)</text>
+
+    <!-- Punto 2: Plaza Roca (Vacío) -->
+    <circle cx="480" cy="220" r="60" fill="#059669" fill-opacity="0.15" stroke="#10B981" stroke-width="2" stroke-dasharray="6,4"/>
+    <circle cx="480" cy="220" r="18" fill="#059669" stroke="#FFFFFF" stroke-width="4"/>
+    <rect x="410" y="140" width="140" height="32" rx="8" fill="#064E3B" stroke="#059669" stroke-width="1.5"/>
+    <text x="480" y="161" font-family="sans-serif" font-weight="800" font-size="11" fill="#FFFFFF" text-anchor="middle">Plaza Roca (Vacío)</text>
+
+    <!-- Punto 3: B° Alberdi (Lleno) -->
+    <circle cx="620" cy="380" r="18" fill="#E11D48" stroke="#FFFFFF" stroke-width="4"/>
+    <rect x="550" y="415" width="140" height="32" rx="8" fill="#881337" stroke="#E11D48" stroke-width="1.5"/>
+    <text x="620" y="436" font-family="sans-serif" font-weight="800" font-size="11" fill="#FFFFFF" text-anchor="middle">B° Alberdi (Lleno)</text>
+
+    <!-- Punto 4: Banda Norte (Ocupado 75%) -->
+    <circle cx="220" cy="110" r="16" fill="#D97706" stroke="#FFFFFF" stroke-width="3"/>
+    <rect x="150" y="65" width="140" height="28" rx="8" fill="#78350F" stroke="#D97706" stroke-width="1.5"/>
+    <text x="220" y="83" font-family="sans-serif" font-weight="800" font-size="10" fill="#FCD34D" text-anchor="middle">Banda Norte (75%)</text>
+  </g>
+
+  <!-- PANEL DERECHO: LEYENDA Y ESPECIFICACIÓN TÉCNICA -->
+  <g transform="translate(910, 130)">
+    <!-- Bloque 1: Codificación Triple -->
+    <rect width="430" height="220" rx="24" fill="#0F172A" stroke="#134E4A" stroke-width="3"/>
+    <text x="30" y="40" font-family="sans-serif" font-weight="800" font-size="16" fill="#F0FDFA">Principio Perceptible: Codificación Triple</text>
+    <text x="30" y="65" font-family="sans-serif" font-size="12" fill="#99F6E4">No se depende del color para transmitir el estado:</text>
+    <!-- Item Verde -->
+    <circle cx="45" cy="100" r="12" fill="#059669"/>
+    <text x="70" y="105" font-family="sans-serif" font-weight="700" font-size="12" fill="#FFFFFF">1. Verde + Pin Normal + Texto (Vacío)</text>
+    <!-- Item Ámbar -->
+    <circle cx="45" cy="140" r="12" fill="#D97706"/>
+    <text x="70" y="145" font-family="sans-serif" font-weight="700" font-size="12" fill="#FFFFFF">2. Ámbar + Reloj + Texto (Casi Lleno)</text>
+    <!-- Item Rojo -->
+    <circle cx="45" cy="180" r="12" fill="#E11D48"/>
+    <text x="70" y="185" font-family="sans-serif" font-weight="700" font-size="12" fill="#FFFFFF">3. Rojo + Alerta + Texto (Lleno)</text>
+
+    <!-- Bloque 2: Regla de Geocerca (Geofence) -->
+    <rect y="245" width="430" height="220" rx="24" fill="#0F172A" stroke="#134E4A" stroke-width="3"/>
+    <text x="30" y="285" font-family="sans-serif" font-weight="800" font-size="16" fill="#F0FDFA">Geocerca & Seguridad Antifraude</text>
+    <text x="30" y="310" font-family="sans-serif" font-size="12" fill="#99F6E4">Regla de Negocio RN-003:</text>
+    <rect x="30" y="330" width="370" height="70" rx="14" fill="#134E4A"/>
+    <text x="46" y="358" font-family="sans-serif" font-weight="800" font-size="13" fill="#6EE7B7">Radio de validación: 20 metros</text>
+    <text x="46" y="380" font-family="sans-serif" font-size="11" fill="#CCFBF1">El escáner QR solo se activa si el GPS del teléfono certifica proximidad a la campana.</text>
+    <text x="30" y="435" font-family="sans-serif" font-size="11" fill="#94A3B8">• Previene el canje ficticio desde el hogar.</text>
+
+    <!-- Bloque 3: Beneficio Comunitario -->
+    <rect y="490" width="430" height="220" rx="24" fill="#0F172A" stroke="#134E4A" stroke-width="3"/>
+    <text x="30" y="530" font-family="sans-serif" font-weight="800" font-size="16" fill="#F0FDFA">Reducción de Huella de Carbono</text>
+    <text x="30" y="560" font-family="sans-serif" font-size="12" fill="#99F6E4">Optimización logística para Cotreco / Municipio:</text>
+    <text x="30" y="595" font-family="sans-serif" font-size="12" fill="#E2E8F0">• Camiones recolectores solo visitan campanas > 80%.</text>
+    <text x="30" y="625" font-family="sans-serif" font-size="12" fill="#E2E8F0">• Ahorro del 32% en combustible municipal.</text>
+    <text x="30" y="655" font-family="sans-serif" font-size="12" fill="#E2E8F0">• Vecinos redirigidos automáticamente a campanas vacías.</text>
+  </g>
+</svg>
