@@ -1657,6 +1657,17 @@ document.addEventListener('DOMContentLoaded', () => {
     if (balanceLevelTag) {
       balanceLevelTag.textContent = `Nivel ${levelInfo.level} • ${levelInfo.name}`;
     }
+    const levelIconEl = document.getElementById('balance-level-icon');
+    if (levelIconEl) {
+      const levelIcons = {
+        1: 'fluent-emoji-flat:seedling',
+        2: 'fluent-emoji-flat:herb',
+        3: 'fluent-emoji-flat:potted-plant',
+        4: 'fluent-emoji-flat:deciduous-tree',
+        5: 'fluent-emoji-flat:evergreen-tree'
+      };
+      levelIconEl.setAttribute('icon', levelIcons[levelInfo.level] || 'fluent-emoji-flat:potted-plant');
+    }
     if (goalTextEl) {
       goalTextEl.textContent = levelInfo.isMax
         ? `Nivel ${levelInfo.level}: ${levelInfo.name} (Nivel Máximo)`
