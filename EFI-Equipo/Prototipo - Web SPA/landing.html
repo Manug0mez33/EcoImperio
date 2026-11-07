@@ -137,7 +137,7 @@
       </a>
 
       <!-- Menú de Navegación Desktop (Orden idéntico al flujo de la página) -->
-      <nav class="hidden lg:flex items-center gap-7 text-sm font-semibold text-slate-600 dark:text-slate-300" aria-label="Navegación principal">
+      <nav class="hidden lg:flex items-center gap-6 text-sm font-semibold text-slate-600 dark:text-slate-300" aria-label="Navegación principal">
         <a href="#empresa" class="hover:text-emerald-700 dark:hover:text-emerald-400 transition-colors">La Empresa & Modelo</a>
         <a href="#como-funciona" class="hover:text-emerald-700 dark:hover:text-emerald-400 transition-colors">¿Cómo Funciona?</a>
         <a href="#tecnologia" class="hover:text-emerald-700 dark:hover:text-emerald-400 transition-colors">Campanas IoT</a>
@@ -145,22 +145,25 @@
         <a href="#comercios" class="hover:text-emerald-700 dark:hover:text-emerald-400 transition-colors">Comercios</a>
         <a href="#contacto" class="hover:text-emerald-700 dark:hover:text-emerald-400 transition-colors">Contacto</a>
         <a href="#faq" class="hover:text-emerald-700 dark:hover:text-emerald-400 transition-colors">Preguntas</a>
+        <a href="defensa.html" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 font-bold hover:bg-emerald-200 dark:hover:bg-emerald-900 transition-all text-xs" title="Presentación y defensa académica EFI">
+          <iconify-icon icon="mynaui:academic-cap" class="text-base" aria-hidden="true"></iconify-icon>
+          <span>Defensa EFI</span>
+        </a>
       </nav>
 
       <!-- Botones de Acción (CTAs) -->
-      <div class="flex items-center gap-3">
-        
+      <div class="flex items-center gap-2.5">
+        <!-- Enlace rápido a Defensa en móvil -->
+        <a href="defensa.html" class="lg:hidden inline-flex items-center gap-1 px-3 py-2 rounded-xl bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 text-xs font-bold hover:bg-emerald-200 dark:hover:bg-emerald-900 transition-all">
+          <iconify-icon icon="mynaui:academic-cap" class="text-base" aria-hidden="true"></iconify-icon>
+          <span>Defensa</span>
+        </a>
+
         <!-- Toggle Modo Oscuro -->
         <button type="button" id="theme-toggle" class="w-10 h-10 rounded-xl border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-center transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500" aria-label="Cambiar tema visual claro/oscuro">
           <iconify-icon id="theme-icon" icon="mynaui:sun" class="text-xl hidden dark:inline" aria-hidden="true"></iconify-icon>
           <iconify-icon icon="mynaui:moon" class="text-xl inline dark:hidden" aria-hidden="true"></iconify-icon>
         </button>
-
-        <!-- Botón Contacto y Adhesión de Comercios -->
-        <a href="#contacto" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-emerald-800 hover:bg-emerald-700 active:scale-95 text-white text-xs font-bold shadow-md shadow-emerald-800/20 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500">
-          <iconify-icon icon="mynaui:envelope" class="text-base" aria-hidden="true"></iconify-icon>
-          <span>Sumar Comercio / Contacto</span>
-        </a>
       </div>
     </div>
   </header>
@@ -199,45 +202,46 @@
               <strong>EcoImperio</strong> es la plataforma cívico-tecnológica de Río Cuarto que recompensa el compromiso ambiental de los vecinos. Depositá tus reciclables en las <strong>campanas verdes con sensores inteligentes IoT</strong>, sumá <strong>EcoPuntos verificados</strong> y canjealos por descuentos directos en los comercios de tu barrio.
             </p>
 
-            <!-- Acciones de Descarga e Interacción -->
-            <div class="flex flex-wrap items-center gap-4 pt-2">
-              
-              <!-- Badge Oficial Google Play -->
-              <button type="button" onclick="openPlayModal()" class="btn-playstore px-5 py-3 rounded-2xl flex items-center gap-3.5 text-white shadow-xl group cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400">
-                <iconify-icon icon="logos:google-play-icon" class="text-3xl shrink-0" aria-hidden="true"></iconify-icon>
-                <div class="text-left">
-                  <span class="block text-[10px] uppercase font-bold tracking-wider text-slate-400">DISPONIBLE EN</span>
-                  <span class="block text-base font-extrabold text-white group-hover:text-emerald-300 transition-colors leading-none">Google Play</span>
-                </div>
-              </button>
+            <!-- Acciones y Métricas para Desktop (Ocultas en móvil para ubicarlas debajo del teléfono) -->
+            <div class="hidden lg:block space-y-8 pt-2">
+              <div class="flex flex-wrap items-center gap-4">
+                <!-- Badge Oficial Google Play -->
+                <button type="button" onclick="openPlayModal()" class="btn-playstore px-5 py-3 rounded-2xl flex items-center gap-3.5 text-white shadow-xl group cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400">
+                  <iconify-icon icon="logos:google-play-icon" class="text-3xl shrink-0" aria-hidden="true"></iconify-icon>
+                  <div class="text-left">
+                    <span class="block text-[10px] uppercase font-bold tracking-wider text-slate-400">DISPONIBLE EN</span>
+                    <span class="block text-base font-extrabold text-white group-hover:text-emerald-300 transition-colors leading-none">Google Play</span>
+                  </div>
+                </button>
 
-              <!-- Botón Secundario Web SPA -->
-              <a href="index.html" class="px-6 py-3.5 rounded-2xl bg-white dark:bg-slate-900 border-2 border-emerald-600/30 hover:border-emerald-600 text-emerald-800 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-950/30 font-bold text-sm shadow-sm hover:shadow transition-all flex items-center gap-2">
-                <iconify-icon icon="mynaui:sparkles" class="text-lg text-emerald-600" aria-hidden="true"></iconify-icon>
-                <span>Probar App Web (Demo en vivo)</span>
-              </a>
-            </div>
+                <!-- Botón Secundario Web SPA -->
+                <a href="index.html" class="px-6 py-3.5 rounded-2xl bg-white dark:bg-slate-900 border-2 border-emerald-600/30 hover:border-emerald-600 text-emerald-800 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-950/30 font-bold text-sm shadow-sm hover:shadow transition-all flex items-center gap-2">
+                  <iconify-icon icon="mynaui:sparkles" class="text-lg text-emerald-600" aria-hidden="true"></iconify-icon>
+                  <span>Probar App Web (Demo en vivo)</span>
+                </a>
+              </div>
 
-            <!-- Datos de Confianza y Calificación de Tienda -->
-            <div class="pt-4 border-t border-slate-200 dark:border-slate-800/80 flex flex-wrap items-center gap-8 text-xs font-medium text-slate-500 dark:text-slate-400">
-              <div class="flex items-center gap-2">
-                <div class="flex text-amber-400 text-sm" aria-hidden="true">
-                  <iconify-icon icon="mynaui:star-solid"></iconify-icon>
-                  <iconify-icon icon="mynaui:star-solid"></iconify-icon>
-                  <iconify-icon icon="mynaui:star-solid"></iconify-icon>
-                  <iconify-icon icon="mynaui:star-solid"></iconify-icon>
-                  <iconify-icon icon="mynaui:star-solid"></iconify-icon>
+              <!-- Datos de Confianza y Calificación de Tienda -->
+              <div class="pt-4 border-t border-slate-200 dark:border-slate-800/80 flex flex-wrap items-center gap-8 text-xs font-medium text-slate-500 dark:text-slate-400">
+                <div class="flex items-center gap-2">
+                  <div class="flex text-amber-400 text-sm" aria-hidden="true">
+                    <iconify-icon icon="mynaui:star-solid"></iconify-icon>
+                    <iconify-icon icon="mynaui:star-solid"></iconify-icon>
+                    <iconify-icon icon="mynaui:star-solid"></iconify-icon>
+                    <iconify-icon icon="mynaui:star-solid"></iconify-icon>
+                    <iconify-icon icon="mynaui:star-solid"></iconify-icon>
+                  </div>
+                  <span class="font-bold text-slate-900 dark:text-white">4.9 / 5</span>
+                  <span>(Calificación en Play Store)</span>
                 </div>
-                <span class="font-bold text-slate-900 dark:text-white">4.9 / 5</span>
-                <span>(Calificación en Play Store)</span>
-              </div>
-              <div class="flex items-center gap-2">
-                <iconify-icon icon="mynaui:shield-check" class="text-emerald-700 text-base" aria-hidden="true"></iconify-icon>
-                <span>Validado por la Municipalidad de Río Cuarto</span>
-              </div>
-              <div class="flex items-center gap-2">
-                <iconify-icon icon="mynaui:check-circle" class="text-emerald-700 text-base" aria-hidden="true"></iconify-icon>
-                <span>100% Gratuita y sin publicidad</span>
+                <div class="flex items-center gap-2">
+                  <iconify-icon icon="mynaui:shield-check" class="text-emerald-700 text-base" aria-hidden="true"></iconify-icon>
+                  <span>Validado por la Municipalidad de Río Cuarto</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <iconify-icon icon="mynaui:check-circle" class="text-emerald-700 text-base" aria-hidden="true"></iconify-icon>
+                  <span>100% Gratuita y sin publicidad</span>
+                </div>
               </div>
             </div>
 
@@ -406,6 +410,45 @@
               </span>
             </div>
 
+          </div>
+
+          <!-- Bloque de Acciones y Métricas para Mobile (Ubicado debajo del modelo del teléfono en responsive) -->
+          <div class="lg:hidden w-full space-y-6 pt-4 text-center">
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3.5">
+              <!-- Botón Google Play Mobile -->
+              <button type="button" onclick="openPlayModal()" class="w-full sm:w-auto btn-playstore px-5 py-3 rounded-2xl flex items-center justify-center gap-3.5 text-white shadow-xl cursor-pointer">
+                <iconify-icon icon="logos:google-play-icon" class="text-3xl shrink-0" aria-hidden="true"></iconify-icon>
+                <div class="text-left">
+                  <span class="block text-[10px] uppercase font-bold tracking-wider text-slate-400">DISPONIBLE EN</span>
+                  <span class="block text-base font-extrabold text-white leading-none">Google Play</span>
+                </div>
+              </button>
+
+              <!-- Botón Secundario Web SPA Mobile -->
+              <a href="index.html" class="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-white dark:bg-slate-900 border-2 border-emerald-600/30 hover:border-emerald-600 text-emerald-800 dark:text-emerald-400 font-bold text-sm shadow-sm transition-all flex items-center justify-center gap-2">
+                <iconify-icon icon="mynaui:sparkles" class="text-lg text-emerald-600" aria-hidden="true"></iconify-icon>
+                <span>Probar App Web (Demo en vivo)</span>
+              </a>
+            </div>
+
+            <!-- Calificación y Confianza Mobile -->
+            <div class="pt-4 border-t border-slate-200 dark:border-slate-800/80 flex flex-col items-center justify-center gap-3 text-xs font-medium text-slate-500 dark:text-slate-400">
+              <div class="flex items-center gap-2">
+                <div class="flex text-amber-400 text-sm" aria-hidden="true">
+                  <iconify-icon icon="mynaui:star-solid"></iconify-icon>
+                  <iconify-icon icon="mynaui:star-solid"></iconify-icon>
+                  <iconify-icon icon="mynaui:star-solid"></iconify-icon>
+                  <iconify-icon icon="mynaui:star-solid"></iconify-icon>
+                  <iconify-icon icon="mynaui:star-solid"></iconify-icon>
+                </div>
+                <span class="font-bold text-slate-900 dark:text-white">4.9 / 5</span>
+                <span>(Calificación en Play Store)</span>
+              </div>
+              <div class="flex flex-wrap items-center justify-center gap-4 text-[11px]">
+                <span class="flex items-center gap-1.5"><iconify-icon icon="mynaui:shield-check" class="text-emerald-700 text-base" aria-hidden="true"></iconify-icon> Validado por la Municipalidad</span>
+                <span class="flex items-center gap-1.5"><iconify-icon icon="mynaui:check-circle" class="text-emerald-700 text-base" aria-hidden="true"></iconify-icon> 100% Gratuita</span>
+              </div>
+            </div>
           </div>
 
         </div>
@@ -1185,6 +1228,7 @@
             <li><a href="#comercios" class="hover:text-emerald-400 transition-colors">Comercios Adheridos</a></li>
             <li><a href="#contacto" class="hover:text-emerald-400 transition-colors">Contacto & Adhesión</a></li>
             <li><a href="#faq" class="hover:text-emerald-400 transition-colors">Preguntas Frecuentes</a></li>
+            <li><a href="defensa.html" class="hover:text-emerald-400 transition-colors font-bold text-emerald-300 flex items-center gap-1.5"><iconify-icon icon="mynaui:academic-cap" class="text-sm"></iconify-icon><span>Defensa Académica EFI</span></a></li>
           </ul>
         </div>
 
