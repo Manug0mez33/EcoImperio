@@ -1056,6 +1056,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const deleteAccountBtn = document.getElementById('btn-delete-account');
   const deleteAccountHint = document.getElementById('delete-account-hint');
   const deleteDialog = document.getElementById('delete-dialog');
+  const resetDemoWrap = document.getElementById('reset-demo-wrap');
+  const resetDemoBtn = document.getElementById('btn-reset-demo');
 
   const isDemoUser = () => Boolean(state.user) && state.user.email === DEMO_ACCOUNT.email;
 
@@ -1084,6 +1086,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const demo = isDemoUser();
     deleteAccountBtn.disabled = demo;
     deleteAccountHint.classList.toggle('hidden', !demo);
+    if (resetDemoWrap) resetDemoWrap.classList.toggle('hidden', !demo);
+  }
+
+  if (resetDemoBtn) {
+    resetDemoBtn.addEventListener('click', () => {
+      state.ecoPuntos = DEMO_WALLET.ecoPuntos;
+      state.history = DEMO_WALLET.history.slice();
+      saveUserWallet();
+      updatePointsUI();
+      showToast('Datos de demostración restablecidos (1.250 EcoPuntos y 3 depósitos).');
+    });
   }
 
   if (profileForm) {

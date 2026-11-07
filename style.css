@@ -709,3 +709,82 @@ html.dark body.high-contrast .toast {
   color: #ffff00 !important;
   border: 3px solid #ffff00 !important;
 }
+
+
+/* --------------------------------------------------------------------------
+   3. ESTADOS ACTIVOS/INACTIVOS DE FILTROS Y NAVEGACIÓN EN ALTO CONTRASTE
+   Garantiza diferenciación visual binaria (WCAG AAA) para aria-pressed y aria-current
+   -------------------------------------------------------------------------- */
+html:not(.dark).high-contrast .map-filter-pill[aria-pressed="true"],
+html:not(.dark) body.high-contrast .map-filter-pill[aria-pressed="true"],
+html:not(.dark).high-contrast .scanner-material-btn[aria-pressed="true"],
+html:not(.dark) body.high-contrast .scanner-material-btn[aria-pressed="true"] {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border: 3px solid #000000 !important;
+  font-weight: 900 !important;
+}
+
+html:not(.dark).high-contrast .map-filter-pill[aria-pressed="true"] *,
+html:not(.dark) body.high-contrast .map-filter-pill[aria-pressed="true"] *,
+html:not(.dark).high-contrast .scanner-material-btn[aria-pressed="true"] *,
+html:not(.dark) body.high-contrast .scanner-material-btn[aria-pressed="true"] * {
+  color: #ffffff !important;
+}
+
+html:not(.dark).high-contrast .map-filter-pill[aria-pressed="false"],
+html:not(.dark) body.high-contrast .map-filter-pill[aria-pressed="false"],
+html:not(.dark).high-contrast .scanner-material-btn[aria-pressed="false"],
+html:not(.dark) body.high-contrast .scanner-material-btn[aria-pressed="false"] {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  border: 2px dashed #000000 !important;
+}
+
+html:not(.dark).high-contrast .bottom-nav-item[aria-current="page"],
+html:not(.dark) body.high-contrast .bottom-nav-item[aria-current="page"] {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+}
+
+html:not(.dark).high-contrast .bottom-nav-item[aria-current="page"] *,
+html:not(.dark) body.high-contrast .bottom-nav-item[aria-current="page"] * {
+  color: #ffffff !important;
+}
+
+html.dark.high-contrast .map-filter-pill[aria-pressed="true"],
+html.dark body.high-contrast .map-filter-pill[aria-pressed="true"],
+html.dark.high-contrast .scanner-material-btn[aria-pressed="true"],
+html.dark body.high-contrast .scanner-material-btn[aria-pressed="true"] {
+  background-color: #ffff00 !important;
+  color: #000000 !important;
+  border: 3px solid #ffffff !important;
+  font-weight: 900 !important;
+}
+
+html.dark.high-contrast .map-filter-pill[aria-pressed="true"] *,
+html.dark body.high-contrast .map-filter-pill[aria-pressed="true"] *,
+html.dark.high-contrast .scanner-material-btn[aria-pressed="true"] *,
+html.dark body.high-contrast .scanner-material-btn[aria-pressed="true"] * {
+  color: #000000 !important;
+}
+
+html.dark.high-contrast .map-filter-pill[aria-pressed="false"],
+html.dark body.high-contrast .map-filter-pill[aria-pressed="false"],
+html.dark.high-contrast .scanner-material-btn[aria-pressed="false"],
+html.dark body.high-contrast .scanner-material-btn[aria-pressed="false"] {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border: 2px dashed #ffffff !important;
+}
+
+html.dark.high-contrast .bottom-nav-item[aria-current="page"],
+html.dark body.high-contrast .bottom-nav-item[aria-current="page"] {
+  background-color: #ffff00 !important;
+  color: #000000 !important;
+}
+
+html.dark.high-contrast .bottom-nav-item[aria-current="page"] *,
+html.dark body.high-contrast .bottom-nav-item[aria-current="page"] * {
+  color: #000000 !important;
+}
