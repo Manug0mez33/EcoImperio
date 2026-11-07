@@ -39,3 +39,10 @@ Alineados con `decisiones.md` (ADR-002) y `docs/conceptos/06_DCU_Personas_y_Jour
 - **Sesión de Depósito**: Ventana corta (~60 s) que el servidor abre al validar QR + GPS + usuario. Vincula la campana con la cuenta del vecino: todo lo que la campana detecte en esa ventana se acredita a esa cuenta.
 - **Detección Óptica/Gravimétrica de Material**: La campana identifica el material (PET, cartón, aluminio, vidrio) con cámara/sensor óptico y verifica el peso con una celda de carga. Si no detecta material válido, no se acreditan puntos.
 - **Bonus por Baja Ocupación**: `+10 pts` extra al depositar en campanas con baja ocupación, para que las campanas se llenen de forma pareja.
+
+## 5. Perfil del Vecino
+- **Perfil**: Pantalla `screen-config` (antes "Mi Perfil y Cuenta"). Muestra avatar, sello de vecino verificado, impacto acumulado, credencial QR, datos personales y seguridad.
+- **Impacto acumulado**: kg reciclados (peso informado por la celda de carga de la campana), cantidad de depósitos y nivel del vecino.
+- **Nivel vecinal**: Se calcula con los EcoPuntos ganados históricamente (saldo + canjeados): Nivel 1 Semilla (< 500), Nivel 2 Brote (500–999), Nivel 3 EcoVecino (1.000–1.999), Nivel 4 Guardián Verde (≥ 2.000).
+- **Credencial QR del vecino**: Código personal (`#RC-XXXX`) para identificarse en Puntos Limpios y EcoEventos sin dictar datos. Distinto del QR dinámico de la campana (ADR-006).
+- **Avatar**: Iniciales o uno de 4 íconos ecológicos (planta, gota, sol, reciclaje), guardado por cuenta en `localStorage` (`ecoimperio_avatars`).

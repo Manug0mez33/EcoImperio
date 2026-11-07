@@ -334,6 +334,19 @@
             EcoEventos
           </button>
         </div>
+
+        <!-- Orden sutil: Más recientes / Más relevantes -->
+        <div class="flex items-center justify-between px-1 pt-0.5">
+          <span class="text-[11px] font-semibold text-slate-500 dark:text-slate-400">Publicaciones</span>
+          <div class="inline-flex items-center rounded-xl bg-slate-100 dark:bg-slate-800 p-0.5 text-xs" role="group" aria-label="Ordenar publicaciones">
+            <button type="button" class="community-sort-btn px-2.5 py-1 rounded-lg text-xs font-bold transition-all bg-white dark:bg-slate-700 text-emerald-800 dark:text-emerald-300 shadow-xs cursor-pointer" data-sort="recent" aria-pressed="true">
+              Recientes
+            </button>
+            <button type="button" class="community-sort-btn px-2.5 py-1 rounded-lg text-xs font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all cursor-pointer" data-sort="relevant" aria-pressed="false">
+              Relevantes
+            </button>
+          </div>
+        </div>
       </header>
 
       <!-- Cuerpo scrollable del Muro Social -->
@@ -570,8 +583,8 @@
                 <p id="nearby-card-subtitle" class="text-[11px] text-slate-600 dark:text-slate-400 leading-snug mt-0.5">A 8m (En rango QR) • PET, Cartón, Latas</p>
               </div>
             </div>
-            <button type="button" id="btn-nearby-action" class="touch-target px-3 py-1.5 rounded-xl bg-emerald-800 hover:bg-emerald-700 text-white text-xs font-bold flex items-center gap-1 shadow-md shrink-0 cursor-pointer transition-all" aria-label="Escanear en este punto de reciclaje">
-              <span id="btn-nearby-action-label">Escanear</span>
+            <button type="button" id="btn-nearby-action" class="hidden touch-target px-3 py-1.5 rounded-xl bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold flex items-center gap-1 shadow-md shrink-0 cursor-pointer transition-all" aria-label="Ver punto de reciclaje disponible más cercano">
+              <span id="btn-nearby-action-label">Ver cercano</span>
               <iconify-icon icon="mynaui:chevron-right" class="text-sm" aria-hidden="true"></iconify-icon>
             </button>
           </div>
@@ -922,7 +935,7 @@
             <iconify-icon icon="mynaui:arrow-left" class="text-2xl" aria-hidden="true"></iconify-icon>
           </button>
           <div>
-            <h1 class="font-black text-slate-900 dark:text-white leading-tight">Mi Perfil</h1>
+            <h1 class="font-black text-slate-900 dark:text-white leading-tight">Perfil</h1>
             <p class="text-xs text-slate-600 dark:text-slate-400">Datos personales y seguridad de tu cuenta</p>
           </div>
         </div>
@@ -935,14 +948,49 @@
           <h2 id="cfg-perfil-title" class="section-kicker px-1 text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400">Datos del vecino</h2>
           <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm p-4 space-y-4">
             <div class="flex items-center gap-3">
-              <div class="w-14 h-14 rounded-full bg-emerald-800 text-white font-bold text-lg flex items-center justify-center border-2 border-emerald-500 shrink-0" aria-hidden="true">
+              <button type="button" id="btn-change-avatar" class="relative w-14 h-14 rounded-full bg-emerald-800 hover:bg-emerald-700 text-white font-bold text-lg flex items-center justify-center border-2 border-emerald-500 shrink-0 cursor-pointer transition-colors" aria-label="Cambiar avatar" aria-haspopup="dialog">
                 <span class="user-initials">OR</span>
-              </div>
+                <span class="absolute -bottom-0.5 -right-0.5 w-5 h-5 rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 text-emerald-700 dark:text-emerald-400 flex items-center justify-center" aria-hidden="true">
+                  <iconify-icon icon="ph:pencil-simple-bold" class="text-[11px]" aria-hidden="true"></iconify-icon>
+                </span>
+              </button>
               <div class="min-w-0">
                 <p class="user-fullname font-bold text-slate-900 dark:text-white">Oscar Rodríguez</p>
                 <p class="user-email text-sm text-slate-600 dark:text-slate-400">vecino@rc.com</p>
+                <p class="mt-0.5 flex items-center gap-1 text-[11px] font-semibold text-emerald-700 dark:text-emerald-400">
+                  <iconify-icon icon="ph:seal-check-fill" class="text-sm shrink-0" aria-hidden="true"></iconify-icon>
+                  <span>Vecino verificado • Desde <span id="profile-member-since">2026</span></span>
+                </p>
               </div>
             </div>
+
+            <!-- Impacto ambiental acumulado del vecino -->
+            <dl class="grid grid-cols-3 gap-2" aria-label="Tu impacto ambiental">
+              <div class="p-2.5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700 text-center flex flex-col-reverse">
+                <dt class="text-[11px] font-semibold text-slate-600 dark:text-slate-400">Reciclados</dt>
+                <dd id="profile-stat-kg" class="text-base font-black text-emerald-800 dark:text-emerald-300">0 kg</dd>
+              </div>
+              <div class="p-2.5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700 text-center flex flex-col-reverse">
+                <dt class="text-[11px] font-semibold text-slate-600 dark:text-slate-400">Depósitos</dt>
+                <dd id="profile-stat-deposits" class="text-base font-black text-emerald-800 dark:text-emerald-300">0</dd>
+              </div>
+              <div class="p-2.5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700 text-center flex flex-col-reverse">
+                <dt id="profile-stat-level-name" class="text-[11px] font-semibold text-slate-600 dark:text-slate-400">Semilla</dt>
+                <dd id="profile-stat-level" class="text-base font-black text-amber-700 dark:text-amber-400">Nivel 1</dd>
+              </div>
+            </dl>
+
+            <!-- Credencial digital del vecino -->
+            <button type="button" id="btn-open-credential" class="w-full min-h-[48px] flex items-center justify-between gap-3 px-3 py-2.5 rounded-2xl border border-emerald-200 dark:border-emerald-800/80 bg-emerald-50/60 dark:bg-emerald-950/30 hover:bg-emerald-50 dark:hover:bg-emerald-950/60 text-left transition-colors cursor-pointer" aria-haspopup="dialog">
+              <span class="flex items-center gap-3">
+                <iconify-icon icon="ph:qr-code-bold" class="text-xl text-emerald-700 dark:text-emerald-400" aria-hidden="true"></iconify-icon>
+                <span>
+                  <span class="block text-sm font-semibold text-slate-800 dark:text-slate-100">Mi credencial QR</span>
+                  <span class="block text-[11px] text-slate-600 dark:text-slate-400">Identificate en Puntos Limpios y EcoEventos</span>
+                </span>
+              </span>
+              <iconify-icon icon="mynaui:chevron-right" class="text-base text-slate-400" aria-hidden="true"></iconify-icon>
+            </button>
 
             <form id="profile-form" class="space-y-4" novalidate>
               <div class="grid grid-cols-2 gap-3">
@@ -1212,7 +1260,7 @@
           <button type="button" data-navigate="config" data-target="config" class="nav-item group w-full min-h-[44px] flex items-center justify-between gap-3 px-3 py-2 rounded-xl border border-transparent transition-all active:scale-95 cursor-pointer text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 font-semibold text-xs">
             <span class="flex items-center gap-3">
               <iconify-icon icon="mynaui:user" class="text-xl text-emerald-700 dark:text-emerald-400" aria-hidden="true"></iconify-icon>
-              <span>Mi Perfil y Cuenta</span>
+              <span>Perfil</span>
             </span>
             <iconify-icon icon="mynaui:chevron-right" class="text-base text-slate-400" aria-hidden="true"></iconify-icon>
           </button>
@@ -1386,6 +1434,44 @@
       <form method="dialog" class="mt-6 space-y-3">
         <button type="button" id="btn-confirm-delete" class="w-full min-h-[48px] rounded-full bg-red-600 hover:bg-red-700 active:scale-95 text-white font-semibold transition-all cursor-pointer focus-visible:ring-4 focus-visible:ring-red-300 disabled:opacity-50 disabled:cursor-not-allowed">Sí, eliminar cuenta</button>
         <button value="cancel" class="btn-secondary w-full">Cancelar</button>
+      </form>
+    </dialog>
+
+    <!-- Diálogo: Elegir avatar del vecino -->
+    <dialog id="avatar-dialog" aria-labelledby="avatar-dialog-title" class="w-[82%] max-w-[310px] rounded-3xl p-5 bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-2xl backdrop:bg-slate-950/70 backdrop:backdrop-blur-sm">
+      <form method="dialog">
+        <div class="flex items-center justify-between gap-2 mb-4">
+          <h2 id="avatar-dialog-title" class="text-lg font-bold">Elegí tu avatar</h2>
+          <button value="cancel" class="touch-target p-2 rounded-full text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-center" aria-label="Cerrar">
+            <iconify-icon icon="mynaui:x" class="text-xl" aria-hidden="true"></iconify-icon>
+          </button>
+        </div>
+        <div class="grid grid-cols-5 gap-2" role="group" aria-label="Opciones de avatar">
+          <button type="button" class="avatar-option aspect-square rounded-full bg-emerald-800 text-white font-bold text-sm flex items-center justify-center border-2 border-transparent hover:border-emerald-400 aria-[pressed=true]:border-amber-400 aria-[pressed=true]:ring-2 aria-[pressed=true]:ring-amber-300 transition-all cursor-pointer" data-avatar="initials" aria-label="Mis iniciales" aria-pressed="true"><span class="user-initials-static">OR</span></button>
+          <button type="button" class="avatar-option aspect-square rounded-full bg-emerald-800 text-white flex items-center justify-center border-2 border-transparent hover:border-emerald-400 aria-[pressed=true]:border-amber-400 aria-[pressed=true]:ring-2 aria-[pressed=true]:ring-amber-300 transition-all cursor-pointer" data-avatar="ph:plant-bold" aria-label="Planta" aria-pressed="false"><iconify-icon icon="ph:plant-bold" class="text-xl" aria-hidden="true"></iconify-icon></button>
+          <button type="button" class="avatar-option aspect-square rounded-full bg-emerald-800 text-white flex items-center justify-center border-2 border-transparent hover:border-emerald-400 aria-[pressed=true]:border-amber-400 aria-[pressed=true]:ring-2 aria-[pressed=true]:ring-amber-300 transition-all cursor-pointer" data-avatar="ph:drop-bold" aria-label="Gota de agua" aria-pressed="false"><iconify-icon icon="ph:drop-bold" class="text-xl" aria-hidden="true"></iconify-icon></button>
+          <button type="button" class="avatar-option aspect-square rounded-full bg-emerald-800 text-white flex items-center justify-center border-2 border-transparent hover:border-emerald-400 aria-[pressed=true]:border-amber-400 aria-[pressed=true]:ring-2 aria-[pressed=true]:ring-amber-300 transition-all cursor-pointer" data-avatar="ph:sun-bold" aria-label="Sol" aria-pressed="false"><iconify-icon icon="ph:sun-bold" class="text-xl" aria-hidden="true"></iconify-icon></button>
+          <button type="button" class="avatar-option aspect-square rounded-full bg-emerald-800 text-white flex items-center justify-center border-2 border-transparent hover:border-emerald-400 aria-[pressed=true]:border-amber-400 aria-[pressed=true]:ring-2 aria-[pressed=true]:ring-amber-300 transition-all cursor-pointer" data-avatar="ph:recycle-bold" aria-label="Reciclaje" aria-pressed="false"><iconify-icon icon="ph:recycle-bold" class="text-xl" aria-hidden="true"></iconify-icon></button>
+        </div>
+      </form>
+    </dialog>
+
+    <!-- Diálogo: Credencial QR personal del vecino -->
+    <dialog id="credential-dialog" aria-labelledby="credential-dialog-title" aria-describedby="credential-dialog-desc" class="w-[82%] max-w-[310px] rounded-3xl p-5 bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-2xl backdrop:bg-slate-950/70 backdrop:backdrop-blur-sm">
+      <form method="dialog" class="flex flex-col items-center text-center gap-3">
+        <div class="w-full flex items-center justify-between gap-2">
+          <h2 id="credential-dialog-title" class="text-lg font-bold">Mi credencial QR</h2>
+          <button value="cancel" class="touch-target p-2 rounded-full text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-center" aria-label="Cerrar">
+            <iconify-icon icon="mynaui:x" class="text-xl" aria-hidden="true"></iconify-icon>
+          </button>
+        </div>
+        <p id="credential-dialog-desc" class="text-xs text-slate-600 dark:text-slate-400">Mostrala en el Punto Limpio o en EcoEventos para identificarte.</p>
+        <div id="credential-qr" class="w-44 h-44 p-3 bg-white rounded-2xl border border-slate-200" role="img" aria-label="Código QR personal del vecino"></div>
+        <div>
+          <p class="user-fullname font-bold text-slate-900 dark:text-white">Oscar Rodríguez</p>
+          <p id="credential-code" class="font-mono text-sm font-bold text-emerald-700 dark:text-emerald-400">#RC-0000</p>
+        </div>
+        <button value="ok" class="btn-primary w-full">Listo</button>
       </form>
     </dialog>
 

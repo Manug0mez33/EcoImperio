@@ -253,6 +253,11 @@ textarea:disabled {
   box-shadow: none !important;
 }
 
+/* Escáner central del mapa fuera de rango GPS: gris inequívoco (no depende solo de la opacidad) */
+#screen-mapa button[data-navigate="escaner"]:disabled {
+  background-color: #64748b !important;
+}
+
 /* ==========================================================================
    Efecto Laser Scanner QR y Flash
    ========================================================================== */

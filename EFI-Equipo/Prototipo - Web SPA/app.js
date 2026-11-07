@@ -39,6 +39,17 @@ document.addEventListener('DOMContentLoaded', () => {
         ticketCode: '#ECO-1048'
       },
       {
+        id: 6,
+        type: 'community',
+        title: 'Publicación en Comunidad Verde (Foto de depósito)',
+        location: 'Campana Verde Alberdi',
+        time: 'Ayer, 19:10 hs',
+        points: 5,
+        containerStatus: 'Depósito compartido con vecinos del barrio',
+        impact: 'Incentivo comunitario • +5 EcoPuntos bonus',
+        ticketCode: '#COM-1044'
+      },
+      {
         id: 2,
         title: 'Cartón y Papel Seco (Cajas plegadas)',
         location: 'Punto Limpio Banda Norte',
@@ -88,24 +99,28 @@ document.addEventListener('DOMContentLoaded', () => {
       code: 'PET 1 • Reciclable',
       title: 'Botella de Plástico PET',
       points: 10,
+      weight: 0.3,
       container: 'Campana Verde'
     },
     carton: {
       code: 'PAP 20 • Reciclable',
       title: 'Cartón y Papel Seco',
       points: 15,
+      weight: 0.6,
       container: 'Campana Verde'
     },
     vidrio: {
       code: 'GL 70 • Reciclable',
       title: 'Envase de Vidrio',
       points: 20,
+      weight: 0.8,
       container: 'Punto Limpio'
     },
     aluminio: {
       code: 'ALU 41 • Reciclable',
       title: 'Lata de Aluminio',
       points: 15,
+      weight: 0.2,
       container: 'Campana Verde'
     }
   };
@@ -502,6 +517,148 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.user-email').forEach(el => {
       el.textContent = state.user.email;
     });
+    document.querySelectorAll('.user-initials-static').forEach(el => {
+      el.textContent = `${nombre[0]}${apellido[0]}`.toUpperCase();
+    });
+    const memberSince = document.getElementById('profile-member-since');
+    if (memberSince) {
+      memberSince.textContent = String(new Date(state.user.createdAt || Date.now()).getFullYear());
+    }
+    const credentialCode = document.getElementById('credential-code');
+    if (credentialCode) credentialCode.textContent = getVecinoCode(state.user.email);
+    applyUserAvatar();
+  }
+
+  // ==========================================================================
+  // PERFIL: AVATAR, IMPACTO AMBIENTAL ACUMULADO Y CREDENCIAL QR DEL VECINO
+  // ==========================================================================
+  function hashString(text) {
+    let hash = 2166136261;
+    for (let i = 0; i < text.length; i++) {
+      hash ^= text.charCodeAt(i);
+      hash = Math.imul(hash, 16777619);
+    }
+    return hash >>> 0;
+  }
+
+  function getVecinoCode(email) {
+    return `#RC-${(hashString(email || 'vecino') % 9000) + 1000}`;
+  }
+
+  function loadAvatarMap() {
+    try {
+      return JSON.parse(localStorage.getItem('ecoimperio_avatars')) || {};
+    } catch (e) {
+      return {};
+    }
+  }
+
+  function getUserAvatar() {
+    if (!state.user) return 'initials';
+    return loadAvatarMap()[state.user.email] || 'initials';
+  }
+
+  function saveUserAvatar(avatar) {
+    if (!state.user) return;
+    const map = loadAvatarMap();
+    map[state.user.email] = avatar;
+    try {
+      localStorage.setItem('ecoimperio_avatars', JSON.stringify(map));
+    } catch (e) {}
+  }
+
+  function applyUserAvatar() {
+    const avatar = getUserAvatar();
+    const useIcon = avatar !== 'initials';
+    document.querySelectorAll('.user-initials').forEach(el => {
+      let icon = el.parentElement.querySelector(':scope > .user-avatar-icon');
+      if (!icon) {
+        icon = document.createElement('iconify-icon');
+        icon.className = 'user-avatar-icon';
+        icon.style.fontSize = '1.6em';
+        icon.setAttribute('aria-hidden', 'true');
+        el.insertAdjacentElement('afterend', icon);
+      }
+      if (useIcon) icon.setAttribute('icon', avatar);
+      icon.classList.toggle('hidden', !useIcon);
+      el.classList.toggle('hidden', useIcon);
+    });
+    document.querySelectorAll('.avatar-option').forEach(btn => {
+      btn.setAttribute('aria-pressed', String(btn.dataset.avatar === avatar));
+    });
+  }
+
+  function getProfileLevel(lifetimePoints) {
+    if (lifetimePoints >= 2000) return { n: 4, name: 'Guardián Verde' };
+    if (lifetimePoints >= 1000) return { n: 3, name: 'EcoVecino' };
+    if (lifetimePoints >= 500) return { n: 2, name: 'Brote' };
+    return { n: 1, name: 'Semilla' };
+  }
+
+  function renderProfileSummary() {
+    const history = Array.isArray(state.history) ? state.history : [];
+    const deposits = history.filter(it => it.points > 0 && it.type !== 'community' && !String(it.ticketCode || '').startsWith('#COM'));
+    const kg = deposits.reduce((acc, it) => {
+      const match = /(\d+(?:,\d+)?)\s*kg recuperados/.exec(it.impact || '');
+      return acc + (match ? parseFloat(match[1].replace(',', '.')) : 0);
+    }, 0);
+    const redeemed = history.reduce((acc, it) => acc + (it.points < 0 ? -it.points : 0), 0);
+    const level = getProfileLevel((state.ecoPuntos || 0) + redeemed);
+
+    const kgEl = document.getElementById('profile-stat-kg');
+    const depositsEl = document.getElementById('profile-stat-deposits');
+    const levelEl = document.getElementById('profile-stat-level');
+    const levelNameEl = document.getElementById('profile-stat-level-name');
+    if (kgEl) kgEl.textContent = `${kg.toFixed(1).replace('.', ',')} kg`;
+    if (depositsEl) depositsEl.textContent = String(deposits.length);
+    if (levelEl) levelEl.textContent = `Nivel ${level.n}`;
+    if (levelNameEl) levelNameEl.textContent = level.name;
+  }
+
+  // QR ilustrativo determinista por vecino (prototipo: patrón visual con marcadores de posición estándar)
+  function buildCredentialQR(seedText) {
+    const size = 25;
+    let seed = hashString(seedText) || 1;
+    const rand = () => {
+      seed ^= seed << 13;
+      seed ^= seed >>> 17;
+      seed ^= seed << 5;
+      return (seed >>> 0) / 4294967296;
+    };
+    const inFinder = (x, y) => (x < 8 && y < 8) || (x >= size - 8 && y < 8) || (x < 8 && y >= size - 8);
+    const finder = (fx, fy) => `<rect x="${fx}" y="${fy}" width="7" height="7"/><rect x="${fx + 1}" y="${fy + 1}" width="5" height="5" fill="#fff"/><rect x="${fx + 2}" y="${fy + 2}" width="3" height="3"/>`;
+    let modules = '';
+    for (let y = 0; y < size; y++) {
+      for (let x = 0; x < size; x++) {
+        if (!inFinder(x, y) && rand() > 0.5) modules += `<rect x="${x}" y="${y}" width="1" height="1"/>`;
+      }
+    }
+    return `<svg viewBox="0 0 ${size} ${size}" class="w-full h-full" shape-rendering="crispEdges" fill="#0f172a" aria-hidden="true">${finder(0, 0)}${finder(size - 7, 0)}${finder(0, size - 7)}${modules}</svg>`;
+  }
+
+  const avatarDialog = document.getElementById('avatar-dialog');
+  const changeAvatarBtn = document.getElementById('btn-change-avatar');
+  if (changeAvatarBtn && avatarDialog && typeof avatarDialog.showModal === 'function') {
+    changeAvatarBtn.addEventListener('click', () => avatarDialog.showModal());
+    avatarDialog.querySelectorAll('.avatar-option').forEach(btn => {
+      btn.addEventListener('click', () => {
+        saveUserAvatar(btn.dataset.avatar || 'initials');
+        applyUserAvatar();
+        avatarDialog.close();
+        showToast('Avatar actualizado.');
+      });
+    });
+  }
+
+  const credentialDialog = document.getElementById('credential-dialog');
+  const openCredentialBtn = document.getElementById('btn-open-credential');
+  const credentialQr = document.getElementById('credential-qr');
+  if (openCredentialBtn && credentialDialog && typeof credentialDialog.showModal === 'function') {
+    openCredentialBtn.addEventListener('click', () => {
+      const email = state.user ? state.user.email : 'vecino';
+      if (credentialQr) credentialQr.innerHTML = buildCredentialQR(email);
+      credentialDialog.showModal();
+    });
   }
 
   function startSession(account, fallbackWallet) {
@@ -511,7 +668,8 @@ document.addEventListener('DOMContentLoaded', () => {
       apellido: account.apellido,
       email: account.email,
       telefono: account.telefono,
-      barrio: account.barrio
+      barrio: account.barrio,
+      createdAt: account.createdAt
     };
     state.ecoPuntos = wallet.ecoPuntos;
     state.history = wallet.history.slice();
@@ -965,13 +1123,18 @@ document.addEventListener('DOMContentLoaded', () => {
       if (isFull) {
         nearbyActionLabel.textContent = 'Ver cercano';
         nearbyActionBtn.className = 'touch-target px-3 py-1.5 rounded-xl bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold flex items-center gap-1 shadow-md shrink-0 cursor-pointer transition-all';
-      } else if (inRange) {
-        nearbyActionLabel.textContent = 'Escanear';
-        nearbyActionBtn.className = 'touch-target px-3 py-1.5 rounded-xl bg-emerald-800 hover:bg-emerald-700 text-white text-xs font-bold flex items-center gap-1 shadow-md shrink-0 cursor-pointer transition-all';
       } else {
         nearbyActionBtn.className = 'hidden';
       }
     }
+
+    // Escáner central del mapa: habilitado solo si el punto seleccionado está en rango GPS del QR
+    document.querySelectorAll('#screen-mapa button[data-navigate="escaner"]').forEach(btn => {
+      btn.disabled = !inRange;
+      btn.setAttribute('aria-label', inRange
+        ? 'Abrir Escáner QR'
+        : 'Escáner QR no disponible: acercate a menos de 20 m de la campana');
+    });
 
     if (route) {
       if (mapRoutePath) {
@@ -1172,12 +1335,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const newItem = {
           id: Date.now(),
+          type: 'deposit',
           title: `${mat.title} (Detectado por sensor • +${bonusPoints} pts Bonus)`,
           location: targetPoint,
           time: `Hoy, ${nowStr} hs`,
           points: totalPoints,
           containerStatus: 'Baja ocupación (25% ocupado) • +10 pts Bonus',
-          impact: `Sensor óptico IoT verificado • ${co2Saved} kg CO₂ evitado`,
+          impact: `${String(mat.weight || 0.3).replace('.', ',')} kg recuperados • ${co2Saved} kg CO₂ evitado`,
           ticketCode: `#ECO-${String(Date.now()).slice(-4)}`
         };
         state.history.unshift(newItem);
@@ -1324,6 +1488,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function updatePointsUI() {
+    renderProfileSummary();
     const balanceElements = document.querySelectorAll('.user-ecopuntos-val');
     balanceElements.forEach(el => {
       el.textContent = state.ecoPuntos.toLocaleString('es-AR');
@@ -1398,10 +1563,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
       historyListContainer.innerHTML = pageItems.map((item, idx) => {
         const isRedeem = item.type === 'redeem' || item.points < 0;
-        const iconName = isRedeem ? 'mynaui:gift' : 'mynaui:location';
+        const isCommunity = item.type === 'community' || String(item.ticketCode || '').startsWith('#COM');
+        const isPuntoLimpio = /punto limpio/i.test(item.location || '');
+        const iconName = isRedeem
+          ? 'mynaui:gift'
+          : isCommunity
+            ? 'mynaui:users'
+            : isPuntoLimpio ? 'mynaui:sparkles' : 'mynaui:location';
         const iconWrapClass = isRedeem
           ? 'bg-amber-100 dark:bg-amber-900/50 text-amber-800 dark:text-amber-300'
-          : 'bg-emerald-100 dark:bg-emerald-900/60 text-emerald-700 dark:text-emerald-300';
+          : isCommunity
+            ? 'bg-sky-100 dark:bg-sky-900/50 text-sky-800 dark:text-sky-300'
+            : isPuntoLimpio
+              ? 'bg-teal-100 dark:bg-teal-900/50 text-teal-800 dark:text-teal-300'
+              : 'bg-emerald-100 dark:bg-emerald-900/60 text-emerald-700 dark:text-emerald-300';
         const pointsClass = isRedeem
           ? 'text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/60 border-amber-200 dark:border-amber-800'
           : 'text-emerald-800 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/60 border-emerald-200 dark:border-emerald-800';
@@ -1763,10 +1938,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let communityPosts = loadCommunityPosts();
   let activeCommunityFilter = 'deposito';
+  let activeCommunitySort = 'recent';
   let selectedPostImage = 'https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?auto=format&fit=crop&w=600&q=80';
 
   const communityFeedList = document.getElementById('community-feed-list');
   const communityFilterBtns = document.querySelectorAll('.community-filter-btn');
+  const communitySortBtns = document.querySelectorAll('.community-sort-btn');
   const postDialog = document.getElementById('post-dialog');
   const openPostDialogBtn = document.getElementById('btn-open-post-dialog');
   const composerCardBtn = document.getElementById('btn-composer-card');
@@ -1935,7 +2112,15 @@ document.addEventListener('DOMContentLoaded', () => {
       communityMyEventsBtn.classList.toggle('hidden', activeCommunityFilter !== 'evento');
     }
     if (!communityFeedList) return;
-    const visiblePosts = communityPosts.filter(post => post.type === activeCommunityFilter);
+    let visiblePosts = communityPosts.filter(post => post.type === activeCommunityFilter);
+    if (activeCommunitySort === 'relevant') {
+      visiblePosts = visiblePosts.slice().sort((a, b) => {
+        if (activeCommunityFilter === 'evento') {
+          return (b.attendees || 0) - (a.attendees || 0);
+        }
+        return (b.likes || 0) - (a.likes || 0);
+      });
+    }
 
     communityFeedList.innerHTML = visiblePosts.map(post => {
       if (post.type === 'evento') {
@@ -2050,6 +2235,26 @@ document.addEventListener('DOMContentLoaded', () => {
       });
       renderCommunityFeed();
       renderMyEvents();
+    });
+  });
+
+  communitySortBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      activeCommunitySort = btn.dataset.sort || 'recent';
+      communitySortBtns.forEach(b => {
+        const active = (b.dataset.sort || 'recent') === activeCommunitySort;
+        b.setAttribute('aria-pressed', String(active));
+        b.classList.toggle('bg-white', active);
+        b.classList.toggle('dark:bg-slate-700', active);
+        b.classList.toggle('text-emerald-800', active);
+        b.classList.toggle('dark:text-emerald-300', active);
+        b.classList.toggle('font-bold', active);
+        b.classList.toggle('shadow-xs', active);
+        b.classList.toggle('text-slate-600', !active);
+        b.classList.toggle('dark:text-slate-400', !active);
+        b.classList.toggle('font-medium', !active);
+      });
+      renderCommunityFeed();
     });
   });
 
@@ -2265,6 +2470,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const nowStr = new Date().toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' });
       state.history.unshift({
         id: Date.now(),
+        type: 'community',
         title: 'Publicación en Comunidad Verde (Foto de depósito)',
         location,
         time: `Hoy, ${nowStr} hs`,
