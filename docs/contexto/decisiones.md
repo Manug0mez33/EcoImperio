@@ -29,7 +29,7 @@
   - Cada componente declara sus colores oscuros en el HTML con variantes `dark:` (incluidas las plantillas generadas desde `app.js`).
   - `style.css` tematiza sus clases propias (`.btn-primary`, `.btn-secondary`, `.drawer-menu`, `.toast`, `.mobile-viewport`) con selectores `html.dark`.
   - Un script en el `<head>` aplica las preferencias guardadas (`ecoimperio_dark_mode`, `ecoimperio_high_contrast`, `ecoimperio_text_size`, `ecoimperio_reduce_motion`) antes del primer pintado para evitar parpadeos (FOUC).
-  - Controles sincronizados en toda la app: toggle del Splash, botón del Login (`aria-pressed`, ícono luna/sol), switches rápidos del Drawer ("Modo Oscuro" y "Alto Contraste") y panel de Configuración.
+  - Controles sincronizados en toda la app: toggle switches con etiqueta `"Tema"` en Splash, Login y Registro, switches rápidos del Drawer ("Modo Oscuro" y "Alto Contraste") y panel de Configuración.
   - El estado activo de la navbar y del Drawer se expresa con `aria-current="page"` y variantes `aria-[current=page]:`.
   - **Prioridad del Modo Alto Contraste (`body.high-contrast`)**: Sobrescribe de forma determinista tanto las superficies de Modo Claro como las de Modo Oscuro (`html.dark`), incluyendo botones (`.btn-primary`, `.btn-secondary`), inputs, selects, tarjetas y badges, garantizando un ratio de contraste **WCAG AAA ($\ge 7:1$)** con bordes definidos y foco amarillo de alta visibilidad (`#facc15`).
 - **Consecuencia**: El tema oscuro y el modo de alto contraste son explícitos, combinables sin colisiones y verificables por componente.

@@ -122,10 +122,13 @@
         <button type="button" data-navigate="splash" class="touch-target p-2.5 rounded-full text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-center" aria-label="Volver a la pantalla de bienvenida">
           <iconify-icon icon="mynaui:arrow-left" class="text-2xl" aria-hidden="true"></iconify-icon>
         </button>
-        <div class="flex items-center gap-2">
-          <button type="button" class="dark-mode-btn touch-target p-2.5 rounded-full text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-center" aria-label="Alternar Modo Oscuro" aria-pressed="false" title="Modo Oscuro">
-            <iconify-icon icon="mynaui:moon" class="text-xl" aria-hidden="true"></iconify-icon>
-          </button>
+        <div class="flex items-center gap-3">
+          <label for="login-dark-toggle" class="inline-flex items-center gap-2 min-h-[44px] px-1 cursor-pointer">
+            <input type="checkbox" id="login-dark-toggle" name="loginDarkMode" class="dark-mode-toggle sr-only peer" aria-label="Modo Oscuro">
+            <span class="relative w-11 h-6 bg-gray-200 dark:bg-slate-700 peer-checked:bg-emerald-600 rounded-full peer-focus-visible:ring-4 peer-focus-visible:ring-emerald-400 after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-full" aria-hidden="true"></span>
+            <iconify-icon icon="mynaui:moon" class="text-lg text-slate-600 dark:text-slate-300" aria-hidden="true"></iconify-icon>
+            <span class="text-xs font-semibold text-slate-700 dark:text-slate-300">Tema</span>
+          </label>
           <div class="w-11 h-11 rounded-full bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-300 flex items-center justify-center" aria-hidden="true">
             <iconify-icon icon="mynaui:leaf" class="text-xl" aria-hidden="true"></iconify-icon>
           </div>
@@ -197,9 +200,12 @@
         <button type="button" data-navigate="login" class="touch-target p-2.5 rounded-full text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-center" aria-label="Volver al inicio de sesión">
           <iconify-icon icon="mynaui:arrow-left" class="text-2xl" aria-hidden="true"></iconify-icon>
         </button>
-        <button type="button" class="dark-mode-btn touch-target p-2.5 rounded-full text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-center" aria-label="Alternar Modo Oscuro" aria-pressed="false" title="Modo Oscuro">
-          <iconify-icon icon="mynaui:moon" class="text-xl" aria-hidden="true"></iconify-icon>
-        </button>
+        <label for="registro-dark-toggle" class="inline-flex items-center gap-2 min-h-[44px] px-1 cursor-pointer">
+          <input type="checkbox" id="registro-dark-toggle" name="registroDarkMode" class="dark-mode-toggle sr-only peer" aria-label="Modo Oscuro">
+          <span class="relative w-11 h-6 bg-gray-200 dark:bg-slate-700 peer-checked:bg-emerald-600 rounded-full peer-focus-visible:ring-4 peer-focus-visible:ring-emerald-400 after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-full" aria-hidden="true"></span>
+          <iconify-icon icon="mynaui:moon" class="text-lg text-slate-600 dark:text-slate-300" aria-hidden="true"></iconify-icon>
+          <span class="text-xs font-semibold text-slate-700 dark:text-slate-300">Tema</span>
+        </label>
       </header>
 
       <div class="pt-2 pb-6">
@@ -402,7 +408,7 @@
           <span>Puntos</span>
         </button>
 
-        <button type="button" class="btn-trigger-drawer nav-item px-2 py-1 rounded-xl flex flex-col items-center justify-center text-xs text-slate-600 dark:text-slate-400 hover:text-emerald-700 dark:hover:text-emerald-400" aria-expanded="false" aria-controls="drawer-menu">
+        <button type="button" data-navigate="config" class="nav-item px-2 py-1 rounded-xl flex flex-col items-center justify-center text-xs text-slate-600 dark:text-slate-400 hover:text-emerald-700 dark:hover:text-emerald-400 aria-[current=page]:font-bold aria-[current=page]:text-emerald-700 dark:aria-[current=page]:text-emerald-400" data-target="config">
           <iconify-icon icon="mynaui:user" class="text-2xl" aria-hidden="true"></iconify-icon>
           <span>Perfil</span>
         </button>
@@ -480,10 +486,15 @@
         <!-- Header -->
         <header class="flex items-center justify-between pt-2 shrink-0">
           <h1 class="text-3xl font-black text-slate-900 dark:text-white">Mis EcoPuntos</h1>
-          <button type="button" data-navigate="mapa" class="touch-target px-3 py-2 rounded-xl text-xs font-semibold text-emerald-700 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-slate-900 underline flex items-center gap-1">
-            <span>Ir al Mapa</span>
-            <iconify-icon icon="mynaui:chevron-right" class="text-base" aria-hidden="true"></iconify-icon>
-          </button>
+          <div class="flex items-center gap-2">
+            <button type="button" data-navigate="mapa" class="touch-target px-3 py-2 rounded-xl text-xs font-semibold text-emerald-700 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-slate-900 underline flex items-center gap-1">
+              <span>Ir al Mapa</span>
+              <iconify-icon icon="mynaui:chevron-right" class="text-base" aria-hidden="true"></iconify-icon>
+            </button>
+            <button type="button" class="btn-trigger-drawer touch-target w-11 h-11 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm flex items-center justify-center text-slate-800 dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-800" aria-label="Abrir Menú Hamburguesa" aria-expanded="false" aria-controls="drawer-menu">
+              <iconify-icon icon="mynaui:menu" class="text-2xl" aria-hidden="true"></iconify-icon>
+            </button>
+          </div>
         </header>
 
         <!-- Card Balance Actual (Fija e indeformable con min-height, nunca se corta) -->
@@ -627,7 +638,7 @@
           <span>Puntos</span>
         </button>
 
-        <button type="button" class="btn-trigger-drawer nav-item px-2 py-1 rounded-xl flex flex-col items-center justify-center text-xs text-slate-600 dark:text-slate-400 hover:text-emerald-700 dark:hover:text-emerald-400" aria-expanded="false" aria-controls="drawer-menu">
+        <button type="button" data-navigate="config" class="nav-item px-2 py-1 rounded-xl flex flex-col items-center justify-center text-xs text-slate-600 dark:text-slate-400 hover:text-emerald-700 dark:hover:text-emerald-400 aria-[current=page]:font-bold aria-[current=page]:text-emerald-700 dark:aria-[current=page]:text-emerald-400" data-target="config">
           <iconify-icon icon="mynaui:user" class="text-2xl" aria-hidden="true"></iconify-icon>
           <span>Perfil</span>
         </button>
@@ -637,15 +648,20 @@
     <!-- ==========================================================================
          PANTALLA 6: CONFIGURACIÓN
          ========================================================================== -->
-    <section id="screen-config" class="screen-view bg-slate-50 dark:bg-slate-950">
-      <header class="sticky top-0 z-20 flex items-center gap-2 px-4 py-3 bg-slate-50/90 dark:bg-slate-950/90 backdrop-blur border-b border-slate-200 dark:border-slate-800">
-        <button type="button" data-navigate="mapa" class="touch-target p-2.5 rounded-full text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-800 flex items-center justify-center" aria-label="Volver al mapa">
-          <iconify-icon icon="mynaui:arrow-left" class="text-2xl" aria-hidden="true"></iconify-icon>
+    <section id="screen-config" class="screen-view bg-slate-50 dark:bg-slate-950 h-full flex flex-col overflow-hidden relative">
+      <header class="shrink-0 z-20 flex items-center justify-between gap-2 px-4 py-3 bg-slate-50/90 dark:bg-slate-950/90 backdrop-blur border-b border-slate-200 dark:border-slate-800">
+        <div class="flex items-center gap-2">
+          <button type="button" data-navigate="mapa" class="touch-target p-2.5 rounded-full text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-800 flex items-center justify-center" aria-label="Volver al mapa">
+            <iconify-icon icon="mynaui:arrow-left" class="text-2xl" aria-hidden="true"></iconify-icon>
+          </button>
+          <h1 class="text-3xl font-black text-slate-900 dark:text-white">Configuración</h1>
+        </div>
+        <button type="button" class="btn-trigger-drawer touch-target w-11 h-11 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm flex items-center justify-center text-slate-800 dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-700" aria-label="Abrir Menú Hamburguesa" aria-expanded="false" aria-controls="drawer-menu">
+          <iconify-icon icon="mynaui:menu" class="text-2xl" aria-hidden="true"></iconify-icon>
         </button>
-        <h1 class="text-3xl font-black text-slate-900 dark:text-white">Configuración</h1>
       </header>
 
-      <div class="p-4 space-y-6 pb-10">
+      <div class="flex-1 overflow-y-auto p-4 space-y-6 pb-8">
 
         <!-- 1. Mi Perfil -->
         <section aria-labelledby="cfg-perfil-title" class="space-y-2">
@@ -892,6 +908,31 @@
           </p>
         </footer>
       </div>
+
+      <!-- Bottom Nav SIEMPRE FIJO al pie de la pantalla Configuración -->
+      <nav aria-label="Navegación principal en Configuración" class="shrink-0 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 px-3 py-1.5 flex justify-between items-center z-30">
+        <button type="button" data-navigate="splash" class="nav-item px-2 py-1 rounded-xl flex flex-col items-center justify-center text-xs text-slate-600 dark:text-slate-400 hover:text-emerald-700 dark:hover:text-emerald-400 aria-[current=page]:font-bold aria-[current=page]:text-emerald-700 dark:aria-[current=page]:text-emerald-400" data-target="splash">
+          <iconify-icon icon="mynaui:home" class="text-2xl" aria-hidden="true"></iconify-icon>
+          <span>Inicio</span>
+        </button>
+        <button type="button" data-navigate="mapa" class="nav-item px-2 py-1 rounded-xl flex flex-col items-center justify-center text-xs text-slate-600 dark:text-slate-400 hover:text-emerald-700 dark:hover:text-emerald-400 aria-[current=page]:font-bold aria-[current=page]:text-emerald-700 dark:aria-[current=page]:text-emerald-400" data-target="mapa">
+          <iconify-icon icon="mynaui:location" class="text-2xl" aria-hidden="true"></iconify-icon>
+          <span>Mapa</span>
+        </button>
+        <button type="button" data-navigate="escaner" class="w-14 h-14 -mt-7 rounded-full bg-emerald-900 hover:bg-emerald-800 text-white flex items-center justify-center shadow-xl border-4 border-white dark:border-slate-900 hover:scale-105 active:scale-95 transition-transform" aria-label="Abrir Escáner QR">
+          <iconify-icon icon="iconamoon:scanner-thin" class="text-3xl" aria-hidden="true"></iconify-icon>
+        </button>
+
+        <button type="button" data-navigate="puntos" class="nav-item px-2 py-1 rounded-xl flex flex-col items-center justify-center text-xs text-slate-600 dark:text-slate-400 hover:text-emerald-700 dark:hover:text-emerald-400 aria-[current=page]:font-bold aria-[current=page]:text-emerald-700 dark:aria-[current=page]:text-emerald-400" data-target="puntos">
+          <iconify-icon icon="mynaui:gift" class="text-2xl" aria-hidden="true"></iconify-icon>
+          <span>Puntos</span>
+        </button>
+
+        <button type="button" data-navigate="config" class="nav-item px-2 py-1 rounded-xl flex flex-col items-center justify-center text-xs text-slate-600 dark:text-slate-400 hover:text-emerald-700 dark:hover:text-emerald-400 aria-[current=page]:font-bold aria-[current=page]:text-emerald-700 dark:aria-[current=page]:text-emerald-400" data-target="config" aria-current="page">
+          <iconify-icon icon="mynaui:user" class="text-2xl" aria-hidden="true"></iconify-icon>
+          <span>Perfil</span>
+        </button>
+      </nav>
     </section>
 
     <!-- Diálogo de confirmación: Eliminar Cuenta -->
