@@ -1,8 +1,9 @@
 {
-  "cleanUrls": true,
-  "rewrites": [
-    { "source": "/", "destination": "/landing.html" },
-    { "source": "/app", "destination": "/index.html" },
-    { "source": "/defensa", "destination": "/defensa.html" }
+  "routes": [
+    { "src": "^/$", "dest": "/landing.html" },
+    { "src": "^/landing$", "dest": "/landing.html" },
+    { "src": "^/app$", "dest": "/index.html" },
+    { "src": "^/defensa$", "dest": "/defensa.html" },
+    { "handle": "filesystem" }
   ]
 }

@@ -42,112 +42,16 @@
         }
       }
     };
-
-    // 3. Datos y Lógica del Visor Modal de Wireframes
-    const wireframeData = [
-      {
-        tag: "1. Inicio en 4 Estadios",
-        num: "Estadio v1.0 a v2.0",
-        title: "Bienvenida & Onboarding Pedagógico",
-        src: "docs/assets/figma/mutacion_pantalla_inicio_estadios.svg",
-        desc: "De una caja cuadrada vacía con [X] a un desglose pedagógico en 3 pasos con silueta urbana de Río Cuarto y enlace para explorar sin crear cuenta."
-      },
-      {
-        tag: "2. Lo-Fi vs Hi-Fi Matrix",
-        num: "Auto-Layout & Constraints",
-        title: "Transición Estructural de Componentes",
-        src: "docs/assets/figma/panel_transiciones_lofi_vs_hifi.svg",
-        desc: "Constraints fijos en cabecera y pie de página en Figma para garantizar que la maquetación en código respete la proporción ergonómica."
-      },
-      {
-        tag: "3. Esqueleto Lo-Fi Inicial",
-        num: "12 Pantallas en Escala de Grises",
-        title: "Mapeo de Flujos en Escala de Grises",
-        src: "docs/assets/figma/v1_prototipo_baja_calidad_12_pantallas.svg",
-        desc: "Primer wireframe neutro para validar la coherencia de navegación entre mapa, canje y perfil antes de aplicar decisiones de color y tipografía."
-      },
-      {
-        tag: "4. Incorporación de Vistas",
-        num: "v1.5 Mid-Fi Comunitario",
-        title: "Catálogo de Comercios e Historial",
-        src: "docs/assets/figma/v1_actualizacion_main_nuevas_pantallas.svg",
-        desc: "Adición de la red de beneficios locales y desglose de movimientos ambientales con tarjetas delimitadas bajo la Ley de Región Común."
-      },
-      {
-        tag: "5. Diálogos y Modos Visuales",
-        num: "v2.0 Modales Nativos & AAA",
-        title: "Modales Nativos <dialog> y Alto Contraste",
-        src: "docs/assets/figma/v2_complemento_modales_estados_aaa.svg",
-        desc: "Diseño de ventanas modales accesibles con trampas de foco de teclado, confirmaciones no destructivas y especificaciones para alto contraste."
-      },
-      {
-        tag: "6. Hi-Fi Software Vivo",
-        num: "SPA Final en Producción",
-        title: "Prototipo Navegable en Vivo",
-        src: "docs/assets/figma/v2_pantalla_hifi_software_vivo.svg",
-        desc: "Resultado final del software en ejecución real: persistencia de saldo en LocalStorage, cambio dinámico de tema y respuesta háptica."
-      },
-      {
-        tag: "7. Mapa IoT Interactivo",
-        num: "Puntos Verdes & Geocerca",
-        title: "Semáforo IoT y Codificación Triple",
-        src: "docs/assets/figma/v2_mapa_iot_semaforo_campanas.svg",
-        desc: "Filtros por material (Plásticos, Papel, Vidrio) y estado en tiempo real sin obligar al usuario a hacer clics innecesarios para saber si una campana está disponible."
-      },
-      {
-        tag: "8. Escáner de Depósito",
-        num: "Fallback 2x2 & Prevención",
-        title: "Tolerancia a Errores y Visor Adaptativo",
-        src: "docs/assets/figma/v2_sistema_escaner_qr_fallback.svg",
-        desc: "Láser animado con linterna y selector manual por si las condiciones de luz o deterioro del QR impiden la lectura óptica."
-      },
-      {
-        tag: "9. Los 5 Estados UI",
-        num: "Matriz Atómica de Componentes",
-        title: "Feedback Visual Inequívoco",
-        src: "docs/assets/figma/v2_matriz_cinco_estados_ui.svg",
-        desc: "Garantía técnica de que cada botón, switch y campo de entrada provee retroalimentación en reposo, interacción, foco accesible y desactivación."
-      }
-    ];
-
-    let currentWfIndex = 0;
-    const wfModal = document.getElementById('modal-wireframe-lightbox');
-
-    function openWireframeModal(index) {
-      currentWfIndex = index;
-      renderWireframeModal();
-      if (wfModal) wfModal.showModal();
-    }
-
-    function closeWireframeModal() {
-      if (wfModal) wfModal.close();
-    }
-
-    function navigateWireframeModal(step) {
-      currentWfIndex = (currentWfIndex + step + wireframeData.length) % wireframeData.length;
-      renderWireframeModal();
-    }
-
-    function renderWireframeModal() {
-      const data = wireframeData[currentWfIndex];
-      if (!data) return;
-      document.getElementById('modal-wf-tag').textContent = data.tag;
-      document.getElementById('modal-wf-num').textContent = data.num;
-      document.getElementById('modal-wf-title').textContent = data.title;
-      document.getElementById('modal-wf-img').src = data.src;
-      document.getElementById('modal-wf-img').alt = data.title;
-      document.getElementById('modal-wf-desc').textContent = data.desc;
-    }
-
-    if (wfModal) {
-      wfModal.addEventListener('click', (e) => {
-        const rect = wfModal.getBoundingClientRect();
-        const isInDialog = (rect.top <= e.clientY && e.clientY <= rect.top + rect.height &&
-          rect.left <= e.clientX && e.clientX <= rect.left + rect.width);
-        if (!isInDialog) wfModal.close();
-      });
-    }
   </script>
+
+  <!-- Inicialización inmediata de tema para evitar parpadeos (FOUC) -->
+  <script>
+    if (localStorage.getItem('ecoimperio_dark_mode') === 'true' ||
+      (!('ecoimperio_dark_mode' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
   </script>
 
   <!-- Iconify CDN -->
@@ -740,7 +644,7 @@
         </div>
 
         <!-- Carrusel / Galería Horizontal con Acumulación de Ejemplos -->
-        <div id="wireframe-carousel" class="flex gap-6 overflow-x-auto pb-6 pt-2 snap-x snap-mandatory scroll-smooth no-scrollbar select-none cursor-grab active:cursor-grabbing">
+        <div id="wireframe-carousel" class="flex gap-6 overflow-x-auto pb-6 pt-2 no-scrollbar select-none cursor-grab active:cursor-grabbing">
           
           <!-- Card 1: Mutación de Inicio en 4 Estadios -->
           <div onclick="handleCardClick(0)" class="min-w-[340px] sm:min-w-[420px] max-w-[450px] flex-shrink-0 snap-start p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 card-academic space-y-4 cursor-pointer group hover:border-emerald-500 transition-all">
@@ -1418,14 +1322,8 @@
 
   <!-- Script de tema, drag-to-scroll y modal lightbox -->
   <script>
-    // 1. Toggle Claro / Oscuro con persistencia en localStorage (Idéntico a landing)
+    // 1. Toggle Claro / Oscuro con persistencia en localStorage
     const themeToggleBtn = document.getElementById('theme-toggle');
-    const isDarkMode = localStorage.getItem('ecoimperio_dark_mode') === 'true' ||
-      (!('ecoimperio_dark_mode' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches);
-
-    if (isDarkMode) {
-      document.documentElement.classList.add('dark');
-    }
 
     if (themeToggleBtn) {
       themeToggleBtn.addEventListener('click', () => {
@@ -1434,38 +1332,36 @@
       });
     }
 
-    // 2. Control de scroll horizontal por botones
-    function scrollWireframes(distance) {
+    // 2. Control de scroll horizontal por botones de flechas
+    window.scrollWireframes = function(distance) {
       const carousel = document.getElementById('wireframe-carousel');
       if (carousel) {
         carousel.scrollBy({ left: distance, behavior: 'smooth' });
       }
-    }
+    };
 
-    // 3. Arrastre horizontal con el mouse (Drag-to-Scroll)
+    // 3. Arrastre horizontal fluido con el mouse (Drag-to-Scroll)
     const carouselEl = document.getElementById('wireframe-carousel');
     let isDown = false;
     let startX = 0;
     let scrollLeftPos = 0;
-    let isDragging = false;
+    let dragThresholdPassed = false;
 
     if (carouselEl) {
       carouselEl.addEventListener('mousedown', (e) => {
         isDown = true;
-        isDragging = false;
+        dragThresholdPassed = false;
         startX = e.pageX - carouselEl.offsetLeft;
         scrollLeftPos = carouselEl.scrollLeft;
       });
 
-      carouselEl.addEventListener('mouseleave', () => {
+      window.addEventListener('mouseup', () => {
+        if (!isDown) return;
         isDown = false;
-      });
-
-      carouselEl.addEventListener('mouseup', () => {
-        isDown = false;
+        // Evita que el evento click de la card se dispare tras soltar el arrastre
         setTimeout(() => {
-          isDragging = false;
-        }, 60);
+          dragThresholdPassed = false;
+        }, 100);
       });
 
       carouselEl.addEventListener('mousemove', (e) => {
@@ -1473,14 +1369,14 @@
         e.preventDefault();
         const x = e.pageX - carouselEl.offsetLeft;
         const walk = (x - startX);
-        if (Math.abs(walk) > 6) {
-          isDragging = true;
+        if (Math.abs(walk) > 4) {
+          dragThresholdPassed = true;
         }
         carouselEl.scrollLeft = scrollLeftPos - walk;
       });
     }
 
-    // 4. Datos del Modal Lightbox de Wireframes
+    // 4. Datos del Modal Lightbox de Wireframes (9 Estadios de Figma)
     const wireframeData = [
       {
         tag: "1. Inicio en 4 Estadios",
@@ -1550,29 +1446,29 @@
     let currentWfIndex = 0;
     const wfModal = document.getElementById('modal-wireframe-lightbox');
 
-    function handleCardClick(index) {
-      if (isDragging) return;
-      openWireframeModal(index);
-    }
+    window.handleCardClick = function(index) {
+      if (dragThresholdPassed) return;
+      window.openWireframeModal(index);
+    };
 
-    function openWireframeModal(index) {
+    window.openWireframeModal = function(index) {
       currentWfIndex = index;
       renderWireframeModal();
       if (wfModal) {
         wfModal.showModal();
       }
-    }
+    };
 
-    function closeWireframeModal() {
+    window.closeWireframeModal = function() {
       if (wfModal) {
         wfModal.close();
       }
-    }
+    };
 
-    function navigateWireframeModal(step) {
+    window.navigateWireframeModal = function(step) {
       currentWfIndex = (currentWfIndex + step + wireframeData.length) % wireframeData.length;
       renderWireframeModal();
-    }
+    };
 
     function renderWireframeModal() {
       const data = wireframeData[currentWfIndex];
