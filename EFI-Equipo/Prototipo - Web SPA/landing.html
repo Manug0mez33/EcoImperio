@@ -136,13 +136,14 @@
         </div>
       </a>
 
-      <!-- Menú de Navegación Desktop -->
-      <nav class="hidden lg:flex items-center gap-8 text-sm font-semibold text-slate-600 dark:text-slate-300" aria-label="Navegación principal">
-        <a href="#como-funciona" class="hover:text-emerald-700 dark:hover:text-emerald-400 transition-colors">¿Cómo Funciona?</a>
+      <!-- Menú de Navegación Desktop (Orden idéntico al flujo de la página) -->
+      <nav class="hidden lg:flex items-center gap-7 text-sm font-semibold text-slate-600 dark:text-slate-300" aria-label="Navegación principal">
         <a href="#empresa" class="hover:text-emerald-700 dark:hover:text-emerald-400 transition-colors">La Empresa & Modelo</a>
+        <a href="#como-funciona" class="hover:text-emerald-700 dark:hover:text-emerald-400 transition-colors">¿Cómo Funciona?</a>
         <a href="#tecnologia" class="hover:text-emerald-700 dark:hover:text-emerald-400 transition-colors">Campanas IoT</a>
         <a href="#impacto" class="hover:text-emerald-700 dark:hover:text-emerald-400 transition-colors">Impacto Urbano</a>
         <a href="#comercios" class="hover:text-emerald-700 dark:hover:text-emerald-400 transition-colors">Comercios</a>
+        <a href="#contacto" class="hover:text-emerald-700 dark:hover:text-emerald-400 transition-colors">Contacto</a>
         <a href="#faq" class="hover:text-emerald-700 dark:hover:text-emerald-400 transition-colors">Preguntas</a>
       </nav>
 
@@ -155,17 +156,11 @@
           <iconify-icon icon="mynaui:moon" class="text-xl inline dark:hidden" aria-hidden="true"></iconify-icon>
         </button>
 
-        <!-- Botón Demo Web Móvil -->
-        <a href="index.html" class="hidden sm:inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-emerald-700/30 text-emerald-800 dark:text-emerald-300 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 text-xs font-bold transition-all" title="Probar la aplicación web en vivo">
-          <iconify-icon icon="mynaui:mobile" class="text-base" aria-hidden="true"></iconify-icon>
-          <span>Probar Web App</span>
+        <!-- Botón Contacto y Adhesión de Comercios -->
+        <a href="#contacto" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-emerald-800 hover:bg-emerald-700 active:scale-95 text-white text-xs font-bold shadow-md shadow-emerald-800/20 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500">
+          <iconify-icon icon="mynaui:envelope" class="text-base" aria-hidden="true"></iconify-icon>
+          <span>Sumar Comercio / Contacto</span>
         </a>
-
-        <!-- Botón Google Play Destacado -->
-        <button type="button" onclick="openPlayModal()" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-emerald-800 hover:bg-emerald-700 active:scale-95 text-white text-xs font-bold shadow-lg shadow-emerald-800/25 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500">
-          <iconify-icon icon="logos:google-play-icon" class="text-base" aria-hidden="true"></iconify-icon>
-          <span>Descargar en Google Play</span>
-        </button>
       </div>
     </div>
   </header>
@@ -440,7 +435,7 @@
           <!-- Pilar 1 -->
           <div class="p-8 rounded-3xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/60 card-hover space-y-4">
             <div class="w-14 h-14 rounded-2xl bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400 flex items-center justify-center text-3xl">
-              <iconify-icon icon="mynaui:cpu" aria-hidden="true"></iconify-icon>
+              <iconify-icon icon="ph:cpu-bold" aria-hidden="true"></iconify-icon>
             </div>
             <h3 class="text-xl font-bold text-slate-900 dark:text-white">Infraestructura IoT Conectada</h3>
             <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed font-body">
@@ -462,7 +457,7 @@
           <!-- Pilar 3 -->
           <div class="p-8 rounded-3xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/60 card-hover space-y-4">
             <div class="w-14 h-14 rounded-2xl bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-400 flex items-center justify-center text-3xl">
-              <iconify-icon icon="mynaui:heart-handshake" aria-hidden="true"></iconify-icon>
+              <iconify-icon icon="ph:handshake-bold" aria-hidden="true"></iconify-icon>
             </div>
             <h3 class="text-xl font-bold text-slate-900 dark:text-white">Inclusión y Trabajo Digno</h3>
             <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed font-body">
@@ -480,7 +475,7 @@
               Unite a los más de 18 comercios adheridos. Atraé clientes conscientes, posicioná tu marca como sustentable y recibí compensación municipal directa por los cupones canjeados.
             </p>
           </div>
-          <a href="mailto:comercios@ecoimperio.gob.ar" class="px-6 py-3.5 rounded-2xl bg-emerald-400 hover:bg-emerald-300 text-emerald-950 font-bold text-sm shrink-0 transition-transform active:scale-95 shadow-md">
+          <a href="#contacto" class="px-6 py-3.5 rounded-2xl bg-emerald-400 hover:bg-emerald-300 text-emerald-950 font-bold text-sm shrink-0 transition-transform active:scale-95 shadow-md">
             Sumar mi Comercio
           </a>
         </div>
@@ -641,7 +636,7 @@
               <!-- Bloque 2 -->
               <div class="p-4 rounded-2xl bg-slate-900/80 border border-slate-700/50 flex items-center gap-4">
                 <div class="w-12 h-12 rounded-xl bg-teal-900 text-teal-400 flex items-center justify-center text-2xl shrink-0">
-                  <iconify-icon icon="mynaui:lock-unlocked"></iconify-icon>
+                  <iconify-icon icon="ph:qr-code-bold"></iconify-icon>
                 </div>
                 <div class="text-xs">
                   <span class="font-bold text-white block">2. Validación de Token & Apertura</span>
@@ -744,12 +739,6 @@
             <p class="text-base text-slate-600 dark:text-slate-300 font-body">
               Al reciclar ganás poder de ahorro. Estos son algunos de los comercios riocuartenses que aceptan cupones de EcoImperio:
             </p>
-          </div>
-          <div class="shrink-0">
-            <a href="index.html" class="inline-flex items-center gap-2 text-sm font-bold text-emerald-700 dark:text-emerald-400 hover:underline">
-              <span>Ver catálogo completo en la app</span>
-              <iconify-icon icon="mynaui:arrow-right" class="text-lg"></iconify-icon>
-            </a>
           </div>
         </div>
 
@@ -855,6 +844,138 @@
             <p class="text-xs text-slate-600 dark:text-slate-300 font-body leading-relaxed">
               Descuento en árboles autóctonos, compost orgánico y plantines florales.
             </p>
+          </div>
+
+          <!-- Comercio 7: TecnoRío Celulares (VIP • Req. Nivel 5: Bosque) -->
+          <div class="p-6 rounded-3xl bg-slate-50 dark:bg-slate-800/60 border-2 border-amber-300/80 dark:border-amber-700/80 card-hover space-y-4">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-1.5">
+                <span class="px-3 py-1 rounded-full bg-amber-100 dark:bg-amber-950 text-amber-900 dark:text-amber-200 text-xs font-black border border-amber-300/60">
+                  25% OFF
+                </span>
+                <span class="text-[10px] font-extrabold uppercase px-1.5 py-0.5 rounded bg-amber-200 dark:bg-amber-900 text-amber-900 dark:text-amber-200">VIP</span>
+              </div>
+              <span class="text-xs font-bold text-amber-700 dark:text-amber-400">500 pts • Req. Nivel 5</span>
+            </div>
+            <div class="space-y-1">
+              <h3 class="font-extrabold text-lg text-slate-900 dark:text-white">TecnoRío Celulares</h3>
+              <p class="text-xs text-slate-600 dark:text-slate-400">Electrónica & Celulares • Centro</p>
+            </div>
+            <p class="text-xs text-slate-600 dark:text-slate-300 font-body leading-relaxed">
+              Descuento en accesorios originales, cargadores de carga rápida y servicio técnico de smartphones.
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         SECCIÓN: CONTACTO & ADHESIÓN DE COMERCIOS
+         ======================================================================== -->
+    <section id="contacto" class="py-24 bg-slate-100/70 dark:bg-slate-950/80 border-t border-slate-200 dark:border-slate-800">
+      <div class="max-w-7xl mx-auto px-6">
+        
+        <div class="grid lg:grid-cols-12 gap-12">
+          
+          <!-- Columna Izquierda: Información Institucional y Alianzas -->
+          <div class="lg:col-span-5 space-y-6">
+            <span class="px-3.5 py-1.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 text-xs font-black uppercase tracking-wider">
+              Sumate al Programa
+            </span>
+            <h2 class="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white tracking-tight leading-tight">
+              Sumá tu comercio o consultá sobre la plataforma
+            </h2>
+            <p class="text-base text-slate-600 dark:text-slate-300 font-body leading-relaxed">
+              Formá parte de la red de comercios adheridos de Río Cuarto. Al aceptar cupones de EcoImperio, atraés clientes comprometidos con el ambiente y recibís compensación municipal directa en tasas de comercio.
+            </p>
+
+            <div class="space-y-4 pt-2">
+              <div class="flex items-start gap-3.5">
+                <div class="w-10 h-10 rounded-xl bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-400 flex items-center justify-center shrink-0 text-xl">
+                  <iconify-icon icon="mynaui:location" aria-hidden="true"></iconify-icon>
+                </div>
+                <div>
+                  <span class="font-bold text-slate-900 dark:text-white text-sm block">Sede Municipal</span>
+                  <span class="text-xs text-slate-500 dark:text-slate-400 font-body">Palacio Municipal • Pasaje de la Concepción 650, Río Cuarto</span>
+                </div>
+              </div>
+
+              <div class="flex items-start gap-3.5">
+                <div class="w-10 h-10 rounded-xl bg-teal-100 dark:bg-teal-950 text-teal-800 dark:text-teal-400 flex items-center justify-center shrink-0 text-xl">
+                  <iconify-icon icon="mynaui:envelope" aria-hidden="true"></iconify-icon>
+                </div>
+                <div>
+                  <span class="font-bold text-slate-900 dark:text-white text-sm block">Correo Electrónico</span>
+                  <span class="text-xs text-slate-500 dark:text-slate-400 font-body">ambiente@riocuarto.gov.ar • comercios@ecoimperio.gob.ar</span>
+                </div>
+              </div>
+
+              <div class="flex items-start gap-3.5">
+                <div class="w-10 h-10 rounded-xl bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-400 flex items-center justify-center shrink-0 text-xl">
+                  <iconify-icon icon="mynaui:telephone" aria-hidden="true"></iconify-icon>
+                </div>
+                <div>
+                  <span class="font-bold text-slate-900 dark:text-white text-sm block">Mesa de Ayuda a Comercios</span>
+                  <span class="text-xs text-slate-500 dark:text-slate-400 font-body">+54 9 (0358) 467-1234 • Lunes a Viernes 08:00 a 14:00 hs</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs text-slate-600 dark:text-slate-300 space-y-1">
+              <span class="font-bold text-slate-900 dark:text-white block">🌱 Beneficio fiscal directo</span>
+              <p>Los comercios participantes obtienen bonificaciones en la contribución municipal sobre el comercio y la industria (Ordenanza 1240/25).</p>
+            </div>
+          </div>
+
+          <!-- Columna Derecha: Formulario de Contacto -->
+          <div class="lg:col-span-7 bg-white dark:bg-slate-900 rounded-3xl p-8 sm:p-10 border border-slate-200 dark:border-slate-800 shadow-xl">
+            <form id="landing-contact-form" class="space-y-5" novalidate>
+              <div class="grid sm:grid-cols-2 gap-5">
+                <div>
+                  <label for="contact-nombre" class="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5">Nombre y Apellido *</label>
+                  <input type="text" id="contact-nombre" name="nombre" required placeholder="Ej. Juan Pérez" class="w-full px-4 py-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all">
+                </div>
+                <div>
+                  <label for="contact-email" class="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5">Correo Electrónico *</label>
+                  <input type="email" id="contact-email" name="email" required placeholder="juan@micomercio.com" class="w-full px-4 py-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all">
+                </div>
+              </div>
+
+              <div class="grid sm:grid-cols-2 gap-5">
+                <div>
+                  <label for="contact-telefono" class="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5">Teléfono / WhatsApp *</label>
+                  <input type="tel" id="contact-telefono" name="telefono" required placeholder="Ej. 358 154 123456" class="w-full px-4 py-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all">
+                </div>
+                <div>
+                  <label for="contact-motivo" class="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5">Tipo de Consulta *</label>
+                  <select id="contact-motivo" name="motivo" class="w-full px-4 py-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all cursor-pointer">
+                    <option value="adhesion">Quiero adherir mi comercio</option>
+                    <option value="tecnica">Consulta técnica sobre campanas IoT</option>
+                    <option value="comunidad">Propuesta comunitaria o vecinal</option>
+                    <option value="institucional">Contacto institucional / Prensa</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label for="contact-comercio" class="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5">Nombre del Comercio / Local (si corresponde)</label>
+                <input type="text" id="contact-comercio" name="comercio" placeholder="Ej. Panadería San Martín" class="w-full px-4 py-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all">
+              </div>
+
+              <div>
+                <label for="contact-mensaje" class="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5">Mensaje o Detalle *</label>
+                <textarea id="contact-mensaje" name="mensaje" rows="3" required placeholder="Contanos brevemente qué rubro tenés o cuál es tu consulta..." class="w-full px-4 py-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all"></textarea>
+              </div>
+
+              <div id="contact-status-msg" class="hidden p-4 rounded-2xl text-xs font-bold"></div>
+
+              <button type="submit" id="btn-submit-contact" class="w-full py-4 rounded-2xl bg-emerald-800 hover:bg-emerald-700 active:scale-98 text-white font-extrabold text-sm shadow-lg shadow-emerald-800/25 transition-all flex items-center justify-center gap-2 cursor-pointer">
+                <iconify-icon icon="mynaui:send" class="text-lg" aria-hidden="true"></iconify-icon>
+                <span>Enviar Solicitud</span>
+              </button>
+            </form>
           </div>
 
         </div>
@@ -1057,11 +1178,13 @@
         <div class="space-y-3">
           <span class="text-sm font-bold text-white block">Plataforma</span>
           <ul class="space-y-2">
+            <li><a href="#empresa" class="hover:text-emerald-400 transition-colors">La Empresa & Modelo</a></li>
             <li><a href="#como-funciona" class="hover:text-emerald-400 transition-colors">¿Cómo Funciona?</a></li>
-            <li><a href="#empresa" class="hover:text-emerald-400 transition-colors">La Empresa / Misión</a></li>
             <li><a href="#tecnologia" class="hover:text-emerald-400 transition-colors">Campanas IoT</a></li>
             <li><a href="#impacto" class="hover:text-emerald-400 transition-colors">Métricas de la Ciudad</a></li>
             <li><a href="#comercios" class="hover:text-emerald-400 transition-colors">Comercios Adheridos</a></li>
+            <li><a href="#contacto" class="hover:text-emerald-400 transition-colors">Contacto & Adhesión</a></li>
+            <li><a href="#faq" class="hover:text-emerald-400 transition-colors">Preguntas Frecuentes</a></li>
           </ul>
         </div>
 
@@ -1279,6 +1402,53 @@
         localStorage.setItem('ecoimperio_dark_mode', String(isDark));
       });
     }
+
+
+    // 6. Formulario de Contacto y Adhesión de Comercios
+    const contactForm = document.getElementById('landing-contact-form');
+    const contactStatus = document.getElementById('contact-status-msg');
+    const submitBtn = document.getElementById('btn-submit-contact');
+
+    if (contactForm) {
+      contactForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const nombre = (document.getElementById('contact-nombre').value || '').trim();
+        const email = (document.getElementById('contact-email').value || '').trim();
+        const telefono = (document.getElementById('contact-telefono').value || '').trim();
+        const mensaje = (document.getElementById('contact-mensaje').value || '').trim();
+
+        if (!nombre || !email || !telefono || !mensaje) {
+          if (contactStatus) {
+            contactStatus.className = 'p-4 rounded-2xl text-xs font-bold bg-amber-50 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-700 block';
+            contactStatus.textContent = 'Por favor completá los campos obligatorios (*) para enviar tu solicitud.';
+          }
+          return;
+        }
+
+        submitBtn.disabled = true;
+        submitBtn.classList.add('opacity-75');
+        submitBtn.innerHTML = '<iconify-icon icon="mynaui:spinner" class="animate-spin text-lg"></iconify-icon><span>Enviando mensaje...</span>';
+
+        setTimeout(() => {
+          submitBtn.disabled = false;
+          submitBtn.classList.remove('opacity-75');
+          submitBtn.innerHTML = '<iconify-icon icon="mynaui:check-circle" class="text-lg"></iconify-icon><span>¡Mensaje Enviado con Éxito!</span>';
+          submitBtn.classList.replace('bg-emerald-800', 'bg-teal-600');
+
+          if (contactStatus) {
+            contactStatus.className = 'p-4 rounded-2xl text-xs font-bold bg-emerald-50 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-700 block';
+            contactStatus.textContent = '¡Gracias por comunicarte! Tu solicitud fue registrada con éxito en el sistema de Modernización y Comercio Municipal. Te contactaremos dentro de las 24 horas.';
+          }
+          contactForm.reset();
+
+          setTimeout(() => {
+            submitBtn.innerHTML = '<iconify-icon icon="mynaui:send" class="text-lg" aria-hidden="true"></iconify-icon><span>Enviar Solicitud</span>';
+            submitBtn.classList.replace('bg-teal-600', 'bg-emerald-800');
+          }, 5000);
+        }, 1100);
+      });
+    }
+
   </script>
 </body>
 </html>
