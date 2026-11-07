@@ -3,7 +3,7 @@
 > **Asignatura**: Interfaz de Usuario — Examen Final Integrador (EFI)  
 > **Institución**: ITEC Río Cuarto — Desarrollo de Software  
 > **Duración máxima**: 20 minutos (16 min de exposición + 4 min de demostración en vivo y preguntas)  
-> **Equipo**: Manuel Gómez, Tomás Benavidez, Valentino Cambria y Juan Falco
+> **Equipo**: Manuel Gómez, Tomás Benavidez, Valentino Cambria, Juan Falco y Giuliano Blengino
 
 ---
 

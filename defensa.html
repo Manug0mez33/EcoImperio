@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Defensa Académica EFI 2026 — EcoImperio (ITEC Río Cuarto)</title>
+  <title>Defensa Académica EFI — EcoImperio (ITEC Río Cuarto)</title>
   
   <meta name="description" content="Defensa oral, fundamentación metodológica y conceptos de UX/UI aplicados en la plataforma EcoImperio para el Examen Final Integrador de Interfaz de Usuario en ITEC Río Cuarto.">
   <link rel="icon" type="image/svg+xml" href="docs/assets/logos/logo_app_icon.svg">
@@ -11,7 +11,7 @@
   <!-- Tipografía Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700;800&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
 
   <!-- Tailwind CSS CDN v3 -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -50,12 +50,12 @@
   <style>
     /* Efectos de vidrio y gradientes para el auditorio académico */
     .glass-header {
-      background: rgba(255, 255, 255, 0.92);
-      backdrop-filter: blur(12px);
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(14px);
     }
     .dark .glass-header {
-      background: rgba(15, 23, 42, 0.92);
-      backdrop-filter: blur(12px);
+      background: rgba(15, 23, 42, 0.94);
+      backdrop-filter: blur(14px);
     }
     .card-academic {
       transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
@@ -68,98 +68,68 @@
       box-shadow: 0 16px 32px -8px rgba(0, 0, 0, 0.4);
     }
 
-    /* Modo Alto Contraste Dinámico */
-    body.high-contrast {
-      background-color: #000000 !important;
-      color: #ffffff !important;
+    /* Ocultar barra de scroll estándar en carruseles pero mantener navegación táctil */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
     }
-    body.high-contrast .card-academic,
-    body.high-contrast header,
-    body.high-contrast section,
-    body.high-contrast div {
-      border-color: #ffff00 !important;
-    }
-    body.high-contrast text,
-    body.high-contrast h1,
-    body.high-contrast h2,
-    body.high-contrast h3,
-    body.high-contrast h4,
-    body.high-contrast span {
-      color: #ffffff !important;
-    }
-    body.high-contrast a,
-    body.high-contrast button.badge-link {
-      color: #ffff00 !important;
-      text-decoration: underline !important;
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
     }
   </style>
 </head>
 <body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans antialiased selection:bg-emerald-500 selection:text-white transition-colors duration-200">
 
   <!-- ========================================================================
-       HEADER DE LA DEFENSA ACADÉMICA
+       HEADER DE NAVEGACIÓN (Diseño homogéneo con Landing Page)
        ======================================================================== -->
   <header class="sticky top-0 z-50 glass-header border-b border-slate-200/80 dark:border-slate-800/80">
-    <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between gap-6">
+    <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between gap-8">
       
-      <!-- Marca y Asignatura -->
-      <a href="landing.html" class="flex items-center gap-3.5 group focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 rounded-xl" title="Volver a la Landing Page">
-        <div class="w-11 h-11 rounded-2xl bg-emerald-900 text-white flex items-center justify-center text-2xl shadow-md shadow-emerald-900/30 group-hover:scale-105 transition-transform">
-          <iconify-icon icon="mynaui:academic-cap" class="text-emerald-400"></iconify-icon>
+      <!-- Logotipo de la Empresa / Plataforma (Idéntico a landing.html) -->
+      <a href="landing.html" class="flex items-center gap-3 group focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 rounded-xl" aria-label="EcoImperio - Inicio">
+        <div class="w-12 h-12 rounded-2xl bg-emerald-900 flex items-center justify-center text-white shadow-md shadow-emerald-900/20 group-hover:scale-105 transition-transform">
+          <iconify-icon icon="mynaui:leaf" class="text-2xl text-emerald-400" aria-hidden="true"></iconify-icon>
         </div>
         <div>
-          <div class="flex items-center gap-2">
-            <span class="text-xl font-black text-slate-900 dark:text-white tracking-tight">Eco<span class="text-emerald-700 dark:text-emerald-400">Imperio</span></span>
-            <span class="px-2 py-0.5 rounded-md bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 font-extrabold text-[10px] uppercase tracking-wider">Defensa EFI</span>
-          </div>
-          <span class="block text-[11px] font-bold text-slate-500 dark:text-slate-400">
-            Cátedra de Interfaz de Usuario • ITEC Río Cuarto
+          <span class="text-2xl font-black tracking-tight text-slate-900 dark:text-white">
+            Eco<span class="text-emerald-700 dark:text-emerald-400">Imperio</span>
+          </span>
+          <span class="block text-[10px] font-bold tracking-widest text-slate-600 dark:text-slate-400 uppercase -mt-1">
+            Río Cuarto • Reciclaje Inteligente
           </span>
         </div>
       </a>
 
-      <!-- Navegación por Módulos Temáticos (Desktop) -->
-      <nav class="hidden xl:flex items-center gap-5 text-xs font-bold text-slate-600 dark:text-slate-300">
+      <!-- Menú de Navegación Desktop de la Defensa -->
+      <nav class="hidden xl:flex items-center gap-6 text-sm font-semibold text-slate-600 dark:text-slate-300" aria-label="Navegación de defensa">
         <a href="#proceso" class="hover:text-emerald-700 dark:hover:text-emerald-400 transition-colors">1. Proceso DCU</a>
         <a href="#arquetipos" class="hover:text-emerald-700 dark:hover:text-emerald-400 transition-colors">2. Arquetipos & Journey</a>
         <a href="#card-sorting" class="hover:text-emerald-700 dark:hover:text-emerald-400 transition-colors">3. Card Sorting & IA</a>
         <a href="#mutaciones" class="hover:text-emerald-700 dark:hover:text-emerald-400 transition-colors">4. Mutaciones Wireframe</a>
-        <a href="#estetica" class="hover:text-emerald-700 dark:hover:text-emerald-400 transition-colors">5. Estética & Gestalt</a>
+        <a href="#estetica" class="hover:text-emerald-700 dark:hover:text-emerald-400 transition-colors">5. Sistema & Colores</a>
         <a href="#accesibilidad" class="hover:text-emerald-700 dark:hover:text-emerald-400 transition-colors">6. Accesibilidad POUR</a>
       </nav>
 
-      <!-- Accesos Rápidos y Modos Visuales -->
-      <div class="flex items-center gap-2.5">
-        
-        <!-- Botón Demo SPA Vivo -->
-        <a href="index.html" class="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-emerald-800 hover:bg-emerald-700 active:scale-95 text-white text-xs font-extrabold shadow-sm shadow-emerald-800/30 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400" title="Abrir prototipo interactivo en vivo">
-          <iconify-icon icon="mynaui:play" class="text-sm"></iconify-icon>
-          <span>Abrir Demo SPA</span>
-        </a>
-
-        <!-- Botón Volver a Landing -->
-        <a href="landing.html" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-bold transition-colors" title="Regresar a la página principal de presentación">
-          <iconify-icon icon="mynaui:arrow-left" class="text-sm"></iconify-icon>
-          <span class="hidden md:inline">Landing</span>
-        </a>
-
-        <!-- Toggle Modo Alto Contraste AAA -->
-        <button type="button" id="btn-toggle-contrast" onclick="toggleContrast()" class="w-10 h-10 rounded-xl border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-center transition-colors text-xs font-black" title="Alternar modo de alto contraste WCAG AAA">
-          AAA
-        </button>
-
+      <!-- Botones de Acción (Modo Oscuro + Abrir Demo SPA) -->
+      <div class="flex items-center gap-3">
         <!-- Toggle Modo Oscuro -->
         <button type="button" id="theme-toggle" class="w-10 h-10 rounded-xl border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-center transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500" aria-label="Cambiar tema visual claro/oscuro">
           <iconify-icon id="theme-icon" icon="mynaui:sun" class="text-xl hidden dark:inline" aria-hidden="true"></iconify-icon>
           <iconify-icon icon="mynaui:moon" class="text-xl inline dark:hidden" aria-hidden="true"></iconify-icon>
         </button>
 
+        <!-- Botón Probar Demo Web SPA -->
+        <a href="index.html" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-emerald-700/30 text-emerald-800 dark:text-emerald-300 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 text-xs font-bold transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500" title="Probar la aplicación web en vivo">
+          <iconify-icon icon="mynaui:sparkles" class="text-base text-emerald-600" aria-hidden="true"></iconify-icon>
+          <span>Abrir Demo SPA</span>
+        </a>
       </div>
 
     </div>
   </header>
 
-  <main>
+  <main id="inicio">
 
     <!-- ========================================================================
          HERO ACADÉMICO: IDENTIFICACIÓN DEL PROYECTO Y EQUIPO
@@ -181,75 +151,90 @@
           </h1>
 
           <p class="text-base sm:text-lg text-slate-300 leading-relaxed font-normal max-w-3xl">
-            Integración de los 10 ejes conceptuales de la cátedra de <strong>Interfaz de Usuario</strong> en una solución cívico-tecnológica real: desde la investigación etnográfica y arquetipos en Río Cuarto, hasta la mutación de wireframes Lo-Fi en Figma y la concreción de una <strong>Web SPA Mobile-First</strong> con accesibilidad WCAG AAA y los 5 estados obligatorios de componentes.
+            Integración de los ejes conceptuales de la cátedra de <strong>Interfaz de Usuario</strong> en una solución cívico-tecnológica real: desde la investigación etnográfica y arquetipos en Río Cuarto, hasta la mutación de wireframes Lo-Fi en Figma y la concreción de una <strong>Web SPA Mobile-First</strong> con accesibilidad WCAG AAA y los 5 estados obligatorios de componentes.
           </p>
 
-          <!-- Tarjetas del Equipo de Desarrollo -->
+          <!-- Tarjetas del Equipo de Desarrollo (5 Integrantes) -->
           <div class="pt-6">
-            <span class="text-xs font-black uppercase tracking-wider text-emerald-400 block mb-3">Equipo Evaluado (20 Minutos de Defensa Oral):</span>
+            <span class="text-xs font-black uppercase tracking-wider text-emerald-400 block mb-3">
+              Integrantes del Proyecto:
+            </span>
             
-            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
               
               <!-- Integrante 1 -->
-              <div class="p-4 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm space-y-1.5">
-                <div class="flex items-center justify-between">
-                  <span class="font-extrabold text-sm text-white">Manuel Gómez</span>
-                  <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-900/60 text-emerald-300 border border-emerald-700/50">Lead Dev</span>
+              <div class="p-4 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm space-y-2 text-center card-academic">
+                <div class="w-12 h-12 rounded-2xl bg-emerald-800 text-white flex items-center justify-center font-extrabold text-sm mx-auto shadow-md">
+                  MG
                 </div>
-                <p class="text-[11px] text-slate-400">Arquitectura Técnica, Frontend SPA, Persistencia y Accesibilidad WCAG.</p>
-                <span class="text-[10px] text-emerald-400 font-bold block pt-1">Bloque 4 & 5 (Orador)</span>
+                <div>
+                  <h4 class="font-extrabold text-sm text-white">Manuel Gómez</h4>
+                  <span class="text-[11px] text-slate-400 block">ITEC Río Cuarto</span>
+                </div>
               </div>
 
               <!-- Integrante 2 -->
-              <div class="p-4 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm space-y-1.5">
-                <div class="flex items-center justify-between">
-                  <span class="font-extrabold text-sm text-white">Tomás Benavidez</span>
-                  <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-teal-900/60 text-teal-300 border border-teal-700/50">DCU & IA</span>
+              <div class="p-4 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm space-y-2 text-center card-academic">
+                <div class="w-12 h-12 rounded-2xl bg-teal-800 text-white flex items-center justify-center font-extrabold text-sm mx-auto shadow-md">
+                  TB
                 </div>
-                <p class="text-[11px] text-slate-400">User Personas, Card Sorting, Rotulado y evolución Lo-Fi en Figma.</p>
-                <span class="text-[10px] text-teal-400 font-bold block pt-1">Bloque 2 (Orador)</span>
+                <div>
+                  <h4 class="font-extrabold text-sm text-white">Tomás Benavidez</h4>
+                  <span class="text-[11px] text-slate-400 block">ITEC Río Cuarto</span>
+                </div>
               </div>
 
               <!-- Integrante 3 -->
-              <div class="p-4 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm space-y-1.5">
-                <div class="flex items-center justify-between">
-                  <span class="font-extrabold text-sm text-white">Valentino Cambria</span>
-                  <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-900/60 text-emerald-300 border border-emerald-700/50">UI System</span>
+              <div class="p-4 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm space-y-2 text-center card-academic">
+                <div class="w-12 h-12 rounded-2xl bg-emerald-900 text-white flex items-center justify-center font-extrabold text-sm mx-auto shadow-md">
+                  VC
                 </div>
-                <p class="text-[11px] text-slate-400">Leyes de Gestalt, Tokens, los 5 Estados UI y Microinteracciones.</p>
-                <span class="text-[10px] text-emerald-400 font-bold block pt-1">Bloque 3 (Orador)</span>
+                <div>
+                  <h4 class="font-extrabold text-sm text-white">Valentino Cambria</h4>
+                  <span class="text-[11px] text-slate-400 block">ITEC Río Cuarto</span>
+                </div>
               </div>
 
               <!-- Integrante 4 -->
-              <div class="p-4 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm space-y-1.5">
-                <div class="flex items-center justify-between">
-                  <span class="font-extrabold text-sm text-white">Juan Falco</span>
-                  <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-amber-900/60 text-amber-300 border border-amber-700/50">Product UX</span>
+              <div class="p-4 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm space-y-2 text-center card-academic">
+                <div class="w-12 h-12 rounded-2xl bg-amber-800 text-white flex items-center justify-center font-extrabold text-sm mx-auto shadow-md">
+                  JF
                 </div>
-                <p class="text-[11px] text-slate-400">Problema, Valor Comunitario, Identidad de Marca y UX Writing.</p>
-                <span class="text-[10px] text-amber-400 font-bold block pt-1">Bloque 1 (Orador)</span>
+                <div>
+                  <h4 class="font-extrabold text-sm text-white">Juan Falco</h4>
+                  <span class="text-[11px] text-slate-400 block">ITEC Río Cuarto</span>
+                </div>
+              </div>
+
+              <!-- Integrante 5 -->
+              <div class="p-4 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm space-y-2 text-center card-academic">
+                <div class="w-12 h-12 rounded-2xl bg-teal-900 text-white flex items-center justify-center font-extrabold text-sm mx-auto shadow-md">
+                  GB
+                </div>
+                <div>
+                  <h4 class="font-extrabold text-sm text-white">Giuliano Blengino</h4>
+                  <span class="text-[11px] text-slate-400 block">ITEC Río Cuarto</span>
+                </div>
               </div>
 
             </div>
           </div>
 
-          <!-- Cronograma de los 20 Minutos de Exposición -->
-          <div class="p-5 rounded-2xl bg-emerald-950/60 border border-emerald-700/50 flex flex-wrap items-center justify-between gap-4 text-xs">
-            <div class="flex items-center gap-3">
-              <div class="w-9 h-9 rounded-xl bg-emerald-800 text-white flex items-center justify-center text-lg shrink-0">
-                <iconify-icon icon="mynaui:clock"></iconify-icon>
+          <!-- Marco Institucional Académico -->
+          <div class="p-5 rounded-2xl bg-emerald-950/60 border border-emerald-700/50 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
+            <div class="flex items-center gap-3.5">
+              <div class="w-10 h-10 rounded-xl bg-emerald-800 text-white flex items-center justify-center text-xl shrink-0">
+                <iconify-icon icon="mynaui:building"></iconify-icon>
               </div>
               <div>
-                <span class="font-extrabold text-white block">Distribución del Tribunal de Evaluación (20 Minutos)</span>
-                <span class="text-slate-400">16 minutos de argumentación técnica + 4 minutos de prueba en vivo y preguntas de cátedra.</span>
+                <span class="font-extrabold text-white block">Instituto Técnico de Educación y Capacitación (ITEC) • Río Cuarto</span>
+                <span class="text-slate-300">Tecnicatura Superior en Desarrollo de Software • Cátedra de Interfaz de Usuario</span>
               </div>
             </div>
-            <div class="flex items-center gap-2 font-mono text-[11px]">
-              <span class="px-2.5 py-1 rounded-lg bg-slate-900 text-emerald-400 border border-emerald-800/50">00-03m: Problema</span>
-              <span class="px-2.5 py-1 rounded-lg bg-slate-900 text-teal-400 border border-teal-800/50">03-07m: DCU/IA</span>
-              <span class="px-2.5 py-1 rounded-lg bg-slate-900 text-emerald-400 border border-emerald-800/50">07-11m: Gestalt/UI</span>
-              <span class="px-2.5 py-1 rounded-lg bg-slate-900 text-amber-400 border border-amber-800/50">11-15m: POUR</span>
-              <span class="px-2.5 py-1 rounded-lg bg-emerald-800 text-white font-bold">15-20m: Live Demo</span>
+            <div class="flex items-center gap-2">
+              <span class="px-3 py-1 rounded-lg bg-emerald-900/80 text-emerald-300 font-bold border border-emerald-700/60">
+                Proyecto Integrador Anual
+              </span>
             </div>
           </div>
 
@@ -259,17 +244,17 @@
     </section>
 
     <!-- ========================================================================
-         MÓDULO 1: PROCESO DCU & METODOLOGÍA DEL DOBLE DIAMANTE
+         ETAPA 01: PROCESO DCU & METODOLOGÍA DEL DOBLE DIAMANTE
          ======================================================================== -->
     <section id="proceso" class="py-20 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800">
       <div class="max-w-7xl mx-auto px-6">
         
         <div class="space-y-3 mb-14">
           <div class="flex items-center gap-2">
-            <span class="px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 text-xs font-black uppercase tracking-wider">
-              Eje Metodológico 01
+            <span class="px-3.5 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 text-xs font-black uppercase tracking-wider">
+              Etapa 01
             </span>
-            <span class="text-xs font-mono text-slate-600 dark:text-slate-400">• Design Thinking & Doble Diamante</span>
+            <span class="text-xs font-mono text-slate-500">• Metodología DCU & Doble Diamante</span>
           </div>
           <h2 class="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white tracking-tight">
             El Proceso de Diseño Centrado en el Usuario (DCU)
@@ -351,17 +336,17 @@
     </section>
 
     <!-- ========================================================================
-         MÓDULO 2: ARQUETIPOS (USER PERSONAS) & USER JOURNEY MAP
+         ETAPA 02: ARQUETIPOS (USER PERSONAS) & USER JOURNEY MAP
          ======================================================================== -->
     <section id="arquetipos" class="py-20 bg-slate-100/70 dark:bg-slate-950 border-b border-slate-200 dark:border-slate-800">
       <div class="max-w-7xl mx-auto px-6">
         
         <div class="space-y-3 mb-14">
           <div class="flex items-center gap-2">
-            <span class="px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 text-xs font-black uppercase tracking-wider">
-              Eje Conceptual 06
+            <span class="px-3.5 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 text-xs font-black uppercase tracking-wider">
+              Etapa 02
             </span>
-            <span class="text-xs font-mono text-slate-600 dark:text-slate-400">• DCU: Personas, Contextos y Matriz de Viaje</span>
+            <span class="text-xs font-mono text-slate-500">• Arquetipos (Personas) & User Journey Map</span>
           </div>
           <h2 class="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white tracking-tight">
             User Personas & User Journey Map
@@ -498,17 +483,17 @@
     </section>
 
     <!-- ========================================================================
-         MÓDULO 3: CARD SORTING & ARQUITECTURA DE INFORMACIÓN
+         ETAPA 03: CARD SORTING & ARQUITECTURA DE INFORMACIÓN
          ======================================================================== -->
     <section id="card-sorting" class="py-20 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800">
       <div class="max-w-7xl mx-auto px-6">
         
         <div class="space-y-3 mb-14">
           <div class="flex items-center gap-2">
-            <span class="px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 text-xs font-black uppercase tracking-wider">
-              Eje Conceptual 07
+            <span class="px-3.5 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 text-xs font-black uppercase tracking-wider">
+              Etapa 03
             </span>
-            <span class="text-xs font-mono text-slate-600 dark:text-slate-400">• Arquitectura de Información, Rotulado y Card Sorting</span>
+            <span class="text-xs font-mono text-slate-500">• Arquitectura de Información, Card Sorting & Rotulado</span>
           </div>
           <h2 class="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white tracking-tight">
             Card Sorting & Rotulado Libre de Jerga
@@ -616,142 +601,451 @@
     </section>
 
     <!-- ========================================================================
-         MÓDULO 4: MUTACIONES DEL WIREFRAME (DE FIGMA A SOFTWARE VIVO)
+         ETAPA 04: MUTACIONES DEL WIREFRAME (GALERÍA HORIZONTAL DE FIGMA A HI-FI)
          ======================================================================== -->
     <section id="mutaciones" class="py-20 bg-slate-100/70 dark:bg-slate-950 border-b border-slate-200 dark:border-slate-800">
       <div class="max-w-7xl mx-auto px-6">
         
-        <div class="space-y-3 mb-14">
-          <div class="flex items-center gap-2">
-            <span class="px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 text-xs font-black uppercase tracking-wider">
-              Eje Conceptual 08 & 08++
-            </span>
-            <span class="text-xs font-mono text-slate-600 dark:text-slate-400">• Bitácora de Mutaciones: Wireframes Lo-Fi a Hi-Fi Software Vivo</span>
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+          <div class="space-y-3">
+            <div class="flex items-center gap-2">
+              <span class="px-3.5 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 text-xs font-black uppercase tracking-wider">
+                Etapa 04
+              </span>
+              <span class="text-xs font-mono text-slate-500">• Mutaciones del Wireframe: Lo-Fi a Hi-Fi Software Vivo</span>
+            </div>
+            <h2 class="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white tracking-tight">
+              Evolución Iterativa de Wireframes
+            </h2>
+            <p class="text-base text-slate-600 dark:text-slate-300 max-w-3xl leading-relaxed">
+              En el diseño centrado en el usuario, <strong>el software no surge mágicamente terminado</strong>. Deslizá horizontalmente para recorrer los 9 estadios documentados en Figma y código:
+            </p>
           </div>
-          <h2 class="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white tracking-tight">
-            Mutaciones del Wireframe: La Evidencia de Iteración
-          </h2>
-          <p class="text-base text-slate-600 dark:text-slate-300 max-w-3xl leading-relaxed">
-            En el desarrollo centrado en el usuario, <strong>el software no surge mágicamente terminado</strong>. Cada cambio entre el wireframe inicial en escala de grises y el prototipo final responde a leyes de usabilidad, ergonomía o accesibilidad:
-          </p>
+
+          <!-- Controles de Desplazamiento Horizontal -->
+          <div class="flex items-center gap-2 shrink-0">
+            <button type="button" onclick="scrollWireframes(-420)" class="w-11 h-11 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-center text-slate-700 dark:text-slate-300 shadow-sm transition-transform active:scale-95" aria-label="Desplazar hacia la izquierda">
+              <iconify-icon icon="mynaui:arrow-left" class="text-xl"></iconify-icon>
+            </button>
+            <button type="button" onclick="scrollWireframes(420)" class="w-11 h-11 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-center text-slate-700 dark:text-slate-300 shadow-sm transition-transform active:scale-95" aria-label="Desplazar hacia la derecha">
+              <iconify-icon icon="mynaui:arrow-right" class="text-xl"></iconify-icon>
+            </button>
+          </div>
         </div>
 
-        <!-- Galería de Evidencia Real de Mutaciones -->
-        <div class="grid lg:grid-cols-2 gap-8 mb-16">
+        <!-- Carrusel / Galería Horizontal con Acumulación de Ejemplos -->
+        <div id="wireframe-carousel" class="flex gap-6 overflow-x-auto pb-6 pt-2 snap-x snap-mandatory scroll-smooth no-scrollbar">
           
-          <!-- Evidencia 1: Panel de mutación de estadios -->
-          <div class="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 card-academic space-y-4">
+          <!-- Card 1: Mutación de Inicio en 4 Estadios -->
+          <div class="min-w-[340px] sm:min-w-[420px] max-w-[450px] flex-shrink-0 snap-start p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 card-academic space-y-4">
             <div class="flex items-center justify-between">
-              <span class="text-xs font-extrabold uppercase tracking-wider px-2.5 py-1 rounded bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300">
-                Figma: Estadios Evolutivos
+              <span class="text-xs font-extrabold uppercase px-2.5 py-1 rounded bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300">
+                1. Inicio en 4 Estadios
               </span>
               <span class="text-xs font-mono text-slate-400">v1.0 &rarr; v2.0</span>
             </div>
-            <div class="rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800/80 p-2 flex items-center justify-center">
-              <img src="docs/assets/figma/mutacion_pantalla_inicio_estadios.svg" alt="Mutación de pantalla de inicio en 4 estadios evolutivos" class="w-full h-auto max-h-72 object-contain rounded-xl">
+            <div class="rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800/80 p-2 flex items-center justify-center h-64">
+              <img src="docs/assets/figma/mutacion_pantalla_inicio_estadios.svg" alt="Mutación de pantalla de inicio en 4 estadios evolutivos" class="w-full h-full object-contain rounded-xl">
             </div>
             <div class="space-y-1">
-              <h4 class="font-extrabold text-sm text-slate-900 dark:text-white">Evolución de Pantalla de Bienvenida (#screen-splash)</h4>
+              <h4 class="font-extrabold text-sm text-slate-900 dark:text-white">Bienvenida & Onboarding Pedagógico</h4>
               <p class="text-xs text-slate-600 dark:text-slate-300 font-body leading-relaxed">
-                De una caja cuadrada con [X] y botón genérico "Ingresar", a un desglose pedagógico en 3 pasos con silueta urbana de Río Cuarto y enlace a explorar sin crear cuenta.
+                De una caja cuadrada vacía con [X] a un desglose pedagógico en 3 pasos con silueta urbana de Río Cuarto y enlace para explorar sin crear cuenta.
               </p>
             </div>
           </div>
 
-          <!-- Evidencia 2: Panel de Transiciones Lo-Fi vs Hi-Fi -->
-          <div class="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 card-academic space-y-4">
+          <!-- Card 2: Matriz Comparativa Lo-Fi vs Hi-Fi -->
+          <div class="min-w-[340px] sm:min-w-[420px] max-w-[450px] flex-shrink-0 snap-start p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 card-academic space-y-4">
             <div class="flex items-center justify-between">
-              <span class="text-xs font-extrabold uppercase tracking-wider px-2.5 py-1 rounded bg-teal-100 dark:bg-teal-950 text-teal-800 dark:text-teal-300">
-                Figma: Matriz Comparativa Lo-Fi vs Hi-Fi
+              <span class="text-xs font-extrabold uppercase px-2.5 py-1 rounded bg-teal-100 dark:bg-teal-950 text-teal-800 dark:text-teal-300">
+                2. Lo-Fi vs Hi-Fi Matrix
               </span>
-              <span class="text-xs font-mono text-slate-400">12 Pantallas</span>
+              <span class="text-xs font-mono text-slate-400">Auto-Layout</span>
             </div>
-            <div class="rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800/80 p-2 flex items-center justify-center">
-              <img src="docs/assets/figma/panel_transiciones_lofi_vs_hifi.svg" alt="Panel de transiciones Lo-Fi versus Hi-Fi en Figma" class="w-full h-auto max-h-72 object-contain rounded-xl">
+            <div class="rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800/80 p-2 flex items-center justify-center h-64">
+              <img src="docs/assets/figma/panel_transiciones_lofi_vs_hifi.svg" alt="Panel de transiciones Lo-Fi versus Hi-Fi en Figma" class="w-full h-full object-contain rounded-xl">
             </div>
             <div class="space-y-1">
               <h4 class="font-extrabold text-sm text-slate-900 dark:text-white">Transición Estructural de Componentes</h4>
               <p class="text-xs text-slate-600 dark:text-slate-300 font-body leading-relaxed">
-                Cómo el sistema de Auto-Layout y constraints en Figma garantizó que la versión en código Vanilla JS mantuviera la misma proporción áurea y zonas ergonómicas del pulgar.
+                Constraints fijos en cabecera y pie de página en Figma para garantizar que la maquetación en código respete la proporción ergonómica.
               </p>
             </div>
           </div>
 
-        </div>
-
-        <!-- Tabla Detallada de Mutación por Pantalla -->
-        <div class="space-y-4">
-          <h3 class="text-xl font-extrabold text-slate-900 dark:text-white">
-            Registro Histórico de Mutaciones (Bitácora de Cátedra)
-          </h3>
-
-          <div class="overflow-x-auto">
-            <table class="w-full text-left border-collapse text-xs bg-white dark:bg-slate-900 rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-md">
-              <thead class="bg-slate-100 dark:bg-slate-800/80 text-slate-800 dark:text-slate-200 uppercase font-extrabold tracking-wider border-b border-slate-200 dark:border-slate-800">
-                <tr>
-                  <th class="p-4">Pantalla</th>
-                  <th class="p-4">Versión Lo-Fi (v1.0 Wireframe)</th>
-                  <th class="p-4">Falla o Punto Ciego Detectado</th>
-                  <th class="p-4">Mutación Final (v2.0 Software Vivo)</th>
-                  <th class="p-4">Fundamento Teórico</th>
-                </tr>
-              </thead>
-              <tbody class="divide-y divide-slate-200 dark:divide-slate-800 font-body">
-                <tr>
-                  <td class="p-4 font-extrabold text-slate-900 dark:text-white">Mapa Barrial</td>
-                  <td class="p-4 text-slate-500">Círculos grises planos sin texto identificatorio.</td>
-                  <td class="p-4 text-rose-600 dark:text-rose-400 font-semibold">El usuario no sabía qué material recibía cada punto ni si estaba lleno.</td>
-                  <td class="p-4 font-bold text-emerald-800 dark:text-emerald-300">Codificación redundante triple: Color + Ícono + Texto explícito (Vacío)/(Lleno).</td>
-                  <td class="p-4 font-mono text-[11px]">Principio Perceptible WCAG & Daltonismo</td>
-                </tr>
-                <tr>
-                  <td class="p-4 font-extrabold text-slate-900 dark:text-white">Escáner QR</td>
-                  <td class="p-4 text-slate-500">Visor de cámara aislado con botón "Confirmar".</td>
-                  <td class="p-4 text-rose-600 dark:text-rose-400 font-semibold">Si el sol encandilaba la cámara o el QR estaba roto, el usuario quedaba bloqueado.</td>
-                  <td class="p-4 font-bold text-emerald-800 dark:text-emerald-300">Selector manual fallback 2×2 para ingresar material sin cámara.</td>
-                  <td class="p-4 font-mono text-[11px]">Heurística de Tolerancia a Errores de Nielsen</td>
-                </tr>
-                <tr>
-                  <td class="p-4 font-extrabold text-slate-900 dark:text-white">Billetera de Puntos</td>
-                  <td class="p-4 text-slate-500">Texto simple "Tus puntos: 1250" en lista plana.</td>
-                  <td class="p-4 text-rose-600 dark:text-rose-400 font-semibold">Sin motivación de progreso (reprobaba el Squint Test).</td>
-                  <td class="p-4 font-bold text-emerald-800 dark:text-emerald-300">Tarjeta Hero con barra de meta, progresión botánica (Nivel) y catálogo barrial.</td>
-                  <td class="p-4 font-mono text-[11px]">Ley de Región Común (Gestalt) & Gamificación</td>
-                </tr>
-                <tr>
-                  <td class="p-4 font-extrabold text-slate-900 dark:text-white">Navegación General</td>
-                  <td class="p-4 text-slate-500">Menú hamburguesa en la esquina superior izquierda.</td>
-                  <td class="p-4 text-rose-600 dark:text-rose-400 font-semibold">Inalcanzable con el pulgar mientras se camina con una mano ocupada.</td>
-                  <td class="p-4 font-bold text-emerald-800 dark:text-emerald-300">Bottom Navbar fija de 56px con botón de escáner en el centro natural de alcance.</td>
-                  <td class="p-4 font-mono text-[11px]">Ley de Fitts & Thumb Zone de Steven Hoober</td>
-                </tr>
-              </tbody>
-            </table>
+          <!-- Card 3: Prototipo Base de 12 Pantallas (Lo-Fi) -->
+          <div class="min-w-[340px] sm:min-w-[420px] max-w-[450px] flex-shrink-0 snap-start p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 card-academic space-y-4">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-extrabold uppercase px-2.5 py-1 rounded bg-slate-200 dark:bg-slate-800 text-slate-800 dark:text-slate-200">
+                3. Esqueleto Lo-Fi Inicial
+              </span>
+              <span class="text-xs font-mono text-slate-400">12 Pantallas</span>
+            </div>
+            <div class="rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800/80 p-2 flex items-center justify-center h-64">
+              <img src="docs/assets/figma/v1_prototipo_baja_calidad_12_pantallas.svg" alt="Prototipo baja calidad 12 pantallas en Figma" class="w-full h-full object-contain rounded-xl">
+            </div>
+            <div class="space-y-1">
+              <h4 class="font-extrabold text-sm text-slate-900 dark:text-white">Mapeo de Flujos en Escala de Grises</h4>
+              <p class="text-xs text-slate-600 dark:text-slate-300 font-body leading-relaxed">
+                Primer wireframe neutro para validar la coherencia de navegación entre mapa, canje y perfil antes de aplicar decisiones de color y tipografía.
+              </p>
+            </div>
           </div>
+
+          <!-- Card 4: Actualización e Integración de Pantallas Nuevas -->
+          <div class="min-w-[340px] sm:min-w-[420px] max-w-[450px] flex-shrink-0 snap-start p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 card-academic space-y-4">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-extrabold uppercase px-2.5 py-1 rounded bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300">
+                4. Incorporación de Vistas
+              </span>
+              <span class="text-xs font-mono text-slate-400">v1.5 Mid-Fi</span>
+            </div>
+            <div class="rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800/80 p-2 flex items-center justify-center h-64">
+              <img src="docs/assets/figma/v1_actualizacion_main_nuevas_pantallas.svg" alt="Actualización de nuevas pantallas en Figma" class="w-full h-full object-contain rounded-xl">
+            </div>
+            <div class="space-y-1">
+              <h4 class="font-extrabold text-sm text-slate-900 dark:text-white">Catálogo de Comercios e Historial</h4>
+              <p class="text-xs text-slate-600 dark:text-slate-300 font-body leading-relaxed">
+                Adición de la red de beneficios locales y desglose de movimientos ambientales con tarjetas delimitadas bajo la Ley de Región Común.
+              </p>
+            </div>
+          </div>
+
+          <!-- Card 5: Complemento de Modales y Estados AAA -->
+          <div class="min-w-[340px] sm:min-w-[420px] max-w-[450px] flex-shrink-0 snap-start p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 card-academic space-y-4">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-extrabold uppercase px-2.5 py-1 rounded bg-yellow-100 dark:bg-yellow-950 text-yellow-900 dark:text-yellow-200">
+                5. Diálogos y Modos Visuales
+              </span>
+              <span class="text-xs font-mono text-slate-400">v2.0 Modales</span>
+            </div>
+            <div class="rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800/80 p-2 flex items-center justify-center h-64">
+              <img src="docs/assets/figma/v2_complemento_modales_estados_aaa.svg" alt="Complemento de modales y estados AAA en Figma" class="w-full h-full object-contain rounded-xl">
+            </div>
+            <div class="space-y-1">
+              <h4 class="font-extrabold text-sm text-slate-900 dark:text-white">Modales Nativos &lt;dialog&gt; y Alto Contraste</h4>
+              <p class="text-xs text-slate-600 dark:text-slate-300 font-body leading-relaxed">
+                Diseño de ventanas modales accesibles con trampas de foco de teclado, confirmaciones no destructivas y especificaciones para alto contraste.
+              </p>
+            </div>
+          </div>
+
+          <!-- Card 6: Prototipo Hi-Fi Software Vivo -->
+          <div class="min-w-[340px] sm:min-w-[420px] max-w-[450px] flex-shrink-0 snap-start p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 card-academic space-y-4">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-extrabold uppercase px-2.5 py-1 rounded bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300">
+                6. Hi-Fi Software Vivo
+              </span>
+              <span class="text-xs font-mono text-slate-400">SPA Final</span>
+            </div>
+            <div class="rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800/80 p-2 flex items-center justify-center h-64">
+              <img src="docs/assets/screenshots/captura_08_hifi_prototype.png" alt="Captura del prototipo Hi-Fi interactivo" class="w-full h-full object-contain rounded-xl">
+            </div>
+            <div class="space-y-1">
+              <h4 class="font-extrabold text-sm text-slate-900 dark:text-white">Prototipo Navegable en Vivo</h4>
+              <p class="text-xs text-slate-600 dark:text-slate-300 font-body leading-relaxed">
+                Resultado final del software en ejecución real: persistencia de saldo en LocalStorage, cambio dinámico de tema y respuesta háptica.
+              </p>
+            </div>
+          </div>
+
+          <!-- Card 7: Mapa Barrial con Semáforo IoT -->
+          <div class="min-w-[340px] sm:min-w-[420px] max-w-[450px] flex-shrink-0 snap-start p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 card-academic space-y-4">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-extrabold uppercase px-2.5 py-1 rounded bg-teal-100 dark:bg-teal-950 text-teal-800 dark:text-teal-300">
+                7. Mapa IoT Interactivo
+              </span>
+              <span class="text-xs font-mono text-slate-400">Puntos Verdes</span>
+            </div>
+            <div class="rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800/80 p-2 flex items-center justify-center h-64">
+              <img src="docs/assets/screenshots/captura_07_mapa_buscador_filtros.png" alt="Captura del mapa buscador y filtros" class="w-full h-full object-contain rounded-xl">
+            </div>
+            <div class="space-y-1">
+              <h4 class="font-extrabold text-sm text-slate-900 dark:text-white">Semáforo IoT y Codificación Triple</h4>
+              <p class="text-xs text-slate-600 dark:text-slate-300 font-body leading-relaxed">
+                Filtros por material (Plásticos, Papel, Vidrio) y estado en tiempo real sin obligar al usuario a hacer clics innecesarios para saber si una campana está disponible.
+              </p>
+            </div>
+          </div>
+
+          <!-- Card 8: Sistema de Diseño del Escáner QR -->
+          <div class="min-w-[340px] sm:min-w-[420px] max-w-[450px] flex-shrink-0 snap-start p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 card-academic space-y-4">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-extrabold uppercase px-2.5 py-1 rounded bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300">
+                8. Escáner de Depósito
+              </span>
+              <span class="text-xs font-mono text-slate-400">Fallback 2x2</span>
+            </div>
+            <div class="rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800/80 p-2 flex items-center justify-center h-64">
+              <img src="docs/assets/screenshots/captura_09_sistema_disenio_escaner.png" alt="Sistema de diseño del escáner QR" class="w-full h-full object-contain rounded-xl">
+            </div>
+            <div class="space-y-1">
+              <h4 class="font-extrabold text-sm text-slate-900 dark:text-white">Tolerancia a Errores y Visor Adaptativo</h4>
+              <p class="text-xs text-slate-600 dark:text-slate-300 font-body leading-relaxed">
+                Láser animado con linterna y selector manual por si las condiciones de luz o deterioro del QR impiden la lectura óptica.
+              </p>
+            </div>
+          </div>
+
+          <!-- Card 9: Validación de los 5 Estados UI -->
+          <div class="min-w-[340px] sm:min-w-[420px] max-w-[450px] flex-shrink-0 snap-start p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 card-academic space-y-4">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-extrabold uppercase px-2.5 py-1 rounded bg-indigo-100 dark:bg-indigo-950 text-indigo-800 dark:text-indigo-300">
+                9. Los 5 Estados UI
+              </span>
+              <span class="text-xs font-mono text-slate-400">Matriz en Código</span>
+            </div>
+            <div class="rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800/80 p-2 flex items-center justify-center h-64">
+              <img src="docs/assets/screenshots/captura_05_cinco_estados_ui.png" alt="Captura de los cinco estados de componentes UI" class="w-full h-full object-contain rounded-xl">
+            </div>
+            <div class="space-y-1">
+              <h4 class="font-extrabold text-sm text-slate-900 dark:text-white">Feedback Visual Inequívoco</h4>
+              <p class="text-xs text-slate-600 dark:text-slate-300 font-body leading-relaxed">
+                Garantía técnica de que cada botón, switch y campo de entrada provee retroalimentación en reposo, interacción, foco accesible y desactivación.
+              </p>
+            </div>
+          </div>
+
         </div>
 
       </div>
     </section>
 
     <!-- ========================================================================
-         MÓDULO 5: ESTÉTICA FUNCIONAL, GESTALT & SISTEMA DE DISEÑO
+         ETAPA 05: ESTÉTICA FUNCIONAL, GESTALT & MANUAL DE COLOR (DESIGN TOKENS)
          ======================================================================== -->
     <section id="estetica" class="py-20 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800">
       <div class="max-w-7xl mx-auto px-6">
         
         <div class="space-y-3 mb-14">
           <div class="flex items-center gap-2">
-            <span class="px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 text-xs font-black uppercase tracking-wider">
-              Eje Conceptual 03, 04, 05 & 09
+            <span class="px-3.5 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 text-xs font-black uppercase tracking-wider">
+              Etapa 05
             </span>
-            <span class="text-xs font-mono text-slate-600 dark:text-slate-400">• Gestalt, Jerarquía Visual y los 5 Estados UI</span>
+            <span class="text-xs font-mono text-slate-500">• Estética Funcional, Gestalt & Manual de Color</span>
           </div>
           <h2 class="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white tracking-tight">
-            Estética Funcional y Sistema Atómico
+            Estética Funcional & Manual de Identidad Cromática
           </h2>
           <p class="text-base text-slate-600 dark:text-slate-300 max-w-3xl leading-relaxed">
-            La estética en EcoImperio no es decorativa: <strong>está al servicio de la comprensión cognitiva</strong>. Cada color, espaciado y estado visual guía el modelo mental del vecino:
+            La estética en EcoImperio no es decorativa: <strong>está al servicio de la comprensión cognitiva</strong>. A continuación presentamos el manual de marca con los tokens de color hexadecimales y la validación de los 5 estados UI:
           </p>
+        </div>
+
+        <!-- MANUAL DE COLOR ESTILO GUÍA DE MARCA (PALETA HEXADECIMAL COMPLETA) -->
+        <div class="mb-16 space-y-8">
+          
+          <div class="border-b border-slate-200 dark:border-slate-800 pb-4">
+            <h3 class="text-2xl font-black text-slate-900 dark:text-white flex items-center gap-2.5">
+              <iconify-icon icon="mynaui:palette" class="text-emerald-700 dark:text-emerald-400"></iconify-icon>
+              <span>Tokens de Color & Guía Cromática de la Aplicación</span>
+            </h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400 font-body">
+              Especificación técnica de cada valor hexadecimal, nombre de token y función de interfaz en temas claro, oscuro y alto contraste:
+            </p>
+          </div>
+
+          <!-- Gama 1: Primarios Verde EcoImperio -->
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-extrabold uppercase tracking-wider text-slate-700 dark:text-slate-300">
+                1. Gama Primaria — Verde EcoImperio (Sustentabilidad y Naturaleza)
+              </span>
+              <span class="text-[11px] font-mono text-emerald-700 dark:text-emerald-400 font-bold">Identidad Municipal</span>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3.5">
+              
+              <div class="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-2">
+                <div class="h-14 rounded-xl shadow-inner border border-black/10" style="background-color: #022c22;"></div>
+                <div class="text-[11px]">
+                  <span class="font-extrabold text-slate-900 dark:text-white block">emerald-950</span>
+                  <code class="font-mono text-emerald-700 dark:text-emerald-400 font-bold block">#022c22</code>
+                  <span class="text-[10px] text-slate-500 block">Fondo nocturno profundo</span>
+                </div>
+              </div>
+
+              <div class="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-2">
+                <div class="h-14 rounded-xl shadow-inner border border-black/10" style="background-color: #064e3b;"></div>
+                <div class="text-[11px]">
+                  <span class="font-extrabold text-slate-900 dark:text-white block">emerald-900</span>
+                  <code class="font-mono text-emerald-700 dark:text-emerald-400 font-bold block">#064e3b</code>
+                  <span class="text-[10px] text-slate-500 block">Marca, Headers y Hero</span>
+                </div>
+              </div>
+
+              <div class="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-2">
+                <div class="h-14 rounded-xl shadow-inner border border-black/10" style="background-color: #065f46;"></div>
+                <div class="text-[11px]">
+                  <span class="font-extrabold text-slate-900 dark:text-white block">emerald-800</span>
+                  <code class="font-mono text-emerald-700 dark:text-emerald-400 font-bold block">#065f46</code>
+                  <span class="text-[10px] text-slate-500 block">Botón primario Default</span>
+                </div>
+              </div>
+
+              <div class="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-2">
+                <div class="h-14 rounded-xl shadow-inner border border-black/10" style="background-color: #047857;"></div>
+                <div class="text-[11px]">
+                  <span class="font-extrabold text-slate-900 dark:text-white block">emerald-700</span>
+                  <code class="font-mono text-emerald-700 dark:text-emerald-400 font-bold block">#047857</code>
+                  <span class="text-[10px] text-slate-500 block">Estado Hover primario</span>
+                </div>
+              </div>
+
+              <div class="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-2">
+                <div class="h-14 rounded-xl shadow-inner border border-black/10" style="background-color: #10b981;"></div>
+                <div class="text-[11px]">
+                  <span class="font-extrabold text-slate-900 dark:text-white block">emerald-500</span>
+                  <code class="font-mono text-emerald-700 dark:text-emerald-400 font-bold block">#10b981</code>
+                  <span class="text-[10px] text-slate-500 block">Éxito & Acento vivo</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Gama 2: Secundarios Teal & Tecnología -->
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-extrabold uppercase tracking-wider text-slate-700 dark:text-slate-300">
+                2. Gama Secundaria — Teal / Río Cuarto (Agua, Río & Telemetría IoT)
+              </span>
+              <span class="text-[11px] font-mono text-teal-700 dark:text-teal-400 font-bold">Sensores y Campanas</span>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3.5">
+              
+              <div class="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-2">
+                <div class="h-14 rounded-xl shadow-inner border border-black/10" style="background-color: #0f766e;"></div>
+                <div class="text-[11px]">
+                  <span class="font-extrabold text-slate-900 dark:text-white block">teal-700</span>
+                  <code class="font-mono text-teal-700 dark:text-teal-400 font-bold block">#0f766e</code>
+                  <span class="text-[10px] text-slate-500 block">Infraestructura IoT</span>
+                </div>
+              </div>
+
+              <div class="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-2">
+                <div class="h-14 rounded-xl shadow-inner border border-black/10" style="background-color: #14b8a6;"></div>
+                <div class="text-[11px]">
+                  <span class="font-extrabold text-slate-900 dark:text-white block">teal-500</span>
+                  <code class="font-mono text-teal-700 dark:text-teal-400 font-bold block">#14b8a6</code>
+                  <span class="text-[10px] text-slate-500 block">Geolocalización activa</span>
+                </div>
+              </div>
+
+              <div class="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-2">
+                <div class="h-14 rounded-xl shadow-inner border border-black/10" style="background-color: #2dd4bf;"></div>
+                <div class="text-[11px]">
+                  <span class="font-extrabold text-slate-900 dark:text-white block">teal-400</span>
+                  <code class="font-mono text-teal-700 dark:text-teal-400 font-bold block">#2dd4bf</code>
+                  <span class="text-[10px] text-slate-500 block">Iconografía en dark mode</span>
+                </div>
+              </div>
+
+              <div class="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-2">
+                <div class="h-14 rounded-xl shadow-inner border border-black/10" style="background-color: #ccfbf1;"></div>
+                <div class="text-[11px]">
+                  <span class="font-extrabold text-slate-900 dark:text-white block">teal-100</span>
+                  <code class="font-mono text-teal-700 dark:text-teal-400 font-bold block">#ccfbf1</code>
+                  <span class="text-[10px] text-slate-500 block">Fondos de tarjetas comerciales</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Gama 3: Semántica Ámbar & Alertas -->
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-extrabold uppercase tracking-wider text-slate-700 dark:text-slate-300">
+                3. Gama Semántica — Ámbar & Nivel VIP (Comercios y Advertencias)
+              </span>
+              <span class="text-[11px] font-mono text-amber-700 dark:text-amber-400 font-bold">Nivel 5 & Alertas</span>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3.5">
+              
+              <div class="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-2">
+                <div class="h-14 rounded-xl shadow-inner border border-black/10" style="background-color: #b45309;"></div>
+                <div class="text-[11px]">
+                  <span class="font-extrabold text-slate-900 dark:text-white block">amber-700</span>
+                  <code class="font-mono text-amber-700 dark:text-amber-400 font-bold block">#b45309</code>
+                  <span class="text-[10px] text-slate-500 block">Requisito Nivel 5: Bosque</span>
+                </div>
+              </div>
+
+              <div class="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-2">
+                <div class="h-14 rounded-xl shadow-inner border border-black/10" style="background-color: #d97706;"></div>
+                <div class="text-[11px]">
+                  <span class="font-extrabold text-slate-900 dark:text-white block">amber-600</span>
+                  <code class="font-mono text-amber-700 dark:text-amber-400 font-bold block">#d97706</code>
+                  <span class="text-[10px] text-slate-500 block">Badge VIP (TecnoRío Celulares)</span>
+                </div>
+              </div>
+
+              <div class="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-2">
+                <div class="h-14 rounded-xl shadow-inner border border-black/10" style="background-color: #f59e0b;"></div>
+                <div class="text-[11px]">
+                  <span class="font-extrabold text-slate-900 dark:text-white block">amber-500</span>
+                  <code class="font-mono text-amber-700 dark:text-amber-400 font-bold block">#f59e0b</code>
+                  <span class="text-[10px] text-slate-500 block">Estrellas de calificación</span>
+                </div>
+              </div>
+
+              <div class="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-2">
+                <div class="h-14 rounded-xl shadow-inner border border-black/10" style="background-color: #fef3c7;"></div>
+                <div class="text-[11px]">
+                  <span class="font-extrabold text-slate-900 dark:text-white block">amber-100</span>
+                  <code class="font-mono text-amber-700 dark:text-amber-400 font-bold block">#fef3c7</code>
+                  <span class="text-[10px] text-slate-500 block">Alerta de geofence inactivo</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Gama 4: Alto Contraste WCAG AAA (19.56:1 a 21:1) -->
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-extrabold uppercase tracking-wider text-slate-700 dark:text-slate-300">
+                4. Gama de Accesibilidad Universal — Modo Alto Contraste WCAG AAA
+              </span>
+              <span class="text-[11px] font-mono text-yellow-600 dark:text-yellow-400 font-bold">Ratio 19.56:1</span>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+              
+              <div class="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-2">
+                <div class="h-14 rounded-xl shadow-inner border border-slate-400" style="background-color: #000000;"></div>
+                <div class="text-[11px]">
+                  <span class="font-extrabold text-slate-900 dark:text-white block">Negro Puro</span>
+                  <code class="font-mono text-slate-900 dark:text-slate-100 font-bold block">#000000</code>
+                  <span class="text-[10px] text-slate-500 block">Fondo cero emisión de luz OLED</span>
+                </div>
+              </div>
+
+              <div class="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-2">
+                <div class="h-14 rounded-xl shadow-inner border border-black/10" style="background-color: #ffff00;"></div>
+                <div class="text-[11px]">
+                  <span class="font-extrabold text-slate-900 dark:text-white block">Amarillo Señalética</span>
+                  <code class="font-mono text-yellow-700 dark:text-yellow-400 font-bold block">#ffff00</code>
+                  <span class="text-[10px] text-slate-500 block">Trazo e interactivos (Ratio 19.56:1)</span>
+                </div>
+              </div>
+
+              <div class="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-2">
+                <div class="h-14 rounded-xl shadow-inner border border-slate-300" style="background-color: #ffffff;"></div>
+                <div class="text-[11px]">
+                  <span class="font-extrabold text-slate-900 dark:text-white block">Blanco Puro</span>
+                  <code class="font-mono text-slate-700 dark:text-slate-300 font-bold block">#ffffff</code>
+                  <span class="text-[10px] text-slate-500 block">Tipografía primaria (Ratio 21:1)</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
         </div>
 
         <!-- Matriz de los 5 Estados UI (Demostración Interactiva en Vivo) -->
@@ -859,17 +1153,17 @@
     </section>
 
     <!-- ========================================================================
-         MÓDULO 6: ACCESIBILIDAD UNIVERSAL (WCAG 2.2 AA/AAA) & UX WRITING
+         ETAPA 06: ACCESIBILIDAD UNIVERSAL (WCAG 2.2 AA/AAA) & UX WRITING
          ======================================================================== -->
     <section id="accesibilidad" class="py-20 bg-slate-100/70 dark:bg-slate-950 border-b border-slate-200 dark:border-slate-800">
       <div class="max-w-7xl mx-auto px-6">
         
         <div class="space-y-3 mb-14">
           <div class="flex items-center gap-2">
-            <span class="px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 text-xs font-black uppercase tracking-wider">
-              Eje Conceptual 02 & 10
+            <span class="px-3.5 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 text-xs font-black uppercase tracking-wider">
+              Etapa 06
             </span>
-            <span class="text-xs font-mono text-slate-600 dark:text-slate-400">• Accesibilidad Universal, Principios POUR y UX Writing</span>
+            <span class="text-xs font-mono text-slate-500">• Accesibilidad Universal, Principios POUR y UX Writing</span>
           </div>
           <h2 class="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white tracking-tight">
             Accesibilidad WCAG 2.2 AA/AAA & Principios POUR
@@ -927,28 +1221,11 @@
 
         </div>
 
-        <!-- Demostración del Modo Alto Contraste AAA -->
-        <div class="p-8 rounded-3xl bg-gradient-to-r from-slate-900 to-slate-950 text-white border border-slate-800 flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl">
-          <div class="space-y-2 max-w-2xl">
-            <span class="px-3 py-1 rounded-full bg-yellow-400 text-black text-xs font-black uppercase tracking-wider">
-              WCAG AAA • Ratio 19.56:1
-            </span>
-            <h3 class="text-2xl font-black">Probá en vivo el Modo Alto Contraste para la Defensa</h3>
-            <p class="text-xs text-slate-300 font-body leading-relaxed">
-              Diseñado especialmente para vecinos con visión subnormal, degeneración macular o para uso bajo el sol abrasador del mediodía en las calles de Río Cuarto.
-            </p>
-          </div>
-          <button type="button" onclick="toggleContrast()" class="px-6 py-3.5 rounded-2xl bg-yellow-400 hover:bg-yellow-300 text-black font-black text-sm shrink-0 transition-transform active:scale-95 shadow-lg flex items-center gap-2">
-            <iconify-icon icon="mynaui:eye" class="text-lg"></iconify-icon>
-            <span>Alternar Alto Contraste</span>
-          </button>
-        </div>
-
       </div>
     </section>
 
     <!-- ========================================================================
-         CIERRE: CONCLUSIÓN ACADÉMICA Y LLAMADO A LA DEMO EN VIVO
+         CIERRE: CONCLUSIÓN ACADÉMICA Y ACCESOS RÁPIDOS
          ======================================================================== -->
     <section class="py-24 bg-white dark:bg-slate-900 text-center">
       <div class="max-w-4xl mx-auto px-6 space-y-8">
@@ -990,9 +1267,9 @@
 
   </main>
 
-  <!-- Script de tema y controles -->
+  <!-- Script de tema y carrusel de wireframes -->
   <script>
-    // 1. Toggle Claro / Oscuro con persistencia en localStorage
+    // 1. Toggle Claro / Oscuro con persistencia en localStorage (Idéntico a landing)
     const themeToggleBtn = document.getElementById('theme-toggle');
     const isDarkMode = localStorage.getItem('ecoimperio_dark_mode') === 'true' ||
       (!('ecoimperio_dark_mode' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches);
@@ -1008,9 +1285,12 @@
       });
     }
 
-    // 2. Toggle de Modo Alto Contraste AAA
-    function toggleContrast() {
-      document.body.classList.toggle('high-contrast');
+    // 2. Control de scroll horizontal del carrusel de wireframes
+    function scrollWireframes(distance) {
+      const carousel = document.getElementById('wireframe-carousel');
+      if (carousel) {
+        carousel.scrollBy({ left: distance, behavior: 'smooth' });
+      }
     }
   </script>
 

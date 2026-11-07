@@ -3,7 +3,7 @@
 > **Cátedra**: Interfaz de Usuario — Examen Final Integrador (EFI 2026)  
 > **Institución**: ITEC Río Cuarto — Tecnicatura Superior en Desarrollo de Software  
 > **Duración Máxima**: 20 minutos (16 min de exposición + 4 min de demo en vivo y preguntas)  
-> **Equipo**: Manuel Gómez, Tomás Benavidez, Valentino Cambria y Juan Falco  
+> **Equipo**: Manuel Gómez, Tomás Benavidez, Valentino Cambria, Juan Falco y Giuliano Blengino  
 > **Eje Narrativo Central**: *Línea Temporal de Maduración: Del problema comunitario de Río Cuarto y el primer wireframe en papel, a la implementación de Campanas Inteligentes y Software Vivo con Accesibilidad Universal*.
 
 ---
