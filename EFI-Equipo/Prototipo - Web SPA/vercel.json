@@ -1,9 +1,0 @@
-{
-  "routes": [
-    { "src": "^/$", "dest": "/landing.html" },
-    { "src": "^/landing$", "dest": "/landing.html" },
-    { "src": "^/app$", "dest": "/index.html" },
-    { "src": "^/defensa$", "dest": "/defensa.html" },
-    { "handle": "filesystem" }
-  ]
-}
